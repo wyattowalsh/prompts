@@ -1,5 +1,27 @@
 # chatgpt-prompts
 
+``````
+### Context ###
+=== Python3 Implementation ===
+```py3
+```
+=== Python3 Implementation End ===
+=== Unit Test Implementation ===
+```py3
+```
+=== Unit Test Implementation End ===
+}}} Your Rules {{{
+1. use `pytest`
+2. mock any external functionalities within a particular function or method using `pytest-mock`
+3. do not split the tests -- keep the unit test as a single function.
+4. achieve 100% test coverage of the function or method
+}}} Your Rules End {{{
+### Context End ###
+>>> Your Task <<<
+improve, enhance, and refine the unit test above while following all the rules. aim for maximal robustness, thoroughness, and comprehensiveness. Take your time and do not worry about your response being cut off.
+>>> Your Task End <<<
+``````
+
 ```
 How would this best be enhanced, improved, optimized, and refined to produce the most advanced version possible?
 ```
