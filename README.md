@@ -2,23 +2,23 @@
 
 ## Table of Contents
 
-- [Active-Prompt](#🔧-active-prompt): Adapt dynamically with feedback-based approaches.
-- [Data Augmentation](#📊-data-augmentation): Enhance data diversity for better model training.
-- [Emotional Persuasion Prompting](#💞-emotional-persuasion-prompting): Engage with emotionally charged language.
-- [Knowledge Base Engineer](#📚-knowledge-base-engineer): Create detailed and visually structured knowledge base entries.
-- [Markmap Generator](#🌐-markmap-generator): Create exhaustive and descriptive mind maps.
-- [Meta-Prompting](#🌀-meta-prompting): Generate or refine prompts autonomously.
-- [NER (Named Entity Recognition)](#🏷️-ner-named-entity-recognition): Identify and classify entities in text.
-- [PanelGPT](#👥-panelgpt): Utilize three expert AI avatars for thorough deliberation.
-- [Prompt Chaining](#⛓️-prompt-chaining): Create complex chains of reasoning through interconnected prompts.
-- [Quick Enhance](#⚡-quick-enhance): Optimize and refine for the most advanced versions.
-- [ReAct](#🤖-react): Apply the ReAct framework for structured problem-solving.
-- [Reflexion](#🔍-reflexion): Use deep reflection to refine responses.
-- [Self-Consistency](#🔄-self-consistency): Ensure accuracy with multiple reasoning paths.
-- [Sentiment Analysis](#📝-sentiment-analysis): Determine the sentiment expressed in text.
-- [Text Classification](#🗂️-text-classification): Categorize text into predefined labels.
-- [Write a Python Unit Test](#🐍-write-a-python-unit-test): Enhance and refine Python unit tests.
-- [Zero-Shot Chain of Thought (CoT)](#🧠-zero-shot-chain-of-thought-cot): Employ step-by-step reasoning.
+- [🔧 Active-Prompt](#-active-prompt): Adapt dynamically with feedback-based approaches.
+- [📊 Data Augmentation](#-data-augmentation): Enhance data diversity for better model training.
+- [💞 Emotional Persuasion Prompting](#-emotional-persuasion-prompting): Engage with emotionally charged language.
+- [📚 Knowledge Base Engineer](#-knowledge-base-engineer): Create detailed and visually structured knowledge base entries.
+- [🌐 Markmap Generator](#-markmap-generator): Create exhaustive and descriptive mind maps.
+- [🌀 Meta-Prompting](#-meta-prompting): Generate or refine prompts autonomously.
+- [🏷️ NER (Named Entity Recognition)](#-ner-named-entity-recognition): Identify and classify entities in text.
+- [👥 PanelGPT](#-panelgpt): Utilize three expert AI avatars for thorough deliberation.
+- [⛓️ Prompt Chaining](#-prompt-chaining): Create complex chains of reasoning through interconnected prompts.
+- [⚡ Quick Enhance](#-quick-enhance): Optimize and refine for the most advanced versions.
+- [🤖 ReAct](#-react): Apply the ReAct framework for structured problem-solving.
+- [🔍 Reflexion](#-reflexion): Use deep reflection to refine responses.
+- [🔄 Self-Consistency](#-self-consistency): Ensure accuracy with multiple reasoning paths.
+- [📝 Sentiment Analysis](#-sentiment-analysis): Determine the sentiment expressed in text.
+- [🗂️ Text Classification](#-text-classification): Categorize text into predefined labels.
+- [🐍 Write a Python Unit Test](#-write-a-python-unit-test): Enhance and refine Python unit tests.
+- [🧠 Zero-Shot Chain of Thought (CoT)](#-zero-shot-chain-of-thought-cot): Employ step-by-step reasoning.
 
 ---
 
