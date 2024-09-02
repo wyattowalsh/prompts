@@ -294,11 +294,7 @@ Enhance, improve, and refine code snippets for maximal robustness, thoroughness,
 
 📝 **Prompts**:
 ```
-How would this best be enhanced, improved, optimized, and refined to produce the most advanced version possible?
-```
-
-```
-What would the full implementation look like with the best of these enhancement recommendations robustly integrated throughout the existing code?
+How would this best be enhanced, improved, optimized, bettered, refactored, and refined to produce the most advanced version possible in terms of flexibility, robustness, efficiency, and elegance? What would the full implementation look like with these enhancement recommendations robustly integrated throughout the existing code? Take your time, output full, refactored, end-to-end modules for any and all possible enhancements. Do not omit or skip over any details. Take your time, do not worry about your response getting cut off (just continue from where you left off without any commentary), and carefully think about things step-by-step:
 ```
 
 ```
