@@ -293,6 +293,12 @@ Continue this process until the final question is answered.
 Enhance, improve, and refine code snippets for maximal robustness, thoroughness, and comprehensiveness.
 
 📝 **Prompts**:
+
+```
+continue to enhance, refine, better, improve, and optimize the implementation to be the most flexible, elegant, efficient, performant, best version it can be
+```
+
+
 ````````````
 ===== ===== ===== ===== =====
 ### current version:
