@@ -20,6 +20,7 @@
 - [🐍 Write a Python Unit Test](#-write-a-python-unit-test): Enhance and refine Python unit tests.
 - [🧠 Zero-Shot Chain of Thought (CoT)](#-zero-shot-chain-of-thought-cot): Employ step-by-step reasoning.
 - [🎨 Master Designer, UI/UX Master, and Color Theorist](#-master-designer-uiux-master-and-color-theorist): Craft intuitive, accessible, and aesthetically engaging user interfaces.
+- [🌳 Tree of Thoughts (ToT)](#-tree-of-thoughts-tot): Explore multiple reasoning paths for complex problem-solving.
 
 ---
 
@@ -584,3 +585,19 @@ I want you to act as a master designer and frontend developer specializing in Ty
 4. Document your code thoroughly to ensure maintainability and provide explanations for any trade-offs made in the design process.
 Here’s your first task: "Create a responsive admin dashboard with a sidebar navigation, top bar, and data visualization widgets using mock data for charts. Include smooth animations for the sidebar toggle and hover effects for the widgets."
 ```
+
+---
+
+## 🌳 Tree of Thoughts (ToT)
+
+The Tree of Thoughts (ToT) framework generalizes over chain-of-thought prompting, enabling exploration of multiple reasoning paths for complex problem-solving. By using systematic methods like backtracking and lookahead with tree structures, ToT facilitates deliberate, iterative, and collaborative reasoning to refine solutions.
+
+```
+Imagine three different experts are answering this question.
+All experts will write down 1 step of their thinking,
+then share it with the group.
+Then all experts will go on to the next step, etc.
+If any expert realises they're wrong at any point then they leave.
+The question is...
+```
+
