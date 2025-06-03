@@ -10,6 +10,7 @@
   - [🌀 Meta-Prompting](#meta-prompting): Generate or refine prompts autonomously.
   - [🏷️ NER (Named Entity Recognition)](#ner-named-entity-recognition): Identify and classify entities in text.
   - [👥 PanelGPT](#panelgpt): Utilize three expert AI avatars for thorough deliberation.
+  - [👥 Expert Panel Discussion](#expert-panel-discussion): Convene three master‐level experts in a rigorous multi‐step deliberation.
   - [⛓️ Prompt Chaining](#prompt-chaining): Create complex chains of reasoning through interconnected prompts.
   - [⚡ Quick Enhance](#quick-enhance): Optimize and refine for the most advanced versions.
   - [🤖 ReAct](#react): Apply the ReAct framework for structured problem-solving.
@@ -328,6 +329,28 @@ Question: {input}
 2. **Educational Debates**: Engaging students in educational debates with AI experts.
 
    * [AI in Education](https://www.tandfonline.com/doi/full/10.1080/10494820.2019.1579232)
+
+---
+
+## 👥 Expert Panel Discussion
+
+📜 **Description**:  
+Convene three master‐level experts from relevant domains to engage in a structured, multi‐step panel discussion aimed at solving a complex question. Each expert contributes targeted reasoning, checks one another’s assumptions, and iterates through at least five rounds of deliberation to ensure correctness and avoid premature conclusions. After these rounds, they jointly draft concluding remarks and final recommendations.
+
+📝 **Prompt**:
+
+```
+Question: <question text(s) + associated context>
+
+3 master‐level experts of associated domains are robustly and intelligently discussing the question with a panel discussion, trying to carefully solve it step‐by‐step while making sure that both the result is fully correct as well as any discussion penalties are avoided:
+
+(Note: Carefully conduct at least 5+ fully participative, multi‐step rounds of targeted discussion among all panel members before carrying out the concluding remarks and final recommendations sections of the panel discussion, even if this means your overall response is super long / multi‐response)
+```
+
+🔍 **Use Cases**:
+
+1. **Complex Problem Solving**: Address multidisciplinary research questions with a panel of experts to surface nuanced insights.
+2. **Rigorous Technical Debates**: Facilitate detailed deliberations on algorithm design, system architecture, or methodological trade‐offs.
 
 ---
 
