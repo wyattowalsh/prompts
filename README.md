@@ -2,36 +2,44 @@
 
 ## Table of Contents
 
-  - [🔧 Active-Prompt](#active-prompt): Adapt dynamically with feedback-based approaches.
-  - [📊 Data Augmentation](#data-augmentation): Enhance data diversity for better model training.
-  - [💞 Emotional Persuasion Prompting](#emotional-persuasion-prompting): Engage with emotionally charged language.
-  - [📚 Knowledge Base Engineer](#knowledge-base-engineer): Create detailed and visually structured knowledge base entries.
-  - [🌐 Markmap Generator](#markmap-generator): Create exhaustive and descriptive mind maps.
-  - [🌀 Meta-Prompting](#meta-prompting): Generate or refine prompts autonomously.
-  - [🏷️ NER (Named Entity Recognition)](#ner-named-entity-recognition): Identify and classify entities in text.
-  - [👥 PanelGPT](#panelgpt): Utilize three expert AI avatars for thorough deliberation.
-  - [👥 Expert Panel Discussion](#expert-panel-discussion): Convene three master‐level experts in a rigorous multi‐step deliberation.
-  - [⛓️ Prompt Chaining](#prompt-chaining): Create complex chains of reasoning through interconnected prompts.
-  - [⚡ Quick Enhance](#quick-enhance): Optimize and refine for the most advanced versions.
-  - [🤖 ReAct](#react): Apply the ReAct framework for structured problem-solving.
-  - [📄 Research Synthesis AI](#research-synthesis-ai): Merge multiple reports into a comprehensive, structured document.
-  - [🔍 Reflexion](#reflexion): Use deep reflection to refine responses.
-  - [🔄 Self-Consistency](#self-consistency): Ensure accuracy with multiple reasoning paths.
-  - [📝 Sentiment Analysis](#sentiment-analysis): Determine the sentiment expressed in text.
-  - [🗂️ Text Classification](#text-classification): Categorize text into predefined labels.
-  - [🐍 Write a Python Unit Test](#write-a-python-unit-test): Enhance and refine Python unit tests.
-  - [🧠 Zero-Shot Chain of Thought (CoT)](#zero-shot-chain-of-thought-cot): Employ step-by-step reasoning.
-  - [🎨 Master Designer, UI/UX Master, and Color Theorist](#master-designer-uiux-master-and-color-theorist): Craft intuitive, accessible, and aesthetically engaging user interfaces.
-  - [🌳 Tree of Thoughts (ToT)](#tree-of-thoughts-tot): Explore multiple reasoning paths for complex problem-solving.
-  - [✏️ Chain-of-Draft (CoD)](#chain-of-draft-cod): Minimal-token step-by-step reasoning.
-  - [🦴 Skeleton-of-Thoughts (SoT)](#skeleton-of-thoughts-sot): Outline-first, then expand each component.
-  - [🔀 Algorithm-of-Thoughts (AoT)](#algorithm-of-thoughts-aot): Systematic exploration of multiple solution branches.
-  - [🌐 Graph-of-Thoughts (GoT)](#graph-of-thoughts-got): Non-linear, node-edge reasoning networks.
-  - [💻 Program-of-Thoughts (PoT)](#program-of-thoughts-pot): Reasoning by generating and “running” code.
-  - [🖼️ Multimodal Chain-of-Thought (MultiModal-CoT)](#multimodal-chain-of-thought-multimodal-cot): Integrate visual and textual reasoning steps.
-  - [🔗 Chain-of-Density (Summarization CoD)](#chain-of-density-summarization-cod): Iterative, increasingly dense summarization.
-  - [✅ Chain-of-Verification](#chain-of-verification): Self-generated checks to validate answers.
-  - [🔄 Self-Refine Prompting](#self-refine-prompting): Model critiques and improves its own output.
+  - [🔧 Active-Prompt](#-active-prompt): Adapt dynamically with feedback-based approaches.
+  - [📊 Data Augmentation](#-data-augmentation): Enhance data diversity for better model training.
+  - [💞 Emotional Persuasion Prompting](#-emotional-persuasion-prompting): Engage with emotionally charged language.
+  - [📚 Knowledge Base Engineer](#-knowledge-base-engineer): Create detailed and visually structured knowledge base entries.
+  - [🌐 Markmap Generator](#-markmap-generator): Create exhaustive and descriptive mind maps.
+  - [🌀 Meta-Prompting](#-meta-prompting): Generate or refine prompts autonomously.
+  - [🏷️ NER (Named Entity Recognition)](#-ner-named-entity-recognition): Identify and classify entities in text.
+  - [👥 PanelGPT](#-panelgpt): Utilize three expert AI avatars for thorough deliberation.
+  - [👥 Expert Panel Discussion](#-expert-panel-discussion): Convene three master‐level experts in a rigorous multi‐step deliberation.
+  - [⛓️ Prompt Chaining](#-prompt-chaining): Create complex chains of reasoning through interconnected prompts.
+  - [⚡ Quick Enhance](#-quick-enhance): Optimize and refine for the most advanced versions.
+  - [🤖 ReAct](#-react): Apply the ReAct framework for structured problem-solving.
+  - [📄 Research Synthesis AI](#-research-synthesis-ai): Merge multiple reports into a comprehensive, structured document.
+  - [🔍 Reflexion](#-reflexion): Use deep reflection to refine responses.
+  - [🔄 Self-Consistency](#-self-consistency): Ensure accuracy with multiple reasoning paths.
+  - [📝 Sentiment Analysis](#-sentiment-analysis): Determine the sentiment expressed in text.
+  - [🗂️ Text Classification](#-text-classification): Categorize text into predefined labels.
+  - [🐍 Write a Python Unit Test](#-write-a-python-unit-test): Enhance and refine Python unit tests.
+  - [🧠 Zero-Shot Chain of Thought (CoT)](#-zero-shot-chain-of-thought-cot): Employ step-by-step reasoning.
+  - [🎨 Master Designer, UI/UX Master, and Color Theorist](#-master-designer-uiux-master-and-color-theorist): Craft intuitive, accessible, and aesthetically engaging user interfaces.
+  - [🌳 Tree of Thoughts (ToT)](#-tree-of-thoughts-tot): Explore multiple reasoning paths for complex problem-solving.
+  - [✏️ Chain-of-Draft (CoD)](#-chain-of-draft-cod): Minimal-token step-by-step reasoning.
+  - [🦴 Skeleton-of-Thoughts (SoT)](#-skeleton-of-thoughts-sot): Outline-first, then expand each component.
+  - [🔀 Algorithm-of-Thoughts (AoT)](#-algorithm-of-thoughts-aot): Systematic exploration of multiple solution branches.
+  - [🌐 Graph-of-Thoughts (GoT)](#-graph-of-thoughts-got): Non-linear, node-edge reasoning networks.
+  - [💻 Program-of-Thoughts (PoT)](#-program-of-thoughts-pot): Reasoning by generating and “running” code.
+  - [🖼️ Multimodal Chain-of-Thought (MultiModal-CoT)](#-multimodal-chain-of-thought-multimodal-cot): Integrate visual and textual reasoning steps.
+  - [🔗 Chain-of-Density (Summarization CoD)](#-chain-of-density-summarization-cod): Iterative, increasingly dense summarization.
+  - [✅ Chain-of-Verification](#-chain-of-verification): Self-generated checks to validate answers.
+  - [🔄 Self-Refine Prompting](#-self-refine-prompting): Model critiques and improves its own output.
+
+
+
+
+
+
+
+
 
 -----
 
