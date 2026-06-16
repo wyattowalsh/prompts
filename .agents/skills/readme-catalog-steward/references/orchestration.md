@@ -11,7 +11,8 @@ For broad README updates, split independent work before editing:
 | Lane | Output |
 | --- | --- |
 | Official Provider Docs | Current provider guidance, caveats, deprecated claims, source URLs |
-| Academic Research | Papers to add/remove/demote, evidence tiers, method-card support |
+| Prompt Library | Practical quasi-zero-shot recipe coverage, gaps, and copyability issues |
+| Academic Research | Papers to add/remove/demote, evidence tiers, recipe and pattern support |
 | Safety and Eval | Prompt injection, tool safety, RAG trust, structured validation, eval plan |
 | GFM and Docs Design | Navigation, alerts, details, tables, Mermaid, badges, accessibility |
 | README Audit | Section-by-section issues, broken links, missing fields, stale wording |
@@ -29,7 +30,7 @@ Do not let multiple agents edit the same file concurrently.
 
 Before finalizing broad README work:
 
-1. Skill/card contract review.
+1. Skill recipe/pattern contract review.
 2. Source-quality review.
 3. Safety/eval review.
 4. GFM/readability review.
@@ -43,11 +44,12 @@ claim its findings were used unless they were actually read.
 
 1. Run markdown lint.
 2. Run markdown link checks.
-3. Run JSON/YAML syntax checks for changed support files.
-4. Run whitespace diff checks.
-5. Run conditional badge URL checks when README badges changed.
-6. Inspect `git diff --stat`, focused diffs, and `git status --short --branch`.
-7. Fix failures and rerun the failed checks.
+3. Run `python3 scripts/update_readme_badges.py --check`.
+4. Run JSON/YAML syntax checks for changed support files.
+5. Run whitespace diff checks.
+6. Run conditional badge URL checks when README badges changed.
+7. Inspect `git diff --stat`, focused diffs, and `git status --short --branch`.
+8. Fix failures and rerun the failed checks.
 
 ## Escalation Rules
 

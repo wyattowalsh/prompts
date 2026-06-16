@@ -1,17 +1,28 @@
 <!-- markdownlint-disable MD013 -->
 
-# README Card Contract
+# README Recipe And Pattern Contract
 
-Use this reference when adding or revising a README method card.
+Use this reference when adding or revising a README prompt recipe or supporting
+pattern note.
 
 ## Required Fields
 
-Every method card must include:
+Every prompt recipe must include:
+
+- Use for
+- Copy prompt
+- Inputs to fill
+- Expected output
+- Upgrade when
+- Safety/eval checks
+- Clickable sources
+
+Every pattern note must include the fields that fit its format:
 
 - Definition
 - Best use
 - Avoid when
-- Copyable template
+- Copyable skeleton or prompt recipe link
 - Model/API controls
 - Cost and latency
 - Failure modes
@@ -21,8 +32,8 @@ Every method card must include:
 - Caveat
 - Clickable sources
 
-If a method cannot safely provide a copyable template, say why in the card
-instead of leaving the field implicit.
+If a pattern cannot safely provide a copyable skeleton, say why instead of
+leaving the field implicit.
 
 ## Template Hygiene
 
@@ -65,10 +76,11 @@ Do not make visible long chain-of-thought the default output. Prefer one of:
 If a source recommends step-by-step reasoning, adapt the README wording to avoid
 requiring hidden deliberation to be printed.
 
-## Card Review Checklist
+## Recipe And Pattern Review Checklist
 
-- [ ] The method name and anchor are stable.
-- [ ] The card states when not to use the method.
+- [ ] The recipe or pattern name and anchor are stable.
+- [ ] The recipe can be copied without surrounding research prose.
+- [ ] The pattern note states when not to use the method.
 - [ ] Sources are method-specific, not generic homepages.
 - [ ] Provider/model-specific behavior is caveated.
 - [ ] Cost and latency are not hand-waved.

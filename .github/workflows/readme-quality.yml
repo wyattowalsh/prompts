@@ -6,6 +6,7 @@ on:
       - README.md
       - AGENTS.md
       - .agents/skills/readme-catalog-steward/**
+      - scripts/update_readme_badges.py
       - .gitignore
       - .github/workflows/readme-quality.yml
   push:
@@ -15,6 +16,7 @@ on:
       - README.md
       - AGENTS.md
       - .agents/skills/readme-catalog-steward/**
+      - scripts/update_readme_badges.py
       - .gitignore
       - .github/workflows/readme-quality.yml
   workflow_dispatch:
@@ -36,6 +38,12 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 22
+
+      - name: Generated badge check
+        shell: bash
+        run: |
+          python3 scripts/update_readme_badges.py --check
+          python3 -m py_compile scripts/update_readme_badges.py
 
       - name: Markdown lint
         shell: bash
@@ -75,13 +83,14 @@ jobs:
             "${DOCS[@]}" \
             .agents/skills/readme-catalog-steward/evals/evals.json \
             .gitignore \
-            .github/workflows/readme-quality.yml
+            .github/workflows/readme-quality.yml \
+            scripts/update_readme_badges.py
 
       - name: Badge URL smoke check
         shell: bash
         run: |
           set -euo pipefail
-          mapfile -t badges < <(grep -Eo 'https://shieldcn.dev[^") ]+' README.md || true)
+          mapfile -t badges < <(python3 scripts/update_readme_badges.py --list-urls)
           if [ "${#badges[@]}" -eq 0 ]; then
             echo "No ShieldCN badge URLs found."
             exit 0

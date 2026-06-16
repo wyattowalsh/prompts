@@ -31,12 +31,14 @@ This repository maintains a research-backed prompt engineering catalog. Treat
   JSON Schema, tool definitions, retrieval settings, reasoning effort, thinking
   controls, and eval metadata.
 - BadgeCN/ShieldCN-style badges are allowed only when they add truthful scanning
-  value. Do not add CI, license, package, release, coverage, or provider badges
-  unless the repo or README actually supports the claim.
+  value. Generate README badges with `scripts/update_readme_badges.py`; do not
+  hand-edit counts. Do not add license, package, release, coverage, or download
+  badges unless the repo actually supports the claim.
 
-## README Card Contract
+## README Recipe And Pattern Contract
 
-When adding or changing a method card, include:
+When adding or changing a prompt recipe or pattern note, include the fields that
+fit the format:
 
 - Definition
 - Best use
@@ -65,8 +67,7 @@ Templates should separate:
 - For OpenAI API guidance, prefer [OpenAI API docs](https://developers.openai.com/api/docs/).
 - For Anthropic model and API guidance, prefer [Claude API docs](https://platform.claude.com/docs/)
   or [Anthropic prompt engineering docs](https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/overview).
-  Use [Anthropic news](https://www.anthropic.com/news) for availability updates
-  and announcements.
+  Verify availability announcements live when a prompt or badge depends on them.
 - For Gemini API guidance, prefer [Google AI for Developers](https://ai.google.dev/gemini-api/docs).
 - For Azure/OpenAI deployment and eval guidance, prefer [Microsoft Learn](https://learn.microsoft.com/en-us/azure/foundry/).
 - For safety, prefer [OWASP Top 10 for LLM Applications](https://owasp.org/www-project-top-10-for-large-language-model-applications/),
@@ -92,19 +93,23 @@ DOCS=(
 )
 npx -y markdownlint-cli2@0.22.1 "${DOCS[@]}"
 npx -y markdown-link-check@3.14.2 "${DOCS[@]}"
+python3 scripts/update_readme_badges.py --check
+python3 -m py_compile scripts/update_readme_badges.py
 python3 -m json.tool .agents/skills/readme-catalog-steward/evals/evals.json >/dev/null
 npx -y js-yaml .github/workflows/readme-quality.yml
 git diff --check -- \
   "${DOCS[@]}" \
   .agents/skills/readme-catalog-steward/evals/evals.json \
   .gitignore \
-  .github/workflows/readme-quality.yml
+  .github/workflows/readme-quality.yml \
+  scripts/update_readme_badges.py
 ```
 
-If badges change, also inspect every changed badge URL:
+If badges change, update generated badges and inspect every ShieldCN URL:
 
 ```sh
-rg -o 'https://shieldcn.dev[^") ]+' README.md
+python3 scripts/update_readme_badges.py --check
+python3 scripts/update_readme_badges.py --list-urls
 ```
 
 Then check the changed badge image URLs with `curl -I` and require successful
@@ -116,6 +121,7 @@ Keep GitHub Actions focused on deterministic README quality:
 
 - markdown lint
 - link validation
+- generated badge drift checks
 - whitespace diff checks
 - badge URL checks when badge URLs change
 

@@ -1,10 +1,10 @@
 ---
 name: readme-catalog-steward
 description: >-
-  Maintains this repo's README prompt catalog: method cards, provider-doc
-  freshness, safety/eval hygiene, copyable templates, and GFM polish. Use when
-  auditing, enriching, updating, or validating README.md. NOT for running
-  prompts, MCP servers, unrelated docs, or unsupported badges.
+  Maintains this repo's README prompt catalog: copyable prompt recipes, pattern
+  notes, provider-doc freshness, safety/eval hygiene, generated badges, and GFM
+  polish. Use when auditing, enriching, updating, or validating README.md. NOT
+  for running prompts, MCP servers, unrelated docs, or unsupported badges.
 argument-hint: "<mode> [section|method|provider]"
 license: MIT
 compatibility: "Requires git, rg, Node.js/npm for markdown validation, Python 3 for JSON checks, and live web access for current provider claims."
@@ -25,10 +25,10 @@ README as the product surface and public contract.
 | `$ARGUMENTS` | Action | Example |
 | --- | --- | --- |
 | Empty | Show mode menu, read `AGENTS.md`, read `README.md`, run `git status --short --branch`, then ask only if intent remains ambiguous | `/readme-catalog-steward` |
-| `audit [section/card]` | Read-only README audit with findings by section/card | `/readme-catalog-steward audit Method Selection Matrix` |
+| `audit [section/recipe/pattern]` | Read-only README audit with findings by section, recipe, or pattern note | `/readme-catalog-steward audit Prompt Library` |
 | `refresh-sources [provider/method/all]` | Verify current claims from official docs, primary papers, or labeled practitioner/community sources | `/readme-catalog-steward refresh-sources OpenAI` |
-| `add-card <method>` | Add a method card after source verification and eval/caveat definition | `/readme-catalog-steward add-card constrained decoding` |
-| `revise-card <method>` | Improve an existing card while preserving useful anchors and contract fields | `/readme-catalog-steward revise-card ReAct` |
+| `add-card <method>` | Add a pattern note after source verification and eval/caveat definition | `/readme-catalog-steward add-card constrained decoding` |
+| `revise-card <method>` | Improve an existing pattern note while preserving useful anchors and contract fields | `/readme-catalog-steward revise-card ReAct` |
 | `safety-pass` | Audit prompt injection, tool-use, RAG trust boundaries, refusal, abstention, and high-stakes review language | `/readme-catalog-steward safety-pass` |
 | `gfm-pass` | Improve navigation, alerts, details, tables, Mermaid, footnotes, badges, accessibility, and readability without noise | `/readme-catalog-steward gfm-pass` |
 | `eval-pass` | Improve eval flywheel, regression-set, prompt versioning, and contribution checklist guidance | `/readme-catalog-steward eval-pass` |
@@ -38,7 +38,7 @@ README as the product surface and public contract.
 ## Default Workflow
 
 1. Read `AGENTS.md`.
-2. Read the target README section or card before proposing changes.
+2. Read the target README section, recipe, or pattern note before proposing changes.
 3. Run `git status --short --branch`; preserve unrelated dirty work.
 4. Classify the request using
    [Classification/Gating Logic](#classificationgating-logic).
@@ -88,7 +88,7 @@ Load references selectively; do not load all of them for focused edits.
 
 | File | Content | Read When |
 | --- | --- | --- |
-| `references/card-contract.md` | Card fields, template hygiene, evidence tiers, and chain-of-thought restrictions | Adding or revising method cards |
+| `references/card-contract.md` | Recipe and pattern fields, template hygiene, evidence tiers, and chain-of-thought restrictions | Adding or revising prompt recipes or pattern notes |
 | `references/source-policy.md` | Source hierarchy, `llms.txt` lookup, provider links, freshness, and stale-claim handling | Refreshing sources or checking current claims |
 | `references/orchestration.md` | Parallel lanes, same-file serialization, review gates, and validation loop | Medium or broad README work |
 
@@ -107,14 +107,17 @@ Load references selectively; do not load all of them for focused edits.
    controls, and eval metadata.
 6. Keep community patterns labeled `Community` or `Experimental` unless
    task-specific evidence supports a stronger tier.
-7. Every added or revised method card must satisfy the README Card Contract.
+7. Every added or revised prompt recipe or pattern note must satisfy the README
+   contract fields that apply to its format.
 8. Separate durable instructions, trusted context, untrusted input, tool
    permissions, output contract, and validation in templates.
-9. Do not add CI, license, package, release, coverage, or provider badges unless
+9. Generate README badges with `scripts/update_readme_badges.py`; do not
+   hand-edit counts or long ShieldCN URLs.
+10. Do not add license, package, release, coverage, or download badges unless
    repo files or official sources support the claim.
-10. Use clickable Markdown or HTML links for every cited source and resource.
-11. Keep critical safety warnings visible, not hidden only inside collapses.
-12. Run validation before claiming completion, or report the exact blocker.
+11. Use clickable Markdown or HTML links for every cited source and resource.
+12. Keep critical safety warnings visible, not hidden only inside collapses.
+13. Run validation before claiming completion, or report the exact blocker.
 
 ## Canonical Vocabulary
 
@@ -144,19 +147,23 @@ DOCS=(
 )
 npx -y markdownlint-cli2@0.22.1 "${DOCS[@]}"
 npx -y markdown-link-check@3.14.2 "${DOCS[@]}"
+python3 scripts/update_readme_badges.py --check
+python3 -m py_compile scripts/update_readme_badges.py
 python3 -m json.tool .agents/skills/readme-catalog-steward/evals/evals.json >/dev/null
 npx -y js-yaml .github/workflows/readme-quality.yml
 git diff --check -- \
   "${DOCS[@]}" \
   .agents/skills/readme-catalog-steward/evals/evals.json \
   .gitignore \
-  .github/workflows/readme-quality.yml
+  .github/workflows/readme-quality.yml \
+  scripts/update_readme_badges.py
 ```
 
 If README badge URLs changed, inspect changed ShieldCN URLs:
 
 ```bash
-rg -o 'https://shieldcn.dev[^") ]+' README.md
+python3 scripts/update_readme_badges.py --check
+python3 scripts/update_readme_badges.py --list-urls
 ```
 
 Then `curl -I` changed badge image URLs and require SVG responses.
@@ -164,7 +171,8 @@ Then `curl -I` changed badge image URLs and require SVG responses.
 Completion criteria:
 
 - Markdown lint, link check, JSON syntax, YAML syntax, and whitespace checks pass.
-- README badge SVG checks pass when README badge URLs changed.
+- Generated badge checks and README badge SVG checks pass when README badge URLs
+  changed.
 - Referenced skill files exist and no unindexed references were added.
 - `git status --short --branch` shows only intentional changes.
 
