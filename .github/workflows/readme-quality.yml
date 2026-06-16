@@ -1,0 +1,98 @@
+name: README Quality
+
+on:
+  pull_request:
+    paths:
+      - README.md
+      - AGENTS.md
+      - .agents/skills/readme-catalog-steward/**
+      - .gitignore
+      - .github/workflows/readme-quality.yml
+  push:
+    branches:
+      - main
+    paths:
+      - README.md
+      - AGENTS.md
+      - .agents/skills/readme-catalog-steward/**
+      - .gitignore
+      - .github/workflows/readme-quality.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  readme-quality:
+    name: Markdown, links, and badges
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Markdown lint
+        shell: bash
+        run: |
+          DOCS=(
+            README.md
+            AGENTS.md
+            .agents/skills/readme-catalog-steward/SKILL.md
+            .agents/skills/readme-catalog-steward/references/*.md
+          )
+          npx -y markdownlint-cli2@0.22.1 "${DOCS[@]}"
+
+      - name: Link check
+        shell: bash
+        run: |
+          DOCS=(
+            README.md
+            AGENTS.md
+            .agents/skills/readme-catalog-steward/SKILL.md
+            .agents/skills/readme-catalog-steward/references/*.md
+          )
+          npx -y markdown-link-check@3.14.2 "${DOCS[@]}"
+
+      - name: Skill eval JSON syntax
+        run: python3 -m json.tool .agents/skills/readme-catalog-steward/evals/evals.json >/dev/null
+
+      - name: Whitespace check
+        shell: bash
+        run: |
+          DOCS=(
+            README.md
+            AGENTS.md
+            .agents/skills/readme-catalog-steward/SKILL.md
+            .agents/skills/readme-catalog-steward/references/*.md
+          )
+          git diff --check -- \
+            "${DOCS[@]}" \
+            .agents/skills/readme-catalog-steward/evals/evals.json \
+            .gitignore \
+            .github/workflows/readme-quality.yml
+
+      - name: Badge URL smoke check
+        shell: bash
+        run: |
+          set -euo pipefail
+          mapfile -t badges < <(grep -Eo 'https://shieldcn.dev[^") ]+' README.md || true)
+          if [ "${#badges[@]}" -eq 0 ]; then
+            echo "No ShieldCN badge URLs found."
+            exit 0
+          fi
+
+          for badge in "${badges[@]}"; do
+            echo "Checking $badge"
+            curl --fail --silent --show-error --location --head "$badge" >/tmp/badge.headers
+            if ! grep -iq 'content-type: .*image/svg+xml' /tmp/badge.headers; then
+              echo "Expected image/svg+xml for $badge"
+              cat /tmp/badge.headers
+              exit 1
+            fi
+          done

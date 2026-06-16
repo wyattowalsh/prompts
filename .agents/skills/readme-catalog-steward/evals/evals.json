@@ -1,0 +1,171 @@
+{
+  "skill_name": "readme-catalog-steward",
+  "evals": [
+    {
+      "id": "explicit-audit-readme",
+      "prompt": "/readme-catalog-steward audit README.md",
+      "expected_output": "A read-only README audit with section or card findings, strengths, and validation risks.",
+      "expected_behavior": [
+        "Reads AGENTS.md and README.md before reporting findings.",
+        "Runs or requests git status before any edit.",
+        "Produces a read-only section or card audit.",
+        "Does not modify files in audit mode."
+      ],
+      "assertions": [
+        "Mentions that audit mode is read-only.",
+        "Includes at least one exact README section or card target.",
+        "Does not propose file edits as already completed."
+      ]
+    },
+    {
+      "id": "explicit-add-card",
+      "prompt": "/readme-catalog-steward add-card constrained decoding",
+      "expected_output": "A source-verified method-card plan or patch that satisfies the README Card Contract.",
+      "expected_behavior": [
+        "Verifies method-specific official docs or primary sources before editing.",
+        "Applies the full README Card Contract.",
+        "Includes safety, cost, latency, failure-mode, caveat, and eval notes.",
+        "Avoids visible long chain-of-thought as a default template instruction."
+      ],
+      "assertions": [
+        "Includes clickable source URLs or states that source verification is missing.",
+        "Includes an eval requirement.",
+        "Separates trusted context from untrusted input in any template."
+      ]
+    },
+    {
+      "id": "explicit-revise-card",
+      "prompt": "/readme-catalog-steward revise-card ReAct",
+      "expected_output": "A focused revision that preserves useful anchors and improves the existing ReAct method card.",
+      "expected_behavior": [
+        "Reads the existing ReAct card before proposing changes.",
+        "Preserves useful anchors unless there is a documented reason to change them.",
+        "Checks source quality and template hygiene.",
+        "Runs validation after editing."
+      ],
+      "assertions": [
+        "References the existing card by name.",
+        "Does not remove method-card contract fields.",
+        "Does not make public long chain-of-thought the default."
+      ]
+    },
+    {
+      "id": "implicit-provider-refresh",
+      "prompt": "Refresh README provider and model guidance using the latest official docs.",
+      "expected_output": "A provider guidance refresh grounded in official docs, with stale or unverifiable claims flagged.",
+      "expected_behavior": [
+        "Activates readme-catalog-steward behavior.",
+        "Uses official provider docs before practitioner or community sources.",
+        "Records URLs and access dates for current claims.",
+        "Flags unverified or stale provider/model claims instead of repeating them."
+      ],
+      "assertions": [
+        "Cites official provider docs.",
+        "Labels unverifiable model claims as such.",
+        "Avoids unsupported latest-model language."
+      ]
+    },
+    {
+      "id": "explicit-safety-pass",
+      "prompt": "/readme-catalog-steward safety-pass",
+      "expected_output": "A README safety audit covering prompt injection, tools, RAG trust boundaries, refusal, abstention, and high-stakes review.",
+      "expected_behavior": [
+        "Reads relevant safety and eval README sections.",
+        "Uses the card contract and source policy where needed.",
+        "Prioritizes visible safety warnings and validation requirements.",
+        "Does not hide critical safety guidance only inside collapses."
+      ],
+      "assertions": [
+        "Mentions prompt injection.",
+        "Mentions high-stakes human review boundaries.",
+        "Mentions structured output or parser validation when relevant."
+      ]
+    },
+    {
+      "id": "explicit-gfm-pass",
+      "prompt": "/readme-catalog-steward gfm-pass",
+      "expected_output": "A README presentation audit or patch that improves GFM navigation/readability without unsupported badge claims.",
+      "expected_behavior": [
+        "Checks badges, TOC, alerts, details, tables, Mermaid, footnotes, and accessibility.",
+        "Preserves truthful badge semantics.",
+        "Runs markdown and link validation after editing."
+      ],
+      "assertions": [
+        "Does not add CI, package, license, release, coverage, or provider badges without support.",
+        "Mentions accessibility or readability.",
+        "Mentions validation commands."
+      ]
+    },
+    {
+      "id": "explicit-eval-pass",
+      "prompt": "/readme-catalog-steward eval-pass",
+      "expected_output": "A README eval and contribution checklist improvement focused on regression sets and prompt versioning.",
+      "expected_behavior": [
+        "Reviews eval flywheel guidance before editing.",
+        "Adds or improves concrete regression-set requirements.",
+        "Keeps eval advice tied to README method cards."
+      ],
+      "assertions": [
+        "Mentions representative failure cases.",
+        "Mentions prompt/model/retrieval/tool version metadata.",
+        "Mentions parser-invalid or refusal cases where relevant."
+      ]
+    },
+    {
+      "id": "empty-help",
+      "prompt": "/readme-catalog-steward",
+      "expected_output": "A mode menu with examples and the initial repository reads required before ambiguous work.",
+      "expected_behavior": [
+        "Shows available modes.",
+        "Reads or instructs the agent to read AGENTS.md, README.md, and git status.",
+        "Asks only if intent remains ambiguous."
+      ],
+      "assertions": [
+        "Includes audit, refresh-sources, add-card, revise-card, safety-pass, gfm-pass, eval-pass, and validate.",
+        "Does not start a full README rewrite without user intent."
+      ]
+    },
+    {
+      "id": "negative-control-run-prompt",
+      "prompt": "Run this prompt and show me the answer: summarize the pasted article.",
+      "expected_output": "A redirection away from README stewardship toward a normal prompt-running or summarization workflow.",
+      "expected_behavior": [
+        "Does not activate README stewardship behavior.",
+        "Does not edit README.md.",
+        "Redirects to a normal prompt-running or summarization workflow."
+      ],
+      "assertions": [
+        "States that README stewardship is not the right workflow.",
+        "Does not modify files."
+      ]
+    },
+    {
+      "id": "negative-control-mcp-server",
+      "prompt": "Create an MCP server for this repository.",
+      "expected_output": "A redirection away from README stewardship toward the appropriate MCP or engineering workflow.",
+      "expected_behavior": [
+        "Does not use readme-catalog-steward as the primary workflow.",
+        "States that the skill is not for MCP server creation.",
+        "Redirects to the appropriate MCP or engineering workflow."
+      ],
+      "assertions": [
+        "Contains a NOT-for-MCP boundary.",
+        "Does not create skill or README edits as part of this request."
+      ]
+    },
+    {
+      "id": "malformed-add-card",
+      "prompt": "/readme-catalog-steward add-card",
+      "expected_output": "A concise clarification request for the missing method name.",
+      "expected_behavior": [
+        "Detects that add-card requires a method target.",
+        "Asks for the missing method name.",
+        "Does not edit README.md."
+      ],
+      "assertions": [
+        "Mentions the missing method target.",
+        "Does not fabricate a method."
+      ]
+    }
+  ]
+}
