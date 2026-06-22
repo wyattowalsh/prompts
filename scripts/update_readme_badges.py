@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
-"""Generate the README ShieldCN badge rail.
+"""Generate README ShieldCN badge surfaces.
 
-The README is the public surface, but the badge values should not be hand
+The README is the public surface, but badge values should not be hand
 maintained. This script counts prompt recipes and pattern notes from headings,
-then rewrites only the badge marker block.
+then rewrites the generated badge marker blocks.
 """
 
 from __future__ import annotations
@@ -19,6 +19,8 @@ from urllib.parse import quote, urlencode
 DEFAULT_REPO = ("wyattowalsh", "prompts")
 START = "<!-- BADGES:START -->"
 END = "<!-- BADGES:END -->"
+SHORTCUTS_START = "<!-- SHORTCUTS:START -->"
+SHORTCUTS_END = "<!-- SHORTCUTS:END -->"
 
 COMMON_STATIC_PARAMS = {
     "mode": "dark",
@@ -157,6 +159,51 @@ DYNAMIC_GITHUB_BADGES = [
     },
 ]
 
+SHORTCUT_BADGES = [
+    {
+        "label": "Sources",
+        "color": "2563EB",
+        "logo": "ri:RiQuoteText",
+        "href": "#source-grounded-answer",
+        "alt": "Copy shortcut: Source-Grounded Answer",
+    },
+    {
+        "label": "Code Review",
+        "color": "16A34A",
+        "logo": "ri:RiCodeSSlashLine",
+        "href": "#code-review",
+        "alt": "Copy shortcut: Code Review",
+    },
+    {
+        "label": "JSON",
+        "color": "F59E0B",
+        "logo": "ri:RiBracesLine",
+        "href": "#json-extractor",
+        "alt": "Copy shortcut: JSON Extractor",
+    },
+    {
+        "label": "RAG",
+        "color": "0EA5E9",
+        "logo": "ri:RiDatabase2Line",
+        "href": "#rag-answer-contract",
+        "alt": "Copy shortcut: RAG Answer Contract",
+    },
+    {
+        "label": "Panel",
+        "color": "8B5CF6",
+        "logo": "ri:RiTeamLine",
+        "href": "#panel-review",
+        "alt": "Copy shortcut: Panel Review",
+    },
+    {
+        "label": "Optimize",
+        "color": "DB2777",
+        "logo": "ri:RiLoopRightLine",
+        "href": "#prompt-optimizer",
+        "alt": "Copy shortcut: Prompt Optimizer",
+    },
+]
+
 
 def repo_slug() -> tuple[str, str]:
     try:
@@ -274,17 +321,32 @@ def render_badge_block(markdown: str) -> str:
     return "\n".join(rows)
 
 
+def render_shortcut_block() -> str:
+    rows: list[str] = [SHORTCUTS_START]
+    rows.append('<p align="center">')
+    for badge in SHORTCUT_BADGES:
+        src = compact_static_badge_url(badge, {}, "default")
+        rows.append(image_link(badge["href"], badge["alt"], src, indent="  "))
+    rows.append("</p>")
+    rows.append(SHORTCUTS_END)
+    return "\n".join(rows)
+
+
 def generated_badge_urls(markdown: str) -> list[str]:
-    block = render_badge_block(markdown)
-    return re.findall(r'src="(https://shieldcn\.dev[^"]+)"', block)
+    blocks = [render_badge_block(markdown), render_shortcut_block()]
+    return re.findall(r'src="(https://shieldcn\.dev[^"]+)"', "\n".join(blocks))
+
+
+def replace_marker_block(markdown: str, start: str, end: str, block: str) -> str:
+    if markdown.count(start) != 1 or markdown.count(end) != 1:
+        raise SystemExit(f"README badge markers are missing: {start} / {end}")
+    pattern = re.compile(f"{re.escape(start)}.*?{re.escape(end)}", re.DOTALL)
+    return pattern.sub(block, markdown, count=1)
 
 
 def replace_badges(markdown: str) -> str:
-    if markdown.count(START) != 1 or markdown.count(END) != 1:
-        raise SystemExit("README badge markers are missing")
-    block = render_badge_block(markdown)
-    pattern = re.compile(f"{re.escape(START)}.*?{re.escape(END)}", re.DOTALL)
-    return pattern.sub(block, markdown, count=1)
+    updated = replace_marker_block(markdown, START, END, render_badge_block(markdown))
+    return replace_marker_block(updated, SHORTCUTS_START, SHORTCUTS_END, render_shortcut_block())
 
 
 def main() -> int:

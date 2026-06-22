@@ -39,7 +39,26 @@
 
 ## Start Here
 
-Copy These First: [Source-Grounded Answer](#source-grounded-answer) · [Code Review](#code-review) · [JSON Extractor](#json-extractor) · [RAG Answer Contract](#rag-answer-contract) · [Panel Review](#panel-review) · [Prompt Optimizer](#prompt-optimizer)
+<!-- SHORTCUTS:START -->
+<p align="center">
+  <a href="#source-grounded-answer"><img alt="Copy shortcut: Source-Grounded Answer" src="https://shieldcn.dev/badge/Sources-2563EB.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=26&radius=7&padX=10&iconSize=13&variant=default&logo=ri:RiQuoteText&logoColor=f8fafc"></a>
+  <a href="#code-review"><img alt="Copy shortcut: Code Review" src="https://shieldcn.dev/badge/Code%20Review-16A34A.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=26&radius=7&padX=10&iconSize=13&variant=default&logo=ri:RiCodeSSlashLine&logoColor=f8fafc"></a>
+  <a href="#json-extractor"><img alt="Copy shortcut: JSON Extractor" src="https://shieldcn.dev/badge/JSON-F59E0B.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=26&radius=7&padX=10&iconSize=13&variant=default&logo=ri:RiBracesLine&logoColor=f8fafc"></a>
+  <a href="#rag-answer-contract"><img alt="Copy shortcut: RAG Answer Contract" src="https://shieldcn.dev/badge/RAG-0EA5E9.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=26&radius=7&padX=10&iconSize=13&variant=default&logo=ri:RiDatabase2Line&logoColor=f8fafc"></a>
+  <a href="#panel-review"><img alt="Copy shortcut: Panel Review" src="https://shieldcn.dev/badge/Panel-8B5CF6.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=26&radius=7&padX=10&iconSize=13&variant=default&logo=ri:RiTeamLine&logoColor=f8fafc"></a>
+  <a href="#prompt-optimizer"><img alt="Copy shortcut: Prompt Optimizer" src="https://shieldcn.dev/badge/Optimize-DB2777.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=26&radius=7&padX=10&iconSize=13&variant=default&logo=ri:RiLoopRightLine&logoColor=f8fafc"></a>
+</p>
+<!-- SHORTCUTS:END -->
+
+> [!IMPORTANT]
+> Keep task data inside the named paste zones; add schemas, tools, retrieval, or evals only when the output leaves chat or failures repeat.
+
+| Control lane | Use when | Upgrade interface |
+| --- | --- | --- |
+| <kbd>sources</kbd> | Claims depend on supplied or retrieved text. | Citation check or retrieval eval. |
+| <kbd>schema</kbd> | Software consumes the answer. | Structured output plus parser tests. |
+| <kbd>tools</kbd> | The workflow can act outside chat. | Allowlisted tool schema plus approval gates. |
+| <kbd>evals</kbd> | A prompt becomes reusable. | Regression set with failure cases. |
 
 | Common job | Copy first | Escalate when... |
 | --- | --- | --- |
@@ -5357,7 +5376,7 @@ git diff --check -- \
 
 Badge scope is intentionally narrow.[^badge-scope]
 
-[^badge-scope]: Header badges summarize README navigation, live repo status, and source posture. They do not prove model behavior, package status, coverage, or provider endorsement.
+[^badge-scope]: Header and shortcut badges summarize README navigation, live repo status, and source posture. They do not prove model behavior, package status, coverage, or provider endorsement.
 
 [^provider-links]: Provider shields are shortcuts to official docs. They are not claims that every recipe works equally well on every provider or model.
 
@@ -5470,7 +5489,7 @@ Badge scope is intentionally narrow.[^badge-scope]
 
 - [PromptingGuide.ai](https://www.promptingguide.ai/) - Maintained practitioner guide for examples; useful context, not primary evidence.
 - [Artificial Analysis](https://artificialanalysis.ai/) - Benchmark and pricing context for model selection, not prompt-method proof.
-- [ShieldCN showcase](https://shieldcn.dev/showcase) - Visual examples for the generated README badge rail.
+- [ShieldCN showcase](https://shieldcn.dev/showcase) - Visual examples for the generated README badge surfaces.
 - [ShieldCN API reference](https://shieldcn.dev/docs/api-reference) - Parameter reference for reproducible ShieldCN badge generation.
 - [GitHub basic writing and formatting syntax](https://docs.github.com/en/get-started/writing-on-github/getting-started-with-writing-and-formatting-on-github/basic-writing-and-formatting-syntax) - Official GFM syntax reference for README formatting.
 - [GitHub Mermaid diagrams](https://docs.github.com/en/get-started/writing-on-github/working-with-advanced-formatting/creating-diagrams) - Official GitHub guidance for Mermaid diagrams in Markdown.
