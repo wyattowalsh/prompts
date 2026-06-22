@@ -27,61 +27,65 @@ COMMON_STATIC_PARAMS = {
     "labelColor": "020617",
     "labelTextColor": "cbd5e1",
     "valueColor": "f8fafc",
-    "height": "28",
-    "radius": "8",
-    "padX": "12",
-    "iconSize": "14",
+    "height": "26",
+    "radius": "7",
+    "padX": "10",
+    "iconSize": "13",
 }
 
 CORE_BADGES = [
     {
-        "label": "Prompt Library",
-        "value": "{prompt_count} prompts",
-        "color": "0f766e",
-        "logo": "ri:StackLine",
+        "label": "Prompts",
+        "value": "{prompt_count}",
+        "color": "8CA1AF",
+        "logo": "readthedocs",
+        "logoColor": "8CA1AF",
+        "valueColor": "020617",
         "href": "#prompt-library",
-        "alt": "Prompt Library: {prompt_count} prompts",
+        "alt": "Prompt library: {prompt_count} prompts",
     },
     {
-        "label": "Pattern Notes",
-        "value": "{pattern_count} techniques",
-        "color": "155e75",
-        "logo": "ri:BookOpenLine",
+        "label": "Patterns",
+        "value": "{pattern_count}",
+        "color": "BBDDE5",
+        "logo": "gitbook",
+        "logoColor": "BBDDE5",
+        "valueColor": "020617",
         "href": "#pattern-notes",
-        "alt": "Pattern Notes: {pattern_count} techniques",
+        "alt": "Pattern notes: {pattern_count} techniques",
     },
     {
-        "label": "Zero-Shot First",
-        "value": "examples optional",
-        "color": "2563eb",
-        "logo": "ri:Sparkling2Line",
+        "label": "Zero Shot",
+        "value": "first",
+        "color": "334155",
+        "logo": "ri:sparkling-2-line",
         "href": "#how-to-adapt-prompts",
-        "alt": "Zero-Shot First: examples optional",
+        "alt": "Zero-shot first: examples optional",
     },
     {
-        "label": "Evidence Base",
-        "value": "papers + docs",
-        "color": "0369a1",
-        "logo": "ri:GraduationCapLine",
+        "label": "Evidence",
+        "value": "sources",
+        "color": "B31B1B",
+        "logo": "arxiv",
+        "logoColor": "B31B1B",
         "href": "#bibliography",
-        "alt": "Evidence Base: papers and docs",
+        "alt": "Evidence base: papers and docs",
     },
     {
-        "label": "Safety + Evals",
-        "value": "gated",
-        "color": "b45309",
-        "logo": "ri:ShieldCheckLine",
+        "label": "Safety",
+        "value": "eval gated",
+        "color": "111111",
+        "logo": "owasp",
         "href": "#safety-evals-and-trust-boundaries",
-        "alt": "Safety and Evals: gated",
+        "alt": "Safety and evals: gated",
     },
     {
-        "label": "Benchmark Lens",
+        "label": "Benchmarks",
         "value": "Artificial Analysis",
         "color": "111827",
-        "logo": "ri:BarChartBoxLine",
+        "logo": "ri:bar-chart-box-line",
         "href": "https://artificialanalysis.ai/",
-        "alt": "Benchmark Lens: Artificial Analysis",
-        "animate": "shimmer",
+        "alt": "Benchmark context: Artificial Analysis",
     },
 ]
 
@@ -89,62 +93,55 @@ PROVIDER_BADGES = [
     {
         "label": "OpenAI",
         "value": "docs",
-        "color": "111827",
+        "color": "412991",
         "logo": "openai",
-        "href": "https://developers.openai.com/api/docs/guides/prompt-engineering",
+        "href": "https://developers.openai.com/api/docs/guides/prompt-guidance",
         "alt": "OpenAI documentation",
     },
     {
         "label": "Claude",
-        "value": "Anthropic",
-        "color": "d97706",
+        "value": "docs",
+        "color": "D97757",
         "logo": "anthropic",
+        "logoColor": "D97757",
         "href": "https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices",
-        "alt": "Claude Anthropic documentation",
+        "alt": "Claude documentation",
     },
     {
         "label": "Gemini",
-        "value": "Google AI",
-        "color": "4285f4",
+        "value": "docs",
+        "color": "8E75B2",
         "logo": "googlegemini",
+        "logoColor": "8E75B2",
         "href": "https://ai.google.dev/gemini-api/docs/prompting-strategies",
-        "alt": "Gemini Google AI documentation",
+        "alt": "Gemini documentation",
     },
     {
         "label": "Perplexity",
-        "value": "API docs",
-        "color": "1fb8cd",
+        "value": "docs",
+        "color": "1FB8CD",
         "logo": "perplexity",
+        "logoColor": "1FB8CD",
         "href": "https://docs.perplexity.ai/docs/getting-started/overview",
-        "alt": "Perplexity API documentation",
+        "alt": "Perplexity documentation",
     },
     {
         "label": "Grok",
-        "value": "xAI docs",
-        "color": "111827",
+        "value": "docs",
+        "color": "111111",
         "logo": "x",
         "href": "https://docs.x.ai/overview",
-        "alt": "Grok xAI documentation",
+        "alt": "Grok documentation",
     },
 ]
 
+# CI, commit-count, and contributors endpoints render as SVGs, but the README
+# keeps repo-status badges compact: recency, issues, PRs, stars, and forks.
 DYNAMIC_GITHUB_BADGES = [
-    {
-        "endpoint": "ci",
-        "href": "https://github.com/{owner}/{repo}/actions/workflows/readme-quality.yml",
-        "alt": "README Quality CI status",
-        "params": {"workflow": "readme-quality.yml", "branch": "main", "logo": "githubactions"},
-    },
     {
         "endpoint": "last-commit",
         "href": "https://github.com/{owner}/{repo}/commits/main",
         "alt": "GitHub last commit",
-        "params": {"logo": "github"},
-    },
-    {
-        "endpoint": "commits",
-        "href": "https://github.com/{owner}/{repo}/commits/main",
-        "alt": "GitHub commit count",
         "params": {"logo": "github"},
     },
     {
@@ -157,12 +154,6 @@ DYNAMIC_GITHUB_BADGES = [
         "endpoint": "open-prs",
         "href": "https://github.com/{owner}/{repo}/pulls",
         "alt": "GitHub open pull requests",
-        "params": {"logo": "github"},
-    },
-    {
-        "endpoint": "contributors",
-        "href": "https://github.com/{owner}/{repo}/graphs/contributors",
-        "alt": "GitHub contributors",
         "params": {"logo": "github"},
     },
     {
@@ -223,14 +214,16 @@ def static_badge_url(badge: dict[str, str], counts: dict[str, int], variant: str
         **COMMON_STATIC_PARAMS,
         "variant": variant,
         "logo": badge["logo"],
-        "logoColor": "f8fafc",
+        "logoColor": badge.get("logoColor", "f8fafc"),
     }
+    if badge.get("valueColor"):
+        params["valueColor"] = badge["valueColor"]
     if badge.get("animate"):
         params["animate"] = badge["animate"]
     return (
         "https://shieldcn.dev/badge/"
         f"{quote(label, safe='')}-{quote(value, safe='')}-{badge['color']}.svg?"
-        f"{urlencode(params)}"
+        f"{urlencode(params, safe=':')}"
     )
 
 
@@ -240,10 +233,13 @@ def dynamic_badge_url(badge: dict[str, object], owner: str, repo: str) -> str:
         "mode": "dark",
         "font": "space-grotesk",
         "split": "true",
-        "height": "28",
-        "radius": "8",
-        "padX": "12",
-        "iconSize": "14",
+        "height": "24",
+        "radius": "7",
+        "padX": "9",
+        "iconSize": "13",
+        "labelColor": "181717",
+        "color": "181717",
+        "logoColor": "fff",
         **badge["params"],
     }
     return (
@@ -277,7 +273,7 @@ def render_badge_block(markdown: str) -> str:
 
     rows.append('<p align="center">')
     for badge in PROVIDER_BADGES:
-        src = static_badge_url(badge, counts, "branded")
+        src = static_badge_url(badge, counts, "outline")
         rows.append(image_link(badge["href"], badge["alt"], src, indent="  "))
     rows.append("</p>")
     rows.append("")

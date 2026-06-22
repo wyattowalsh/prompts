@@ -11,11 +11,11 @@ Every prompt recipe must include:
 
 - Use for
 - Copy prompt
-- Inputs to fill
+- Fill these in
 - Expected output
 - Upgrade when
 - Safety/eval checks
-- Clickable sources
+- Sources
 
 Every pattern note must include the fields that fit its format:
 
@@ -34,6 +34,9 @@ Every pattern note must include the fields that fit its format:
 
 If a pattern cannot safely provide a copyable skeleton, say why instead of
 leaving the field implicit.
+
+Use `python3 scripts/check_readme_recipes.py --readme README.md --check` to
+enforce the Prompt Library recipe contract.
 
 ## Template Hygiene
 

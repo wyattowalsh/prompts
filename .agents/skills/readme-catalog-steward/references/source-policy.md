@@ -33,7 +33,7 @@ For current or latest claims:
 
 - OpenAI API docs: [https://developers.openai.com/api/docs/](https://developers.openai.com/api/docs/)
 - OpenAI prompt engineering guide: [https://developers.openai.com/api/docs/guides/prompt-engineering](https://developers.openai.com/api/docs/guides/prompt-engineering)
-- OpenAI evals guide: [https://developers.openai.com/api/docs/guides/evals](https://developers.openai.com/api/docs/guides/evals)
+- OpenAI evaluation best practices: [https://developers.openai.com/api/docs/guides/evaluation-best-practices](https://developers.openai.com/api/docs/guides/evaluation-best-practices)
 - Anthropic docs: [https://docs.anthropic.com/](https://docs.anthropic.com/)
 - Anthropic Claude API docs: [https://platform.claude.com/docs/](https://platform.claude.com/docs/)
 - Google Gemini API docs: [https://ai.google.dev/gemini-api/docs](https://ai.google.dev/gemini-api/docs)

@@ -145,17 +145,19 @@ DOCS=(
   .agents/skills/readme-catalog-steward/SKILL.md
   .agents/skills/readme-catalog-steward/references/*.md
 )
+python3 scripts/check_readme_recipes.py --readme README.md --check
 npx -y markdownlint-cli2@0.22.1 "${DOCS[@]}"
 npx -y markdown-link-check@3.14.2 "${DOCS[@]}"
 python3 scripts/update_readme_badges.py --check
-python3 -m py_compile scripts/update_readme_badges.py
+PYTHONPYCACHEPREFIX=/tmp/prompts-pycache python3 -m py_compile scripts/update_readme_badges.py scripts/check_readme_recipes.py
 python3 -m json.tool .agents/skills/readme-catalog-steward/evals/evals.json >/dev/null
-npx -y js-yaml .github/workflows/readme-quality.yml
+npx -y js-yaml .github/workflows/readme-quality.yml >/dev/null
 git diff --check -- \
   "${DOCS[@]}" \
   .agents/skills/readme-catalog-steward/evals/evals.json \
   .gitignore \
   .github/workflows/readme-quality.yml \
+  scripts/check_readme_recipes.py \
   scripts/update_readme_badges.py
 ```
 

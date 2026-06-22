@@ -6,6 +6,7 @@ on:
       - README.md
       - AGENTS.md
       - .agents/skills/readme-catalog-steward/**
+      - scripts/check_readme_recipes.py
       - scripts/update_readme_badges.py
       - .gitignore
       - .github/workflows/readme-quality.yml
@@ -16,6 +17,7 @@ on:
       - README.md
       - AGENTS.md
       - .agents/skills/readme-catalog-steward/**
+      - scripts/check_readme_recipes.py
       - scripts/update_readme_badges.py
       - .gitignore
       - .github/workflows/readme-quality.yml
@@ -39,11 +41,15 @@ jobs:
         with:
           node-version: 22
 
+      - name: Recipe contract check
+        shell: bash
+        run: python3 scripts/check_readme_recipes.py --readme README.md --check
+
       - name: Generated badge check
         shell: bash
         run: |
           python3 scripts/update_readme_badges.py --check
-          python3 -m py_compile scripts/update_readme_badges.py
+          python3 -m py_compile scripts/update_readme_badges.py scripts/check_readme_recipes.py
 
       - name: Markdown lint
         shell: bash
@@ -70,6 +76,9 @@ jobs:
       - name: Skill eval JSON syntax
         run: python3 -m json.tool .agents/skills/readme-catalog-steward/evals/evals.json >/dev/null
 
+      - name: Workflow YAML syntax
+        run: npx -y js-yaml .github/workflows/readme-quality.yml >/dev/null
+
       - name: Whitespace check
         shell: bash
         run: |
@@ -84,6 +93,7 @@ jobs:
             .agents/skills/readme-catalog-steward/evals/evals.json \
             .gitignore \
             .github/workflows/readme-quality.yml \
+            scripts/check_readme_recipes.py \
             scripts/update_readme_badges.py
 
       - name: Badge URL smoke check
