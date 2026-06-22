@@ -39,8 +39,6 @@
 
 ## Start Here
 
-Need a prompt fast? Start here.
-
 Copy These First: [Source-Grounded Answer](#source-grounded-answer) · [Code Review](#code-review) · [JSON Extractor](#json-extractor) · [RAG Answer Contract](#rag-answer-contract) · [Panel Review](#panel-review) · [Prompt Optimizer](#prompt-optimizer)
 
 | Common job | Copy first | Escalate when... |
