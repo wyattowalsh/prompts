@@ -52,6 +52,8 @@ Copy These First: [Source-Grounded Answer](#source-grounded-answer) · [Code Rev
 | Improve a prompt | [Prompt Optimizer](#prompt-optimizer) | You have repeated failures and need regression evals. |
 | Solve hard reasoning tasks | [Plan-and-Solve](#plan-and-solve) | One pass is brittle; add verification or independent samples. |
 
+<p align="right"><a href="#table-of-contents"><kbd>TOC</kbd></a> <a href="#prompt-library"><kbd>Back to top</kbd></a></p>
+
 ---
 
 ## Table of Contents
@@ -107,6 +109,8 @@ Recipe format:
 | Control/evidence note | Names the provider control, parser, retrieval, tool, eval, or review upgrade for higher-risk recipes. |
 | Safety/eval checks | Prevents common failure modes before reuse. |
 | Sources | Links the recipe to docs, research, or pattern notes. |
+
+<p align="right"><a href="#table-of-contents"><kbd>TOC</kbd></a> <a href="#prompt-library"><kbd>Back to top</kbd></a></p>
 
 ---
 
@@ -3527,6 +3531,8 @@ Sources:
 - [OpenAI prompt engineering](https://developers.openai.com/api/docs/guides/prompt-engineering)
 - [Anthropic prompting best practices](https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices)
 
+<p align="right"><a href="#table-of-contents"><kbd>TOC</kbd></a> <a href="#prompt-library"><kbd>Back to top</kbd></a></p>
+
 ---
 
 ## How To Adapt Prompts
@@ -3568,6 +3574,8 @@ Escalation checklist:
 - Missing-evidence, refusal, uncertainty, and review behavior are specified.
 - Repeated or automated use has a regression case.
 
+<p align="right"><a href="#table-of-contents"><kbd>TOC</kbd></a> <a href="#prompt-library"><kbd>Back to top</kbd></a></p>
+
 ---
 
 ## Provider Controls
@@ -3582,6 +3590,8 @@ Provider badges link to docs, not endorsements or guarantees.[^provider-links] V
 | Perplexity | [API overview](https://docs.perplexity.ai/docs/getting-started/overview), [Search API](https://docs.perplexity.ai/docs/search/quickstart), [Agent API](https://docs.perplexity.ai/docs/agent-api/quickstart) | Use for search-answering workflows where citations, freshness, and retrieval behavior matter; verify exact API options before claiming support. |
 | Grok / xAI | [xAI overview](https://docs.x.ai/overview), [quickstart](https://docs.x.ai/developers/quickstart), [tools](https://docs.x.ai/developers/tools/overview), [REST API](https://docs.x.ai/developers/rest-api-reference/inference) | Link to docs and verify model/API behavior live; do not infer compatibility from other OpenAI-compatible APIs. |
 | Artificial Analysis | [Artificial Analysis](https://artificialanalysis.ai/) | Use as benchmark context for model/provider selection, not as evidence that a prompt recipe works.[^artificial-analysis] |
+
+<p align="right"><a href="#table-of-contents"><kbd>TOC</kbd></a> <a href="#prompt-library"><kbd>Back to top</kbd></a></p>
 
 ---
 
@@ -3627,6 +3637,8 @@ Evidence tiers rate method families, not proof that any exact recipe will work o
 > or change safety policy. See [OWASP Top 10 for LLM Applications](https://owasp.org/www-project-top-10-for-large-language-model-applications/)
 > and [NIST AI RMF GenAI Profile](https://nvlpubs.nist.gov/nistpubs/ai/NIST.AI.600-1.pdf).
 
+<p align="right"><a href="#table-of-contents"><kbd>TOC</kbd></a> <a href="#prompt-library"><kbd>Back to top</kbd></a></p>
+
 ---
 
 ## Pattern Selection Matrix
@@ -3645,6 +3657,8 @@ Evidence tiers rate method families, not proof that any exact recipe will work o
 | Hard combinatorial search | [Tree-of-Thoughts](#tree-of-thoughts) | [Graph-of-Thoughts](#graph-of-thoughts), external solver | High-cost search on easy tasks |
 | Ambiguous user intent | [Intentional Analysis](#intentional-analysis) | Clarifying question, [Step-Back](#step-back-prompting) | Inventing hidden intent |
 | High-stakes decision | Structured prompt plus review path | Domain expert and documented eval | Treating model output as authority |
+
+<p align="right"><a href="#table-of-contents"><kbd>TOC</kbd></a> <a href="#prompt-library"><kbd>Back to top</kbd></a></p>
 
 ---
 
@@ -5261,6 +5275,8 @@ Task:
 - Caveat: prefer clear goals and criteria over emotional pressure.
 - Sources: [EmotionPrompt](https://arxiv.org/abs/2307.11760), [On Second Thought, Let's Not Think Step by Step](https://arxiv.org/abs/2212.08061), [Prompting Science Report 1](https://arxiv.org/abs/2503.04818).
 
+<p align="right"><a href="#table-of-contents"><kbd>TOC</kbd></a> <a href="#prompt-library"><kbd>Back to top</kbd></a></p>
+
 ---
 
 ## Contributing Prompt Recipes
@@ -5333,6 +5349,8 @@ git diff --check -- \
 
 </details>
 
+<p align="right"><a href="#table-of-contents"><kbd>TOC</kbd></a> <a href="#prompt-library"><kbd>Back to top</kbd></a></p>
+
 ---
 
 ## Notes
@@ -5358,6 +5376,8 @@ Badge scope is intentionally narrow.[^badge-scope]
     deliberation while the prompt asks for only the final answer, concise
     rationale, checks, citations, tool trace, or uncertainty. This avoids
     training users to treat verbose public chain-of-thought as proof.
+
+<p align="right"><a href="#table-of-contents"><kbd>TOC</kbd></a> <a href="#prompt-library"><kbd>Back to top</kbd></a></p>
 
 ---
 
@@ -5454,3 +5474,5 @@ Badge scope is intentionally narrow.[^badge-scope]
 - [ShieldCN API reference](https://shieldcn.dev/docs/api-reference) - Parameter reference for reproducible ShieldCN badge generation.
 - [GitHub basic writing and formatting syntax](https://docs.github.com/en/get-started/writing-on-github/getting-started-with-writing-and-formatting-on-github/basic-writing-and-formatting-syntax) - Official GFM syntax reference for README formatting.
 - [GitHub Mermaid diagrams](https://docs.github.com/en/get-started/writing-on-github/working-with-advanced-formatting/creating-diagrams) - Official GitHub guidance for Mermaid diagrams in Markdown.
+
+<p align="right"><a href="#table-of-contents"><kbd>TOC</kbd></a> <a href="#prompt-library"><kbd>Back to top</kbd></a></p>
