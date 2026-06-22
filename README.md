@@ -4,8 +4,6 @@
 
 <h1>Prompt Library</h1>
 
-<p>Start zero-shot. Add examples, retrieval, tools, or evals when the job actually needs them.</p>
-
 <!-- BADGES:START -->
 <p align="center">
   <a href="#prompt-library"><img alt="Prompt library: 48 prompts" src="https://shieldcn.dev/badge/48%20Prompts-8CA1AF.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=26&radius=7&padX=10&iconSize=13&variant=default&logo=readthedocs&logoColor=8CA1AF"></a>
