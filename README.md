@@ -35,10 +35,6 @@
 
 </div>
 
-> [!TIP]
-> Copy a recipe first. Add schemas, tools, retrieval, or evals only after a real
-> failure shows you need them.
-
 ---
 
 ## Start Here
