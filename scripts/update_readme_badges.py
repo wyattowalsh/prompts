@@ -92,7 +92,6 @@ CORE_BADGES = [
 PROVIDER_BADGES = [
     {
         "label": "OpenAI",
-        "value": "docs",
         "color": "412991",
         "logo": "ri:SiOpenai",
         "href": "https://developers.openai.com/api/docs/guides/prompt-guidance",
@@ -100,7 +99,6 @@ PROVIDER_BADGES = [
     },
     {
         "label": "Claude",
-        "value": "docs",
         "color": "D97757",
         "logo": "anthropic",
         "logoColor": "D97757",
@@ -109,7 +107,6 @@ PROVIDER_BADGES = [
     },
     {
         "label": "Gemini",
-        "value": "docs",
         "color": "8E75B2",
         "logo": "googlegemini",
         "logoColor": "8E75B2",
@@ -118,7 +115,6 @@ PROVIDER_BADGES = [
     },
     {
         "label": "Perplexity",
-        "value": "docs",
         "color": "1FB8CD",
         "logo": "perplexity",
         "logoColor": "1FB8CD",
@@ -127,7 +123,6 @@ PROVIDER_BADGES = [
     },
     {
         "label": "Grok",
-        "value": "docs",
         "color": "111111",
         "logo": "x",
         "href": "https://docs.x.ai/overview",
@@ -227,6 +222,22 @@ def static_badge_url(badge: dict[str, str], counts: dict[str, int], variant: str
     )
 
 
+def compact_static_badge_url(badge: dict[str, str], counts: dict[str, int], variant: str) -> str:
+    label = badge["label"].format(**counts)
+    params = {
+        **COMMON_STATIC_PARAMS,
+        "split": "false",
+        "variant": variant,
+        "logo": badge["logo"],
+        "logoColor": badge.get("logoColor", "f8fafc"),
+    }
+    return (
+        "https://shieldcn.dev/badge/"
+        f"{quote(label, safe='')}-{badge['color']}.svg?"
+        f"{urlencode(params, safe=':')}"
+    )
+
+
 def dynamic_badge_url(badge: dict[str, object], owner: str, repo: str) -> str:
     params = {
         "variant": "branded",
@@ -273,7 +284,7 @@ def render_badge_block(markdown: str) -> str:
 
     rows.append('<p align="center">')
     for badge in PROVIDER_BADGES:
-        src = static_badge_url(badge, counts, "outline")
+        src = compact_static_badge_url(badge, counts, "default")
         rows.append(image_link(badge["href"], badge["alt"], src, indent="  "))
     rows.append("</p>")
     rows.append("")
