@@ -4,8 +4,6 @@
 
 <h1>Prompt Library</h1>
 
-<p><strong>Copy useful prompts. Add complexity only when it earns its keep.</strong></p>
-
 <p>Start zero-shot. Add examples, retrieval, tools, or evals when the job actually needs them.</p>
 
 <!-- BADGES:START -->
