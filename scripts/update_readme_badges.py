@@ -35,28 +35,23 @@ COMMON_STATIC_PARAMS = {
 
 CORE_BADGES = [
     {
-        "label": "Prompts",
-        "value": "{prompt_count}",
+        "label": "{prompt_count} Prompts",
         "color": "8CA1AF",
         "logo": "readthedocs",
         "logoColor": "8CA1AF",
-        "valueColor": "020617",
         "href": "#prompt-library",
         "alt": "Prompt library: {prompt_count} prompts",
     },
     {
-        "label": "Patterns",
-        "value": "{pattern_count}",
+        "label": "{pattern_count} Patterns",
         "color": "BBDDE5",
         "logo": "gitbook",
         "logoColor": "BBDDE5",
-        "valueColor": "020617",
         "href": "#pattern-notes",
         "alt": "Pattern notes: {pattern_count} techniques",
     },
     {
         "label": "Zero Shot",
-        "value": "first",
         "color": "334155",
         "logo": "ri:RiSparkling2Line",
         "href": "#how-to-adapt-prompts",
@@ -64,7 +59,6 @@ CORE_BADGES = [
     },
     {
         "label": "Evidence",
-        "value": "sources",
         "color": "B31B1B",
         "logo": "arxiv",
         "logoColor": "B31B1B",
@@ -73,7 +67,6 @@ CORE_BADGES = [
     },
     {
         "label": "Safety",
-        "value": "eval gated",
         "color": "111111",
         "logo": "owasp",
         "href": "#safety-evals-and-trust-boundaries",
@@ -81,7 +74,6 @@ CORE_BADGES = [
     },
     {
         "label": "Benchmarks",
-        "value": "Artificial Analysis",
         "color": "111827",
         "logo": "ri:RiBarChartBoxLine",
         "href": "https://artificialanalysis.ai/",
@@ -202,26 +194,6 @@ def count_headings(markdown: str, section: str) -> int:
     return count
 
 
-def static_badge_url(badge: dict[str, str], counts: dict[str, int], variant: str) -> str:
-    label = badge["label"].format(**counts)
-    value = badge["value"].format(**counts)
-    params = {
-        **COMMON_STATIC_PARAMS,
-        "variant": variant,
-        "logo": badge["logo"],
-        "logoColor": badge.get("logoColor", "f8fafc"),
-    }
-    if badge.get("valueColor"):
-        params["valueColor"] = badge["valueColor"]
-    if badge.get("animate"):
-        params["animate"] = badge["animate"]
-    return (
-        "https://shieldcn.dev/badge/"
-        f"{quote(label, safe='')}-{quote(value, safe='')}-{badge['color']}.svg?"
-        f"{urlencode(params, safe=':')}"
-    )
-
-
 def compact_static_badge_url(badge: dict[str, str], counts: dict[str, int], variant: str) -> str:
     label = badge["label"].format(**counts)
     params = {
@@ -277,7 +249,7 @@ def render_badge_block(markdown: str) -> str:
 
     rows.append('<p align="center">')
     for badge in CORE_BADGES:
-        src = static_badge_url(badge, counts, "outline")
+        src = compact_static_badge_url(badge, counts, "default")
         rows.append(image_link(badge["href"], badge["alt"].format(**counts), src, indent="  "))
     rows.append("</p>")
     rows.append("")
