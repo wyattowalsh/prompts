@@ -87,7 +87,7 @@ PROVIDER_BADGES = [
     {
         "label": "OpenAI",
         "color": "412991",
-        "logo": "openai",
+        "logo": "ri:SiOpenai",
         "href": "https://developers.openai.com/api/docs/guides/prompt-guidance",
         "alt": "OpenAI documentation",
     },
