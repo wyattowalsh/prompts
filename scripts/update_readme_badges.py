@@ -87,7 +87,7 @@ PROVIDER_BADGES = [
     {
         "label": "OpenAI",
         "color": "412991",
-        "logo": "ri:SiOpenai",
+        "logo": "openai",
         "href": "https://developers.openai.com/api/docs/guides/prompt-guidance",
         "alt": "OpenAI documentation",
     },
@@ -204,6 +204,21 @@ SHORTCUT_BADGES = [
     },
 ]
 
+NAV_BADGES = [
+    {
+        "label": "TOC",
+        "color": "2563EB",
+        "logo": "ri:RiListCheck",
+        "alt": "Table of contents",
+    },
+    {
+        "label": "Top",
+        "color": "16A34A",
+        "logo": "ri:RiArrowUpLine",
+        "alt": "Back to top",
+    },
+]
+
 
 def repo_slug() -> tuple[str, str]:
     try:
@@ -278,6 +293,23 @@ def dynamic_badge_url(badge: dict[str, object], owner: str, repo: str) -> str:
     )
 
 
+def nav_badge_url(badge: dict[str, str]) -> str:
+    params = {
+        **COMMON_STATIC_PARAMS,
+        "split": "false",
+        "height": "24",
+        "padX": "9",
+        "variant": "default",
+        "logo": badge["logo"],
+        "logoColor": "f8fafc",
+    }
+    return (
+        "https://shieldcn.dev/badge/"
+        f"{quote(badge['label'], safe='')}-{badge['color']}.svg?"
+        f"{urlencode(params, safe=':')}"
+    )
+
+
 def image_link(href: str, alt: str, src: str, indent: str = "    ") -> str:
     return f'{indent}<a href="{href}"><img alt="{alt}" src="{src}"></a>'
 
@@ -334,7 +366,11 @@ def render_shortcut_block() -> str:
 
 def generated_badge_urls(markdown: str) -> list[str]:
     blocks = [render_badge_block(markdown), render_shortcut_block()]
-    return re.findall(r'src="(https://shieldcn\.dev[^"]+)"', "\n".join(blocks))
+    urls = re.findall(r'src="(https://shieldcn\.dev[^"]+)"', "\n".join(blocks))
+    # Nav badges are repeated in the README body, so list each unique URL once
+    # for smoke checks without making the script rewrite every section footer.
+    urls.extend(nav_badge_url(badge) for badge in NAV_BADGES)
+    return urls
 
 
 def replace_marker_block(markdown: str, start: str, end: str, block: str) -> str:

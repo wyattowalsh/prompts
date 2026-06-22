@@ -15,7 +15,7 @@
 </p>
 
 <p align="center">
-  <a href="https://developers.openai.com/api/docs/guides/prompt-guidance"><img alt="OpenAI documentation" src="https://shieldcn.dev/badge/OpenAI-412991.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=26&radius=7&padX=10&iconSize=13&variant=default&logo=ri:SiOpenai&logoColor=f8fafc"></a>
+  <a href="https://developers.openai.com/api/docs/guides/prompt-guidance"><img alt="OpenAI documentation" src="https://shieldcn.dev/badge/OpenAI-412991.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=26&radius=7&padX=10&iconSize=13&variant=default&logo=openai&logoColor=f8fafc"></a>
   <a href="https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices"><img alt="Claude documentation" src="https://shieldcn.dev/badge/Claude-D97757.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=26&radius=7&padX=10&iconSize=13&variant=default&logo=anthropic&logoColor=D97757"></a>
   <a href="https://ai.google.dev/gemini-api/docs/prompting-strategies"><img alt="Gemini documentation" src="https://shieldcn.dev/badge/Gemini-8E75B2.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=26&radius=7&padX=10&iconSize=13&variant=default&logo=googlegemini&logoColor=8E75B2"></a>
   <a href="https://docs.perplexity.ai/docs/getting-started/overview"><img alt="Perplexity documentation" src="https://shieldcn.dev/badge/Perplexity-1FB8CD.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=26&radius=7&padX=10&iconSize=13&variant=default&logo=perplexity&logoColor=1FB8CD"></a>
@@ -50,9 +50,6 @@
 </p>
 <!-- SHORTCUTS:END -->
 
-> [!IMPORTANT]
-> Keep task data inside the named paste zones; add schemas, tools, retrieval, or evals only when the output leaves chat or failures repeat.
-
 | Control lane | Use when | Upgrade interface |
 | --- | --- | --- |
 | <kbd>sources</kbd> | Claims depend on supplied or retrieved text. | Citation check or retrieval eval. |
@@ -71,7 +68,10 @@
 | Improve a prompt | [Prompt Optimizer](#prompt-optimizer) | You have repeated failures and need regression evals. |
 | Solve hard reasoning tasks | [Plan-and-Solve](#plan-and-solve) | One pass is brittle; add verification or independent samples. |
 
-<p align="right"><a href="#table-of-contents"><kbd>TOC</kbd></a> <a href="#prompt-library"><kbd>Back to top</kbd></a></p>
+<p align="right">
+  <a href="#table-of-contents"><img alt="Table of contents" src="https://shieldcn.dev/badge/TOC-2563EB.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiListCheck&logoColor=f8fafc"></a>
+  <a href="#prompt-library"><img alt="Back to top" src="https://shieldcn.dev/badge/Top-16A34A.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiArrowUpLine&logoColor=f8fafc"></a>
+</p>
 
 ---
 
@@ -129,7 +129,10 @@ Recipe format:
 | Safety/eval checks | Prevents common failure modes before reuse. |
 | Sources | Links the recipe to docs, research, or pattern notes. |
 
-<p align="right"><a href="#table-of-contents"><kbd>TOC</kbd></a> <a href="#prompt-library"><kbd>Back to top</kbd></a></p>
+<p align="right">
+  <a href="#table-of-contents"><img alt="Table of contents" src="https://shieldcn.dev/badge/TOC-2563EB.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiListCheck&logoColor=f8fafc"></a>
+  <a href="#prompt-library"><img alt="Back to top" src="https://shieldcn.dev/badge/Top-16A34A.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiArrowUpLine&logoColor=f8fafc"></a>
+</p>
 
 ---
 
@@ -3550,7 +3553,10 @@ Sources:
 - [OpenAI prompt engineering](https://developers.openai.com/api/docs/guides/prompt-engineering)
 - [Anthropic prompting best practices](https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices)
 
-<p align="right"><a href="#table-of-contents"><kbd>TOC</kbd></a> <a href="#prompt-library"><kbd>Back to top</kbd></a></p>
+<p align="right">
+  <a href="#table-of-contents"><img alt="Table of contents" src="https://shieldcn.dev/badge/TOC-2563EB.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiListCheck&logoColor=f8fafc"></a>
+  <a href="#prompt-library"><img alt="Back to top" src="https://shieldcn.dev/badge/Top-16A34A.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiArrowUpLine&logoColor=f8fafc"></a>
+</p>
 
 ---
 
@@ -3593,7 +3599,10 @@ Escalation checklist:
 - Missing-evidence, refusal, uncertainty, and review behavior are specified.
 - Repeated or automated use has a regression case.
 
-<p align="right"><a href="#table-of-contents"><kbd>TOC</kbd></a> <a href="#prompt-library"><kbd>Back to top</kbd></a></p>
+<p align="right">
+  <a href="#table-of-contents"><img alt="Table of contents" src="https://shieldcn.dev/badge/TOC-2563EB.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiListCheck&logoColor=f8fafc"></a>
+  <a href="#prompt-library"><img alt="Back to top" src="https://shieldcn.dev/badge/Top-16A34A.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiArrowUpLine&logoColor=f8fafc"></a>
+</p>
 
 ---
 
@@ -3610,7 +3619,10 @@ Provider badges link to docs, not endorsements or guarantees.[^provider-links] V
 | Grok / xAI | [xAI overview](https://docs.x.ai/overview), [quickstart](https://docs.x.ai/developers/quickstart), [tools](https://docs.x.ai/developers/tools/overview), [REST API](https://docs.x.ai/developers/rest-api-reference/inference) | Link to docs and verify model/API behavior live; do not infer compatibility from other OpenAI-compatible APIs. |
 | Artificial Analysis | [Artificial Analysis](https://artificialanalysis.ai/) | Use as benchmark context for model/provider selection, not as evidence that a prompt recipe works.[^artificial-analysis] |
 
-<p align="right"><a href="#table-of-contents"><kbd>TOC</kbd></a> <a href="#prompt-library"><kbd>Back to top</kbd></a></p>
+<p align="right">
+  <a href="#table-of-contents"><img alt="Table of contents" src="https://shieldcn.dev/badge/TOC-2563EB.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiListCheck&logoColor=f8fafc"></a>
+  <a href="#prompt-library"><img alt="Back to top" src="https://shieldcn.dev/badge/Top-16A34A.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiArrowUpLine&logoColor=f8fafc"></a>
+</p>
 
 ---
 
@@ -3656,7 +3668,10 @@ Evidence tiers rate method families, not proof that any exact recipe will work o
 > or change safety policy. See [OWASP Top 10 for LLM Applications](https://owasp.org/www-project-top-10-for-large-language-model-applications/)
 > and [NIST AI RMF GenAI Profile](https://nvlpubs.nist.gov/nistpubs/ai/NIST.AI.600-1.pdf).
 
-<p align="right"><a href="#table-of-contents"><kbd>TOC</kbd></a> <a href="#prompt-library"><kbd>Back to top</kbd></a></p>
+<p align="right">
+  <a href="#table-of-contents"><img alt="Table of contents" src="https://shieldcn.dev/badge/TOC-2563EB.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiListCheck&logoColor=f8fafc"></a>
+  <a href="#prompt-library"><img alt="Back to top" src="https://shieldcn.dev/badge/Top-16A34A.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiArrowUpLine&logoColor=f8fafc"></a>
+</p>
 
 ---
 
@@ -3677,7 +3692,10 @@ Evidence tiers rate method families, not proof that any exact recipe will work o
 | Ambiguous user intent | [Intentional Analysis](#intentional-analysis) | Clarifying question, [Step-Back](#step-back-prompting) | Inventing hidden intent |
 | High-stakes decision | Structured prompt plus review path | Domain expert and documented eval | Treating model output as authority |
 
-<p align="right"><a href="#table-of-contents"><kbd>TOC</kbd></a> <a href="#prompt-library"><kbd>Back to top</kbd></a></p>
+<p align="right">
+  <a href="#table-of-contents"><img alt="Table of contents" src="https://shieldcn.dev/badge/TOC-2563EB.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiListCheck&logoColor=f8fafc"></a>
+  <a href="#prompt-library"><img alt="Back to top" src="https://shieldcn.dev/badge/Top-16A34A.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiArrowUpLine&logoColor=f8fafc"></a>
+</p>
 
 ---
 
@@ -5294,7 +5312,10 @@ Task:
 - Caveat: prefer clear goals and criteria over emotional pressure.
 - Sources: [EmotionPrompt](https://arxiv.org/abs/2307.11760), [On Second Thought, Let's Not Think Step by Step](https://arxiv.org/abs/2212.08061), [Prompting Science Report 1](https://arxiv.org/abs/2503.04818).
 
-<p align="right"><a href="#table-of-contents"><kbd>TOC</kbd></a> <a href="#prompt-library"><kbd>Back to top</kbd></a></p>
+<p align="right">
+  <a href="#table-of-contents"><img alt="Table of contents" src="https://shieldcn.dev/badge/TOC-2563EB.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiListCheck&logoColor=f8fafc"></a>
+  <a href="#prompt-library"><img alt="Back to top" src="https://shieldcn.dev/badge/Top-16A34A.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiArrowUpLine&logoColor=f8fafc"></a>
+</p>
 
 ---
 
@@ -5368,7 +5389,10 @@ git diff --check -- \
 
 </details>
 
-<p align="right"><a href="#table-of-contents"><kbd>TOC</kbd></a> <a href="#prompt-library"><kbd>Back to top</kbd></a></p>
+<p align="right">
+  <a href="#table-of-contents"><img alt="Table of contents" src="https://shieldcn.dev/badge/TOC-2563EB.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiListCheck&logoColor=f8fafc"></a>
+  <a href="#prompt-library"><img alt="Back to top" src="https://shieldcn.dev/badge/Top-16A34A.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiArrowUpLine&logoColor=f8fafc"></a>
+</p>
 
 ---
 
@@ -5396,7 +5420,10 @@ Badge scope is intentionally narrow.[^badge-scope]
     rationale, checks, citations, tool trace, or uncertainty. This avoids
     training users to treat verbose public chain-of-thought as proof.
 
-<p align="right"><a href="#table-of-contents"><kbd>TOC</kbd></a> <a href="#prompt-library"><kbd>Back to top</kbd></a></p>
+<p align="right">
+  <a href="#table-of-contents"><img alt="Table of contents" src="https://shieldcn.dev/badge/TOC-2563EB.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiListCheck&logoColor=f8fafc"></a>
+  <a href="#prompt-library"><img alt="Back to top" src="https://shieldcn.dev/badge/Top-16A34A.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiArrowUpLine&logoColor=f8fafc"></a>
+</p>
 
 ---
 
@@ -5494,4 +5521,7 @@ Badge scope is intentionally narrow.[^badge-scope]
 - [GitHub basic writing and formatting syntax](https://docs.github.com/en/get-started/writing-on-github/getting-started-with-writing-and-formatting-on-github/basic-writing-and-formatting-syntax) - Official GFM syntax reference for README formatting.
 - [GitHub Mermaid diagrams](https://docs.github.com/en/get-started/writing-on-github/working-with-advanced-formatting/creating-diagrams) - Official GitHub guidance for Mermaid diagrams in Markdown.
 
-<p align="right"><a href="#table-of-contents"><kbd>TOC</kbd></a> <a href="#prompt-library"><kbd>Back to top</kbd></a></p>
+<p align="right">
+  <a href="#table-of-contents"><img alt="Table of contents" src="https://shieldcn.dev/badge/TOC-2563EB.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiListCheck&logoColor=f8fafc"></a>
+  <a href="#prompt-library"><img alt="Back to top" src="https://shieldcn.dev/badge/Top-16A34A.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiArrowUpLine&logoColor=f8fafc"></a>
+</p>
