@@ -100,6 +100,19 @@
 - [Notes](#notes)
 - [Bibliography](#bibliography)
 
+### Prompt Index
+
+| Lane | Linked prompts |
+| --- | --- |
+| Research | <kbd>01</kbd> [Source-Grounded Answer](#source-grounded-answer) · <kbd>02</kbd> [Web Research Brief](#web-research-brief) · <kbd>03</kbd> [Literature Scan](#literature-scan) · <kbd>04</kbd> [Claim Checker](#claim-checker) · <kbd>05</kbd> [Citation Matrix](#citation-matrix) · <kbd>06</kbd> [Disagreement Map](#disagreement-map) |
+| Writing | <kbd>07</kbd> [Executive Brief](#executive-brief) · <kbd>08</kbd> [Rewrite With Constraints](#rewrite-with-constraints) · <kbd>09</kbd> [Style Transfer Without Examples](#style-transfer-without-examples) · <kbd>10</kbd> [Dense Summary](#dense-summary) · <kbd>11</kbd> [FAQ Generator](#faq-generator) · <kbd>12</kbd> [Newsletter Draft](#newsletter-draft) |
+| Coding | <kbd>13</kbd> [Code Review](#code-review) · <kbd>14</kbd> [Bug RCA](#bug-rca) · <kbd>15</kbd> [Unit Test Writer](#unit-test-writer) · <kbd>16</kbd> [Refactor Planner](#refactor-planner) · <kbd>17</kbd> [PR Description](#pr-description) · <kbd>18</kbd> [API Contract Explainer](#api-contract-explainer) |
+| Data | <kbd>19</kbd> [JSON Extractor](#json-extractor) · <kbd>20</kbd> [Table Normalizer](#table-normalizer) · <kbd>21</kbd> [Classifier](#classifier) · <kbd>22</kbd> [NER Extractor](#ner-extractor) · <kbd>23</kbd> [Sentiment Triage](#sentiment-triage) · <kbd>24</kbd> [Synthetic Edge Cases](#synthetic-edge-cases) |
+| Product | <kbd>25</kbd> [PRD Drafter](#prd-drafter) · <kbd>26</kbd> [User Story Splitter](#user-story-splitter) · <kbd>27</kbd> [Acceptance Criteria Writer](#acceptance-criteria-writer) · <kbd>28</kbd> [Launch Checklist](#launch-checklist) · <kbd>29</kbd> [UX Review](#ux-review) · <kbd>30</kbd> [Support Macro](#support-macro) |
+| Operations | <kbd>31</kbd> [Incident Summary](#incident-summary) · <kbd>32</kbd> [Runbook Generator](#runbook-generator) · <kbd>33</kbd> [Log Triage](#log-triage) · <kbd>34</kbd> [Risk Register](#risk-register) · <kbd>35</kbd> [Decision Memo](#decision-memo) · <kbd>36</kbd> [Meeting Action Extractor](#meeting-action-extractor) |
+| Agent and tool workflows | <kbd>37</kbd> [Tool-Use Planner](#tool-use-planner) · <kbd>38</kbd> [RAG Answer Contract](#rag-answer-contract) · <kbd>39</kbd> [Prompt-Injection Scanner](#prompt-injection-scanner) · <kbd>40</kbd> [Eval-Set Generator](#eval-set-generator) · <kbd>41</kbd> [Regression Judge](#regression-judge) · <kbd>42</kbd> [Prompt Optimizer](#prompt-optimizer) |
+| Reasoning | <kbd>43</kbd> [Plan-and-Solve](#plan-and-solve) · <kbd>44</kbd> [Step-Back Answer](#step-back-answer) · <kbd>45</kbd> [Verification Pass](#verification-pass) · <kbd>46</kbd> [Self-Refine Pass](#self-refine-pass) · <kbd>47</kbd> [Panel Review](#panel-review) · <kbd>48</kbd> [Tradeoff Matrix](#tradeoff-matrix) |
+
 <details>
 <summary><strong>Browse all 48 recipes by job</strong></summary>
 
