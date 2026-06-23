@@ -204,9 +204,12 @@ def field_positions(recipe: Recipe) -> dict[str, int]:
     for index, line in enumerate(recipe.lines):
         if fence[index]:
             continue
-        if line in REQUIRED_FIELDS:
-            positions[line] = index
-        elif line.startswith("Use for:"):
+        visible_or_hidden = line
+        if line.startswith("<!--") and line.endswith("-->"):
+            visible_or_hidden = line[4:-3].strip()
+        if visible_or_hidden in REQUIRED_FIELDS:
+            positions[visible_or_hidden] = index
+        elif visible_or_hidden.startswith("Use for:"):
             positions["Use for:"] = index
     return positions
 
