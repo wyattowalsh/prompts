@@ -198,18 +198,30 @@ def control_note_sentence_count(note_body: str) -> int:
     return len(SENTENCE_TERMINATOR_RE.findall(text))
 
 
-def field_positions(recipe: Recipe) -> dict[str, int]:
+def field_positions(recipe: Recipe, errors: list[Diagnostic]) -> dict[str, int]:
     positions: dict[str, int] = {}
     fence = in_fence_by_line(recipe.lines)
     for index, line in enumerate(recipe.lines):
         if fence[index]:
             continue
-        visible_or_hidden = line
+        if line == "<!-- Copy prompt: -->":
+            positions["Copy prompt:"] = index
+            continue
         if line.startswith("<!--") and line.endswith("-->"):
-            visible_or_hidden = line[4:-3].strip()
-        if visible_or_hidden in REQUIRED_FIELDS:
-            positions[visible_or_hidden] = index
-        elif visible_or_hidden.startswith("Use for:"):
+            hidden_field = line[4:-3].strip()
+            if hidden_field in REQUIRED_FIELDS or hidden_field.startswith("Use for:"):
+                errors.append(
+                    Diagnostic(
+                        "HIDDEN_REQUIRED_FIELD",
+                        "Only Copy prompt may be hidden as an HTML comment.",
+                        recipe.line + index,
+                        recipe.name,
+                    )
+                )
+            continue
+        if line in REQUIRED_FIELDS:
+            positions[line] = index
+        elif line.startswith("Use for:"):
             positions["Use for:"] = index
     return positions
 
@@ -250,7 +262,7 @@ def fill_entries(recipe: Recipe, positions: dict[str, int]) -> dict[str, tuple[s
 
 
 def validate_recipe(recipe: Recipe, errors: list[Diagnostic], warnings: list[Diagnostic]) -> dict[str, object]:
-    positions = field_positions(recipe)
+    positions = field_positions(recipe, errors)
     for field in REQUIRED_FIELDS:
         if field not in positions:
             errors.append(Diagnostic("MISSING_FIELD", f"Missing recipe field {field}", recipe.line, recipe.name))
@@ -420,6 +432,7 @@ def run(readme: Path) -> dict[str, object]:
         "checked_rules": [
             "recipe_count",
             "required_fields",
+            "copy_prompt_hidden_only",
             "text_prompt_blocks",
             "paste_zones",
             "placeholder_fill_entries",
