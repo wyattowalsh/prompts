@@ -255,6 +255,15 @@ class RecipePasteZoneRulesTest(unittest.TestCase):
         codes = {error.code for error in errors}
         self.assertIn("RECIPE_PASTE_ZONE_VALUE_LENGTH", codes)
 
+    def test_per_recipe_before_copy_tip_fails(self) -> None:
+        table = _sample_paste_zone_table()
+        lines = _sample_recipe_lines(table)
+        lines.insert(2, "> [!TIP]")
+        lines.insert(3, "> **Before you copy:** use the paste zones table; for optional placeholders, paste `none` if unused.")
+        errors = checker.collect_recipe_validation_errors("Source-Grounded Answer", lines)
+        codes = {error.code for error in errors}
+        self.assertIn("DUPLICATE_COPY_TIP", codes)
+
 
 if __name__ == "__main__":
     unittest.main()

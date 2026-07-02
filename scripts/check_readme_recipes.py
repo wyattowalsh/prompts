@@ -61,6 +61,10 @@ BULLET_FILL_PATTERN = re.compile(r"^- `\{([^}]+)\}` \((required|optional)\):")
 FILL_CANONICAL_POINTER = (
     "Match the **Paste zones** table above; paste `none` for optional zones you omit."
 )
+PER_RECIPE_COPY_TIP_LINE_RE = re.compile(
+    r"Before you copy:.*paste zones table",
+    re.IGNORECASE,
+)
 RECIPE_PASTE_ZONE_META_VALUE_PATTERNS = [
     re.compile(pattern, re.IGNORECASE)
     for pattern in [
@@ -350,6 +354,7 @@ def collect_recipe_validation_errors(
     fill = paste_zone_fill_entries(recipe, positions)
     validate_recipe_paste_zone_table(recipe, positions, fill, errors)
     validate_paste_preview_visibility(recipe, positions, errors)
+    validate_no_per_recipe_copy_tip(recipe, errors)
     validate_fill_these_in_compact(recipe, positions, errors)
     return errors
 
@@ -601,6 +606,21 @@ def validate_paste_preview_visibility(recipe: Recipe, positions: dict[str, int],
         )
 
 
+def validate_no_per_recipe_copy_tip(recipe: Recipe, errors: list[Diagnostic]) -> None:
+    for offset, line in enumerate(recipe.lines):
+        if PER_RECIPE_COPY_TIP_LINE_RE.search(line):
+            errors.append(
+                Diagnostic(
+                    "DUPLICATE_COPY_TIP",
+                    "Per-recipe Before you copy tip is duplicated; keep one section-level tip only.",
+                    recipe.line + offset,
+                    recipe.name,
+                    hint="Remove the recipe callout; document paste zones once under Recipe format.",
+                )
+            )
+            return
+
+
 def validate_fill_these_in_compact(recipe: Recipe, positions: dict[str, int], errors: list[Diagnostic]) -> None:
     if "Fill these in:" not in positions:
         return
@@ -666,6 +686,7 @@ def validate_recipe(recipe: Recipe, errors: list[Diagnostic], warnings: list[Dia
     fill = fill_entries(recipe, positions)
     validate_recipe_paste_zone_table(recipe, positions, fill, errors)
     validate_paste_preview_visibility(recipe, positions, errors)
+    validate_no_per_recipe_copy_tip(recipe, errors)
     validate_fill_these_in_compact(recipe, positions, errors)
     prompt_text = "\n".join("\n".join(block[2]) for block in blocks)
     placeholders = set(re.findall(r"\{([A-Za-z0-9_]+)\}", prompt_text))
@@ -874,10 +895,12 @@ def validate_recipe_map(lines: list[str], recipes: list[Recipe], errors: list[Di
         return 0
     map_text = match.group(1)
     links = re.findall(r"\(#([^)]+)\)", map_text)
+    links.extend(re.findall(r'href="#([^"]+)"', map_text))
     used: dict[str, int] = {}
     expected = {github_anchor(recipe.name, used): recipe.name for recipe in recipes}
-    unique_links = set(links)
-    if len(links) != 48 or len(unique_links) != 48:
+    recipe_links = [link for link in links if link in expected]
+    unique_links = set(recipe_links)
+    if len(recipe_links) != 48 or len(unique_links) != 48:
         errors.append(Diagnostic("RECIPE_MAP_COUNT", "Collapsed recipe map must contain 48 unique links.", 1))
     missing = sorted(set(expected) - unique_links)
     extra = sorted(unique_links - set(expected))
@@ -885,7 +908,7 @@ def validate_recipe_map(lines: list[str], recipes: list[Recipe], errors: list[Di
         errors.append(Diagnostic("RECIPE_MAP_MISSING", f"Recipe map missing link to #{anchor}.", 1, expected.get(anchor)))
     for anchor in extra:
         errors.append(Diagnostic("RECIPE_MAP_EXTRA", f"Recipe map links to non-recipe anchor #{anchor}.", 1))
-    return len(links)
+    return len(recipe_links)
 
 
 def run(readme: Path) -> dict[str, object]:
@@ -944,6 +967,7 @@ def run(readme: Path) -> dict[str, object]:
             "recipe_paste_zone_value_length",
             "recipe_paste_zone_placeholder_coverage",
             "recipe_paste_preview_visibility",
+            "no_per_recipe_copy_tip",
             "fill_these_in_compact",
             "control_evidence_notes",
             "control_note_sentence",

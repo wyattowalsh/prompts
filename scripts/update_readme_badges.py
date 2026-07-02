@@ -521,6 +521,7 @@ def render_recipe_heading(badge: dict[str, str]) -> str:
     return (
         f'<h4 id="{badge["slug"]}">\n'
         f'  <img src="{src}" alt="{name}" title="{name}" height="28" '
+        f'loading="lazy" decoding="async" '
         f'style="vertical-align:text-bottom;margin-right:0.35em;" />\n'
         f'  {name}\n'
         f"</h4>"
@@ -668,6 +669,14 @@ def image_link(href: str, alt: str, src: str, indent: str = "    ") -> str:
     return f'{indent}<a href="{href}"><img alt="{alt}" src="{src}"></a>'
 
 
+def format_job_map_recipe_links(recipes_md: str) -> str:
+    """Render recipe links as HTML anchors for GitHub table cells."""
+    links = re.findall(r"\[([^\]]+)\]\(#([^)]+)\)", recipes_md)
+    if not links:
+        return recipes_md
+    return " · ".join(f'<a href="#{slug}">{label}</a>' for label, slug in links)
+
+
 def render_badge_block(markdown: str) -> str:
     prompt_count = count_headings(markdown, "Prompt Library")
     pattern_count = count_headings(markdown, "Pattern Notes")
@@ -724,7 +733,7 @@ def render_job_map_block() -> str:
                 f'    <td style="background-color:{entry["row_bg"]};border-left:4px solid {entry["row_accent"]};vertical-align:top;width:190px">',
                 f"      {badge_link.strip()}",
                 "    </td>",
-                f'    <td style="vertical-align:top">{entry["recipes"]}</td>',
+                f'    <td style="vertical-align:top">{format_job_map_recipe_links(entry["recipes"])}</td>',
                 "  </tr>",
             ]
         )

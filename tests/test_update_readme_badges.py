@@ -108,8 +108,16 @@ class RenderRecipeHeadingTest(unittest.TestCase):
         self.assertIn(f'title="{badge["name"]}"', rendered)
         self.assertIn(f'alt="{badge["name"]}"', rendered)
         self.assertIn(f'src="{expected_src}"', rendered)
+        self.assertIn('loading="lazy"', rendered)
         self.assertIn(badge["name"], rendered)
         self.assertNotIn(f"{badge['name']}-{badge['color']}.svg", rendered)
+
+
+class RenderJobMapBlockTest(unittest.TestCase):
+    def test_render_job_map_block_uses_html_recipe_links(self) -> None:
+        block = badges.render_job_map_block()
+        self.assertIn('<a href="#source-grounded-answer">Source-Grounded Answer</a>', block)
+        self.assertNotIn("[Source-Grounded Answer](#source-grounded-answer)", block)
 
 
 class ApplyRecipeHeadingBadgesTest(unittest.TestCase):
