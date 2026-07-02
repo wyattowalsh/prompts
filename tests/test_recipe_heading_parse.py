@@ -87,7 +87,7 @@ class ParseRecipesHeadingIntegrationTest(unittest.TestCase):
         self.assertEqual(recipes[0].category, "Fixture Category")
         self.assertEqual(recipes[1].category, "Fixture Category")
 
-    def test_parse_recipes_skips_malformed_h4(self) -> None:
+    def test_parse_recipes_reports_malformed_h4_unclosed(self) -> None:
         lines = _mini_prompt_library(
             _html_recipe_heading(slug="good-recipe", name="Good Recipe"),
             [
@@ -98,7 +98,40 @@ class ParseRecipesHeadingIntegrationTest(unittest.TestCase):
         )
         errors: list[checker.Diagnostic] = []
         recipes = checker.parse_recipes(lines, errors)
-        self.assertEqual(errors, [])
+        self.assertEqual(len(errors), 1)
+        self.assertEqual(errors[0].code, "MALFORMED_RECIPE_HEADING")
+        self.assertEqual(errors[0].line, lines.index('<h4 id="broken-recipe">') + 1)
+        self.assertEqual(len(recipes), 1)
+        self.assertEqual(recipes[0].name, "Good Recipe")
+
+    def test_malformed_h4_missing_close_tag(self) -> None:
+        lines = _mini_prompt_library(
+            [
+                '<h4 id="broken-recipe">',
+                '  <img src="https://shieldcn.dev/badge/-2563EB.svg" alt="Broken Recipe" title="Broken Recipe" />',
+                "  Broken Recipe",
+            ],
+        )
+        errors: list[checker.Diagnostic] = []
+        recipes = checker.parse_recipes(lines, errors)
+        self.assertEqual(len(errors), 1)
+        self.assertEqual(errors[0].code, "MALFORMED_RECIPE_HEADING")
+        self.assertEqual(len(recipes), 0)
+
+    def test_malformed_h4_missing_title_after_img(self) -> None:
+        lines = _mini_prompt_library(
+            _html_recipe_heading(slug="good-recipe", name="Good Recipe"),
+            [
+                '<h4 id="no-img-recipe">',
+                "  Plain text without icon img",
+                "</h4>",
+            ],
+        )
+        errors: list[checker.Diagnostic] = []
+        recipes = checker.parse_recipes(lines, errors)
+        self.assertEqual(len(errors), 1)
+        self.assertEqual(errors[0].code, "MALFORMED_RECIPE_HEADING")
+        self.assertEqual(errors[0].line, lines.index('<h4 id="no-img-recipe">') + 1)
         self.assertEqual(len(recipes), 1)
         self.assertEqual(recipes[0].name, "Good Recipe")
 

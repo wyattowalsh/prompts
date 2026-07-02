@@ -138,6 +138,7 @@ SVG responses where applicable.
 
 Keep GitHub Actions focused on deterministic README quality:
 
+- CI pins Python 3.13 via `actions/setup-python@v5`.
 - markdown lint
 - link validation
 - generated badge drift checks

@@ -98,6 +98,18 @@ def parse_recipe_heading_name(line: str, lines: list[str], index: int) -> tuple[
     return name, block_end + 1
 
 
+def skip_malformed_h4_block(lines: list[str], start: int, section_end: int) -> int:
+    index = start + 1
+    while index < section_end:
+        line = lines[index]
+        if "</h4>" in line:
+            return index + 1
+        if line.startswith("### ") or line.startswith("## "):
+            return index
+        index += 1
+    return section_end
+
+
 @dataclass(frozen=True)
 class Diagnostic:
     code: str
@@ -191,6 +203,23 @@ def parse_recipes(lines: list[str], errors: list[Diagnostic]) -> list[Recipe]:
         if line.startswith("### "):
             category = line[4:].strip()
             index += 1
+            continue
+        if RECIPE_H4_OPEN_RE.match(line):
+            parsed = parse_recipe_heading_name(line, lines, index)
+            if parsed is None:
+                errors.append(
+                    Diagnostic(
+                        "MALFORMED_RECIPE_HEADING",
+                        "Recipe heading block could not be parsed (unclosed </h4> or missing title after <img>).",
+                        index + 1,
+                        hint="Regenerate with scripts/update_readme_badges.py or fix the <h4> block.",
+                    )
+                )
+                index = skip_malformed_h4_block(lines, index, end)
+                continue
+            name, next_index = parsed
+            headings.append((index, name, category))
+            index = next_index
             continue
         parsed = parse_recipe_heading_name(line, lines, index)
         if parsed is not None:

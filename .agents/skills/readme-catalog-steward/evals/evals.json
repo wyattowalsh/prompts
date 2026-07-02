@@ -130,16 +130,34 @@
       ]
     },
     {
+      "id": "explicit-validate",
+      "prompt": "/readme-catalog-steward validate",
+      "expected_output": "Runs or cites the AGENTS validation block and reports exact failures without editing files.",
+      "expected_behavior": [
+        "Reads AGENTS.md Validation section or lists equivalent commands.",
+        "Runs or instructs recipe check, paste-zone audit, unittest discover, badge --check, markdown lint, and link check.",
+        "Reports failures verbatim with command output or error codes.",
+        "Does not edit README, scripts, skill files, or workflow."
+      ],
+      "assertions": [
+        "Mentions validate mode or AGENTS validation block.",
+        "Cites at least two concrete validation commands from the block.",
+        "Does not claim files were edited or fixes applied."
+      ]
+    },
+    {
       "id": "empty-help",
       "prompt": "/readme-catalog-steward",
       "expected_output": "A mode menu with examples and the initial repository reads required before ambiguous work.",
       "expected_behavior": [
-        "Shows available modes.",
+        "Shows available modes in SKILL.md dispatch-table order.",
+        "Lists validate as a distinct mode for running the AGENTS validation block.",
         "Reads or instructs the agent to read AGENTS.md, README.md, and git status.",
         "Asks only if intent remains ambiguous."
       ],
       "assertions": [
-        "Includes audit, refresh-sources, add-card, revise-card, safety-pass, gfm-pass, badge-pass, eval-pass, and validate.",
+        "Lists modes in dispatch-table order: audit, refresh-sources, add-card, revise-card, safety-pass, gfm-pass, badge-pass, eval-pass, validate.",
+        "Mentions validate as a distinct validation mode separate from eval-pass.",
         "Does not start a full README rewrite without user intent."
       ]
     },
