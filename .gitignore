@@ -107,3 +107,9 @@ $RECYCLE.BIN/
 
 # Read-only audit workspace artifacts (orchestrated review swarm scratch space)
 .audit/
+
+# Filled-example render proof artifacts
+.audit/filled-examples/proof/*.png
+
+# Python bytecode
+__pycache__/

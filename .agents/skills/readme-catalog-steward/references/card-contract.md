@@ -40,6 +40,32 @@ Run the canonical validation block in
 linter enforces required recipe fields plus Prompt Index and Section Map link
 completeness.
 
+## Filled Example Blocks
+
+Eight high-traffic recipes include one collapsed `<details>` block titled
+**Filled example**. These blocks are documentation walkthroughs — paste zones and
+illustrative sample output for the copy prompt above. They are **not** in-prompt
+few-shot unless `Upgrade when` explicitly directs adding examples to the prompt.
+
+Each block must include:
+
+- a `[!NOTE]` walkthrough disclaimer (`Walkthrough only.`)
+- **filled paste zones** with a four-column table:
+  `Placeholder | Req | Example value | Notes`
+- optional **paste preview** blockquotes for multi-line zones (diffs, memos,
+  schemas, logs, retrieved sources)
+- **expected output shape** with a two-column table:
+  `Output field | Example` aligned to the recipe output contract
+- **what to change for your case** with one adaptation bullet (mention evals
+  when the workflow is reusable)
+
+Do not use `####` headings or fenced ` ```text ` blocks inside filled examples.
+Do not instruct readers to paste sample output into the prompt. Use literal paste
+values in the input table; reserve meta-descriptions for the Notes column.
+
+`scripts/check_readme_recipes.py` enforces filled-example structure on the eight
+target recipes only.
+
 ## Template Hygiene
 
 Templates should clearly separate:

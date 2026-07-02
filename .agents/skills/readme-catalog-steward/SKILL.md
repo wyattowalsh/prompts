@@ -76,7 +76,7 @@ Use the smallest useful context set:
 
 | Mode | Load |
 | --- | --- |
-| `audit`, `add-card`, `revise-card` | `references/card-contract.md` |
+| `audit`, `add-card`, `revise-card`, filled-example work | `references/card-contract.md` (see Filled Example Blocks) |
 | `refresh-sources` | `references/source-policy.md` |
 | `safety-pass`, `gfm-pass`, `eval-pass` | Relevant README section plus the matching reference |
 | Broad or multi-lane work | `references/orchestration.md` after the first local read |
@@ -88,7 +88,7 @@ Load references selectively; do not load all of them for focused edits.
 
 | File | Content | Read When |
 | --- | --- | --- |
-| `references/card-contract.md` | Recipe and pattern fields, template hygiene, evidence tiers, and chain-of-thought restrictions | Adding or revising prompt recipes or pattern notes |
+| `references/card-contract.md` | Recipe and pattern fields, filled-example walkthrough contract, template hygiene, evidence tiers, and chain-of-thought restrictions | Adding or revising prompt recipes, pattern notes, or filled examples |
 | `references/source-policy.md` | Source hierarchy, `llms.txt` lookup, provider links, freshness, and stale-claim handling | Refreshing sources or checking current claims |
 | `references/orchestration.md` | Parallel lanes, same-file serialization, review gates, and validation loop | Medium or broad README work |
 
@@ -117,7 +117,8 @@ Load references selectively; do not load all of them for focused edits.
    repo files or official sources support the claim.
 11. Use clickable Markdown or HTML links for every cited source and resource.
 12. Keep critical safety warnings visible, not hidden only inside collapses.
-13. Run validation before claiming completion, or report the exact blocker.
+13. For the eight filled-example recipes, enforce the walkthrough contract in `references/card-contract.md` and `scripts/check_readme_recipes.py --fixtures`.
+14. Run validation before claiming completion, or report the exact blocker.
 
 ## Canonical Vocabulary
 

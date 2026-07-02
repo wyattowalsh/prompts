@@ -1,0 +1,163 @@
+{
+  "cases": [
+    {
+      "id": "RF-NEG-01",
+      "recipe": "Source-Grounded Answer",
+      "details_file": "cases/RF-NEG-01.md",
+      "fill": [
+        "question",
+        "trusted_context"
+      ],
+      "expect_codes": [
+        "FILLED_EXAMPLE_DISCLAIMER"
+      ]
+    },
+    {
+      "id": "RF-NEG-02",
+      "recipe": "Source-Grounded Answer",
+      "details_file": "cases/RF-NEG-02.md",
+      "fill": [
+        "question",
+        "trusted_context"
+      ],
+      "expect_codes": [
+        "FILLED_EXAMPLE_DISCLAIMER"
+      ]
+    },
+    {
+      "id": "RF-NEG-03",
+      "recipe": "Source-Grounded Answer",
+      "details_file": "cases/RF-NEG-03.md",
+      "fill": [
+        "question",
+        "trusted_context"
+      ],
+      "expect_codes": [
+        "FILLED_EXAMPLE_INPUT_ROWS",
+        "FILLED_EXAMPLE_INPUT_TABLE"
+      ]
+    },
+    {
+      "id": "RF-NEG-04",
+      "recipe": "Source-Grounded Answer",
+      "details_file": "cases/RF-NEG-04.md",
+      "fill": [
+        "question",
+        "trusted_context"
+      ],
+      "expect_codes": [
+        "FILLED_EXAMPLE_OUTPUT_TABLE",
+        "FILLED_EXAMPLE_OUTPUT_ROWS",
+        "FILLED_EXAMPLE_OUTPUT_ALIGN"
+      ]
+    },
+    {
+      "id": "RF-NEG-05",
+      "recipe": "Code Review",
+      "details_file": "cases/RF-NEG-05.md",
+      "fill": [
+        "code_diff"
+      ],
+      "expect_codes": [
+        "FILLED_EXAMPLE_META",
+        "FILLED_EXAMPLE_OUTPUT_ALIGN",
+        "FILLED_EXAMPLE_PLACEHOLDER_COVERAGE"
+      ]
+    },
+    {
+      "id": "RF-NEG-06",
+      "recipe": "Source-Grounded Answer",
+      "details_file": "cases/RF-NEG-06.md",
+      "fill": [
+        "question",
+        "trusted_context"
+      ],
+      "expect_codes": [
+        "FILLED_EXAMPLE_OUTPUT_PASTE"
+      ]
+    },
+    {
+      "id": "RF-NEG-07",
+      "recipe": "Source-Grounded Answer",
+      "details_file": "cases/RF-NEG-07.md",
+      "fill": [
+        "question",
+        "trusted_context",
+        "answer_constraints"
+      ],
+      "expect_codes": [
+        "FILLED_EXAMPLE_PLACEHOLDER_COVERAGE"
+      ]
+    },
+    {
+      "id": "RF-NEG-08",
+      "recipe": "Source-Grounded Answer",
+      "details_file": "cases/RF-NEG-08.md",
+      "fill": [
+        "question",
+        "trusted_context"
+      ],
+      "expect_codes": [
+        "FILLED_EXAMPLE_OUTPUT_ALIGN"
+      ]
+    },
+    {
+      "id": "RF-NEG-09",
+      "recipe": "Source-Grounded Answer",
+      "details_file": "cases/RF-NEG-09.md",
+      "fill": [
+        "question",
+        "trusted_context"
+      ],
+      "expect_codes": [
+        "FILLED_EXAMPLE_FORMAT"
+      ]
+    },
+    {
+      "id": "RF-NEG-10",
+      "recipe": "Source-Grounded Answer",
+      "details_file": "cases/RF-NEG-10.md",
+      "fill": [
+        "question",
+        "trusted_context"
+      ],
+      "expect_codes": [
+        "FILLED_EXAMPLE_FORMAT"
+      ]
+    },
+    {
+      "id": "RF-NEG-11",
+      "recipe": "Code Review",
+      "details_file": "cases/RF-NEG-11.md",
+      "fill": [
+        "code_diff"
+      ],
+      "expect_codes": [
+        "FILLED_EXAMPLE_OUTPUT_ALIGN",
+        "FILLED_EXAMPLE_OUTPUT_ROWS"
+      ]
+    },
+    {
+      "id": "RF-NEG-12",
+      "recipe": "Source-Grounded Answer",
+      "details_file": "cases/RF-NEG-12.md",
+      "fill": [
+        "question",
+        "trusted_context"
+      ],
+      "expect_codes": []
+    },
+    {
+      "id": "RF-NEG-13",
+      "recipe": "Source-Grounded Answer",
+      "details_file": "cases/RF-NEG-13.md",
+      "fill": [
+        "question",
+        "trusted_context"
+      ],
+      "expect_codes": [
+        "FILLED_EXAMPLE_OUTPUT_ALIGN"
+      ]
+    }
+  ]
+}

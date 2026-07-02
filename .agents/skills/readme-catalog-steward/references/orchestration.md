@@ -14,7 +14,7 @@ For broad README updates, split independent work before editing:
 | Prompt Library | Practical quasi-zero-shot recipe coverage, gaps, and copyability issues |
 | Academic Research | Papers to add/remove/demote, evidence tiers, recipe and pattern support |
 | Safety and Eval | Prompt injection, tool safety, RAG trust, structured validation, eval plan |
-| GFM and Docs Design | Navigation, alerts, details, tables, Mermaid, badges, accessibility |
+| GFM and Docs Design | Navigation, alerts, details, tables, Mermaid, badges, accessibility, filled-example walkthrough trust |
 | README Audit | Section-by-section issues, broken links, missing fields, stale wording |
 
 Each lane returns source URLs, confidence, target README sections, and explicit
@@ -35,7 +35,8 @@ Before finalizing broad README work:
 3. Safety/eval review.
 4. GFM/readability review.
 5. Git hygiene review.
-6. Validation review.
+6. Filled-example fixture review (`check_readme_recipes.py --fixtures`).
+7. Validation review.
 
 Interrupt or mark unused any subagent that does not return in time. Do not
 claim its findings were used unless they were actually read.

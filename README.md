@@ -270,23 +270,34 @@ Sources:
 <details>
 <summary><strong>Filled example</strong></summary>
 
+> [!NOTE]
+> **Walkthrough only.** Paste values into the copy prompt zones above — not this sample output — unless `Upgrade when` directs in-prompt examples.
+
 filled paste zones:
 
-- `{question}`: Should this release note say the feature is generally available?
-- `{trusted_context}`: Product memo says the feature is in private beta for three pilot accounts.
-- `{answer_constraints}`: Two sentences, customer-facing wording.
-- `{general_knowledge_policy}`: none.
+| Placeholder | Req | Example value | Notes |
+| --- | --- | --- | --- |
+| `{question}` | yes | Should this release note say the feature is generally available? | Customer-facing go/no-go question |
+| `{trusted_context}` | yes | see paste preview | Authoritative source excerpt only |
+| `{answer_constraints}` | no | Two sentences; neutral product voice | Omit from paste if unused |
+| `{general_knowledge_policy}` | no | none | Source-only answer |
+
+paste preview (`{trusted_context}`):
+
+> Memo v3 (2026-05-12): "Pilot OAuth rollout is limited to Acme, Northwind, and Globex. Do not label GA until security review closes."
 
 expected output shape:
 
-- Direct answer: do not call it generally available.
-- Sources used: product memo.
-- Unsupported or missing evidence: no public launch date supplied.
-- Confidence level: medium-high.
+| Output field | Example |
+| --- | --- |
+| Direct answer | No — the memo limits rollout to three pilot accounts and blocks a GA label. |
+| Sources used | Memo v3 (2026-05-12) |
+| Unsupported or missing evidence | No public launch date or GA approval record in the supplied excerpt. |
+| Confidence level | High for pilot-only status; medium for customer-facing wording |
 
 what to change for your case:
 
-- Replace the memo excerpt with caller-approved sources and keep general knowledge set to none unless outside context is explicitly allowed.
+- Swap in caller-approved source IDs or excerpts and keep `general_knowledge_policy` at `none` unless outside knowledge is explicitly allowed; add a regression eval for missing-evidence behavior.
 
 </details>
 
@@ -1159,21 +1170,37 @@ Sources:
 <details>
 <summary><strong>Filled example</strong></summary>
 
+> [!NOTE]
+> **Walkthrough only.** Paste values into the copy prompt zones above — not this sample output — unless `Upgrade when` directs in-prompt examples.
+
 filled paste zones:
 
-- `{code_diff}`: A diff that changes a cache key from `user_id` to `team_id`.
-- `{trusted_context}`: Cache keys must isolate user-specific permissions; tests should cover cross-user access.
-- `{review_focus}`: Security and regression risk.
+| Placeholder | Req | Example value | Notes |
+| --- | --- | --- | --- |
+| `{code_diff}` | yes | see paste preview | Unified diff for `src/cache.py` |
+| `{trusted_context}` | no | Cache keys must scope permissions per user, not per team. Tests assert user isolation. | Repo conventions |
+| `{review_focus}` | no | security, regression | Emphasize authz boundaries |
+
+paste preview (`{code_diff}`):
+
+> --- a/src/cache.py
+> +++ b/src/cache.py
+> @@ -14,7 +14,7 @@ def make_key(user_id, resource):
+> REMOVED: return f"user:{user_id}:{resource}"
+> ADDED: return f"team:{team_id}:{resource}"
 
 expected output shape:
 
-- Findings first, ordered by severity, with file and line references.
-- Test gaps and open questions only when evidence is missing.
-- Brief summary after the findings.
+| Output field | Example |
+| --- | --- |
+| Findings by severity | **High** `src/cache.py:17` — cache key switched from `user_id` to `team_id`, breaking per-user permission isolation. |
+| Test gaps | No test covers cross-user access when users share a team. |
+| Questions | Is team-level cache intentional for this endpoint? |
+| Brief summary | One high-severity authz regression; add an isolation test before merge. |
 
 what to change for your case:
 
-- Replace the diff and trusted context with your repo conventions, then narrow review focus to performance, security, correctness, or maintainability.
+- Replace the diff and trusted context with your repo conventions, then narrow `review_focus` to performance, security, correctness, or maintainability.
 
 </details>
 
@@ -1612,15 +1639,26 @@ Sources:
 <details>
 <summary><strong>Filled example</strong></summary>
 
+> [!NOTE]
+> **Walkthrough only.** Paste values into the copy prompt zones above — not this sample output — unless `Upgrade when` directs in-prompt examples.
+
 filled paste zones:
 
-- `{raw_data}`: `Name: Ana Rivera; Renewal: 2026-07-01; Plan: Team`.
-- `{json_schema}`: object with `name`, `renewal_date`, and `plan` string fields.
-- `{trusted_context}`: Use ISO dates; omit unsupported fields.
+| Placeholder | Req | Example value | Notes |
+| --- | --- | --- | --- |
+| `{raw_data}` | yes | Name: Ana Rivera; Renewal: 2026-07-01; Plan: Team | Unstructured source text |
+| `{json_schema}` | yes | see paste preview | Exact downstream contract |
+| `{trusted_context}` | no | Use ISO dates; omit unsupported fields | Normalization rules |
+
+paste preview (`{json_schema}`):
+
+> {"type":"object","properties":{"name":{"type":"string"},"renewal_date":{"type":"string","format":"date"},"plan":{"type":"string"}},"required":["name","renewal_date","plan"]}
 
 expected output shape:
 
-- Valid JSON only, matching the supplied schema.
+| Output field | Example |
+| --- | --- |
+| Valid JSON | `{"name":"Ana Rivera","renewal_date":"2026-07-01","plan":"Team"}` |
 
 what to change for your case:
 
@@ -2927,17 +2965,31 @@ Sources:
 <details>
 <summary><strong>Filled example</strong></summary>
 
+> [!NOTE]
+> **Walkthrough only.** Paste values into the copy prompt zones above — not this sample output — unless `Upgrade when` directs in-prompt examples.
+
 filled paste zones:
 
-- `{goal}`: Archive stale project notes after confirming they are not active.
-- `{available_tools}`: `search_notes` is read-only; `archive_note` mutates state.
-- `{trusted_context}`: Read-only checks are allowed; archive actions require explicit approval.
+| Placeholder | Req | Example value | Notes |
+| --- | --- | --- | --- |
+| `{goal}` | yes | Archive project notes with no edits in 90+ days after confirming they are inactive | End-to-end workflow goal |
+| `{available_tools}` | yes | see paste preview | Tool names and side effects |
+| `{trusted_context}` | yes | Read-only inspection allowed without approval; `archive_note` requires explicit user approval per run | Permission boundaries |
+
+paste preview (`{available_tools}`):
+
+> search_notes(query, project_id) → read-only
+> archive_note(note_id) → mutating; irreversible
 
 expected output shape:
 
-- Tool plan with permission class for each step.
-- Preconditions before mutating calls.
-- Stop conditions and final verification.
+| Output field | Example |
+| --- | --- |
+| Tool plan | 1) `search_notes` for stale notes 2) present candidates 3) `archive_note` only after approval |
+| Permission class | Steps 1–2 read-only; step 3 mutating |
+| Preconditions | Confirm project inactive; collect explicit approval token before step 3 |
+| Stop conditions | Abort if any candidate note was edited within 90 days |
+| Final verification | Re-run `search_notes` and confirm archived IDs no longer appear as active |
 
 what to change for your case:
 
@@ -3024,19 +3076,31 @@ Sources:
 <details>
 <summary><strong>Filled example</strong></summary>
 
+> [!NOTE]
+> **Walkthrough only.** Paste values into the copy prompt zones above — not this sample output — unless `Upgrade when` directs in-prompt examples.
+
 filled paste zones:
 
-- `{question}`: Which support plan includes priority onboarding?
-- `{retrieved_sources}`: Source A says Team includes standard onboarding; Source B says Enterprise includes priority onboarding.
-- `{citation_and_conflict_rules}`: Cite source IDs inline and mark conflicts.
+| Placeholder | Req | Example value | Notes |
+| --- | --- | --- | --- |
+| `{question}` | yes | Which support plan includes priority onboarding? | User question for retrieval |
+| `{retrieved_sources}` | yes | see paste preview | Passages with inspectable source IDs |
+| `{citation_and_conflict_rules}` | no | Cite `[src_id]` inline; surface conflicts explicitly | Citation format |
+
+paste preview (`{retrieved_sources}`):
+
+> [src_team_plan] Team plan includes standard onboarding (rev 2026-03-01).
+> [src_ent_plan] Enterprise plan includes priority onboarding (rev 2026-02-15).
 
 expected output shape:
 
-- Answer: Enterprise includes priority onboarding.
-- Citations: Source B.
-- Conflicts: none found for this claim.
-- Missing evidence: pricing and eligibility not supplied.
-- Retrieval quality notes: two relevant sources, one directly answers.
+| Output field | Example |
+| --- | --- |
+| Answer | Enterprise includes priority onboarding. |
+| Citations | [src_ent_plan] |
+| Conflicts | None for this claim; Team vs Enterprise onboarding tiers differ by design. |
+| Missing evidence | Pricing tiers and eligibility rules not present in retrieved sources. |
+| Retrieval quality notes | Two relevant sources; one directly answers the question. |
 
 what to change for your case:
 
@@ -3266,17 +3330,30 @@ Sources:
 <details>
 <summary><strong>Filled example</strong></summary>
 
+> [!NOTE]
+> **Walkthrough only.** Paste values into the copy prompt zones above — not this sample output — unless `Upgrade when` directs in-prompt examples.
+
 filled paste zones:
 
-- `{candidate_output}`: A generated answer says all checks passed.
-- `{rubric}`: Pass only if the answer lists the failing test and names the missing evidence.
-- `{trusted_context}`: Test log shows `test_export_handles_empty_rows` failed.
+| Placeholder | Req | Example value | Notes |
+| --- | --- | --- | --- |
+| `{candidate_output}` | yes | All export checks passed. | Model output under test |
+| `{rubric}` | yes | Fail unless the answer names the failing test and cites missing evidence from the log | Pass/fail rules |
+| `{trusted_context}` | no | see paste preview | Gold log excerpt |
+
+paste preview (`{trusted_context}`):
+
+> FAIL test_export_handles_empty_rows — expected non-zero status when row set is empty
 
 expected output shape:
 
-- Pass/fail: fail.
-- Scores and evidence tied to rubric criteria.
-- Critical failures and suggested prompt fix.
+| Output field | Example |
+| --- | --- |
+| Pass/fail | fail |
+| Scores | Evidence citation 0/1; failure identification 0/1 |
+| Evidence | Candidate claims all checks passed; log shows `test_export_handles_empty_rows` failed. |
+| Critical failures | Did not name failing test or missing evidence. |
+| Suggested prompt fix | Require quoting failing test IDs from supplied logs before claiming pass. |
 
 what to change for your case:
 
@@ -3360,18 +3437,31 @@ Sources:
 <details>
 <summary><strong>Filled example</strong></summary>
 
+> [!NOTE]
+> **Walkthrough only.** Paste values into the copy prompt zones above — not this sample output — unless `Upgrade when` directs in-prompt examples.
+
 filled paste zones:
 
-- `{current_prompt}`: Summarize customer tickets and suggest a priority.
-- `{failure_log}`: The prompt keeps inventing priority labels not in the policy.
-- `{trusted_context}`: Allowed labels are `low`, `medium`, `high`; abstain when evidence is insufficient.
+| Placeholder | Req | Example value | Notes |
+| --- | --- | --- | --- |
+| `{current_prompt}` | yes | Summarize customer tickets and assign a priority label. | Prompt under revision |
+| `{failure_log}` | yes | see paste preview | Reproduced bad outputs |
+| `{trusted_context}` | yes | Allowed labels: `low`, `medium`, `high`; abstain when evidence is insufficient | Non-negotiable contract |
+
+paste preview (`{failure_log}`):
+
+> Run 14 output: priority `urgent` (not in allowed labels)
+> Run 22 output: priority `high` with no ticket evidence quoted
 
 expected output shape:
 
-- Revised prompt.
-- Change log mapped to failures.
-- New eval cases.
-- Residual risks.
+| Output field | Example |
+| --- | --- |
+| Revised prompt | Add: "Use only `low`, `medium`, or `high`; quote ticket evidence; reply `abstain` when insufficient." |
+| Change log | Constrain label enum; require evidence quote; add abstain path |
+| Failure mapping | Run 14 → invented label; Run 22 → unsupported `high` |
+| New evals | Case: sparse ticket → expect `abstain`; Case: explicit SLA breach → expect `high` |
+| Risks | Model may over-abstain on ambiguous tickets until eval threshold is tuned |
 
 what to change for your case:
 
@@ -3767,19 +3857,31 @@ Sources:
 <details>
 <summary><strong>Filled example</strong></summary>
 
+> [!NOTE]
+> **Walkthrough only.** Paste values into the copy prompt zones above — not this sample output — unless `Upgrade when` directs in-prompt examples.
+
 filled paste zones:
 
-- `{question}`: Should we ship this onboarding flow to all workspaces?
-- `{trusted_context}`: Accessibility review is incomplete; support says admins are confused by the invite step.
-- `{artifact_or_options}`: Option A ships now; Option B ships to beta; Option C waits.
-- `{criteria}`: User risk, reversibility, support load, evidence quality.
-- `{role_preferences}`: Include product, support, accessibility, and engineering perspectives.
+| Placeholder | Req | Example value | Notes |
+| --- | --- | --- | --- |
+| `{question}` | yes | Should we ship this onboarding flow to all workspaces? | Decision under review |
+| `{trusted_context}` | yes | Accessibility review incomplete; support reports admin confusion on the invite step | Facts and constraints |
+| `{artifact_or_options}` | no | A) ship now B) ship to beta C) wait for a11y sign-off | Options artifact |
+| `{criteria}` | no | user risk, reversibility, support load, evidence quality | Decision lens |
+| `{role_preferences}` | no | include product, support, accessibility, engineering | Persona hints |
 
 expected output shape:
 
-- Selected simulated personas and rejected roles.
-- Persona reviews and cross-critiques.
-- Disagreements, evidence gaps, recommendation, and real-review trigger.
+| Output field | Example |
+| --- | --- |
+| Selected simulated personas | Product manager, support lead, accessibility reviewer, engineer |
+| Rejected roles | Legal counsel — no legal facts supplied; would add fake authority |
+| Persona reviews | Support: invite step unclear; Accessibility: blockers open; Engineering: beta flag ready |
+| Cross-critiques | Engineer notes support data is anecdotal; support asks for repro steps |
+| Disagreements | Product wants limited beta; support wants hold until invite copy is fixed |
+| Evidence gaps | No quantitative drop-off data; accessibility checklist incomplete |
+| Recommendation | Ship to beta behind flag; do not enable for all workspaces |
+| Real-review trigger | Requires human accessibility sign-off and support-runbook review before GA |
 
 what to change for your case:
 

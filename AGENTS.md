@@ -89,6 +89,9 @@ link here instead of duplicating commands.
 and navigation integrity: Prompt Index link completeness (48 recipe anchors)
 and Section Map link completeness (22 navigation anchors).
 
+Filled-example structure on the eight target recipes is also checked via
+`FILLED_EXAMPLE_*` rules and `python3 scripts/check_readme_recipes.py --fixtures`.
+
 ```bash
 DOCS=(
   README.md
@@ -97,6 +100,8 @@ DOCS=(
   .agents/skills/readme-catalog-steward/references/*.md
 )
 python3 scripts/check_readme_recipes.py --readme README.md --check
+python3 scripts/check_readme_recipes.py --fixtures
+python3 -m unittest discover -s tests -v
 npx -y markdownlint-cli2@0.22.1 "${DOCS[@]}"
 npx -y markdown-link-check@3.14.2 "${DOCS[@]}"
 python3 scripts/update_readme_badges.py --check
@@ -111,7 +116,9 @@ git diff --check -- \
   .gitignore \
   .github/workflows/readme-quality.yml \
   scripts/check_readme_recipes.py \
-  scripts/update_readme_badges.py
+  scripts/update_readme_badges.py \
+  scripts/fixtures/filled_examples/manifest.json \
+  tests/test_filled_example_rules.py
 ```
 
 If badges change, update generated badges and inspect every ShieldCN URL:

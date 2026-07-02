@@ -7,7 +7,9 @@ on:
       - AGENTS.md
       - .agents/skills/readme-catalog-steward/**
       - scripts/check_readme_recipes.py
+      - scripts/fixtures/filled_examples/**
       - scripts/update_readme_badges.py
+      - tests/**
       - .gitignore
       - .github/workflows/readme-quality.yml
   push:
@@ -18,7 +20,9 @@ on:
       - AGENTS.md
       - .agents/skills/readme-catalog-steward/**
       - scripts/check_readme_recipes.py
+      - scripts/fixtures/filled_examples/**
       - scripts/update_readme_badges.py
+      - tests/**
       - .gitignore
       - .github/workflows/readme-quality.yml
   workflow_dispatch:
@@ -44,6 +48,14 @@ jobs:
       - name: Recipe contract check
         shell: bash
         run: python3 scripts/check_readme_recipes.py --readme README.md --check
+
+      - name: Filled example fixture check
+        shell: bash
+        run: python3 scripts/check_readme_recipes.py --fixtures
+
+      - name: Filled example unit tests
+        shell: bash
+        run: python3 -m unittest discover -s tests -v
 
       - name: Generated badge check
         shell: bash
@@ -96,7 +108,9 @@ jobs:
             .gitignore \
             .github/workflows/readme-quality.yml \
             scripts/check_readme_recipes.py \
-            scripts/update_readme_badges.py
+            scripts/update_readme_badges.py \
+            scripts/fixtures/filled_examples/manifest.json \
+            tests/test_filled_example_rules.py
 
       - name: Badge URL smoke check
         shell: bash
