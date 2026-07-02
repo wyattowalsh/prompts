@@ -23,6 +23,8 @@ SHORTCUTS_START = "<!-- SHORTCUTS:START -->"
 SHORTCUTS_END = "<!-- SHORTCUTS:END -->"
 LANES_START = "<!-- LANES:START -->"
 LANES_END = "<!-- LANES:END -->"
+JOB_MAP_START = "<!-- JOB-MAP:START -->"
+JOB_MAP_END = "<!-- JOB-MAP:END -->"
 
 COMMON_STATIC_PARAMS = {
     "mode": "dark",
@@ -312,6 +314,57 @@ LANE_CHIP_SECTIONS = [
     },
 ]
 
+JOB_MAP_ROWS = [
+    {
+        "badge": LANE_BADGES[0],
+        "row_bg": "#172554",
+        "row_accent": "#3B82F6",
+        "recipes": "[Source-Grounded Answer](#source-grounded-answer) · [Web Research Brief](#web-research-brief) · [Literature Scan](#literature-scan) · [Claim Checker](#claim-checker) · [Citation Matrix](#citation-matrix) · [Disagreement Map](#disagreement-map)",
+    },
+    {
+        "badge": LANE_BADGES[1],
+        "row_bg": "#3b0764",
+        "row_accent": "#A855F7",
+        "recipes": "[Executive Brief](#executive-brief) · [Rewrite With Constraints](#rewrite-with-constraints) · [Style Transfer Without Examples](#style-transfer-without-examples) · [Dense Summary](#dense-summary) · [FAQ Generator](#faq-generator) · [Newsletter Draft](#newsletter-draft)",
+    },
+    {
+        "badge": LANE_BADGES[2],
+        "row_bg": "#14532d",
+        "row_accent": "#22C55E",
+        "recipes": "[Code Review](#code-review) · [Bug RCA](#bug-rca) · [Unit Test Writer](#unit-test-writer) · [Refactor Planner](#refactor-planner) · [PR Description](#pr-description) · [API Contract Explainer](#api-contract-explainer)",
+    },
+    {
+        "badge": LANE_BADGES[3],
+        "row_bg": "#713f12",
+        "row_accent": "#EAB308",
+        "recipes": "[JSON Extractor](#json-extractor) · [Table Normalizer](#table-normalizer) · [Classifier](#classifier) · [NER Extractor](#ner-extractor) · [Sentiment Triage](#sentiment-triage) · [Synthetic Edge Cases](#synthetic-edge-cases)",
+    },
+    {
+        "badge": LANE_BADGES[4],
+        "row_bg": "#500724",
+        "row_accent": "#EC4899",
+        "recipes": "[PRD Drafter](#prd-drafter) · [User Story Splitter](#user-story-splitter) · [Acceptance Criteria Writer](#acceptance-criteria-writer) · [Launch Checklist](#launch-checklist) · [UX Review](#ux-review) · [Support Macro](#support-macro)",
+    },
+    {
+        "badge": LANE_BADGES[5],
+        "row_bg": "#431407",
+        "row_accent": "#F97316",
+        "recipes": "[Incident Summary](#incident-summary) · [Runbook Generator](#runbook-generator) · [Log Triage](#log-triage) · [Risk Register](#risk-register) · [Decision Memo](#decision-memo) · [Meeting Action Extractor](#meeting-action-extractor)",
+    },
+    {
+        "badge": LANE_BADGES[6],
+        "row_bg": "#164e63",
+        "row_accent": "#06B6D4",
+        "recipes": "[Tool-Use Planner](#tool-use-planner) · [RAG Answer Contract](#rag-answer-contract) · [Prompt-Injection Scanner](#prompt-injection-scanner) · [Eval-Set Generator](#eval-set-generator) · [Regression Judge](#regression-judge) · [Prompt Optimizer](#prompt-optimizer)",
+    },
+    {
+        "badge": LANE_BADGES[7],
+        "row_bg": "#2e1065",
+        "row_accent": "#8B5CF6",
+        "recipes": "[Plan-and-Solve](#plan-and-solve) · [Step-Back Answer](#step-back-answer) · [Verification Pass](#verification-pass) · [Self-Refine Pass](#self-refine-pass) · [Panel Review](#panel-review) · [Tradeoff Matrix](#tradeoff-matrix)",
+    },
+]
+
 NAV_BADGES = [
     {
         "label": "TOC",
@@ -487,6 +540,33 @@ def render_badge_block(markdown: str) -> str:
     return "\n".join(rows)
 
 
+def render_job_map_block() -> str:
+    rows: list[str] = [
+        JOB_MAP_START,
+        "<table>",
+        "  <tr>",
+        "    <th>Job family</th>",
+        "    <th>Copy these first</th>",
+        "  </tr>",
+    ]
+    for entry in JOB_MAP_ROWS:
+        badge = entry["badge"]
+        src = lane_badge_url(badge)
+        badge_link = image_link(badge["href"], badge["alt"], src, indent="      ")
+        rows.extend(
+            [
+                "  <tr>",
+                f'    <td style="background-color:{entry["row_bg"]};border-left:4px solid {entry["row_accent"]};vertical-align:top;width:190px">',
+                f"      {badge_link.strip()}",
+                "    </td>",
+                f'    <td style="vertical-align:top">{entry["recipes"]}</td>',
+                "  </tr>",
+            ]
+        )
+    rows.extend(["</table>", JOB_MAP_END])
+    return "\n".join(rows)
+
+
 def render_lane_chip_block(section: dict[str, object]) -> str:
     key = section["key"]
     chips = section["chips"]
@@ -536,7 +616,7 @@ def render_shortcut_block() -> str:
 
 
 def generated_badge_urls(markdown: str) -> list[str]:
-    blocks = [render_badge_block(markdown), render_lane_block(), render_shortcut_block()]
+    blocks = [render_badge_block(markdown), render_lane_block(), render_shortcut_block(), render_job_map_block()]
     blocks.extend(render_lane_chip_block(section) for section in LANE_CHIP_SECTIONS)
     urls = re.findall(r'src="(https://shieldcn\.dev[^"]+)"', "\n".join(blocks))
     # Nav badges are repeated in the README body, so list each unique URL once
@@ -556,6 +636,7 @@ def replace_badges(markdown: str) -> str:
     updated = replace_marker_block(markdown, START, END, render_badge_block(markdown))
     updated = replace_marker_block(updated, LANES_START, LANES_END, render_lane_block())
     updated = replace_marker_block(updated, SHORTCUTS_START, SHORTCUTS_END, render_shortcut_block())
+    updated = replace_marker_block(updated, JOB_MAP_START, JOB_MAP_END, render_job_map_block())
     return replace_lane_chips(updated)
 
 

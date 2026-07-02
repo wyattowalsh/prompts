@@ -170,16 +170,62 @@
 <details>
 <summary><strong>Browse all 48 recipes by job</strong></summary>
 
-| Job family | Copy these first |
-| --- | --- |
-| Research | [Source-Grounded Answer](#source-grounded-answer) · [Web Research Brief](#web-research-brief) · [Literature Scan](#literature-scan) · [Claim Checker](#claim-checker) · [Citation Matrix](#citation-matrix) · [Disagreement Map](#disagreement-map) |
-| Writing | [Executive Brief](#executive-brief) · [Rewrite With Constraints](#rewrite-with-constraints) · [Style Transfer Without Examples](#style-transfer-without-examples) · [Dense Summary](#dense-summary) · [FAQ Generator](#faq-generator) · [Newsletter Draft](#newsletter-draft) |
-| Coding | [Code Review](#code-review) · [Bug RCA](#bug-rca) · [Unit Test Writer](#unit-test-writer) · [Refactor Planner](#refactor-planner) · [PR Description](#pr-description) · [API Contract Explainer](#api-contract-explainer) |
-| Data | [JSON Extractor](#json-extractor) · [Table Normalizer](#table-normalizer) · [Classifier](#classifier) · [NER Extractor](#ner-extractor) · [Sentiment Triage](#sentiment-triage) · [Synthetic Edge Cases](#synthetic-edge-cases) |
-| Product | [PRD Drafter](#prd-drafter) · [User Story Splitter](#user-story-splitter) · [Acceptance Criteria Writer](#acceptance-criteria-writer) · [Launch Checklist](#launch-checklist) · [UX Review](#ux-review) · [Support Macro](#support-macro) |
-| Operations | [Incident Summary](#incident-summary) · [Runbook Generator](#runbook-generator) · [Log Triage](#log-triage) · [Risk Register](#risk-register) · [Decision Memo](#decision-memo) · [Meeting Action Extractor](#meeting-action-extractor) |
-| Agent and tool workflows | [Tool-Use Planner](#tool-use-planner) · [RAG Answer Contract](#rag-answer-contract) · [Prompt-Injection Scanner](#prompt-injection-scanner) · [Eval-Set Generator](#eval-set-generator) · [Regression Judge](#regression-judge) · [Prompt Optimizer](#prompt-optimizer) |
-| Reasoning | [Plan-and-Solve](#plan-and-solve) · [Step-Back Answer](#step-back-answer) · [Verification Pass](#verification-pass) · [Self-Refine Pass](#self-refine-pass) · [Panel Review](#panel-review) · [Tradeoff Matrix](#tradeoff-matrix) |
+<!-- JOB-MAP:START -->
+<table>
+  <tr>
+    <th>Job family</th>
+    <th>Copy these first</th>
+  </tr>
+  <tr>
+    <td style="background-color:#172554;border-left:4px solid #3B82F6;vertical-align:top;width:190px">
+      <a href="#research"><img alt="Research lane" src="https://shieldcn.dev/badge/Research-3B82F6.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=22&radius=7&padX=8&iconSize=12&variant=default&logo=ri:RiMicroscopeLine&logoColor=f8fafc"></a>
+    </td>
+    <td style="vertical-align:top">[Source-Grounded Answer](#source-grounded-answer) · [Web Research Brief](#web-research-brief) · [Literature Scan](#literature-scan) · [Claim Checker](#claim-checker) · [Citation Matrix](#citation-matrix) · [Disagreement Map](#disagreement-map)</td>
+  </tr>
+  <tr>
+    <td style="background-color:#3b0764;border-left:4px solid #A855F7;vertical-align:top;width:190px">
+      <a href="#writing"><img alt="Writing lane" src="https://shieldcn.dev/badge/Writing-A855F7.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=22&radius=7&padX=8&iconSize=12&variant=default&logo=ri:RiQuillPenLine&logoColor=f8fafc"></a>
+    </td>
+    <td style="vertical-align:top">[Executive Brief](#executive-brief) · [Rewrite With Constraints](#rewrite-with-constraints) · [Style Transfer Without Examples](#style-transfer-without-examples) · [Dense Summary](#dense-summary) · [FAQ Generator](#faq-generator) · [Newsletter Draft](#newsletter-draft)</td>
+  </tr>
+  <tr>
+    <td style="background-color:#14532d;border-left:4px solid #22C55E;vertical-align:top;width:190px">
+      <a href="#coding"><img alt="Coding lane" src="https://shieldcn.dev/badge/Coding-22C55E.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=22&radius=7&padX=8&iconSize=12&variant=default&logo=ri:RiCodeBoxLine&logoColor=f8fafc"></a>
+    </td>
+    <td style="vertical-align:top">[Code Review](#code-review) · [Bug RCA](#bug-rca) · [Unit Test Writer](#unit-test-writer) · [Refactor Planner](#refactor-planner) · [PR Description](#pr-description) · [API Contract Explainer](#api-contract-explainer)</td>
+  </tr>
+  <tr>
+    <td style="background-color:#713f12;border-left:4px solid #EAB308;vertical-align:top;width:190px">
+      <a href="#data"><img alt="Data lane" src="https://shieldcn.dev/badge/Data-EAB308.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=22&radius=7&padX=8&iconSize=12&variant=default&logo=ri:RiDatabaseLine&logoColor=f8fafc"></a>
+    </td>
+    <td style="vertical-align:top">[JSON Extractor](#json-extractor) · [Table Normalizer](#table-normalizer) · [Classifier](#classifier) · [NER Extractor](#ner-extractor) · [Sentiment Triage](#sentiment-triage) · [Synthetic Edge Cases](#synthetic-edge-cases)</td>
+  </tr>
+  <tr>
+    <td style="background-color:#500724;border-left:4px solid #EC4899;vertical-align:top;width:190px">
+      <a href="#product"><img alt="Product lane" src="https://shieldcn.dev/badge/Product-EC4899.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=22&radius=7&padX=8&iconSize=12&variant=default&logo=ri:RiLayoutGridLine&logoColor=f8fafc"></a>
+    </td>
+    <td style="vertical-align:top">[PRD Drafter](#prd-drafter) · [User Story Splitter](#user-story-splitter) · [Acceptance Criteria Writer](#acceptance-criteria-writer) · [Launch Checklist](#launch-checklist) · [UX Review](#ux-review) · [Support Macro](#support-macro)</td>
+  </tr>
+  <tr>
+    <td style="background-color:#431407;border-left:4px solid #F97316;vertical-align:top;width:190px">
+      <a href="#operations"><img alt="Operations lane" src="https://shieldcn.dev/badge/Ops-F97316.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=22&radius=7&padX=8&iconSize=12&variant=default&logo=ri:RiPulseLine&logoColor=f8fafc"></a>
+    </td>
+    <td style="vertical-align:top">[Incident Summary](#incident-summary) · [Runbook Generator](#runbook-generator) · [Log Triage](#log-triage) · [Risk Register](#risk-register) · [Decision Memo](#decision-memo) · [Meeting Action Extractor](#meeting-action-extractor)</td>
+  </tr>
+  <tr>
+    <td style="background-color:#164e63;border-left:4px solid #06B6D4;vertical-align:top;width:190px">
+      <a href="#agent-and-tool-workflows"><img alt="Agent workflows lane" src="https://shieldcn.dev/badge/Agents-06B6D4.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=22&radius=7&padX=8&iconSize=12&variant=default&logo=ri:RiRobot2Line&logoColor=f8fafc"></a>
+    </td>
+    <td style="vertical-align:top">[Tool-Use Planner](#tool-use-planner) · [RAG Answer Contract](#rag-answer-contract) · [Prompt-Injection Scanner](#prompt-injection-scanner) · [Eval-Set Generator](#eval-set-generator) · [Regression Judge](#regression-judge) · [Prompt Optimizer](#prompt-optimizer)</td>
+  </tr>
+  <tr>
+    <td style="background-color:#2e1065;border-left:4px solid #8B5CF6;vertical-align:top;width:190px">
+      <a href="#reasoning"><img alt="Reasoning lane" src="https://shieldcn.dev/badge/Reasoning-8B5CF6.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=22&radius=7&padX=8&iconSize=12&variant=default&logo=ri:RiBrainLine&logoColor=f8fafc"></a>
+    </td>
+    <td style="vertical-align:top">[Plan-and-Solve](#plan-and-solve) · [Step-Back Answer](#step-back-answer) · [Verification Pass](#verification-pass) · [Self-Refine Pass](#self-refine-pass) · [Panel Review](#panel-review) · [Tradeoff Matrix](#tradeoff-matrix)</td>
+  </tr>
+</table>
+<!-- JOB-MAP:END -->
 
 </details>
 
