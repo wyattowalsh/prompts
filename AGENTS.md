@@ -82,7 +82,12 @@ Templates should separate:
 ## Validation
 
 Run these before claiming success when touching `README.md`, `AGENTS.md`, the
-repo-local skill, or CI:
+repo-local skill, or CI. This block is the single source of truth; other docs
+link here instead of duplicating commands.
+
+`scripts/check_readme_recipes.py --check` enforces the recipe card contract
+and navigation integrity: Prompt Index link completeness (48 recipe anchors)
+and Section Map link completeness (22 navigation anchors).
 
 ```bash
 DOCS=(
@@ -99,7 +104,7 @@ PYTHONPYCACHEPREFIX=/tmp/prompts-pycache python3 -m py_compile \
   scripts/update_readme_badges.py \
   scripts/check_readme_recipes.py
 python3 -m json.tool .agents/skills/readme-catalog-steward/evals/evals.json >/dev/null
-npx -y js-yaml .github/workflows/readme-quality.yml >/dev/null
+npx -y js-yaml@5.2.1 .github/workflows/readme-quality.yml >/dev/null
 git diff --check -- \
   "${DOCS[@]}" \
   .agents/skills/readme-catalog-steward/evals/evals.json \

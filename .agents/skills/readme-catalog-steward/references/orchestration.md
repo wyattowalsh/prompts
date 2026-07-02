@@ -42,15 +42,13 @@ claim its findings were used unless they were actually read.
 
 ## Validation Loop
 
-1. Run `python3 scripts/check_readme_recipes.py --readme README.md --check`.
-2. Run markdown lint.
-3. Run markdown link checks.
-4. Run `python3 scripts/update_readme_badges.py --check`.
-5. Run JSON/YAML syntax checks for changed support files.
-6. Run whitespace diff checks.
-7. Run conditional badge URL checks when README badges changed.
-8. Inspect `git diff --stat`, focused diffs, and `git status --short --branch`.
-9. Fix failures and rerun the failed checks.
+1. Run the canonical validation block in
+   [AGENTS.md § Validation](../../../../AGENTS.md#validation) (recipe contract,
+   Prompt Index, Section Map, markdown lint, link checks, badge drift,
+   `py_compile`, JSON/YAML syntax, whitespace diff, and conditional badge URL
+   checks).
+2. Inspect `git diff --stat`, focused diffs, and `git status --short --branch`.
+3. Fix failures and rerun the failed checks.
 
 ## Escalation Rules
 

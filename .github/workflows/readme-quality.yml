@@ -47,6 +47,8 @@ jobs:
 
       - name: Generated badge check
         shell: bash
+        env:
+          PYTHONPYCACHEPREFIX: /tmp/prompts-pycache
         run: |
           python3 scripts/update_readme_badges.py --check
           python3 -m py_compile scripts/update_readme_badges.py scripts/check_readme_recipes.py
@@ -77,7 +79,7 @@ jobs:
         run: python3 -m json.tool .agents/skills/readme-catalog-steward/evals/evals.json >/dev/null
 
       - name: Workflow YAML syntax
-        run: npx -y js-yaml .github/workflows/readme-quality.yml >/dev/null
+        run: npx -y js-yaml@5.2.1 .github/workflows/readme-quality.yml >/dev/null
 
       - name: Whitespace check
         shell: bash
@@ -108,7 +110,7 @@ jobs:
 
           for badge in "${badges[@]}"; do
             echo "Checking $badge"
-            curl --fail --silent --show-error --location --head "$badge" >/tmp/badge.headers
+            curl --fail --silent --show-error --location --head --retry 3 --retry-delay 2 "$badge" >/tmp/badge.headers
             if ! grep -iq 'content-type: .*image/svg+xml' /tmp/badge.headers; then
               echo "Expected image/svg+xml for $badge"
               cat /tmp/badge.headers

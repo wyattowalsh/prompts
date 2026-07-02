@@ -375,6 +375,111 @@ def validate_recipe(recipe: Recipe, errors: list[Diagnostic], warnings: list[Dia
     }
 
 
+def find_subsection(lines: list[str], parent_heading: str, subsection_heading: str) -> tuple[int, int] | None:
+    parent = find_section(lines, parent_heading)
+    if parent is None:
+        return None
+    parent_start, parent_end = parent
+    fence = in_fence_by_line(lines)
+    start = None
+    for index in range(parent_start + 1, parent_end):
+        if not fence[index] and lines[index] == subsection_heading:
+            start = index
+            break
+    if start is None:
+        return None
+    end = parent_end
+    for index in range(start + 1, parent_end):
+        if not fence[index] and (lines[index].startswith("## ") or lines[index].startswith("### ")):
+            end = index
+            break
+    return start, end
+
+
+SECTION_MAP_PARENT_HEADINGS = [
+    "Start Here",
+    "Prompt Library",
+    "How To Adapt Prompts",
+    "Provider Controls",
+    "Safety, Evals, And Trust Boundaries",
+    "Pattern Selection Matrix",
+    "Pattern Notes",
+    "Contributing Prompt Recipes",
+    "Notes",
+    "Bibliography",
+]
+
+PROMPT_LIBRARY_CATEGORIES = [
+    "Research",
+    "Writing",
+    "Coding",
+    "Data",
+    "Product",
+    "Operations",
+    "Agent and Tool Workflows",
+    "Reasoning",
+]
+
+PATTERN_NOTE_SUBSECTIONS = [
+    "Core Prompt Construction",
+    "Reasoning and Search",
+    "Verification and Iteration",
+    "Task and Workflow Snippets",
+]
+
+
+def build_section_map_expected_anchors() -> set[str]:
+    used: dict[str, int] = {}
+    anchors: set[str] = set()
+    for title in SECTION_MAP_PARENT_HEADINGS + PROMPT_LIBRARY_CATEGORIES + PATTERN_NOTE_SUBSECTIONS:
+        anchors.add(github_anchor(title, used))
+    return anchors
+
+
+def validate_prompt_index(lines: list[str], recipes: list[Recipe], errors: list[Diagnostic]) -> int:
+    region = find_subsection(lines, "## Table of Contents", "### Prompt Index")
+    if region is None:
+        errors.append(Diagnostic("PROMPT_INDEX", "Missing ### Prompt Index subsection.", 1))
+        return 0
+    start, end = region
+    index_text = "\n".join(lines[start:end])
+    links = re.findall(r'href="#([^"]+)"', index_text)
+    used: dict[str, int] = {}
+    expected = {github_anchor(recipe.name, used): recipe.name for recipe in recipes}
+    unique_links = set(links)
+    if len(links) != 48 or len(unique_links) != 48:
+        errors.append(Diagnostic("PROMPT_INDEX_COUNT", "Prompt Index must contain 48 unique recipe links.", start + 1))
+    missing = sorted(set(expected) - unique_links)
+    extra = sorted(unique_links - set(expected))
+    for anchor in missing:
+        errors.append(Diagnostic("PROMPT_INDEX_MISSING", f"Prompt Index missing link to #{anchor}.", start + 1, expected.get(anchor)))
+    for anchor in extra:
+        errors.append(Diagnostic("PROMPT_INDEX_EXTRA", f"Prompt Index links to non-recipe anchor #{anchor}.", start + 1))
+    return len(links)
+
+
+def validate_section_map(lines: list[str], errors: list[Diagnostic]) -> int:
+    region = find_subsection(lines, "## Table of Contents", "### Section Map")
+    if region is None:
+        errors.append(Diagnostic("SECTION_MAP", "Missing ### Section Map subsection.", 1))
+        return 0
+    start, end = region
+    list_lines = [line for line in lines[start:end] if line.lstrip().startswith("- ")]
+    map_text = "\n".join(list_lines)
+    links = re.findall(r"\(#([^)]+)\)", map_text)
+    expected = build_section_map_expected_anchors()
+    unique_links = set(links)
+    if len(links) != 22 or len(unique_links) != 22:
+        errors.append(Diagnostic("SECTION_MAP_COUNT", "Section Map must contain 22 unique links.", start + 1))
+    missing = sorted(expected - unique_links)
+    extra = sorted(unique_links - expected)
+    for anchor in missing:
+        errors.append(Diagnostic("SECTION_MAP_MISSING", f"Section Map missing link to #{anchor}.", start + 1))
+    for anchor in extra:
+        errors.append(Diagnostic("SECTION_MAP_EXTRA", f"Section Map links to unexpected anchor #{anchor}.", start + 1))
+    return len(links)
+
+
 def validate_recipe_map(lines: list[str], recipes: list[Recipe], errors: list[Diagnostic]) -> int:
     markdown = "\n".join(lines)
     match = re.search(r"<summary><strong>Browse all 48 recipes by job</strong></summary>(.*?)</details>", markdown, re.DOTALL)
@@ -407,6 +512,8 @@ def run(readme: Path) -> dict[str, object]:
 
     recipe_results = [validate_recipe(recipe, errors, warnings) for recipe in recipes]
     map_count = validate_recipe_map(lines, recipes, errors)
+    prompt_index_count = validate_prompt_index(lines, recipes, errors)
+    section_map_count = validate_section_map(lines, errors)
     pattern_count = count_pattern_notes(lines)
     if pattern_count != 43:
         errors.append(Diagnostic("PATTERN_NOTE_COUNT", f"Expected 43 pattern notes, found {pattern_count}.", 1))
@@ -423,6 +530,8 @@ def run(readme: Path) -> dict[str, object]:
             "recipes": len(recipes),
             "pattern_notes": pattern_count,
             "recipe_map_links": map_count,
+            "prompt_index_links": prompt_index_count,
+            "section_map_links": section_map_count,
             "filled_examples": example_count,
             "control_evidence_notes": control_count,
         },
@@ -441,6 +550,8 @@ def run(readme: Path) -> dict[str, object]:
             "pattern_note_count",
             "rag_retrieved_sources",
             "recipe_map_links",
+            "prompt_index_links",
+            "section_map_links",
             "filled_examples",
             "control_evidence_notes",
             "control_note_sentence",

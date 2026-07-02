@@ -136,39 +136,13 @@ Use these canonical terms exactly throughout README stewardship work:
 
 ## Validation Contract
 
-Run from the repository root:
+Run the canonical validation block from the repository root:
+[AGENTS.md § Validation](../../../AGENTS.md#validation).
 
-```bash
-DOCS=(
-  README.md
-  AGENTS.md
-  .agents/skills/readme-catalog-steward/SKILL.md
-  .agents/skills/readme-catalog-steward/references/*.md
-)
-python3 scripts/check_readme_recipes.py --readme README.md --check
-npx -y markdownlint-cli2@0.22.1 "${DOCS[@]}"
-npx -y markdown-link-check@3.14.2 "${DOCS[@]}"
-python3 scripts/update_readme_badges.py --check
-PYTHONPYCACHEPREFIX=/tmp/prompts-pycache python3 -m py_compile scripts/update_readme_badges.py scripts/check_readme_recipes.py
-python3 -m json.tool .agents/skills/readme-catalog-steward/evals/evals.json >/dev/null
-npx -y js-yaml .github/workflows/readme-quality.yml >/dev/null
-git diff --check -- \
-  "${DOCS[@]}" \
-  .agents/skills/readme-catalog-steward/evals/evals.json \
-  .gitignore \
-  .github/workflows/readme-quality.yml \
-  scripts/check_readme_recipes.py \
-  scripts/update_readme_badges.py
-```
-
-If README badge URLs changed, inspect changed ShieldCN URLs:
-
-```bash
-python3 scripts/update_readme_badges.py --check
-python3 scripts/update_readme_badges.py --list-urls
-```
-
-Then `curl -I` changed badge image URLs and require SVG responses.
+That block includes recipe contract checks (Prompt Index and Section Map
+completeness), markdown lint, link checks, badge drift, `py_compile` with
+`PYTHONPYCACHEPREFIX`, JSON/YAML syntax, whitespace diff checks, and conditional
+badge URL inspection when README badges changed.
 
 Completion criteria:
 

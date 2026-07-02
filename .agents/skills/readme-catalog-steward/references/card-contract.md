@@ -35,8 +35,10 @@ Every pattern note must include the fields that fit its format:
 If a pattern cannot safely provide a copyable skeleton, say why instead of
 leaving the field implicit.
 
-Use `python3 scripts/check_readme_recipes.py --readme README.md --check` to
-enforce the Prompt Library recipe contract.
+Run the canonical validation block in
+[AGENTS.md § Validation](../../../../AGENTS.md#validation). The recipe contract
+linter enforces required recipe fields plus Prompt Index and Section Map link
+completeness.
 
 ## Template Hygiene
 

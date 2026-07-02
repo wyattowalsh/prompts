@@ -347,8 +347,6 @@ def render_badge_block(markdown: str) -> str:
         rows.append(image_link(href, badge["alt"], src, indent="  "))
     rows.append("</p>")
     rows.append("")
-
-    rows.append('<p align="center"><sub>Last research refresh: 2026-06-16</sub></p>')
     rows.append(END)
     return "\n".join(rows)
 
