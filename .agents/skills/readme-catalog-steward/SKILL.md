@@ -76,7 +76,7 @@ Use the smallest useful context set:
 
 | Mode | Load |
 | --- | --- |
-| `audit`, `add-card`, `revise-card`, filled-example work | `references/card-contract.md` (see Filled Example Blocks) |
+| `audit`, `add-card`, `revise-card`, filled-example work | `references/card-contract.md` (paste zones table, compact Fill, hoisted previews) |
 | `refresh-sources` | `references/source-policy.md` |
 | `safety-pass`, `gfm-pass`, `eval-pass` | Relevant README section plus the matching reference |
 | Broad or multi-lane work | `references/orchestration.md` after the first local read |
@@ -141,7 +141,8 @@ Run the canonical validation block from the repository root:
 [AGENTS.md § Validation](../../../AGENTS.md#validation).
 
 That block includes recipe contract checks (Prompt Index and Section Map
-completeness), markdown lint, link checks, badge drift, `py_compile` with
+completeness), paste-zone cell length audit (`scripts/audit_paste_zone_cells.py`),
+markdown lint, link checks, badge drift, `py_compile` with
 `PYTHONPYCACHEPREFIX`, JSON/YAML syntax, whitespace diff checks, and conditional
 badge URL inspection when README badges changed.
 

@@ -63,6 +63,13 @@ VISIBLE_COT_PATTERNS = [
 
 FILLED_EXAMPLE_DISCLAIMER_MARKERS = ("[!NOTE]", "Walkthrough only.")
 PASTE_ZONE_TABLE_HEADER = "| Placeholder | Req | Example value | Notes |"
+RECIPE_PASTE_ZONE_VALUE_LENGTH = 80
+PASTE_PREVIEW_POINTER_VALUES = frozenset({"see paste preview", "see preview below"})
+PASTE_PREVIEW_HEADING_RE = re.compile(
+    r"^(?:\*\*)?[Pp]aste preview(?:\*\*)?\s+\(`\{([^}]+)\}`\)\s*:",
+    re.MULTILINE,
+)
+BULLET_FILL_PATTERN = re.compile(r"^- `\{([^}]+)\}` \((required|optional)\):")
 FILLED_EXAMPLE_OUTPUT_TABLE_HEADER = "| Output field | Example |"
 FILLED_EXAMPLE_META_VALUE_PATTERNS = [
     re.compile(pattern, re.IGNORECASE)
@@ -326,13 +333,30 @@ def collect_filled_example_errors(recipe_name: str, details: str, fill: dict[str
 def collect_recipe_paste_zone_errors(
     recipe_name: str,
     recipe_lines: list[str],
-    fill: dict[str, tuple[str, int]],
+    fill: dict[str, tuple[str, int]] | None = None,
     line: int = 1,
 ) -> list[Diagnostic]:
     recipe = Recipe(name=recipe_name, category="Fixture", line=line, start=0, end=len(recipe_lines), lines=recipe_lines)
     errors: list[Diagnostic] = []
     positions = field_positions(recipe, errors)
+    if fill is None:
+        fill = paste_zone_fill_entries(recipe, positions)
     validate_recipe_paste_zone_table(recipe, positions, fill, errors)
+    return errors
+
+
+def collect_recipe_validation_errors(
+    recipe_name: str,
+    recipe_lines: list[str],
+    line: int = 1,
+) -> list[Diagnostic]:
+    recipe = Recipe(name=recipe_name, category="Fixture", line=line, start=0, end=len(recipe_lines), lines=recipe_lines)
+    errors: list[Diagnostic] = []
+    positions = field_positions(recipe, errors)
+    fill = paste_zone_fill_entries(recipe, positions)
+    validate_recipe_paste_zone_table(recipe, positions, fill, errors)
+    validate_paste_preview_visibility(recipe, positions, errors)
+    validate_fill_these_in_compact(recipe, positions, errors)
     return errors
 
 
@@ -476,11 +500,25 @@ def validate_recipe_paste_zone_table(
                 errors.append(
                     Diagnostic(
                         "RECIPE_PASTE_ZONE_REQ_MISMATCH",
-                        f"Paste-zone Req for {{{name}}} must be {expected_req!r} to match Fill these in.",
+                        f"Paste-zone Req for {{{name}}} must be {expected_req!r} to match the declared placeholder requirement.",
                         recipe.line,
                         recipe.name,
                     )
                 )
+        stripped_value = strip_markdown(example_value)
+        if stripped_value.lower() not in PASTE_PREVIEW_POINTER_VALUES and len(stripped_value) > RECIPE_PASTE_ZONE_VALUE_LENGTH:
+            errors.append(
+                Diagnostic(
+                    "RECIPE_PASTE_ZONE_VALUE_LENGTH",
+                    (
+                        f"Paste-zone Example value for {{{name}}} exceeds {RECIPE_PASTE_ZONE_VALUE_LENGTH} "
+                        f"characters ({len(stripped_value)})."
+                    ),
+                    recipe.line,
+                    recipe.name,
+                    hint="Shorten the cell, move overflow to Notes, or hoist a Paste preview blockquote.",
+                )
+            )
         for pattern in FILLED_EXAMPLE_META_VALUE_PATTERNS:
             if pattern.search(example_value):
                 errors.append(
@@ -549,18 +587,116 @@ def validate_filled_example_details(recipe: Recipe, details: str, fill: dict[str
             )
 
 
-def fill_entries(recipe: Recipe, positions: dict[str, int]) -> dict[str, tuple[str, int]]:
-    if "Fill these in:" not in positions:
+def paste_zone_fill_entries(recipe: Recipe, positions: dict[str, int]) -> dict[str, tuple[str, int]]:
+    if "Use for:" not in positions or "Copy prompt:" not in positions:
         return {}
-    end_candidates = [positions[field] for field in REQUIRED_FIELDS if field in positions and positions[field] > positions["Fill these in:"]]
-    end = min(end_candidates) if end_candidates else len(recipe.lines)
     entries: dict[str, tuple[str, int]] = {}
-    pattern = re.compile(r"^- `\{([^}]+)\}` \((required|optional)\):")
-    for index in range(positions["Fill these in:"] + 1, end):
-        match = pattern.match(recipe.lines[index])
-        if match:
-            entries[match.group(1)] = (match.group(2), recipe.line + index)
+    in_table = False
+    for index in range(positions["Use for:"], positions["Copy prompt:"]):
+        line = recipe.lines[index]
+        if line == PASTE_ZONE_TABLE_HEADER:
+            in_table = True
+            continue
+        if not in_table:
+            continue
+        if not line.startswith("|"):
+            in_table = False
+            continue
+        if re.match(r"^\|\s*-+\s*\|", line):
+            continue
+        cells = [cell.strip() for cell in line.strip("|").split("|")]
+        if len(cells) < 4:
+            continue
+        placeholder_cell, req_cell = cells[0], cells[1].lower().strip()
+        match = re.search(r"`\{([^}]+)\}`", placeholder_cell)
+        if not match or req_cell not in {"yes", "no"}:
+            continue
+        name = match.group(1)
+        entries[name] = ("required" if req_cell == "yes" else "optional", recipe.line + index)
     return entries
+
+
+def fill_entries(recipe: Recipe, positions: dict[str, int]) -> dict[str, tuple[str, int]]:
+    return paste_zone_fill_entries(recipe, positions)
+
+
+def paste_preview_pointer_names(visible_region: str) -> set[str]:
+    pointers: set[str] = set()
+    for row in paste_zone_table_rows(visible_region, PASTE_ZONE_TABLE_HEADER):
+        cells = [cell.strip() for cell in row.strip("|").split("|")]
+        if len(cells) < 4:
+            continue
+        example_value = strip_markdown(cells[2]).lower()
+        if example_value not in PASTE_PREVIEW_POINTER_VALUES:
+            continue
+        match = re.search(r"`\{([^}]+)\}`", cells[0])
+        if match:
+            pointers.add(match.group(1))
+    return pointers
+
+
+def visible_paste_preview_names(visible_region: str) -> set[str]:
+    return set(PASTE_PREVIEW_HEADING_RE.findall(visible_region))
+
+
+def validate_paste_preview_visibility(recipe: Recipe, positions: dict[str, int], errors: list[Diagnostic]) -> None:
+    region = recipe_body_before_copy_prompt(recipe, positions)
+    if not region:
+        return
+    visible_region = text_outside_details(region)
+    pointers = paste_preview_pointer_names(visible_region)
+    if not pointers:
+        return
+    preview_names = visible_paste_preview_names(visible_region)
+    for name in sorted(pointers - preview_names):
+        errors.append(
+            Diagnostic(
+                "RECIPE_PASTE_PREVIEW_HIDDEN",
+                (
+                    f"Paste-zone Example value points to preview for {{{name}}} but no visible "
+                    "Paste preview block exists between the table and Copy prompt."
+                ),
+                recipe.line,
+                recipe.name,
+                hint="Add `**Paste preview** (`{name}`):` with a blockquote sample above Copy prompt.",
+            )
+        )
+
+
+def validate_fill_these_in_compact(recipe: Recipe, positions: dict[str, int], errors: list[Diagnostic]) -> None:
+    if "Fill these in:" not in positions:
+        return
+    start = positions["Fill these in:"] + 1
+    end_candidates = [
+        positions[field]
+        for field in REQUIRED_FIELDS
+        if field in positions and positions[field] > positions["Fill these in:"]
+    ]
+    end = min(end_candidates) if end_candidates else len(recipe.lines)
+    content_lines = recipe.lines[start:end]
+    non_empty = [line for line in content_lines if line.strip()]
+    for offset, line in enumerate(content_lines):
+        if BULLET_FILL_PATTERN.match(line):
+            errors.append(
+                Diagnostic(
+                    "FILL_THESE_IN_COMPACT",
+                    "Fill these in must be a one-line pointer to the Paste zones table, not bullet entries.",
+                    recipe.line + start + offset,
+                    recipe.name,
+                    hint="Replace bullets with: Match the **Paste zones** table above; paste `none` for optional zones you omit.",
+                )
+            )
+            return
+    non_bullet = [line for line in non_empty if not line.strip().startswith("- ")]
+    if len(non_bullet) > 2:
+        errors.append(
+            Diagnostic(
+                "FILL_THESE_IN_COMPACT",
+                "Fill these in must be at most two non-bullet lines pointing to the Paste zones table.",
+                recipe.line + start,
+                recipe.name,
+            )
+        )
 
 
 def validate_recipe(recipe: Recipe, errors: list[Diagnostic], warnings: list[Diagnostic]) -> dict[str, object]:
@@ -579,17 +715,29 @@ def validate_recipe(recipe: Recipe, errors: list[Diagnostic], warnings: list[Dia
 
     fill = fill_entries(recipe, positions)
     validate_recipe_paste_zone_table(recipe, positions, fill, errors)
+    validate_paste_preview_visibility(recipe, positions, errors)
+    validate_fill_these_in_compact(recipe, positions, errors)
     prompt_text = "\n".join("\n".join(block[2]) for block in blocks)
     placeholders = set(re.findall(r"\{([A-Za-z0-9_]+)\}", prompt_text))
     declared = set(fill)
     for name in sorted(placeholders - declared):
         errors.append(
-            Diagnostic("UNDECLARED_PLACEHOLDER", f"Prompt placeholder {{{name}}} is not listed in Fill these in.", line_for(recipe, "Copy prompt:"), recipe.name)
+            Diagnostic(
+                "UNDECLARED_PLACEHOLDER",
+                f"Prompt placeholder {{{name}}} is not listed in the Paste zones table.",
+                line_for(recipe, "Copy prompt:"),
+                recipe.name,
+            )
         )
     for name, (_, entry_line) in sorted(fill.items()):
         if name not in placeholders:
             errors.append(
-                Diagnostic("UNUSED_FILL_ENTRY", f"Fill entry {{{name}}} is not present in the copy prompt.", entry_line, recipe.name)
+                Diagnostic(
+                    "UNUSED_FILL_ENTRY",
+                    f"Paste zones table entry {{{name}}} is not present in the copy prompt.",
+                    entry_line,
+                    recipe.name,
+                )
             )
         if re.search(r"[^a-z0-9_]", name):
             warnings.append(
@@ -847,6 +995,7 @@ def run(readme: Path) -> dict[str, object]:
             "text_prompt_blocks",
             "paste_zones",
             "placeholder_fill_entries",
+            "paste_zone_fill_entries",
             "stale_input_placeholder",
             "visible_chain_of_thought",
             "pattern_note_count",
@@ -859,7 +1008,10 @@ def run(readme: Path) -> dict[str, object]:
             "recipe_paste_zone_rows",
             "recipe_paste_zone_req",
             "recipe_paste_zone_meta",
+            "recipe_paste_zone_value_length",
             "recipe_paste_zone_placeholder_coverage",
+            "recipe_paste_preview_visibility",
+            "fill_these_in_compact",
             "filled_example_disclaimer",
             "filled_example_output_table",
             "filled_example_output_align",
@@ -881,12 +1033,18 @@ def run_fixture_checks() -> dict[str, object]:
     failures: list[dict[str, object]] = []
     for case in manifest["cases"]:
         case_id = case["id"]
-        details_path = FIXTURES_DIR / case["details_file"]
-        details = details_path.read_text(encoding="utf-8")
-        fill = {name: ("required", 1) for name in case.get("fill", [])}
-        for name in case.get("optional_fill", []):
-            fill[name] = ("optional", 1)
-        errors = collect_filled_example_errors(case["recipe"], details, fill)
+        errors: list[Diagnostic] = []
+        if case.get("recipe_lines_file"):
+            recipe_lines_path = FIXTURES_DIR / case["recipe_lines_file"]
+            recipe_lines = recipe_lines_path.read_text(encoding="utf-8").splitlines()
+            errors.extend(collect_recipe_validation_errors(case["recipe"], recipe_lines))
+        if case.get("details_file"):
+            details_path = FIXTURES_DIR / case["details_file"]
+            details = details_path.read_text(encoding="utf-8")
+            fill = {name: ("required", 1) for name in case.get("fill", [])}
+            for name in case.get("optional_fill", []):
+                fill[name] = ("optional", 1)
+            errors.extend(collect_filled_example_errors(case["recipe"], details, fill))
         codes = sorted({error.code for error in errors})
         expect = sorted(case.get("expect_codes", []))
         forbid = sorted(case.get("forbid_codes", []))

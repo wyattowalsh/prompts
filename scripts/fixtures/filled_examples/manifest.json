@@ -151,6 +151,30 @@
       "expect_codes": [
         "FILLED_EXAMPLE_OUTPUT_ALIGN"
       ]
+    },
+    {
+      "id": "RF-NEG-14",
+      "recipe": "Source-Grounded Answer",
+      "recipe_lines_file": "cases/RF-NEG-14-recipe.md",
+      "expect_codes": [
+        "RECIPE_PASTE_PREVIEW_HIDDEN"
+      ]
+    },
+    {
+      "id": "RF-NEG-15",
+      "recipe": "Source-Grounded Answer",
+      "recipe_lines_file": "cases/RF-NEG-15-recipe.md",
+      "expect_codes": [
+        "RECIPE_PASTE_ZONE_VALUE_LENGTH"
+      ]
+    },
+    {
+      "id": "RF-NEG-16",
+      "recipe": "Source-Grounded Answer",
+      "recipe_lines_file": "cases/RF-NEG-16-recipe.md",
+      "expect_codes": [
+        "FILL_THESE_IN_COMPACT"
+      ]
     }
   ]
 }

@@ -87,10 +87,15 @@ link here instead of duplicating commands.
 
 `scripts/check_readme_recipes.py --check` enforces the recipe card contract
 and navigation integrity: Prompt Index link completeness (48 recipe anchors)
-and Section Map link completeness (22 navigation anchors).
+and Section Map link completeness (22 navigation anchors). It also enforces
+paste-zone tables, compact `Fill these in` pointers, hoisted paste previews,
+and example-value length limits on all 48 recipes.
 
 Filled-example structure on the eight target recipes is also checked via
 `FILLED_EXAMPLE_*` rules and `python3 scripts/check_readme_recipes.py --fixtures`.
+Recipe-level negative fixtures live under
+`scripts/fixtures/filled_examples/cases/RF-NEG-*.md` (including RF-NEG-14..16).
+Paste-zone cell length audits use `scripts/audit_paste_zone_cells.py`.
 
 ```bash
 DOCS=(
@@ -101,13 +106,16 @@ DOCS=(
 )
 python3 scripts/check_readme_recipes.py --readme README.md --check
 python3 scripts/check_readme_recipes.py --fixtures
+python3 scripts/audit_paste_zone_cells.py --check --strict-warn
 python3 -m unittest discover -s tests -v
 npx -y markdownlint-cli2@0.22.1 "${DOCS[@]}"
 npx -y markdown-link-check@3.14.2 "${DOCS[@]}"
 python3 scripts/update_readme_badges.py --check
 PYTHONPYCACHEPREFIX=/tmp/prompts-pycache python3 -m py_compile \
   scripts/update_readme_badges.py \
-  scripts/check_readme_recipes.py
+  scripts/check_readme_recipes.py \
+  scripts/audit_paste_zone_cells.py \
+  scripts/hoist_paste_preview.py
 python3 -m json.tool .agents/skills/readme-catalog-steward/evals/evals.json >/dev/null
 npx -y js-yaml@5.2.1 .github/workflows/readme-quality.yml >/dev/null
 git diff --check -- \
@@ -117,6 +125,8 @@ git diff --check -- \
   .github/workflows/readme-quality.yml \
   scripts/check_readme_recipes.py \
   scripts/update_readme_badges.py \
+  scripts/audit_paste_zone_cells.py \
+  scripts/hoist_paste_preview.py \
   scripts/fixtures/filled_examples/manifest.json \
   tests/test_filled_example_rules.py
 ```

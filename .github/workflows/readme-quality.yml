@@ -7,6 +7,8 @@ on:
       - AGENTS.md
       - .agents/skills/readme-catalog-steward/**
       - scripts/check_readme_recipes.py
+      - scripts/audit_paste_zone_cells.py
+      - scripts/hoist_paste_preview.py
       - scripts/fixtures/filled_examples/**
       - scripts/update_readme_badges.py
       - tests/**
@@ -20,6 +22,8 @@ on:
       - AGENTS.md
       - .agents/skills/readme-catalog-steward/**
       - scripts/check_readme_recipes.py
+      - scripts/audit_paste_zone_cells.py
+      - scripts/hoist_paste_preview.py
       - scripts/fixtures/filled_examples/**
       - scripts/update_readme_badges.py
       - tests/**
@@ -53,6 +57,10 @@ jobs:
         shell: bash
         run: python3 scripts/check_readme_recipes.py --fixtures
 
+      - name: Paste-zone cell audit
+        shell: bash
+        run: python3 scripts/audit_paste_zone_cells.py --check --strict-warn
+
       - name: Filled example unit tests
         shell: bash
         run: python3 -m unittest discover -s tests -v
@@ -63,7 +71,7 @@ jobs:
           PYTHONPYCACHEPREFIX: /tmp/prompts-pycache
         run: |
           python3 scripts/update_readme_badges.py --check
-          python3 -m py_compile scripts/update_readme_badges.py scripts/check_readme_recipes.py
+          python3 -m py_compile scripts/update_readme_badges.py scripts/check_readme_recipes.py scripts/audit_paste_zone_cells.py scripts/hoist_paste_preview.py
 
       - name: Markdown lint
         shell: bash
@@ -109,6 +117,8 @@ jobs:
             .github/workflows/readme-quality.yml \
             scripts/check_readme_recipes.py \
             scripts/update_readme_badges.py \
+            scripts/audit_paste_zone_cells.py \
+            scripts/hoist_paste_preview.py \
             scripts/fixtures/filled_examples/manifest.json \
             tests/test_filled_example_rules.py
 

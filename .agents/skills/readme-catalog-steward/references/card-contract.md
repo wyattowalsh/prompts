@@ -50,19 +50,51 @@ before copying the template:
 
 Rules:
 
-- one row per placeholder declared in `Fill these in:`
-- Placeholder column uses `` `{name}` `` matching the fill entry
+- the table is **canonical** for placeholder names and required/optional status
+- one row per placeholder used in the copy prompt
+- Placeholder column uses `` `{name}` `` matching the prompt placeholder
 - Req column is `yes` for required placeholders and `no` for optional ones
 - Example value uses literal paste values, not meta-descriptions (reserve those
-  for Notes)
+  for Notes); target ≤72 characters, hard limit 80
+- use `see preview below` in Example value when a multi-line sample is hoisted
+  to a visible **Paste preview** block
 - the table must appear in the main recipe body, not only inside a collapsed
   `<details>` block
 
-Optional **paste preview** blockquotes may still appear in filled examples for
-multi-line zones (diffs, memos, schemas, logs, retrieved sources).
+### Paste Preview Hoist
+
+When Example value is `see paste preview` or `see preview below`, add a visible
+**Paste preview** block between the table and `<!-- Copy prompt: -->`:
+
+```markdown
+**Paste preview** (`{zone}`):
+
+> …literal multi-line sample…
+```
+
+Do not hide the only preview inside a collapsed filled example after hoist.
+
+Use `scripts/hoist_paste_preview.py --dry-run` to inspect planned hoists and
+`--apply` for bulk hoist (historical migration on all target recipes is complete).
 
 `scripts/check_readme_recipes.py` enforces paste-zone tables on all 48 recipes
-via `validate_recipe_paste_zone_table()`.
+via `validate_recipe_paste_zone_table()`, preview visibility via
+`validate_paste_preview_visibility()`, and value length via
+`RECIPE_PASTE_ZONE_VALUE_LENGTH`.
+
+## Fill These In (Compact Pointer)
+
+`Fill these in:` must be a one-line pointer to the paste zones table, not a
+duplicate bullet list:
+
+```markdown
+Fill these in:
+
+Match the **Paste zones** table above; paste `none` for optional zones you omit.
+```
+
+At most two non-bullet lines are allowed. `validate_fill_these_in_compact()`
+rejects legacy bullet entries.
 
 ## Filled Example Blocks
 
@@ -74,15 +106,19 @@ unless `Upgrade when` explicitly directs adding examples to the prompt.
 Each block must include:
 
 - a `[!NOTE]` walkthrough disclaimer (`Walkthrough only.`)
-- optional **paste preview** blockquotes for multi-line zones (diffs, memos,
-  schemas, logs, retrieved sources)
 - **expected output shape** with a two-column table:
   `Output field | Example` aligned to the recipe output contract
 - **what to change for your case** with one adaptation bullet (mention evals
   when the workflow is reusable)
 
+Paste previews for multi-line zones belong in the main recipe body (hoisted
+above Copy prompt), not inside filled examples after migration.
+
 Do not use `####` headings or fenced ` ```text ` blocks inside filled examples.
 Do not instruct readers to paste sample output into the prompt.
+
+Long fenced copy prompts may scroll horizontally on GitHub; that is accepted
+when the prompt must stay copyable as one block (RV-V-004).
 
 `scripts/check_readme_recipes.py` enforces filled-example structure on the eight
 target recipes only. Input placeholder tables belong above the copy prompt, not
