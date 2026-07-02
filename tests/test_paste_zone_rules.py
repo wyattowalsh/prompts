@@ -1,4 +1,4 @@
-"""Unit tests for filled-example and paste-zone linter helpers."""
+"""Unit tests for paste-zone linter helpers."""
 
 from __future__ import annotations
 
@@ -63,22 +63,6 @@ def _sample_paste_zone_table(*, trusted_example: str = "Memo excerpt") -> str:
             f"| `{{trusted_context}}` | yes | {trusted_example} | excerpt |",
         ]
     )
-
-
-class FilledExampleRulesTest(unittest.TestCase):
-    def test_field_matches_output_row_prefix(self) -> None:
-        self.assertTrue(checker.field_matches_output_row("Findings", "Findings by severity"))
-        self.assertFalse(checker.field_matches_output_row("Direct answer", "Summary"))
-
-    def test_output_table_field_names_strips_markdown(self) -> None:
-        rows = ["| **Findings by severity** | High issue |"]
-        self.assertEqual(checker.output_table_field_names(rows), ["Findings by severity"])
-
-    def test_positive_fixture_case_passes(self) -> None:
-        manifest = checker.FIXTURES_DIR / "manifest.json"
-        self.assertTrue(manifest.exists())
-        result = checker.run_fixture_checks()
-        self.assertTrue(result["ok"], msg=str(result.get("failures")))
 
 
 class RecipePasteZoneRulesTest(unittest.TestCase):
@@ -187,6 +171,29 @@ class RecipePasteZoneRulesTest(unittest.TestCase):
         )
         codes = {error.code for error in errors}
         self.assertNotIn("FILL_THESE_IN_COMPACT", codes)
+        self.assertNotIn("FILL_THESE_IN_OPTIONAL_NONE", codes)
+
+    def test_canonical_fill_these_in_passes(self) -> None:
+        errors = checker.collect_recipe_validation_errors(
+            "Source-Grounded Answer",
+            _sample_recipe_lines(
+                _sample_paste_zone_table(),
+                fill_block=checker.FILL_CANONICAL_POINTER,
+            ),
+        )
+        codes = {error.code for error in errors}
+        self.assertNotIn("FILL_THESE_IN_OPTIONAL_NONE", codes)
+
+    def test_fill_missing_optional_none_fails(self) -> None:
+        errors = checker.collect_recipe_validation_errors(
+            "Source-Grounded Answer",
+            _sample_recipe_lines(
+                _sample_paste_zone_table(),
+                fill_block="Match the **Paste zones** table above.",
+            ),
+        )
+        codes = {error.code for error in errors}
+        self.assertIn("FILL_THESE_IN_OPTIONAL_NONE", codes)
 
     def test_bullet_fill_these_in_fails(self) -> None:
         bullets = "\n".join(

@@ -58,13 +58,9 @@ def _hidden_preview_recipe_lines() -> list[str]:
         "- A direct answer.",
         "",
         "<details>",
-        "<summary><strong>Filled example</strong></summary>",
+        "<summary>hidden preview</summary>",
         "",
         preview,
-        "",
-        "| Field | Sample |",
-        "| --- | --- |",
-        "| Answer | yes |",
         "",
         "</details>",
     ]
@@ -116,10 +112,8 @@ class HoistPastePreviewTest(unittest.TestCase):
         self.assertEqual(errors, [])
         self.assertIn("see preview below", "\n".join(updated))
         self.assertIn("**Paste preview** (`{trusted_context}`):", "\n".join(updated))
-        details = hoist.recipe_details_text(recipe)
-        self.assertIsNotNone(details)
-        assert details is not None
-        self.assertNotIn("**Paste preview**", details)
+        details_regions = hoist.iter_details_regions("\n".join(updated))
+        self.assertTrue(any("**Paste preview**" not in region for region in details_regions))
 
     def test_apply_on_temp_readme_integration(self) -> None:
         lines = _mini_readme_with_recipe(_hidden_preview_recipe_lines())

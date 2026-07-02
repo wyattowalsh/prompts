@@ -239,6 +239,37 @@ LANE_CHIP_PARAMS = {
     "iconSize": "11",
 }
 
+RECIPE_HEADING_PARAMS = {
+    **COMMON_STATIC_PARAMS,
+    "split": "false",
+    "height": "28",
+    "padX": "6",
+    "iconSize": "16",
+}
+
+RECIPE_HEADING_ICON_OVERRIDES: dict[str, str] = {
+    "JSON Extractor": "ri:RiNodeTree",
+}
+
+RECIPE_HEADING_BADGE_OVERRIDES: dict[str, dict[str, str]] = {
+    "Literature Scan": {"color": "1E40AF", "logo": "ri:RiBookReadLine", "lane": "research"},
+    "Disagreement Map": {"color": "93C5FD", "logo": "ri:RiDivideLine", "lane": "research"},
+    "Style Transfer Without Examples": {"color": "C026D3", "logo": "ri:RiPaletteLine", "lane": "writing"},
+    "FAQ Generator": {"color": "A21CAF", "logo": "ri:RiQuestionnaireLine", "lane": "writing"},
+    "Refactor Planner": {"color": "059669", "logo": "ri:RiFlowChart", "lane": "coding"},
+    "PR Description": {"color": "34D399", "logo": "ri:RiGitPullRequestLine", "lane": "coding"},
+    "Sentiment Triage": {"color": "F59E0B", "logo": "ri:RiEmotionLine", "lane": "data"},
+    "Synthetic Edge Cases": {"color": "D97706", "logo": "ri:RiCornerDownRightLine", "lane": "data"},
+    "Acceptance Criteria Writer": {"color": "BE185D", "logo": "ri:RiListCheck2", "lane": "product"},
+    "Support Macro": {"color": "F9A8D4", "logo": "ri:RiCustomerService2Line", "lane": "product"},
+    "Risk Register": {"color": "C2410C", "logo": "ri:RiAlertLine", "lane": "operations"},
+    "Meeting Action Extractor": {"color": "FD7E14", "logo": "ri:RiCalendarCheckLine", "lane": "operations"},
+    "Eval-Set Generator": {"color": "0E7490", "logo": "ri:RiListOrdered", "lane": "agents"},
+    "Regression Judge": {"color": "155E75", "logo": "ri:RiScales2Line", "lane": "agents"},
+    "Step-Back Answer": {"color": "6D28D9", "logo": "ri:RiArrowLeftUpLine", "lane": "reasoning"},
+    "Panel Review": {"color": "9F7AEA", "logo": "ri:RiGroupLine", "lane": "reasoning"},
+}
+
 LANE_CHIP_SECTIONS = [
     {
         "key": "research",
@@ -381,6 +412,54 @@ NAV_BADGES = [
 ]
 
 
+def recipe_links_from_job_map() -> list[tuple[str, str]]:
+    links: list[tuple[str, str]] = []
+    for row in JOB_MAP_ROWS:
+        for match in re.finditer(r"\[([^\]]+)\]\(#([^)]+)\)", row["recipes"]):
+            links.append((match.group(1), match.group(2)))
+    return links
+
+
+def lane_chip_lookup() -> dict[str, tuple[dict[str, str], str]]:
+    lookup: dict[str, tuple[dict[str, str], str]] = {}
+    for section in LANE_CHIP_SECTIONS:
+        lane = section["key"]
+        for chip in section["chips"]:
+            lookup[chip["alt"]] = (chip, lane)
+    return lookup
+
+
+def build_recipe_heading_badges() -> list[dict[str, str]]:
+    chip_lookup = lane_chip_lookup()
+    badges: list[dict[str, str]] = []
+    for name, slug in recipe_links_from_job_map():
+        if name in RECIPE_HEADING_BADGE_OVERRIDES:
+            override = RECIPE_HEADING_BADGE_OVERRIDES[name]
+            badges.append({"name": name, "slug": slug, **override})
+            continue
+        chip, lane = chip_lookup[name]
+        logo = RECIPE_HEADING_ICON_OVERRIDES.get(name, chip["logo"])
+        badges.append(
+            {
+                "name": name,
+                "slug": slug,
+                "color": chip["color"],
+                "logo": logo,
+                "lane": lane,
+            }
+        )
+    if len(badges) != 48:
+        raise SystemExit(f"Expected 48 recipe heading badges, found {len(badges)}")
+    logos = [badge["logo"] for badge in badges]
+    if len(logos) != len(set(logos)):
+        duplicates = sorted({logo for logo in logos if logos.count(logo) > 1})
+        raise SystemExit(f"Recipe heading badge icons must be unique; duplicates: {', '.join(duplicates)}")
+    return badges
+
+
+RECIPE_HEADING_BADGES = build_recipe_heading_badges()
+
+
 def repo_slug() -> tuple[str, str]:
     try:
         remote = subprocess.check_output(
@@ -395,6 +474,10 @@ def repo_slug() -> tuple[str, str]:
     if not match:
         return DEFAULT_REPO
     return match.group("owner"), match.group("repo")
+
+
+def is_recipe_heading_open(line: str) -> bool:
+    return line.startswith("#### ") or line.startswith('<h4 id="')
 
 
 def count_headings(markdown: str, section: str) -> int:
@@ -412,9 +495,91 @@ def count_headings(markdown: str, section: str) -> int:
             continue
         if in_section and line.startswith("## "):
             break
-        if in_section and line.startswith("#### "):
+        if in_section and is_recipe_heading_open(line):
             count += 1
     return count
+
+
+def recipe_heading_badge_url(badge: dict[str, str]) -> str:
+    params = {
+        **RECIPE_HEADING_PARAMS,
+        "variant": "default",
+        "logo": badge["logo"],
+        "logoColor": "f8fafc",
+        "label": "",
+    }
+    return (
+        "https://shieldcn.dev/badge/"
+        f"-{badge['color']}.svg?"
+        f"{urlencode(params, safe=':')}"
+    )
+
+
+def render_recipe_heading(badge: dict[str, str]) -> str:
+    src = recipe_heading_badge_url(badge)
+    name = badge["name"]
+    return (
+        f'<h4 id="{badge["slug"]}">\n'
+        f'  <img src="{src}" alt="{name}" title="{name}" height="28" '
+        f'style="vertical-align:text-bottom;margin-right:0.35em;" />\n'
+        f'  {name}\n'
+        f"</h4>"
+    )
+
+
+def apply_recipe_heading_badges(markdown: str) -> str:
+    badges_by_name = {badge["name"]: badge for badge in RECIPE_HEADING_BADGES}
+    lines = markdown.splitlines()
+    in_prompt_library = False
+    in_fence = False
+    updated: list[str] = []
+    index = 0
+    while index < len(lines):
+        line = lines[index]
+        if line.startswith("```"):
+            in_fence = not in_fence
+            updated.append(line)
+            index += 1
+            continue
+        if not in_fence and line == "## Prompt Library":
+            in_prompt_library = True
+            updated.append(line)
+            index += 1
+            continue
+        if in_prompt_library and not in_fence and line.startswith("## "):
+            in_prompt_library = False
+        if in_prompt_library and not in_fence:
+            if line.startswith("#### "):
+                name = line[5:].strip()
+                badge = badges_by_name.get(name)
+                if badge is None:
+                    raise SystemExit(f"Missing recipe heading badge config for {name!r}")
+                updated.extend(render_recipe_heading(badge).splitlines())
+                index += 1
+                continue
+            if line.startswith('<h4 id="'):
+                block_end = index
+                while block_end < len(lines) and "</h4>" not in lines[block_end]:
+                    block_end += 1
+                if block_end >= len(lines):
+                    raise SystemExit(f"Unclosed recipe heading near line {index + 1}")
+                block = "\n".join(lines[index : block_end + 1])
+                slug_match = re.search(r'<h4 id="([^"]+)">', block)
+                name_match = re.search(r"<img[^>]*>\s*(.+?)\s*</h4>", block, re.DOTALL)
+                if not slug_match or not name_match:
+                    raise SystemExit(f"Malformed recipe heading near line {index + 1}")
+                name = re.sub(r"<[^>]+>", "", name_match.group(1)).strip()
+                badge = badges_by_name.get(name)
+                if badge is None:
+                    raise SystemExit(f"Missing recipe heading badge config for {name!r}")
+                if slug_match.group(1) != badge["slug"]:
+                    raise SystemExit(f"Recipe heading slug mismatch for {name!r}")
+                updated.extend(render_recipe_heading(badge).splitlines())
+                index = block_end + 1
+                continue
+        updated.append(line)
+        index += 1
+    return "\n".join(updated) + ("\n" if markdown.endswith("\n") else "")
 
 
 def chip_badge_url(chip: dict[str, str]) -> str:
@@ -618,6 +783,7 @@ def render_shortcut_block() -> str:
 def generated_badge_urls(markdown: str) -> list[str]:
     blocks = [render_badge_block(markdown), render_lane_block(), render_shortcut_block(), render_job_map_block()]
     blocks.extend(render_lane_chip_block(section) for section in LANE_CHIP_SECTIONS)
+    blocks.extend(render_recipe_heading(badge) for badge in RECIPE_HEADING_BADGES)
     urls = re.findall(r'src="(https://shieldcn\.dev[^"]+)"', "\n".join(blocks))
     # Nav badges are repeated in the README body, so list each unique URL once
     # for smoke checks without making the script rewrite every section footer.
@@ -637,7 +803,8 @@ def replace_badges(markdown: str) -> str:
     updated = replace_marker_block(updated, LANES_START, LANES_END, render_lane_block())
     updated = replace_marker_block(updated, SHORTCUTS_START, SHORTCUTS_END, render_shortcut_block())
     updated = replace_marker_block(updated, JOB_MAP_START, JOB_MAP_END, render_job_map_block())
-    return replace_lane_chips(updated)
+    updated = replace_lane_chips(updated)
+    return apply_recipe_heading_badges(updated)
 
 
 def main() -> int:

@@ -91,10 +91,6 @@ and Section Map link completeness (21 navigation anchors). It also enforces
 paste-zone tables, compact `Fill these in` pointers, hoisted paste previews,
 and example-value length limits on all 48 recipes.
 
-Filled-example structure on the eight target recipes is also checked via
-`FILLED_EXAMPLE_*` rules and `python3 scripts/check_readme_recipes.py --fixtures`.
-Recipe-level negative fixtures live under
-`scripts/fixtures/filled_examples/cases/RF-NEG-*.md` (including RF-NEG-14..16).
 Paste-zone cell length audits use `scripts/audit_paste_zone_cells.py`.
 
 ```bash
@@ -105,7 +101,6 @@ DOCS=(
   .agents/skills/readme-catalog-steward/references/*.md
 )
 python3 scripts/check_readme_recipes.py --readme README.md --check
-python3 scripts/check_readme_recipes.py --fixtures
 python3 scripts/audit_paste_zone_cells.py --check --strict-warn
 python3 -m unittest discover -s tests -v
 npx -y markdownlint-cli2@0.22.1 "${DOCS[@]}"
@@ -126,9 +121,7 @@ git diff --check -- \
   scripts/check_readme_recipes.py \
   scripts/update_readme_badges.py \
   scripts/audit_paste_zone_cells.py \
-  scripts/hoist_paste_preview.py \
-  scripts/fixtures/filled_examples/manifest.json \
-  tests/test_filled_example_rules.py
+  scripts/hoist_paste_preview.py
 ```
 
 If badges change, update generated badges and inspect every ShieldCN URL:

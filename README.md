@@ -268,7 +268,10 @@ Recipe format:
 </p>
 <!-- LANE-CHIPS:research:END -->
 
-#### Source-Grounded Answer
+<h4 id="source-grounded-answer">
+  <img src="https://shieldcn.dev/badge/-2563EB.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=28&radius=7&padX=6&iconSize=16&variant=default&logo=ri:RiQuoteText&logoColor=f8fafc&label=" alt="Source-Grounded Answer" title="Source-Grounded Answer" height="28" style="vertical-align:text-bottom;margin-right:0.35em;" />
+  Source-Grounded Answer
+</h4>
 
 Use for: answer a question from supplied sources without drifting into unsupported claims
 
@@ -330,7 +333,7 @@ Validation before final:
 
 Fill these in:
 
-Match the **Paste zones** table above.
+Match the **Paste zones** table above; paste `none` for optional zones you omit.
 
 Expected output:
 
@@ -355,33 +358,15 @@ Sources:
 - [OpenAI prompt engineering](https://developers.openai.com/api/docs/guides/prompt-engineering)
 - [RAG / Citation-Grounded Answering](#rag--citation-grounded-answering)
 
-<details>
-<summary><strong>Filled example</strong></summary>
-
-> [!NOTE]
-> **Walkthrough only.** Paste values into the copy prompt zones above — not this sample output — unless `Upgrade when` directs in-prompt examples.
-
-expected output shape:
-
-| Output field | Example |
-| --- | --- |
-| Direct answer | No — the memo limits rollout to three pilot accounts and blocks a GA label. |
-| Sources used | Memo v3 (2026-05-12) |
-| Unsupported or missing evidence | No public launch date or GA approval record in the supplied excerpt. |
-| Confidence level | High for pilot-only status; medium for customer-facing wording |
-
-what to change for your case:
-
-- Swap in caller-approved source IDs or excerpts and keep `general_knowledge_policy` at `none` unless outside knowledge is explicitly allowed; add a regression eval for missing-evidence behavior.
-
-</details>
-
 <p align="right">
   <a href="#table-of-contents"><img alt="Table of contents" src="https://shieldcn.dev/badge/TOC-6366F1.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiListCheck&logoColor=f8fafc"></a>
   <a href="#prompt-library"><img alt="Back to top" src="https://shieldcn.dev/badge/Top-10B981.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiArrowUpLine&logoColor=f8fafc"></a>
 </p>
 
-#### Web Research Brief
+<h4 id="web-research-brief">
+  <img src="https://shieldcn.dev/badge/-3B82F6.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=28&radius=7&padX=6&iconSize=16&variant=default&logo=ri:RiGlobalLine&logoColor=f8fafc&label=" alt="Web Research Brief" title="Web Research Brief" height="28" style="vertical-align:text-bottom;margin-right:0.35em;" />
+  Web Research Brief
+</h4>
 
 Use for: turn live research notes into a decision-ready brief
 
@@ -433,7 +418,7 @@ Validation before final:
 
 Fill these in:
 
-Match the **Paste zones** table above.
+Match the **Paste zones** table above; paste `none` for optional zones you omit.
 
 Expected output:
 
@@ -463,7 +448,10 @@ Sources:
   <a href="#prompt-library"><img alt="Back to top" src="https://shieldcn.dev/badge/Top-10B981.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiArrowUpLine&logoColor=f8fafc"></a>
 </p>
 
-#### Literature Scan
+<h4 id="literature-scan">
+  <img src="https://shieldcn.dev/badge/-1E40AF.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=28&radius=7&padX=6&iconSize=16&variant=default&logo=ri:RiBookReadLine&logoColor=f8fafc&label=" alt="Literature Scan" title="Literature Scan" height="28" style="vertical-align:text-bottom;margin-right:0.35em;" />
+  Literature Scan
+</h4>
 
 Use for: triage papers before a deeper review
 
@@ -515,7 +503,7 @@ Validation before final:
 
 Fill these in:
 
-Match the **Paste zones** table above.
+Match the **Paste zones** table above; paste `none` for optional zones you omit.
 
 Expected output:
 
@@ -545,7 +533,10 @@ Sources:
   <a href="#prompt-library"><img alt="Back to top" src="https://shieldcn.dev/badge/Top-10B981.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiArrowUpLine&logoColor=f8fafc"></a>
 </p>
 
-#### Claim Checker
+<h4 id="claim-checker">
+  <img src="https://shieldcn.dev/badge/-60A5FA.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=28&radius=7&padX=6&iconSize=16&variant=default&logo=ri:RiShieldCheckLine&logoColor=f8fafc&label=" alt="Claim Checker" title="Claim Checker" height="28" style="vertical-align:text-bottom;margin-right:0.35em;" />
+  Claim Checker
+</h4>
 
 Use for: test a claim against provided evidence
 
@@ -597,7 +588,7 @@ Validation before final:
 
 Fill these in:
 
-Match the **Paste zones** table above.
+Match the **Paste zones** table above; paste `none` for optional zones you omit.
 
 Expected output:
 
@@ -627,7 +618,10 @@ Sources:
   <a href="#prompt-library"><img alt="Back to top" src="https://shieldcn.dev/badge/Top-10B981.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiArrowUpLine&logoColor=f8fafc"></a>
 </p>
 
-#### Citation Matrix
+<h4 id="citation-matrix">
+  <img src="https://shieldcn.dev/badge/-1D4ED8.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=28&radius=7&padX=6&iconSize=16&variant=default&logo=ri:RiLinksLine&logoColor=f8fafc&label=" alt="Citation Matrix" title="Citation Matrix" height="28" style="vertical-align:text-bottom;margin-right:0.35em;" />
+  Citation Matrix
+</h4>
 
 Use for: convert sources into a structured evidence table
 
@@ -679,7 +673,7 @@ Validation before final:
 
 Fill these in:
 
-Match the **Paste zones** table above.
+Match the **Paste zones** table above; paste `none` for optional zones you omit.
 
 Expected output:
 
@@ -707,7 +701,10 @@ Sources:
   <a href="#prompt-library"><img alt="Back to top" src="https://shieldcn.dev/badge/Top-10B981.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiArrowUpLine&logoColor=f8fafc"></a>
 </p>
 
-#### Disagreement Map
+<h4 id="disagreement-map">
+  <img src="https://shieldcn.dev/badge/-93C5FD.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=28&radius=7&padX=6&iconSize=16&variant=default&logo=ri:RiDivideLine&logoColor=f8fafc&label=" alt="Disagreement Map" title="Disagreement Map" height="28" style="vertical-align:text-bottom;margin-right:0.35em;" />
+  Disagreement Map
+</h4>
 
 Use for: surface conflicts across sources instead of averaging them away
 
@@ -759,7 +756,7 @@ Validation before final:
 
 Fill these in:
 
-Match the **Paste zones** table above.
+Match the **Paste zones** table above; paste `none` for optional zones you omit.
 
 Expected output:
 
@@ -800,7 +797,10 @@ Sources:
 </p>
 <!-- LANE-CHIPS:writing:END -->
 
-#### Executive Brief
+<h4 id="executive-brief">
+  <img src="https://shieldcn.dev/badge/-9333EA.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=28&radius=7&padX=6&iconSize=16&variant=default&logo=ri:RiFileTextLine&logoColor=f8fafc&label=" alt="Executive Brief" title="Executive Brief" height="28" style="vertical-align:text-bottom;margin-right:0.35em;" />
+  Executive Brief
+</h4>
 
 Use for: summarize messy material for a busy decision maker
 
@@ -852,7 +852,7 @@ Validation before final:
 
 Fill these in:
 
-Match the **Paste zones** table above.
+Match the **Paste zones** table above; paste `none` for optional zones you omit.
 
 Expected output:
 
@@ -880,7 +880,10 @@ Sources:
   <a href="#prompt-library"><img alt="Back to top" src="https://shieldcn.dev/badge/Top-10B981.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiArrowUpLine&logoColor=f8fafc"></a>
 </p>
 
-#### Rewrite With Constraints
+<h4 id="rewrite-with-constraints">
+  <img src="https://shieldcn.dev/badge/-A855F7.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=28&radius=7&padX=6&iconSize=16&variant=default&logo=ri:RiEditLine&logoColor=f8fafc&label=" alt="Rewrite With Constraints" title="Rewrite With Constraints" height="28" style="vertical-align:text-bottom;margin-right:0.35em;" />
+  Rewrite With Constraints
+</h4>
 
 Use for: rewrite text while preserving meaning and hard requirements
 
@@ -932,7 +935,7 @@ Validation before final:
 
 Fill these in:
 
-Match the **Paste zones** table above.
+Match the **Paste zones** table above; paste `none` for optional zones you omit.
 
 Expected output:
 
@@ -960,7 +963,10 @@ Sources:
   <a href="#prompt-library"><img alt="Back to top" src="https://shieldcn.dev/badge/Top-10B981.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiArrowUpLine&logoColor=f8fafc"></a>
 </p>
 
-#### Style Transfer Without Examples
+<h4 id="style-transfer-without-examples">
+  <img src="https://shieldcn.dev/badge/-C026D3.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=28&radius=7&padX=6&iconSize=16&variant=default&logo=ri:RiPaletteLine&logoColor=f8fafc&label=" alt="Style Transfer Without Examples" title="Style Transfer Without Examples" height="28" style="vertical-align:text-bottom;margin-right:0.35em;" />
+  Style Transfer Without Examples
+</h4>
 
 Use for: apply a style brief without requiring examples
 
@@ -1012,7 +1018,7 @@ Validation before final:
 
 Fill these in:
 
-Match the **Paste zones** table above.
+Match the **Paste zones** table above; paste `none` for optional zones you omit.
 
 Expected output:
 
@@ -1040,7 +1046,10 @@ Sources:
   <a href="#prompt-library"><img alt="Back to top" src="https://shieldcn.dev/badge/Top-10B981.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiArrowUpLine&logoColor=f8fafc"></a>
 </p>
 
-#### Dense Summary
+<h4 id="dense-summary">
+  <img src="https://shieldcn.dev/badge/-C084FC.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=28&radius=7&padX=6&iconSize=16&variant=default&logo=ri:RiAlignLeft&logoColor=f8fafc&label=" alt="Dense Summary" title="Dense Summary" height="28" style="vertical-align:text-bottom;margin-right:0.35em;" />
+  Dense Summary
+</h4>
 
 Use for: compress a source while preserving entities and facts
 
@@ -1092,7 +1101,7 @@ Validation before final:
 
 Fill these in:
 
-Match the **Paste zones** table above.
+Match the **Paste zones** table above; paste `none` for optional zones you omit.
 
 Expected output:
 
@@ -1120,7 +1129,10 @@ Sources:
   <a href="#prompt-library"><img alt="Back to top" src="https://shieldcn.dev/badge/Top-10B981.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiArrowUpLine&logoColor=f8fafc"></a>
 </p>
 
-#### FAQ Generator
+<h4 id="faq-generator">
+  <img src="https://shieldcn.dev/badge/-A21CAF.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=28&radius=7&padX=6&iconSize=16&variant=default&logo=ri:RiQuestionnaireLine&logoColor=f8fafc&label=" alt="FAQ Generator" title="FAQ Generator" height="28" style="vertical-align:text-bottom;margin-right:0.35em;" />
+  FAQ Generator
+</h4>
 
 Use for: turn a document into practical Q&A
 
@@ -1172,7 +1184,7 @@ Validation before final:
 
 Fill these in:
 
-Match the **Paste zones** table above.
+Match the **Paste zones** table above; paste `none` for optional zones you omit.
 
 Expected output:
 
@@ -1200,7 +1212,10 @@ Sources:
   <a href="#prompt-library"><img alt="Back to top" src="https://shieldcn.dev/badge/Top-10B981.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiArrowUpLine&logoColor=f8fafc"></a>
 </p>
 
-#### Newsletter Draft
+<h4 id="newsletter-draft">
+  <img src="https://shieldcn.dev/badge/-D946EF.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=28&radius=7&padX=6&iconSize=16&variant=default&logo=ri:RiMailLine&logoColor=f8fafc&label=" alt="Newsletter Draft" title="Newsletter Draft" height="28" style="vertical-align:text-bottom;margin-right:0.35em;" />
+  Newsletter Draft
+</h4>
 
 Use for: turn notes into a concise publishable issue
 
@@ -1252,7 +1267,7 @@ Validation before final:
 
 Fill these in:
 
-Match the **Paste zones** table above.
+Match the **Paste zones** table above; paste `none` for optional zones you omit.
 
 Expected output:
 
@@ -1293,7 +1308,10 @@ Sources:
 </p>
 <!-- LANE-CHIPS:coding:END -->
 
-#### Code Review
+<h4 id="code-review">
+  <img src="https://shieldcn.dev/badge/-16A34A.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=28&radius=7&padX=6&iconSize=16&variant=default&logo=ri:RiCodeSSlashLine&logoColor=f8fafc&label=" alt="Code Review" title="Code Review" height="28" style="vertical-align:text-bottom;margin-right:0.35em;" />
+  Code Review
+</h4>
 
 Use for: find correctness and maintainability issues first
 
@@ -1353,7 +1371,7 @@ Validation before final:
 
 Fill these in:
 
-Match the **Paste zones** table above.
+Match the **Paste zones** table above; paste `none` for optional zones you omit.
 
 Expected output:
 
@@ -1376,33 +1394,15 @@ Sources:
 - [OpenAI prompt engineering](https://developers.openai.com/api/docs/guides/prompt-engineering)
 - [Python Unit Test Writer](#python-unit-test-writer)
 
-<details>
-<summary><strong>Filled example</strong></summary>
-
-> [!NOTE]
-> **Walkthrough only.** Paste values into the copy prompt zones above — not this sample output — unless `Upgrade when` directs in-prompt examples.
-
-expected output shape:
-
-| Output field | Example |
-| --- | --- |
-| Findings by severity | **High** `src/cache.py:17` — cache key switched from `user_id` to `team_id`, breaking per-user permission isolation. |
-| Test gaps | No test covers cross-user access when users share a team. |
-| Questions | Is team-level cache intentional for this endpoint? |
-| Brief summary | One high-severity authz regression; add an isolation test before merge. |
-
-what to change for your case:
-
-- Replace the diff and trusted context with your repo conventions, then narrow `review_focus` to performance, security, correctness, or maintainability.
-
-</details>
-
 <p align="right">
   <a href="#table-of-contents"><img alt="Table of contents" src="https://shieldcn.dev/badge/TOC-6366F1.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiListCheck&logoColor=f8fafc"></a>
   <a href="#prompt-library"><img alt="Back to top" src="https://shieldcn.dev/badge/Top-10B981.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiArrowUpLine&logoColor=f8fafc"></a>
 </p>
 
-#### Bug RCA
+<h4 id="bug-rca">
+  <img src="https://shieldcn.dev/badge/-22C55E.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=28&radius=7&padX=6&iconSize=16&variant=default&logo=ri:RiBugLine&logoColor=f8fafc&label=" alt="Bug RCA" title="Bug RCA" height="28" style="vertical-align:text-bottom;margin-right:0.35em;" />
+  Bug RCA
+</h4>
 
 Use for: explain a failure from logs, code, and observed behavior
 
@@ -1454,7 +1454,7 @@ Validation before final:
 
 Fill these in:
 
-Match the **Paste zones** table above.
+Match the **Paste zones** table above; paste `none` for optional zones you omit.
 
 Expected output:
 
@@ -1482,7 +1482,10 @@ Sources:
   <a href="#prompt-library"><img alt="Back to top" src="https://shieldcn.dev/badge/Top-10B981.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiArrowUpLine&logoColor=f8fafc"></a>
 </p>
 
-#### Unit Test Writer
+<h4 id="unit-test-writer">
+  <img src="https://shieldcn.dev/badge/-4ADE80.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=28&radius=7&padX=6&iconSize=16&variant=default&logo=ri:RiTestTubeLine&logoColor=f8fafc&label=" alt="Unit Test Writer" title="Unit Test Writer" height="28" style="vertical-align:text-bottom;margin-right:0.35em;" />
+  Unit Test Writer
+</h4>
 
 Use for: write focused tests for known behavior
 
@@ -1534,7 +1537,7 @@ Validation before final:
 
 Fill these in:
 
-Match the **Paste zones** table above.
+Match the **Paste zones** table above; paste `none` for optional zones you omit.
 
 Expected output:
 
@@ -1562,7 +1565,10 @@ Sources:
   <a href="#prompt-library"><img alt="Back to top" src="https://shieldcn.dev/badge/Top-10B981.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiArrowUpLine&logoColor=f8fafc"></a>
 </p>
 
-#### Refactor Planner
+<h4 id="refactor-planner">
+  <img src="https://shieldcn.dev/badge/-059669.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=28&radius=7&padX=6&iconSize=16&variant=default&logo=ri:RiFlowChart&logoColor=f8fafc&label=" alt="Refactor Planner" title="Refactor Planner" height="28" style="vertical-align:text-bottom;margin-right:0.35em;" />
+  Refactor Planner
+</h4>
 
 Use for: plan a scoped refactor before changing code
 
@@ -1614,7 +1620,7 @@ Validation before final:
 
 Fill these in:
 
-Match the **Paste zones** table above.
+Match the **Paste zones** table above; paste `none` for optional zones you omit.
 
 Expected output:
 
@@ -1642,7 +1648,10 @@ Sources:
   <a href="#prompt-library"><img alt="Back to top" src="https://shieldcn.dev/badge/Top-10B981.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiArrowUpLine&logoColor=f8fafc"></a>
 </p>
 
-#### PR Description
+<h4 id="pr-description">
+  <img src="https://shieldcn.dev/badge/-34D399.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=28&radius=7&padX=6&iconSize=16&variant=default&logo=ri:RiGitPullRequestLine&logoColor=f8fafc&label=" alt="PR Description" title="PR Description" height="28" style="vertical-align:text-bottom;margin-right:0.35em;" />
+  PR Description
+</h4>
 
 Use for: turn a diff into a useful pull request description
 
@@ -1694,7 +1703,7 @@ Validation before final:
 
 Fill these in:
 
-Match the **Paste zones** table above.
+Match the **Paste zones** table above; paste `none` for optional zones you omit.
 
 Expected output:
 
@@ -1722,7 +1731,10 @@ Sources:
   <a href="#prompt-library"><img alt="Back to top" src="https://shieldcn.dev/badge/Top-10B981.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiArrowUpLine&logoColor=f8fafc"></a>
 </p>
 
-#### API Contract Explainer
+<h4 id="api-contract-explainer">
+  <img src="https://shieldcn.dev/badge/-10B981.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=28&radius=7&padX=6&iconSize=16&variant=default&logo=ri:RiBracesLine&logoColor=f8fafc&label=" alt="API Contract Explainer" title="API Contract Explainer" height="28" style="vertical-align:text-bottom;margin-right:0.35em;" />
+  API Contract Explainer
+</h4>
 
 Use for: explain an interface for implementers
 
@@ -1778,7 +1790,7 @@ Validation before final:
 
 Fill these in:
 
-Match the **Paste zones** table above.
+Match the **Paste zones** table above; paste `none` for optional zones you omit.
 
 Expected output:
 
@@ -1819,7 +1831,10 @@ Sources:
 </p>
 <!-- LANE-CHIPS:data:END -->
 
-#### JSON Extractor
+<h4 id="json-extractor">
+  <img src="https://shieldcn.dev/badge/-EAB308.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=28&radius=7&padX=6&iconSize=16&variant=default&logo=ri:RiNodeTree&logoColor=f8fafc&label=" alt="JSON Extractor" title="JSON Extractor" height="28" style="vertical-align:text-bottom;margin-right:0.35em;" />
+  JSON Extractor
+</h4>
 
 Use for: extract structured JSON from messy text
 
@@ -1875,7 +1890,7 @@ Validation before final:
 
 Fill these in:
 
-Match the **Paste zones** table above.
+Match the **Paste zones** table above; paste `none` for optional zones you omit.
 
 Expected output:
 
@@ -1900,30 +1915,15 @@ Sources:
 - [OpenAI Structured Outputs](https://developers.openai.com/api/docs/guides/structured-outputs)
 - [Gemini structured output](https://ai.google.dev/gemini-api/docs/structured-output)
 
-<details>
-<summary><strong>Filled example</strong></summary>
-
-> [!NOTE]
-> **Walkthrough only.** Paste values into the copy prompt zones above — not this sample output — unless `Upgrade when` directs in-prompt examples.
-
-expected output shape:
-
-| Output field | Example |
-| --- | --- |
-| Valid JSON | `{"name":"Ana Rivera","renewal_date":"2026-07-01","plan":"Team"}` |
-
-what to change for your case:
-
-- Replace the schema with the exact downstream contract and add parser tests for missing, ambiguous, or malformed fields.
-
-</details>
-
 <p align="right">
   <a href="#table-of-contents"><img alt="Table of contents" src="https://shieldcn.dev/badge/TOC-6366F1.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiListCheck&logoColor=f8fafc"></a>
   <a href="#prompt-library"><img alt="Back to top" src="https://shieldcn.dev/badge/Top-10B981.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiArrowUpLine&logoColor=f8fafc"></a>
 </p>
 
-#### Table Normalizer
+<h4 id="table-normalizer">
+  <img src="https://shieldcn.dev/badge/-FACC15.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=28&radius=7&padX=6&iconSize=16&variant=default&logo=ri:RiTableLine&logoColor=f8fafc&label=" alt="Table Normalizer" title="Table Normalizer" height="28" style="vertical-align:text-bottom;margin-right:0.35em;" />
+  Table Normalizer
+</h4>
 
 Use for: normalize inconsistent rows into a clean table
 
@@ -1975,7 +1975,7 @@ Validation before final:
 
 Fill these in:
 
-Match the **Paste zones** table above.
+Match the **Paste zones** table above; paste `none` for optional zones you omit.
 
 Expected output:
 
@@ -2003,7 +2003,10 @@ Sources:
   <a href="#prompt-library"><img alt="Back to top" src="https://shieldcn.dev/badge/Top-10B981.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiArrowUpLine&logoColor=f8fafc"></a>
 </p>
 
-#### Classifier
+<h4 id="classifier">
+  <img src="https://shieldcn.dev/badge/-CA8A04.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=28&radius=7&padX=6&iconSize=16&variant=default&logo=ri:RiPriceTag3Line&logoColor=f8fafc&label=" alt="Classifier" title="Classifier" height="28" style="vertical-align:text-bottom;margin-right:0.35em;" />
+  Classifier
+</h4>
 
 Use for: assign labels with rationales and abstentions
 
@@ -2055,7 +2058,7 @@ Validation before final:
 
 Fill these in:
 
-Match the **Paste zones** table above.
+Match the **Paste zones** table above; paste `none` for optional zones you omit.
 
 Expected output:
 
@@ -2085,7 +2088,10 @@ Sources:
   <a href="#prompt-library"><img alt="Back to top" src="https://shieldcn.dev/badge/Top-10B981.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiArrowUpLine&logoColor=f8fafc"></a>
 </p>
 
-#### NER Extractor
+<h4 id="ner-extractor">
+  <img src="https://shieldcn.dev/badge/-FDE047.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=28&radius=7&padX=6&iconSize=16&variant=default&logo=ri:RiUserSearchLine&logoColor=f8fafc&label=" alt="NER Extractor" title="NER Extractor" height="28" style="vertical-align:text-bottom;margin-right:0.35em;" />
+  NER Extractor
+</h4>
 
 Use for: extract entities with spans and normalization
 
@@ -2137,7 +2143,7 @@ Validation before final:
 
 Fill these in:
 
-Match the **Paste zones** table above.
+Match the **Paste zones** table above; paste `none` for optional zones you omit.
 
 Expected output:
 
@@ -2167,7 +2173,10 @@ Sources:
   <a href="#prompt-library"><img alt="Back to top" src="https://shieldcn.dev/badge/Top-10B981.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiArrowUpLine&logoColor=f8fafc"></a>
 </p>
 
-#### Sentiment Triage
+<h4 id="sentiment-triage">
+  <img src="https://shieldcn.dev/badge/-F59E0B.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=28&radius=7&padX=6&iconSize=16&variant=default&logo=ri:RiEmotionLine&logoColor=f8fafc&label=" alt="Sentiment Triage" title="Sentiment Triage" height="28" style="vertical-align:text-bottom;margin-right:0.35em;" />
+  Sentiment Triage
+</h4>
 
 Use for: classify sentiment for support or product feedback
 
@@ -2219,7 +2228,7 @@ Validation before final:
 
 Fill these in:
 
-Match the **Paste zones** table above.
+Match the **Paste zones** table above; paste `none` for optional zones you omit.
 
 Expected output:
 
@@ -2247,7 +2256,10 @@ Sources:
   <a href="#prompt-library"><img alt="Back to top" src="https://shieldcn.dev/badge/Top-10B981.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiArrowUpLine&logoColor=f8fafc"></a>
 </p>
 
-#### Synthetic Edge Cases
+<h4 id="synthetic-edge-cases">
+  <img src="https://shieldcn.dev/badge/-D97706.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=28&radius=7&padX=6&iconSize=16&variant=default&logo=ri:RiCornerDownRightLine&logoColor=f8fafc&label=" alt="Synthetic Edge Cases" title="Synthetic Edge Cases" height="28" style="vertical-align:text-bottom;margin-right:0.35em;" />
+  Synthetic Edge Cases
+</h4>
 
 Use for: generate test inputs that break brittle prompts
 
@@ -2299,7 +2311,7 @@ Validation before final:
 
 Fill these in:
 
-Match the **Paste zones** table above.
+Match the **Paste zones** table above; paste `none` for optional zones you omit.
 
 Expected output:
 
@@ -2340,7 +2352,10 @@ Sources:
 </p>
 <!-- LANE-CHIPS:product:END -->
 
-#### PRD Drafter
+<h4 id="prd-drafter">
+  <img src="https://shieldcn.dev/badge/-EC4899.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=28&radius=7&padX=6&iconSize=16&variant=default&logo=ri:RiDraftLine&logoColor=f8fafc&label=" alt="PRD Drafter" title="PRD Drafter" height="28" style="vertical-align:text-bottom;margin-right:0.35em;" />
+  PRD Drafter
+</h4>
 
 Use for: turn a product idea into a scoped requirements doc
 
@@ -2392,7 +2407,7 @@ Validation before final:
 
 Fill these in:
 
-Match the **Paste zones** table above.
+Match the **Paste zones** table above; paste `none` for optional zones you omit.
 
 Expected output:
 
@@ -2420,7 +2435,10 @@ Sources:
   <a href="#prompt-library"><img alt="Back to top" src="https://shieldcn.dev/badge/Top-10B981.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiArrowUpLine&logoColor=f8fafc"></a>
 </p>
 
-#### User Story Splitter
+<h4 id="user-story-splitter">
+  <img src="https://shieldcn.dev/badge/-F472B6.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=28&radius=7&padX=6&iconSize=16&variant=default&logo=ri:RiStickyNoteLine&logoColor=f8fafc&label=" alt="User Story Splitter" title="User Story Splitter" height="28" style="vertical-align:text-bottom;margin-right:0.35em;" />
+  User Story Splitter
+</h4>
 
 Use for: split a feature into implementable stories
 
@@ -2472,7 +2490,7 @@ Validation before final:
 
 Fill these in:
 
-Match the **Paste zones** table above.
+Match the **Paste zones** table above; paste `none` for optional zones you omit.
 
 Expected output:
 
@@ -2500,7 +2518,10 @@ Sources:
   <a href="#prompt-library"><img alt="Back to top" src="https://shieldcn.dev/badge/Top-10B981.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiArrowUpLine&logoColor=f8fafc"></a>
 </p>
 
-#### Acceptance Criteria Writer
+<h4 id="acceptance-criteria-writer">
+  <img src="https://shieldcn.dev/badge/-BE185D.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=28&radius=7&padX=6&iconSize=16&variant=default&logo=ri:RiListCheck2&logoColor=f8fafc&label=" alt="Acceptance Criteria Writer" title="Acceptance Criteria Writer" height="28" style="vertical-align:text-bottom;margin-right:0.35em;" />
+  Acceptance Criteria Writer
+</h4>
 
 Use for: convert requirements into testable criteria
 
@@ -2552,7 +2573,7 @@ Validation before final:
 
 Fill these in:
 
-Match the **Paste zones** table above.
+Match the **Paste zones** table above; paste `none` for optional zones you omit.
 
 Expected output:
 
@@ -2580,7 +2601,10 @@ Sources:
   <a href="#prompt-library"><img alt="Back to top" src="https://shieldcn.dev/badge/Top-10B981.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiArrowUpLine&logoColor=f8fafc"></a>
 </p>
 
-#### Launch Checklist
+<h4 id="launch-checklist">
+  <img src="https://shieldcn.dev/badge/-FB7185.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=28&radius=7&padX=6&iconSize=16&variant=default&logo=ri:RiRocketLine&logoColor=f8fafc&label=" alt="Launch Checklist" title="Launch Checklist" height="28" style="vertical-align:text-bottom;margin-right:0.35em;" />
+  Launch Checklist
+</h4>
 
 Use for: produce a release checklist from a change summary
 
@@ -2632,7 +2656,7 @@ Validation before final:
 
 Fill these in:
 
-Match the **Paste zones** table above.
+Match the **Paste zones** table above; paste `none` for optional zones you omit.
 
 Expected output:
 
@@ -2660,7 +2684,10 @@ Sources:
   <a href="#prompt-library"><img alt="Back to top" src="https://shieldcn.dev/badge/Top-10B981.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiArrowUpLine&logoColor=f8fafc"></a>
 </p>
 
-#### UX Review
+<h4 id="ux-review">
+  <img src="https://shieldcn.dev/badge/-E879F9.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=28&radius=7&padX=6&iconSize=16&variant=default&logo=ri:RiLayoutLine&logoColor=f8fafc&label=" alt="UX Review" title="UX Review" height="28" style="vertical-align:text-bottom;margin-right:0.35em;" />
+  UX Review
+</h4>
 
 Use for: review a screen or flow for usability issues
 
@@ -2712,7 +2739,7 @@ Validation before final:
 
 Fill these in:
 
-Match the **Paste zones** table above.
+Match the **Paste zones** table above; paste `none` for optional zones you omit.
 
 Expected output:
 
@@ -2740,7 +2767,10 @@ Sources:
   <a href="#prompt-library"><img alt="Back to top" src="https://shieldcn.dev/badge/Top-10B981.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiArrowUpLine&logoColor=f8fafc"></a>
 </p>
 
-#### Support Macro
+<h4 id="support-macro">
+  <img src="https://shieldcn.dev/badge/-F9A8D4.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=28&radius=7&padX=6&iconSize=16&variant=default&logo=ri:RiCustomerService2Line&logoColor=f8fafc&label=" alt="Support Macro" title="Support Macro" height="28" style="vertical-align:text-bottom;margin-right:0.35em;" />
+  Support Macro
+</h4>
 
 Use for: draft a support response that is accurate and constrained
 
@@ -2792,7 +2822,7 @@ Validation before final:
 
 Fill these in:
 
-Match the **Paste zones** table above.
+Match the **Paste zones** table above; paste `none` for optional zones you omit.
 
 Expected output:
 
@@ -2833,7 +2863,10 @@ Sources:
 </p>
 <!-- LANE-CHIPS:operations:END -->
 
-#### Incident Summary
+<h4 id="incident-summary">
+  <img src="https://shieldcn.dev/badge/-F97316.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=28&radius=7&padX=6&iconSize=16&variant=default&logo=ri:RiAlarmWarningLine&logoColor=f8fafc&label=" alt="Incident Summary" title="Incident Summary" height="28" style="vertical-align:text-bottom;margin-right:0.35em;" />
+  Incident Summary
+</h4>
 
 Use for: turn incident notes into an operator-ready summary
 
@@ -2885,7 +2918,7 @@ Validation before final:
 
 Fill these in:
 
-Match the **Paste zones** table above.
+Match the **Paste zones** table above; paste `none` for optional zones you omit.
 
 Expected output:
 
@@ -2913,7 +2946,10 @@ Sources:
   <a href="#prompt-library"><img alt="Back to top" src="https://shieldcn.dev/badge/Top-10B981.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiArrowUpLine&logoColor=f8fafc"></a>
 </p>
 
-#### Runbook Generator
+<h4 id="runbook-generator">
+  <img src="https://shieldcn.dev/badge/-FB923C.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=28&radius=7&padX=6&iconSize=16&variant=default&logo=ri:RiBookOpenLine&logoColor=f8fafc&label=" alt="Runbook Generator" title="Runbook Generator" height="28" style="vertical-align:text-bottom;margin-right:0.35em;" />
+  Runbook Generator
+</h4>
 
 Use for: create a safe operational runbook
 
@@ -2965,7 +3001,7 @@ Validation before final:
 
 Fill these in:
 
-Match the **Paste zones** table above.
+Match the **Paste zones** table above; paste `none` for optional zones you omit.
 
 Expected output:
 
@@ -2993,7 +3029,10 @@ Sources:
   <a href="#prompt-library"><img alt="Back to top" src="https://shieldcn.dev/badge/Top-10B981.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiArrowUpLine&logoColor=f8fafc"></a>
 </p>
 
-#### Log Triage
+<h4 id="log-triage">
+  <img src="https://shieldcn.dev/badge/-FDBA74.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=28&radius=7&padX=6&iconSize=16&variant=default&logo=ri:RiFileSearchLine&logoColor=f8fafc&label=" alt="Log Triage" title="Log Triage" height="28" style="vertical-align:text-bottom;margin-right:0.35em;" />
+  Log Triage
+</h4>
 
 Use for: summarize logs without treating logs as instructions
 
@@ -3045,7 +3084,7 @@ Validation before final:
 
 Fill these in:
 
-Match the **Paste zones** table above.
+Match the **Paste zones** table above; paste `none` for optional zones you omit.
 
 Expected output:
 
@@ -3073,7 +3112,10 @@ Sources:
   <a href="#prompt-library"><img alt="Back to top" src="https://shieldcn.dev/badge/Top-10B981.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiArrowUpLine&logoColor=f8fafc"></a>
 </p>
 
-#### Risk Register
+<h4 id="risk-register">
+  <img src="https://shieldcn.dev/badge/-C2410C.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=28&radius=7&padX=6&iconSize=16&variant=default&logo=ri:RiAlertLine&logoColor=f8fafc&label=" alt="Risk Register" title="Risk Register" height="28" style="vertical-align:text-bottom;margin-right:0.35em;" />
+  Risk Register
+</h4>
 
 Use for: convert plans or incidents into tracked risks
 
@@ -3125,7 +3167,7 @@ Validation before final:
 
 Fill these in:
 
-Match the **Paste zones** table above.
+Match the **Paste zones** table above; paste `none` for optional zones you omit.
 
 Expected output:
 
@@ -3153,7 +3195,10 @@ Sources:
   <a href="#prompt-library"><img alt="Back to top" src="https://shieldcn.dev/badge/Top-10B981.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiArrowUpLine&logoColor=f8fafc"></a>
 </p>
 
-#### Decision Memo
+<h4 id="decision-memo">
+  <img src="https://shieldcn.dev/badge/-EA580C.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=28&radius=7&padX=6&iconSize=16&variant=default&logo=ri:RiScalesLine&logoColor=f8fafc&label=" alt="Decision Memo" title="Decision Memo" height="28" style="vertical-align:text-bottom;margin-right:0.35em;" />
+  Decision Memo
+</h4>
 
 Use for: turn options into a decision record
 
@@ -3205,7 +3250,7 @@ Validation before final:
 
 Fill these in:
 
-Match the **Paste zones** table above.
+Match the **Paste zones** table above; paste `none` for optional zones you omit.
 
 Expected output:
 
@@ -3233,7 +3278,10 @@ Sources:
   <a href="#prompt-library"><img alt="Back to top" src="https://shieldcn.dev/badge/Top-10B981.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiArrowUpLine&logoColor=f8fafc"></a>
 </p>
 
-#### Meeting Action Extractor
+<h4 id="meeting-action-extractor">
+  <img src="https://shieldcn.dev/badge/-FD7E14.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=28&radius=7&padX=6&iconSize=16&variant=default&logo=ri:RiCalendarCheckLine&logoColor=f8fafc&label=" alt="Meeting Action Extractor" title="Meeting Action Extractor" height="28" style="vertical-align:text-bottom;margin-right:0.35em;" />
+  Meeting Action Extractor
+</h4>
 
 Use for: extract decisions and actions from notes
 
@@ -3285,7 +3333,7 @@ Validation before final:
 
 Fill these in:
 
-Match the **Paste zones** table above.
+Match the **Paste zones** table above; paste `none` for optional zones you omit.
 
 Expected output:
 
@@ -3326,7 +3374,10 @@ Sources:
 </p>
 <!-- LANE-CHIPS:agents:END -->
 
-#### Tool-Use Planner
+<h4 id="tool-use-planner">
+  <img src="https://shieldcn.dev/badge/-06B6D4.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=28&radius=7&padX=6&iconSize=16&variant=default&logo=ri:RiToolsLine&logoColor=f8fafc&label=" alt="Tool-Use Planner" title="Tool-Use Planner" height="28" style="vertical-align:text-bottom;margin-right:0.35em;" />
+  Tool-Use Planner
+</h4>
 
 Use for: plan tool calls before an agent acts
 
@@ -3383,7 +3434,7 @@ Validation before final:
 
 Fill these in:
 
-Match the **Paste zones** table above.
+Match the **Paste zones** table above; paste `none` for optional zones you omit.
 
 Expected output:
 
@@ -3408,34 +3459,15 @@ Sources:
 - [OpenAI tools](https://developers.openai.com/api/docs/guides/tools)
 - [Anthropic tool use](https://platform.claude.com/docs/en/agents-and-tools/tool-use/overview)
 
-<details>
-<summary><strong>Filled example</strong></summary>
-
-> [!NOTE]
-> **Walkthrough only.** Paste values into the copy prompt zones above — not this sample output — unless `Upgrade when` directs in-prompt examples.
-
-expected output shape:
-
-| Output field | Example |
-| --- | --- |
-| Tool plan | 1) `search_notes` for stale notes 2) present candidates 3) `archive_note` only after approval |
-| Permission class | Steps 1–2 read-only; step 3 mutating |
-| Preconditions | Confirm project inactive; collect explicit approval token before step 3 |
-| Stop conditions | Abort if any candidate note was edited within 90 days |
-| Final verification | Re-run `search_notes` and confirm archived IDs no longer appear as active |
-
-what to change for your case:
-
-- Replace tools with the actual tool names, permissions, and approval boundaries before asking an agent to act.
-
-</details>
-
 <p align="right">
   <a href="#table-of-contents"><img alt="Table of contents" src="https://shieldcn.dev/badge/TOC-6366F1.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiListCheck&logoColor=f8fafc"></a>
   <a href="#prompt-library"><img alt="Back to top" src="https://shieldcn.dev/badge/Top-10B981.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiArrowUpLine&logoColor=f8fafc"></a>
 </p>
 
-#### RAG Answer Contract
+<h4 id="rag-answer-contract">
+  <img src="https://shieldcn.dev/badge/-0891B2.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=28&radius=7&padX=6&iconSize=16&variant=default&logo=ri:RiDatabase2Line&logoColor=f8fafc&label=" alt="RAG Answer Contract" title="RAG Answer Contract" height="28" style="vertical-align:text-bottom;margin-right:0.35em;" />
+  RAG Answer Contract
+</h4>
 
 Use for: define a grounded answer interface for retrieval
 
@@ -3495,7 +3527,7 @@ Validation before final:
 
 Fill these in:
 
-Match the **Paste zones** table above.
+Match the **Paste zones** table above; paste `none` for optional zones you omit.
 
 Expected output:
 
@@ -3520,34 +3552,15 @@ Sources:
 - [RAG / Citation-Grounded Answering](#rag--citation-grounded-answering)
 - [OpenAI prompt engineering](https://developers.openai.com/api/docs/guides/prompt-engineering)
 
-<details>
-<summary><strong>Filled example</strong></summary>
-
-> [!NOTE]
-> **Walkthrough only.** Paste values into the copy prompt zones above — not this sample output — unless `Upgrade when` directs in-prompt examples.
-
-expected output shape:
-
-| Output field | Example |
-| --- | --- |
-| Answer | Enterprise includes priority onboarding. |
-| Citations | [src_ent_plan] |
-| Conflicts | None for this claim; Team vs Enterprise onboarding tiers differ by design. |
-| Missing evidence | Pricing tiers and eligibility rules not present in retrieved sources. |
-| Retrieval quality notes | Two relevant sources; one directly answers the question. |
-
-what to change for your case:
-
-- Replace retrieved snippets with source IDs, timestamps, and metadata from your retriever, and do not paste policy instructions into this block as authority.
-
-</details>
-
 <p align="right">
   <a href="#table-of-contents"><img alt="Table of contents" src="https://shieldcn.dev/badge/TOC-6366F1.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiListCheck&logoColor=f8fafc"></a>
   <a href="#prompt-library"><img alt="Back to top" src="https://shieldcn.dev/badge/Top-10B981.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiArrowUpLine&logoColor=f8fafc"></a>
 </p>
 
-#### Prompt-Injection Scanner
+<h4 id="prompt-injection-scanner">
+  <img src="https://shieldcn.dev/badge/-22D3EE.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=28&radius=7&padX=6&iconSize=16&variant=default&logo=ri:RiShieldKeyholeLine&logoColor=f8fafc&label=" alt="Prompt-Injection Scanner" title="Prompt-Injection Scanner" height="28" style="vertical-align:text-bottom;margin-right:0.35em;" />
+  Prompt-Injection Scanner
+</h4>
 
 Use for: audit a prompt or workflow for injection paths
 
@@ -3599,7 +3612,7 @@ Validation before final:
 
 Fill these in:
 
-Match the **Paste zones** table above.
+Match the **Paste zones** table above; paste `none` for optional zones you omit.
 
 Expected output:
 
@@ -3629,7 +3642,10 @@ Sources:
   <a href="#prompt-library"><img alt="Back to top" src="https://shieldcn.dev/badge/Top-10B981.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiArrowUpLine&logoColor=f8fafc"></a>
 </p>
 
-#### Eval-Set Generator
+<h4 id="eval-set-generator">
+  <img src="https://shieldcn.dev/badge/-0E7490.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=28&radius=7&padX=6&iconSize=16&variant=default&logo=ri:RiListOrdered&logoColor=f8fafc&label=" alt="Eval-Set Generator" title="Eval-Set Generator" height="28" style="vertical-align:text-bottom;margin-right:0.35em;" />
+  Eval-Set Generator
+</h4>
 
 Use for: turn failures into reusable prompt tests
 
@@ -3681,7 +3697,7 @@ Validation before final:
 
 Fill these in:
 
-Match the **Paste zones** table above.
+Match the **Paste zones** table above; paste `none` for optional zones you omit.
 
 Expected output:
 
@@ -3711,7 +3727,10 @@ Sources:
   <a href="#prompt-library"><img alt="Back to top" src="https://shieldcn.dev/badge/Top-10B981.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiArrowUpLine&logoColor=f8fafc"></a>
 </p>
 
-#### Regression Judge
+<h4 id="regression-judge">
+  <img src="https://shieldcn.dev/badge/-155E75.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=28&radius=7&padX=6&iconSize=16&variant=default&logo=ri:RiScales2Line&logoColor=f8fafc&label=" alt="Regression Judge" title="Regression Judge" height="28" style="vertical-align:text-bottom;margin-right:0.35em;" />
+  Regression Judge
+</h4>
 
 Use for: judge outputs against a rubric
 
@@ -3767,7 +3786,7 @@ Validation before final:
 
 Fill these in:
 
-Match the **Paste zones** table above.
+Match the **Paste zones** table above; paste `none` for optional zones you omit.
 
 Expected output:
 
@@ -3792,34 +3811,15 @@ Sources:
 - [OpenAI evaluation best practices](https://developers.openai.com/api/docs/guides/evaluation-best-practices)
 - [Eval-Driven Prompt Optimization](#eval-driven-prompt-optimization)
 
-<details>
-<summary><strong>Filled example</strong></summary>
-
-> [!NOTE]
-> **Walkthrough only.** Paste values into the copy prompt zones above — not this sample output — unless `Upgrade when` directs in-prompt examples.
-
-expected output shape:
-
-| Output field | Example |
-| --- | --- |
-| Pass/fail | fail |
-| Scores | Evidence citation 0/1; failure identification 0/1 |
-| Evidence | Candidate claims all checks passed; log shows `test_export_handles_empty_rows` failed. |
-| Critical failures | Did not name failing test or missing evidence. |
-| Suggested prompt fix | Require quoting failing test IDs from supplied logs before claiming pass. |
-
-what to change for your case:
-
-- Replace the rubric with your real acceptance criteria and include gold evidence only when it is caller-approved.
-
-</details>
-
 <p align="right">
   <a href="#table-of-contents"><img alt="Table of contents" src="https://shieldcn.dev/badge/TOC-6366F1.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiListCheck&logoColor=f8fafc"></a>
   <a href="#prompt-library"><img alt="Back to top" src="https://shieldcn.dev/badge/Top-10B981.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiArrowUpLine&logoColor=f8fafc"></a>
 </p>
 
-#### Prompt Optimizer
+<h4 id="prompt-optimizer">
+  <img src="https://shieldcn.dev/badge/-67E8F9.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=28&radius=7&padX=6&iconSize=16&variant=default&logo=ri:RiLoopRightLine&logoColor=f8fafc&label=" alt="Prompt Optimizer" title="Prompt Optimizer" height="28" style="vertical-align:text-bottom;margin-right:0.35em;" />
+  Prompt Optimizer
+</h4>
 
 Use for: revise a prompt using failures, not vibes
 
@@ -3876,7 +3876,7 @@ Validation before final:
 
 Fill these in:
 
-Match the **Paste zones** table above.
+Match the **Paste zones** table above; paste `none` for optional zones you omit.
 
 Expected output:
 
@@ -3901,28 +3901,6 @@ Sources:
 - [Eval-Driven Prompt Optimization](#eval-driven-prompt-optimization)
 - [OpenAI evaluation best practices](https://developers.openai.com/api/docs/guides/evaluation-best-practices)
 
-<details>
-<summary><strong>Filled example</strong></summary>
-
-> [!NOTE]
-> **Walkthrough only.** Paste values into the copy prompt zones above — not this sample output — unless `Upgrade when` directs in-prompt examples.
-
-expected output shape:
-
-| Output field | Example |
-| --- | --- |
-| Revised prompt | Add: "Use only `low`, `medium`, or `high`; quote ticket evidence; reply `abstain` when insufficient." |
-| Change log | Constrain label enum; require evidence quote; add abstain path |
-| Failure mapping | Run 14 → invented label; Run 22 → unsupported `high` |
-| New evals | Case: sparse ticket → expect `abstain`; Case: explicit SLA breach → expect `high` |
-| Risks | Model may over-abstain on ambiguous tickets until eval threshold is tuned |
-
-what to change for your case:
-
-- Replace the failure log with reproduced bad outputs and keep non-negotiable behavior in the trusted contract.
-
-</details>
-
 <p align="right">
   <a href="#table-of-contents"><img alt="Table of contents" src="https://shieldcn.dev/badge/TOC-6366F1.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiListCheck&logoColor=f8fafc"></a>
   <a href="#prompt-library"><img alt="Back to top" src="https://shieldcn.dev/badge/Top-10B981.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiArrowUpLine&logoColor=f8fafc"></a>
@@ -3941,7 +3919,10 @@ what to change for your case:
 </p>
 <!-- LANE-CHIPS:reasoning:END -->
 
-#### Plan-and-Solve
+<h4 id="plan-and-solve">
+  <img src="https://shieldcn.dev/badge/-8B5CF6.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=28&radius=7&padX=6&iconSize=16&variant=default&logo=ri:RiRouteLine&logoColor=f8fafc&label=" alt="Plan-and-Solve" title="Plan-and-Solve" height="28" style="vertical-align:text-bottom;margin-right:0.35em;" />
+  Plan-and-Solve
+</h4>
 
 Use for: solve multi-step tasks with a visible plan but private reasoning
 
@@ -3993,7 +3974,7 @@ Validation before final:
 
 Fill these in:
 
-Match the **Paste zones** table above.
+Match the **Paste zones** table above; paste `none` for optional zones you omit.
 
 Expected output:
 
@@ -4021,7 +4002,10 @@ Sources:
   <a href="#prompt-library"><img alt="Back to top" src="https://shieldcn.dev/badge/Top-10B981.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiArrowUpLine&logoColor=f8fafc"></a>
 </p>
 
-#### Step-Back Answer
+<h4 id="step-back-answer">
+  <img src="https://shieldcn.dev/badge/-6D28D9.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=28&radius=7&padX=6&iconSize=16&variant=default&logo=ri:RiArrowLeftUpLine&logoColor=f8fafc&label=" alt="Step-Back Answer" title="Step-Back Answer" height="28" style="vertical-align:text-bottom;margin-right:0.35em;" />
+  Step-Back Answer
+</h4>
 
 Use for: generalize before solving a narrow problem
 
@@ -4073,7 +4057,7 @@ Validation before final:
 
 Fill these in:
 
-Match the **Paste zones** table above.
+Match the **Paste zones** table above; paste `none` for optional zones you omit.
 
 Expected output:
 
@@ -4101,7 +4085,10 @@ Sources:
   <a href="#prompt-library"><img alt="Back to top" src="https://shieldcn.dev/badge/Top-10B981.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiArrowUpLine&logoColor=f8fafc"></a>
 </p>
 
-#### Verification Pass
+<h4 id="verification-pass">
+  <img src="https://shieldcn.dev/badge/-7C3AED.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=28&radius=7&padX=6&iconSize=16&variant=default&logo=ri:RiCheckboxCircleLine&logoColor=f8fafc&label=" alt="Verification Pass" title="Verification Pass" height="28" style="vertical-align:text-bottom;margin-right:0.35em;" />
+  Verification Pass
+</h4>
 
 Use for: audit an answer before it is used
 
@@ -4153,7 +4140,7 @@ Validation before final:
 
 Fill these in:
 
-Match the **Paste zones** table above.
+Match the **Paste zones** table above; paste `none` for optional zones you omit.
 
 Expected output:
 
@@ -4181,7 +4168,10 @@ Sources:
   <a href="#prompt-library"><img alt="Back to top" src="https://shieldcn.dev/badge/Top-10B981.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiArrowUpLine&logoColor=f8fafc"></a>
 </p>
 
-#### Self-Refine Pass
+<h4 id="self-refine-pass">
+  <img src="https://shieldcn.dev/badge/-A78BFA.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=28&radius=7&padX=6&iconSize=16&variant=default&logo=ri:RiRefreshLine&logoColor=f8fafc&label=" alt="Self-Refine Pass" title="Self-Refine Pass" height="28" style="vertical-align:text-bottom;margin-right:0.35em;" />
+  Self-Refine Pass
+</h4>
 
 Use for: improve a draft with a bounded critique loop
 
@@ -4233,7 +4223,7 @@ Validation before final:
 
 Fill these in:
 
-Match the **Paste zones** table above.
+Match the **Paste zones** table above; paste `none` for optional zones you omit.
 
 Expected output:
 
@@ -4261,7 +4251,10 @@ Sources:
   <a href="#prompt-library"><img alt="Back to top" src="https://shieldcn.dev/badge/Top-10B981.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiArrowUpLine&logoColor=f8fafc"></a>
 </p>
 
-#### Panel Review
+<h4 id="panel-review">
+  <img src="https://shieldcn.dev/badge/-9F7AEA.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=28&radius=7&padX=6&iconSize=16&variant=default&logo=ri:RiGroupLine&logoColor=f8fafc&label=" alt="Panel Review" title="Panel Review" height="28" style="vertical-align:text-bottom;margin-right:0.35em;" />
+  Panel Review
+</h4>
 
 Use for: collect task-relevant perspectives without fake authority
 
@@ -4330,7 +4323,7 @@ Validation before final:
 
 Fill these in:
 
-Match the **Paste zones** table above.
+Match the **Paste zones** table above; paste `none` for optional zones you omit.
 
 Expected output:
 
@@ -4362,37 +4355,15 @@ Sources:
 - [Should we be going MAD?](https://arxiv.org/abs/2311.17371)
 - [Personas in System Prompts Do Not Improve Performance](https://aclanthology.org/2024.findings-emnlp.888/)
 
-<details>
-<summary><strong>Filled example</strong></summary>
-
-> [!NOTE]
-> **Walkthrough only.** Paste values into the copy prompt zones above — not this sample output — unless `Upgrade when` directs in-prompt examples.
-
-expected output shape:
-
-| Output field | Example |
-| --- | --- |
-| Selected simulated personas | Product manager, support lead, accessibility reviewer, engineer |
-| Rejected roles | Legal counsel — no legal facts supplied; would add fake authority |
-| Persona reviews | Support: invite step unclear; Accessibility: blockers open; Engineering: beta flag ready |
-| Cross-critiques | Engineer notes support data is anecdotal; support asks for repro steps |
-| Disagreements | Product wants limited beta; support wants hold until invite copy is fixed |
-| Evidence gaps | No quantitative drop-off data; accessibility checklist incomplete |
-| Recommendation | Ship to beta behind flag; do not enable for all workspaces |
-| Real-review trigger | Requires human accessibility sign-off and support-runbook review before GA |
-
-what to change for your case:
-
-- Replace roles with perspectives that map to the actual stakeholders and treat the result as simulated review, not approval.
-
-</details>
-
 <p align="right">
   <a href="#table-of-contents"><img alt="Table of contents" src="https://shieldcn.dev/badge/TOC-6366F1.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiListCheck&logoColor=f8fafc"></a>
   <a href="#prompt-library"><img alt="Back to top" src="https://shieldcn.dev/badge/Top-10B981.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiArrowUpLine&logoColor=f8fafc"></a>
 </p>
 
-#### Tradeoff Matrix
+<h4 id="tradeoff-matrix">
+  <img src="https://shieldcn.dev/badge/-C4B5FD.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=28&radius=7&padX=6&iconSize=16&variant=default&logo=ri:RiScales3Line&logoColor=f8fafc&label=" alt="Tradeoff Matrix" title="Tradeoff Matrix" height="28" style="vertical-align:text-bottom;margin-right:0.35em;" />
+  Tradeoff Matrix
+</h4>
 
 Use for: compare options with explicit criteria
 
@@ -4444,7 +4415,7 @@ Validation before final:
 
 Fill these in:
 
-Match the **Paste zones** table above.
+Match the **Paste zones** table above; paste `none` for optional zones you omit.
 
 Expected output:
 

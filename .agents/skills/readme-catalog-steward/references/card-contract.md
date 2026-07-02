@@ -38,7 +38,12 @@ leaving the field implicit.
 Run the canonical validation block in
 [AGENTS.md § Validation](../../../../AGENTS.md#validation). The recipe contract
 linter enforces required recipe fields plus Prompt Index and Section Map link
-completeness.
+completeness (48 recipe anchors, 21 Section Map navigation anchors).
+
+Recipe headings are generated HTML `<h4>` blocks with icon-only ShieldCN badges.
+See [badge-surfaces.md](badge-surfaces.md) for marker blocks and heading-icon
+rules. Do not add **Filled example** walkthrough blocks — paste-zone tables and
+hoisted previews are the input contract.
 
 ## Paste Zones Table (All Recipes)
 
@@ -72,10 +77,10 @@ When Example value is `see paste preview` or `see preview below`, add a visible
 > …literal multi-line sample…
 ```
 
-Do not hide the only preview inside a collapsed filled example after hoist.
+Do not hide the only preview inside a collapsed `<details>` block.
 
 Use `scripts/hoist_paste_preview.py --dry-run` to inspect planned hoists and
-`--apply` for bulk hoist (historical migration on all target recipes is complete).
+`--apply` for bulk hoist when a preview is still buried in a details block.
 
 `scripts/check_readme_recipes.py` enforces paste-zone tables on all 48 recipes
 via `validate_recipe_paste_zone_table()`, preview visibility via
@@ -84,8 +89,9 @@ via `validate_recipe_paste_zone_table()`, preview visibility via
 
 ## Fill These In (Compact Pointer)
 
-`Fill these in:` must be a one-line pointer to the paste zones table, not a
-duplicate bullet list:
+**Required and enforced** — not optional guidance. Every recipe `Fill these in:`
+block must use the canonical one-line pointer below. Do not duplicate paste-zone
+rows as bullets or omit the optional-`none` hint.
 
 ```markdown
 Fill these in:
@@ -93,36 +99,14 @@ Fill these in:
 Match the **Paste zones** table above; paste `none` for optional zones you omit.
 ```
 
-At most two non-bullet lines are allowed. `validate_fill_these_in_compact()`
-rejects legacy bullet entries.
+Rules:
 
-## Filled Example Blocks
-
-Eight high-traffic recipes include one collapsed `<details>` block titled
-**Filled example**. These blocks are documentation walkthroughs — illustrative
-sample output for the copy prompt above. They are **not** in-prompt few-shot
-unless `Upgrade when` explicitly directs adding examples to the prompt.
-
-Each block must include:
-
-- a `[!NOTE]` walkthrough disclaimer (`Walkthrough only.`)
-- **expected output shape** with a two-column table:
-  `Output field | Example` aligned to the recipe output contract
-- **what to change for your case** with one adaptation bullet (mention evals
-  when the workflow is reusable)
-
-Paste previews for multi-line zones belong in the main recipe body (hoisted
-above Copy prompt), not inside filled examples after migration.
-
-Do not use `####` headings or fenced ` ```text ` blocks inside filled examples.
-Do not instruct readers to paste sample output into the prompt.
-
-Long fenced copy prompts may scroll horizontally on GitHub; that is accepted
-when the prompt must stay copyable as one block (RV-V-004).
-
-`scripts/check_readme_recipes.py` enforces filled-example structure on the eight
-target recipes only. Input placeholder tables belong above the copy prompt, not
-inside filled examples.
+- the canonical line is exact; do not shorten it to “Match the **Paste zones**
+  table above.” without the optional-`none` clause
+- at most two non-bullet lines are allowed after `Fill these in:`
+- `scripts/check_readme_recipes.py` enforces this via
+  `validate_fill_these_in_compact()` (`FILL_THESE_IN_COMPACT` rejects legacy
+  bullet entries and non-canonical pointers)
 
 ## Template Hygiene
 
@@ -165,9 +149,19 @@ Do not make visible long chain-of-thought the default output. Prefer one of:
 If a source recommends step-by-step reasoning, adapt the README wording to avoid
 requiring hidden deliberation to be printed.
 
+## Recipe Heading And Navigation
+
+- Recipe title uses generated `<h4 id="{slug}">` with icon-only ShieldCN badge
+  (`alt` + `title` = recipe name; badge pill has no label words).
+- Category navigation uses `<!-- LANE-CHIPS:{lane}:START/END -->` chip rows.
+- Browse-by-job table lives inside `<!-- JOB-MAP:START/END -->`.
+- After adding or renaming a recipe, update script config and run
+  `scripts/update_readme_badges.py`.
+
 ## Recipe And Pattern Review Checklist
 
 - [ ] The recipe or pattern name and anchor are stable.
+- [ ] Heading icon config exists and icon slug is unique among 48 recipes.
 - [ ] The recipe can be copied without surrounding research prose.
 - [ ] The pattern note states when not to use the method.
 - [ ] Sources are method-specific, not generic homepages.

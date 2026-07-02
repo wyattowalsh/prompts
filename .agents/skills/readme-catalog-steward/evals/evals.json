@@ -23,7 +23,9 @@
       "expected_output": "A source-verified method-card plan or patch that satisfies the README Card Contract.",
       "expected_behavior": [
         "Verifies method-specific official docs or primary sources before editing.",
-        "Applies the full README Card Contract.",
+        "Applies the full README Card Contract including paste-zone table rules.",
+        "Uses the canonical Fill these in pointer: Match the **Paste zones** table above; paste `none` for optional zones you omit.",
+        "Updates badge/heading config in scripts/update_readme_badges.py when adding recipes.",
         "Includes safety, cost, latency, failure-mode, caveat, and eval notes.",
         "Avoids visible long chain-of-thought as a default template instruction."
       ],
@@ -86,14 +88,30 @@
       "prompt": "/readme-catalog-steward gfm-pass",
       "expected_output": "A README presentation audit or patch that improves GFM navigation/readability without unsupported badge claims.",
       "expected_behavior": [
-        "Checks badges, TOC, alerts, details, tables, Mermaid, footnotes, and accessibility.",
-        "Preserves truthful badge semantics.",
+        "Checks badges, TOC, alerts, tables, Mermaid, generated marker blocks, lane chips, icon-only recipe headings, and accessibility.",
+        "Preserves truthful badge semantics and marker boundaries.",
         "Runs markdown and link validation after editing."
       ],
       "assertions": [
         "Does not add CI, package, license, release, coverage, or provider badges without support.",
-        "Mentions accessibility or readability.",
+        "Mentions icon-only recipe heading badges or generated badge markers.",
         "Mentions validation commands."
+      ]
+    },
+    {
+      "id": "explicit-badge-pass",
+      "prompt": "/readme-catalog-steward badge-pass",
+      "expected_output": "A badge-surface audit or regeneration plan covering hero badges, shortcuts, lanes, lane chips, job map, and 48 recipe heading icons.",
+      "expected_behavior": [
+        "Reads references/badge-surfaces.md or equivalent badge contract.",
+        "Uses scripts/update_readme_badges.py for generated blocks; does not hand-edit ShieldCN URLs.",
+        "Treats recipe heading badges as icon-only with alt/title tooltips.",
+        "Runs badge --check and curl-verifies changed URLs when applicable."
+      ],
+      "assertions": [
+        "Mentions update_readme_badges.py or badge drift check.",
+        "Distinguishes icon-only heading badges from worded lane chips.",
+        "Does not propose Filled example walkthrough blocks."
       ]
     },
     {
@@ -121,7 +139,7 @@
         "Asks only if intent remains ambiguous."
       ],
       "assertions": [
-        "Includes audit, refresh-sources, add-card, revise-card, safety-pass, gfm-pass, eval-pass, and validate.",
+        "Includes audit, refresh-sources, add-card, revise-card, safety-pass, gfm-pass, badge-pass, eval-pass, and validate.",
         "Does not start a full README rewrite without user intent."
       ]
     },

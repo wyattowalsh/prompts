@@ -27,7 +27,7 @@ HOIST_RECIPES = frozenset(
 )
 
 PREVIEW_BLOCK_RE = re.compile(
-    r"(?ms)^(?:\*\*)?[Pp]aste preview(?:\*\*)?\s+\(`\{([^}]+)\}`\):\s*\n+>.*?(?=\n(?:\*\*)?[Pp]aste preview|\n(?:expected output shape|<!-- Copy prompt: -->|\Z))",
+    r"(?ms)^(?:\*\*)?[Pp]aste preview(?:\*\*)?\s+\(`\{([^}]+)\}`\):\s*\n+>.*?(?=\n(?:\*\*)?[Pp]aste preview|\n</details>|\n(?:<!-- Copy prompt: -->|\Z))",
 )
 
 
@@ -37,11 +37,19 @@ class ApplyError(Exception):
         super().__init__(f"{len(errors)} parse/validation errors")
 
 
-def recipe_details_text(recipe: checker.Recipe) -> str | None:
-    marker = "<summary><strong>Filled example</strong></summary>"
-    if marker not in recipe.text:
-        return None
-    return recipe.text.split(marker, 1)[1].split("</details>", 1)[0]
+def iter_details_regions(text: str) -> list[str]:
+    regions: list[str] = []
+    cursor = 0
+    while True:
+        start = text.find("<details>", cursor)
+        if start == -1:
+            break
+        end = text.find("</details>", start)
+        if end == -1:
+            break
+        regions.append(text[start:end + len("</details>")])
+        cursor = end + len("</details>")
+    return regions
 
 
 def plan_hoists(readme: Path) -> list[dict[str, object]]:
@@ -57,34 +65,32 @@ def plan_hoists(readme: Path) -> list[dict[str, object]]:
         visible_region = checker.text_outside_details(region)
         pointers = checker.paste_preview_pointer_names(visible_region)
         visible_previews = checker.visible_paste_preview_names(visible_region)
-        details = recipe_details_text(recipe)
-        if not details:
-            continue
-        for match in PREVIEW_BLOCK_RE.finditer(details):
-            zone = match.group(1)
-            if zone not in pointers:
-                continue
-            if zone in visible_previews:
+        for details in iter_details_regions(recipe.text):
+            for match in PREVIEW_BLOCK_RE.finditer(details):
+                zone = match.group(1)
+                if zone not in pointers:
+                    continue
+                if zone in visible_previews:
+                    plans.append(
+                        {
+                            "recipe": recipe.name,
+                            "zone": zone,
+                            "action": "already_hoisted",
+                            "preview": match.group(0).strip(),
+                        }
+                    )
+                    continue
                 plans.append(
                     {
                         "recipe": recipe.name,
                         "zone": zone,
-                        "action": "already_hoisted",
+                        "action": "hoist",
                         "preview": match.group(0).strip(),
+                        "insert_before": "<!-- Copy prompt: -->",
+                        "remove_from_details": True,
+                        "retarget_example_value": "see preview below",
                     }
                 )
-                continue
-            plans.append(
-                {
-                    "recipe": recipe.name,
-                    "zone": zone,
-                    "action": "hoist",
-                    "preview": match.group(0).strip(),
-                    "insert_before": "<!-- Copy prompt: -->",
-                    "remove_from_details": True,
-                    "retarget_example_value": "see preview below",
-                }
-            )
     return plans
 
 
@@ -135,14 +141,16 @@ def insert_before_marker(recipe_lines: list[str], marker: str, block: str) -> li
 
 def remove_preview_from_details(recipe_lines: list[str], preview: str) -> list[str]:
     text = "\n".join(recipe_lines)
-    marker = "<summary><strong>Filled example</strong></summary>"
-    if marker not in text or preview not in text:
+    if preview not in text:
         return recipe_lines
-    before, rest = text.split(marker, 1)
-    details, after_details = rest.split("</details>", 1)
-    new_details = details.replace(preview, "")
-    new_details = re.sub(r"\n{3,}", "\n\n", new_details)
-    return (before + marker + new_details + "</details>" + after_details).splitlines()
+    for details in iter_details_regions(text):
+        if preview not in details:
+            continue
+        new_details = details.replace(preview, "")
+        new_details = re.sub(r"\n{3,}", "\n\n", new_details)
+        text = text.replace(details, new_details, 1)
+        break
+    return text.splitlines()
 
 
 def apply_hoist_to_recipe_lines(recipe_lines: list[str], plan: dict[str, object]) -> list[str]:

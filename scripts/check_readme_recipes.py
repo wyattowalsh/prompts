@@ -20,17 +20,6 @@ REQUIRED_FIELDS = [
     "Sources:",
 ]
 
-EXAMPLE_RECIPES = {
-    "Source-Grounded Answer",
-    "Code Review",
-    "JSON Extractor",
-    "RAG Answer Contract",
-    "Tool-Use Planner",
-    "Panel Review",
-    "Regression Judge",
-    "Prompt Optimizer",
-}
-
 CONTROL_NOTE_RECIPES = {
     "Source-Grounded Answer",
     "Web Research Brief",
@@ -61,7 +50,6 @@ VISIBLE_COT_PATTERNS = [
     ]
 ]
 
-FILLED_EXAMPLE_DISCLAIMER_MARKERS = ("[!NOTE]", "Walkthrough only.")
 PASTE_ZONE_TABLE_HEADER = "| Placeholder | Req | Example value | Notes |"
 RECIPE_PASTE_ZONE_VALUE_LENGTH = 80
 PASTE_PREVIEW_POINTER_VALUES = frozenset({"see paste preview", "see preview below"})
@@ -70,8 +58,10 @@ PASTE_PREVIEW_HEADING_RE = re.compile(
     re.MULTILINE,
 )
 BULLET_FILL_PATTERN = re.compile(r"^- `\{([^}]+)\}` \((required|optional)\):")
-FILLED_EXAMPLE_OUTPUT_TABLE_HEADER = "| Output field | Example |"
-FILLED_EXAMPLE_META_VALUE_PATTERNS = [
+FILL_CANONICAL_POINTER = (
+    "Match the **Paste zones** table above; paste `none` for optional zones you omit."
+)
+RECIPE_PASTE_ZONE_META_VALUE_PATTERNS = [
     re.compile(pattern, re.IGNORECASE)
     for pattern in [
         r"^A diff that\b",
@@ -82,38 +72,30 @@ FILLED_EXAMPLE_META_VALUE_PATTERNS = [
         r"^`search_notes` is read-only\b",
     ]
 ]
-FILLED_EXAMPLE_OUTPUT_PASTE_PATTERNS = [
-    re.compile(pattern, re.IGNORECASE)
-    for pattern in [
-        r"paste (?:this |the )?sample output",
-        r"paste (?:the )?expected output",
-        r"paste (?:values from )?expected output shape",
-    ]
-]
-
-RECIPE_OUTPUT_ALIGN_FIELDS: dict[str, tuple[str, ...]] = {
-    "Source-Grounded Answer": ("Direct answer", "Sources used", "Unsupported or missing evidence", "Confidence level"),
-    "Code Review": ("Findings", "Test gaps", "Questions", "Brief summary"),
-    "JSON Extractor": ("Valid JSON",),
-    "Tool-Use Planner": ("Tool plan", "Permission class", "Preconditions", "Stop conditions", "Final verification"),
-    "RAG Answer Contract": ("Answer", "Citations", "Conflicts", "Missing evidence", "Retrieval quality notes"),
-    "Regression Judge": ("Pass/fail", "Scores", "Evidence", "Critical failures", "Suggested prompt fix"),
-    "Prompt Optimizer": ("Revised prompt", "Change log", "Failure mapping", "New evals", "Risks"),
-    "Panel Review": (
-        "Selected simulated personas",
-        "Rejected roles",
-        "Persona reviews",
-        "Cross-critiques",
-        "Disagreements",
-        "Evidence gaps",
-        "Recommendation",
-        "Real-review trigger",
-    ),
-}
 
 MARKDOWN_LINK_RE = re.compile(r"\[([^\]]+)\]\([^)]*\)")
 INLINE_CODE_RE = re.compile(r"`+[^`]*`+")
 SENTENCE_TERMINATOR_RE = re.compile(r"[.!?](?=\s|$)")
+RECIPE_H4_OPEN_RE = re.compile(r'^<h4 id="([^"]+)">\s*$')
+RECIPE_H4_NAME_RE = re.compile(r"<img[^>]*>\s*(.+?)\s*</h4>", re.DOTALL)
+
+
+def parse_recipe_heading_name(line: str, lines: list[str], index: int) -> tuple[str, int] | None:
+    if line.startswith("#### "):
+        return line[5:].strip(), index + 1
+    if not RECIPE_H4_OPEN_RE.match(line):
+        return None
+    block_end = index
+    while block_end < len(lines) and "</h4>" not in lines[block_end]:
+        block_end += 1
+    if block_end >= len(lines):
+        return None
+    block = "\n".join(lines[index : block_end + 1])
+    name_match = RECIPE_H4_NAME_RE.search(block)
+    if not name_match:
+        return None
+    name = re.sub(r"<[^>]+>", "", name_match.group(1)).strip()
+    return name, block_end + 1
 
 
 @dataclass(frozen=True)
@@ -200,14 +182,23 @@ def parse_recipes(lines: list[str], errors: list[Diagnostic]) -> list[Recipe]:
     fence = in_fence_by_line(lines)
     headings: list[tuple[int, str, str]] = []
     category = ""
-    for index in range(start + 1, end):
-        line = lines[index]
+    index = start + 1
+    while index < end:
         if fence[index]:
+            index += 1
             continue
+        line = lines[index]
         if line.startswith("### "):
             category = line[4:].strip()
-        elif line.startswith("#### "):
-            headings.append((index, line[5:].strip(), category))
+            index += 1
+            continue
+        parsed = parse_recipe_heading_name(line, lines, index)
+        if parsed is not None:
+            name, next_index = parsed
+            headings.append((index, name, category))
+            index = next_index
+            continue
+        index += 1
 
     recipes: list[Recipe] = []
     for pos, (index, name, recipe_category) in enumerate(headings):
@@ -304,32 +295,6 @@ def strip_markdown(cell: str) -> str:
     return value.strip()
 
 
-def output_table_field_names(output_rows: list[str]) -> list[str]:
-    names: list[str] = []
-    for row in output_rows:
-        cells = [cell.strip() for cell in row.strip("|").split("|")]
-        if cells:
-            names.append(strip_markdown(cells[0]))
-    return names
-
-
-def field_matches_output_row(expected: str, actual: str) -> bool:
-    expected_norm = expected.lower().strip()
-    actual_norm = actual.lower().strip()
-    if not expected_norm or not actual_norm:
-        return False
-    if actual_norm == expected_norm:
-        return True
-    return actual_norm.startswith(expected_norm + " ") or actual_norm.startswith(expected_norm + " by")
-
-
-def collect_filled_example_errors(recipe_name: str, details: str, fill: dict[str, tuple[str, int]], line: int = 1) -> list[Diagnostic]:
-    recipe = Recipe(name=recipe_name, category="Fixture", line=line, start=0, end=0, lines=[])
-    errors: list[Diagnostic] = []
-    validate_filled_example_details(recipe, details, fill, errors)
-    return errors
-
-
 def collect_recipe_paste_zone_errors(
     recipe_name: str,
     recipe_lines: list[str],
@@ -380,11 +345,7 @@ def recipe_body_before_copy_prompt(recipe: Recipe, positions: dict[str, int]) ->
 
 
 def paste_zone_table_rows(text: str, header: str) -> list[str]:
-    return filled_example_table_rows(text, header)
-
-
-def filled_example_table_rows(details: str, header: str) -> list[str]:
-    lines = details.splitlines()
+    lines = text.splitlines()
     try:
         start = lines.index(header)
     except ValueError:
@@ -397,13 +358,6 @@ def filled_example_table_rows(details: str, header: str) -> list[str]:
             continue
         rows.append(line)
     return rows
-
-
-def validate_filled_example_format(recipe: Recipe, details: str, errors: list[Diagnostic]) -> None:
-    if "#### " in details or "```text" in details:
-        errors.append(
-            Diagnostic("FILLED_EXAMPLE_FORMAT", "Filled example contains a heading or fenced text block.", recipe.line, recipe.name)
-        )
 
 
 def validate_recipe_paste_zone_table(
@@ -519,7 +473,7 @@ def validate_recipe_paste_zone_table(
                     hint="Shorten the cell, move overflow to Notes, or hoist a Paste preview blockquote.",
                 )
             )
-        for pattern in FILLED_EXAMPLE_META_VALUE_PATTERNS:
+        for pattern in RECIPE_PASTE_ZONE_META_VALUE_PATTERNS:
             if pattern.search(example_value):
                 errors.append(
                     Diagnostic(
@@ -540,51 +494,6 @@ def validate_recipe_paste_zone_table(
                 recipe.name,
             )
         )
-
-
-def validate_filled_example_details(recipe: Recipe, details: str, fill: dict[str, tuple[str, int]], errors: list[Diagnostic]) -> None:
-    validate_filled_example_format(recipe, details, errors)
-    for marker in FILLED_EXAMPLE_DISCLAIMER_MARKERS:
-        if marker not in details:
-            errors.append(
-                Diagnostic("FILLED_EXAMPLE_DISCLAIMER", f"Filled example missing {marker!r}.", recipe.line, recipe.name)
-            )
-    if FILLED_EXAMPLE_OUTPUT_TABLE_HEADER not in details:
-        errors.append(
-            Diagnostic("FILLED_EXAMPLE_OUTPUT_TABLE", "Filled example missing the output table header.", recipe.line, recipe.name)
-        )
-
-    output_rows = filled_example_table_rows(details, FILLED_EXAMPLE_OUTPUT_TABLE_HEADER)
-    align_fields = RECIPE_OUTPUT_ALIGN_FIELDS.get(recipe.name, ())
-    min_output_rows = 1 if len(align_fields) <= 1 else 2
-    if len(output_rows) < min_output_rows:
-        errors.append(
-            Diagnostic(
-                "FILLED_EXAMPLE_OUTPUT_ROWS",
-                f"Filled example output table needs at least {min_output_rows} data row(s).",
-                recipe.line,
-                recipe.name,
-            )
-        )
-
-    for pattern in FILLED_EXAMPLE_OUTPUT_PASTE_PATTERNS:
-        if pattern.search(details):
-            errors.append(
-                Diagnostic("FILLED_EXAMPLE_OUTPUT_PASTE", "Filled example must not instruct pasting sample output into the prompt.", recipe.line, recipe.name)
-            )
-            break
-
-    output_field_names = output_table_field_names(output_rows)
-    for field in align_fields:
-        if not any(field_matches_output_row(field, name) for name in output_field_names):
-            errors.append(
-                Diagnostic(
-                    "FILLED_EXAMPLE_OUTPUT_ALIGN",
-                    f"Filled example output table missing contract field {field!r}.",
-                    recipe.line,
-                    recipe.name,
-                )
-            )
 
 
 def paste_zone_fill_entries(recipe: Recipe, positions: dict[str, int]) -> dict[str, tuple[str, int]]:
@@ -683,7 +592,7 @@ def validate_fill_these_in_compact(recipe: Recipe, positions: dict[str, int], er
                     "Fill these in must be a one-line pointer to the Paste zones table, not bullet entries.",
                     recipe.line + start + offset,
                     recipe.name,
-                    hint="Replace bullets with: Match the **Paste zones** table above; paste `none` for optional zones you omit.",
+                    hint=f"Replace bullets with: {FILL_CANONICAL_POINTER}",
                 )
             )
             return
@@ -695,6 +604,18 @@ def validate_fill_these_in_compact(recipe: Recipe, positions: dict[str, int], er
                 "Fill these in must be at most two non-bullet lines pointing to the Paste zones table.",
                 recipe.line + start,
                 recipe.name,
+            )
+        )
+        return
+    fill_text = " ".join(non_bullet)
+    if fill_text and ("Paste zones" not in fill_text or "`none`" not in fill_text):
+        errors.append(
+            Diagnostic(
+                "FILL_THESE_IN_OPTIONAL_NONE",
+                "Fill these in must mention Paste zones and optional `none` for omitted zones.",
+                recipe.line + start,
+                recipe.name,
+                hint=f"Use: {FILL_CANONICAL_POINTER}",
             )
         )
 
@@ -769,19 +690,6 @@ def validate_recipe(recipe: Recipe, errors: list[Diagnostic], warnings: list[Dia
             if pattern.search(block_text):
                 errors.append(Diagnostic("VISIBLE_COT", "Copy prompt asks for visible long chain-of-thought or private trace.", recipe.line, recipe.name))
                 break
-
-    example_count = recipe.text.count("<summary><strong>Filled example</strong></summary>")
-    if recipe.name in EXAMPLE_RECIPES:
-        if example_count != 1:
-            errors.append(Diagnostic("FILLED_EXAMPLE", "Target recipe must have exactly one Filled example block.", recipe.line, recipe.name))
-        else:
-            details = recipe.text.split("<summary><strong>Filled example</strong></summary>", 1)[1].split("</details>", 1)[0]
-            for label in ["expected output shape", "what to change for your case"]:
-                if label not in details:
-                    errors.append(Diagnostic("FILLED_EXAMPLE_LABEL", f"Filled example missing {label}.", recipe.line, recipe.name))
-            validate_filled_example_details(recipe, details, fill, errors)
-    elif example_count:
-        errors.append(Diagnostic("UNEXPECTED_FILLED_EXAMPLE", "Only the target recipes may have Filled example blocks.", recipe.line, recipe.name))
 
     note_count = sum(1 for line in recipe.lines if line.startswith("Control/evidence note:"))
     if recipe.name in CONTROL_NOTE_RECIPES:
@@ -967,7 +875,6 @@ def run(readme: Path) -> dict[str, object]:
     if pattern_count != 43:
         errors.append(Diagnostic("PATTERN_NOTE_COUNT", f"Expected 43 pattern notes, found {pattern_count}.", 1))
 
-    example_count = sum(recipe.text.count("<summary><strong>Filled example</strong></summary>") for recipe in recipes)
     control_count = sum(sum(1 for line in recipe.lines if line.startswith("Control/evidence note:")) for recipe in recipes)
 
     errors = sorted(errors, key=lambda item: (item.line, item.code, item.message))
@@ -981,7 +888,6 @@ def run(readme: Path) -> dict[str, object]:
             "recipe_map_links": map_count,
             "prompt_index_links": prompt_index_count,
             "section_map_links": section_map_count,
-            "filled_examples": example_count,
             "control_evidence_notes": control_count,
         },
         "recipes": recipe_results,
@@ -1002,7 +908,6 @@ def run(readme: Path) -> dict[str, object]:
             "recipe_map_links",
             "prompt_index_links",
             "section_map_links",
-            "filled_examples",
             "recipe_paste_zone_table",
             "recipe_paste_zone_rows",
             "recipe_paste_zone_req",
@@ -1011,56 +916,11 @@ def run(readme: Path) -> dict[str, object]:
             "recipe_paste_zone_placeholder_coverage",
             "recipe_paste_preview_visibility",
             "fill_these_in_compact",
-            "filled_example_disclaimer",
-            "filled_example_output_table",
-            "filled_example_output_align",
-            "filled_example_fixtures",
             "control_evidence_notes",
             "control_note_sentence",
         ],
     }
 
-
-FIXTURES_DIR = Path(__file__).resolve().parent / "fixtures" / "filled_examples"
-
-
-def run_fixture_checks() -> dict[str, object]:
-    manifest_path = FIXTURES_DIR / "manifest.json"
-    if not manifest_path.exists():
-        return {"ok": False, "errors": [{"code": "FIXTURE_MANIFEST", "message": f"Missing {manifest_path}"}]}
-    manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
-    failures: list[dict[str, object]] = []
-    for case in manifest["cases"]:
-        case_id = case["id"]
-        errors: list[Diagnostic] = []
-        if case.get("recipe_lines_file"):
-            recipe_lines_path = FIXTURES_DIR / case["recipe_lines_file"]
-            recipe_lines = recipe_lines_path.read_text(encoding="utf-8").splitlines()
-            errors.extend(collect_recipe_validation_errors(case["recipe"], recipe_lines))
-        if case.get("details_file"):
-            details_path = FIXTURES_DIR / case["details_file"]
-            details = details_path.read_text(encoding="utf-8")
-            fill = {name: ("required", 1) for name in case.get("fill", [])}
-            for name in case.get("optional_fill", []):
-                fill[name] = ("optional", 1)
-            errors.extend(collect_filled_example_errors(case["recipe"], details, fill))
-        codes = sorted({error.code for error in errors})
-        expect = sorted(case.get("expect_codes", []))
-        forbid = sorted(case.get("forbid_codes", []))
-        if codes != expect:
-            failures.append({"id": case_id, "expected": expect, "actual": codes})
-        for code in forbid:
-            if code in codes:
-                failures.append({"id": case_id, "forbidden": code, "actual": codes})
-    return {"ok": not failures, "cases": len(manifest["cases"]), "failures": failures}
-
-
-def print_fixture_check(result: dict[str, object]) -> None:
-    if result["ok"]:
-        print(f"Filled example fixture checks passed ({result['cases']} cases).")
-        return
-    for failure in result["failures"]:
-        print(f"error: fixture {failure['id']}: {failure}")
 
 def print_check(result: dict[str, object]) -> None:
     errors = result["errors"]
@@ -1083,13 +943,7 @@ def main() -> int:
     mode = parser.add_mutually_exclusive_group(required=True)
     mode.add_argument("--check", action="store_true", help="print diagnostics and exit nonzero on errors")
     mode.add_argument("--json", action="store_true", help="print deterministic JSON and exit nonzero on errors")
-    mode.add_argument("--fixtures", action="store_true", help="run filled-example negative fixture manifest")
     args = parser.parse_args()
-
-    if args.fixtures:
-        result = run_fixture_checks()
-        print_fixture_check(result)
-        return 0 if result["ok"] else 1
 
     result = run(Path(args.readme))
     if args.json:

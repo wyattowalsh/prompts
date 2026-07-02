@@ -2,15 +2,17 @@
 name: readme-catalog-steward
 description: >-
   Maintains this repo's README prompt catalog: copyable prompt recipes, pattern
-  notes, provider-doc freshness, safety/eval hygiene, generated badges, and GFM
-  polish. Use when auditing, enriching, updating, or validating README.md. NOT
-  for running prompts, MCP servers, unrelated docs, or unsupported badges.
+  notes, paste-zone tables, generated ShieldCN badges and icon-only recipe
+  headings, provider-doc freshness, safety/eval hygiene, and GFM polish. Use when
+  auditing, enriching, updating, validating, or syncing README.md badge
+  surfaces. NOT for running prompts, MCP servers, unrelated docs, or unsupported
+  badges.
 argument-hint: "<mode> [section|method|provider]"
 license: MIT
 compatibility: "Requires git, rg, Node.js/npm for markdown validation, Python 3 for JSON checks, and live web access for current provider claims."
 metadata:
   author: wyattowalsh
-  version: "1.0.0"
+  version: "1.1.0"
 ---
 
 <!-- markdownlint-disable MD013 -->
@@ -30,7 +32,8 @@ README as the product surface and public contract.
 | `add-card <method>` | Add a pattern note after source verification and eval/caveat definition | `/readme-catalog-steward add-card constrained decoding` |
 | `revise-card <method>` | Improve an existing pattern note while preserving useful anchors and contract fields | `/readme-catalog-steward revise-card ReAct` |
 | `safety-pass` | Audit prompt injection, tool-use, RAG trust boundaries, refusal, abstention, and high-stakes review language | `/readme-catalog-steward safety-pass` |
-| `gfm-pass` | Improve navigation, alerts, details, tables, Mermaid, footnotes, badges, accessibility, and readability without noise | `/readme-catalog-steward gfm-pass` |
+| `gfm-pass` | Improve navigation, alerts, tables, Mermaid, generated badge markers, lane chips, icon-only recipe headings, accessibility, and readability without noise | `/readme-catalog-steward gfm-pass` |
+| `badge-pass` | Audit or regenerate ShieldCN surfaces: hero badges, shortcuts, lanes, lane chips, job map, and 48 recipe heading icons | `/readme-catalog-steward badge-pass` |
 | `eval-pass` | Improve eval flywheel, regression-set, prompt versioning, and contribution checklist guidance | `/readme-catalog-steward eval-pass` |
 | `validate` | Run the repo README/skill validation commands and report exact failures | `/readme-catalog-steward validate` |
 | Request to run a prompt, create an MCP server, or edit unrelated docs | Refuse this skill path and redirect to the appropriate workflow | `run this prompt` |
@@ -76,7 +79,8 @@ Use the smallest useful context set:
 
 | Mode | Load |
 | --- | --- |
-| `audit`, `add-card`, `revise-card`, filled-example work | `references/card-contract.md` (paste zones table, compact Fill, hoisted previews) |
+| `audit`, `add-card`, `revise-card` | `references/card-contract.md` (paste zones, compact Fill, hoisted previews, heading icons) |
+| `badge-pass`, `gfm-pass` (badge chrome) | `references/badge-surfaces.md` |
 | `refresh-sources` | `references/source-policy.md` |
 | `safety-pass`, `gfm-pass`, `eval-pass` | Relevant README section plus the matching reference |
 | Broad or multi-lane work | `references/orchestration.md` after the first local read |
@@ -88,7 +92,8 @@ Load references selectively; do not load all of them for focused edits.
 
 | File | Content | Read When |
 | --- | --- | --- |
-| `references/card-contract.md` | Recipe and pattern fields, filled-example walkthrough contract, template hygiene, evidence tiers, and chain-of-thought restrictions | Adding or revising prompt recipes, pattern notes, or filled examples |
+| `references/card-contract.md` | Recipe and pattern fields, paste-zone contract, heading-icon rules, template hygiene, evidence tiers, and chain-of-thought restrictions | Adding or revising prompt recipes or pattern notes |
+| `references/badge-surfaces.md` | ShieldCN marker blocks, lane chips, job map, icon-only recipe heading badges, generator script, and drift checks | Badge pass, GFM badge chrome, adding recipes with navigation surfaces |
 | `references/source-policy.md` | Source hierarchy, `llms.txt` lookup, provider links, freshness, and stale-claim handling | Refreshing sources or checking current claims |
 | `references/orchestration.md` | Parallel lanes, same-file serialization, review gates, and validation loop | Medium or broad README work |
 
@@ -111,14 +116,21 @@ Load references selectively; do not load all of them for focused edits.
    contract fields that apply to its format.
 8. Separate durable instructions, trusted context, untrusted input, tool
    permissions, output contract, and validation in templates.
-9. Generate README badges with `scripts/update_readme_badges.py`; do not
-   hand-edit counts or long ShieldCN URLs.
-10. Do not add license, package, release, coverage, or download badges unless
-   repo files or official sources support the claim.
-11. Use clickable Markdown or HTML links for every cited source and resource.
-12. Keep critical safety warnings visible, not hidden only inside collapses.
-13. For the eight filled-example recipes, enforce the walkthrough contract in `references/card-contract.md` and `scripts/check_readme_recipes.py --fixtures`.
+9. Generate README badges and recipe heading icons with
+   `scripts/update_readme_badges.py`; do not hand-edit counts, marker blocks, or
+   long ShieldCN URLs. Recipe heading badges are **icon-only** (no label words on
+   the pill; use `alt`/`title` for tooltips).
+10. Do not add **Filled example** walkthrough blocks; paste-zone tables and
+    hoisted previews are the input contract.
+11. Do not add license, package, release, coverage, or download badges unless
+    repo files or official sources support the claim.
+12. Use clickable Markdown or HTML links for every cited source and resource.
+13. Keep critical safety warnings visible, not hidden only inside collapses.
 14. Run validation before claiming completion, or report the exact blocker.
+15. `Fill these in:` must include the canonical optional-`none` pointer —
+    `Match the **Paste zones** table above; paste \`none\` for optional zones you
+    omit.` — not a shortened Paste-zones-only line; enforced by
+    `validate_fill_these_in_compact()`.
 
 ## Canonical Vocabulary
 
@@ -130,8 +142,10 @@ Use these canonical terms exactly throughout README stewardship work:
   `practitioner`, `community`.
 - Trust zones: `durable instructions`, `trusted context`, `untrusted input`,
   `tool permissions`, `output contract`, `validation`.
+- Badge markers: `BADGES`, `SHORTCUTS`, `LANES`, `LANE-CHIPS`, `JOB-MAP`.
+- Recipe heading surface: icon-only ShieldCN `<h4>` badge (48 recipes).
 - README actions: `audit`, `refresh-sources`, `add-card`, `revise-card`,
-  `safety-pass`, `gfm-pass`, `eval-pass`, `validate`.
+  `safety-pass`, `gfm-pass`, `badge-pass`, `eval-pass`, `validate`.
 - Current-claim wording: `as verified on <date>` or `current docs say`, never
   unsupported "latest" phrasing.
 
@@ -141,10 +155,11 @@ Run the canonical validation block from the repository root:
 [AGENTS.md § Validation](../../../AGENTS.md#validation).
 
 That block includes recipe contract checks (Prompt Index and Section Map
-completeness), paste-zone cell length audit (`scripts/audit_paste_zone_cells.py`),
-markdown lint, link checks, badge drift, `py_compile` with
+completeness), paste-zone cell length audit
+(`scripts/audit_paste_zone_cells.py`), unit tests, markdown lint, link checks,
+badge drift (`scripts/update_readme_badges.py --check`), `py_compile` with
 `PYTHONPYCACHEPREFIX`, JSON/YAML syntax, whitespace diff checks, and conditional
-badge URL inspection when README badges changed.
+badge URL inspection when README badge URLs changed.
 
 Completion criteria:
 

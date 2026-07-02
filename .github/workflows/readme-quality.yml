@@ -9,7 +9,6 @@ on:
       - scripts/check_readme_recipes.py
       - scripts/audit_paste_zone_cells.py
       - scripts/hoist_paste_preview.py
-      - scripts/fixtures/filled_examples/**
       - scripts/update_readme_badges.py
       - tests/**
       - .gitignore
@@ -24,7 +23,6 @@ on:
       - scripts/check_readme_recipes.py
       - scripts/audit_paste_zone_cells.py
       - scripts/hoist_paste_preview.py
-      - scripts/fixtures/filled_examples/**
       - scripts/update_readme_badges.py
       - tests/**
       - .gitignore
@@ -53,15 +51,11 @@ jobs:
         shell: bash
         run: python3 scripts/check_readme_recipes.py --readme README.md --check
 
-      - name: Filled example fixture check
-        shell: bash
-        run: python3 scripts/check_readme_recipes.py --fixtures
-
       - name: Paste-zone cell audit
         shell: bash
         run: python3 scripts/audit_paste_zone_cells.py --check --strict-warn
 
-      - name: Filled example unit tests
+      - name: Unit tests
         shell: bash
         run: python3 -m unittest discover -s tests -v
 
@@ -118,9 +112,7 @@ jobs:
             scripts/check_readme_recipes.py \
             scripts/update_readme_badges.py \
             scripts/audit_paste_zone_cells.py \
-            scripts/hoist_paste_preview.py \
-            scripts/fixtures/filled_examples/manifest.json \
-            tests/test_filled_example_rules.py
+            scripts/hoist_paste_preview.py
 
       - name: Badge URL smoke check
         shell: bash
