@@ -79,7 +79,7 @@ Use the smallest useful context set:
 
 | Mode | Load |
 | --- | --- |
-| `audit`, `add-card`, `revise-card` | `references/card-contract.md` (paste zones, compact Fill, hoisted previews, heading icons) |
+| `audit`, `add-card`, `revise-card` | `references/card-contract.md` (placeholder tables, compact Fill, hoisted previews, heading icons) |
 | `badge-pass`, `gfm-pass` (badge chrome) | `references/badge-surfaces.md` |
 | `refresh-sources` | `references/source-policy.md` |
 | `safety-pass`, `gfm-pass`, `eval-pass` | Relevant README section plus the matching reference |
@@ -120,7 +120,7 @@ Load references selectively; do not load all of them for focused edits.
    `scripts/update_readme_badges.py`; do not hand-edit counts, marker blocks, or
    long ShieldCN URLs. Recipe heading badges are **icon-only** (no label words on
    the pill; use `alt`/`title` for tooltips).
-10. Do not add **Filled example** walkthrough blocks; paste-zone tables and
+10. Do not add **Filled example** walkthrough blocks; placeholder tables and
     hoisted previews are the input contract.
 11. Do not add license, package, release, coverage, or download badges unless
     repo files or official sources support the claim.
@@ -128,8 +128,8 @@ Load references selectively; do not load all of them for focused edits.
 13. Keep critical safety warnings visible, not hidden only inside collapses.
 14. Run validation before claiming completion, or report the exact blocker.
 15. `Fill these in:` must include the canonical optional-`none` pointer —
-    `Match the **Paste zones** table above; paste \`none\` for optional zones you
-    omit.` — not a shortened Paste-zones-only line; enforced by
+    `Match the **placeholder table** above; paste \`none\` for optional zones you
+    omit.` — not a shortened table-only line; enforced by
     `validate_fill_these_in_compact()`.
 
 ## Canonical Vocabulary

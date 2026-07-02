@@ -89,7 +89,8 @@ link here instead of duplicating commands.
 and navigation integrity: Prompt Index link completeness (48 recipe anchors)
 and Section Map link completeness (21 navigation anchors). It also enforces
 paste-zone tables, compact `Fill these in` pointers, hoisted paste previews,
-and example-value length limits on all 48 recipes.
+and example-value length limits on all 48 recipes. Post-copy metadata (fill,
+output, upgrade, safety, sources) lives in per-recipe `<details>` blocks.
 
 Paste-zone cell length audits use `scripts/audit_paste_zone_cells.py`.
 

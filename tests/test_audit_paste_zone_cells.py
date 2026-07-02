@@ -21,7 +21,7 @@ ERROR_LENGTH = audit.ERROR_LENGTH
 
 
 def _compact_fill_block() -> str:
-    return "Match the **Paste zones** table above; paste `none` for optional zones you omit."
+    return "Match the **placeholder table** above; paste `none` for optional zones you omit."
 
 
 def _html_recipe_heading(*, slug: str, name: str) -> list[str]:

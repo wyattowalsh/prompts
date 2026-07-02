@@ -59,7 +59,7 @@ PASTE_PREVIEW_HEADING_RE = re.compile(
 )
 BULLET_FILL_PATTERN = re.compile(r"^- `\{([^}]+)\}` \((required|optional)\):")
 FILL_CANONICAL_POINTER = (
-    "Match the **Paste zones** table above; paste `none` for optional zones you omit."
+    "Match the **placeholder table** above; paste `none` for optional zones you omit."
 )
 PER_RECIPE_COPY_TIP_LINE_RE = re.compile(
     r"Before you copy:.*paste zones table",
@@ -638,7 +638,7 @@ def validate_fill_these_in_compact(recipe: Recipe, positions: dict[str, int], er
             errors.append(
                 Diagnostic(
                     "FILL_THESE_IN_COMPACT",
-                    "Fill these in must be a one-line pointer to the Paste zones table, not bullet entries.",
+                    "Fill these in must be a one-line pointer to the placeholder table, not bullet entries.",
                     recipe.line + start + offset,
                     recipe.name,
                     hint=f"Replace bullets with: {FILL_CANONICAL_POINTER}",
@@ -650,18 +650,18 @@ def validate_fill_these_in_compact(recipe: Recipe, positions: dict[str, int], er
         errors.append(
             Diagnostic(
                 "FILL_THESE_IN_COMPACT",
-                "Fill these in must be at most two non-bullet lines pointing to the Paste zones table.",
+                "Fill these in must be at most two non-bullet lines pointing to the placeholder table.",
                 recipe.line + start,
                 recipe.name,
             )
         )
         return
     fill_text = " ".join(non_bullet)
-    if fill_text and ("Paste zones" not in fill_text or "`none`" not in fill_text):
+    if fill_text and ("placeholder table" not in fill_text or "`none`" not in fill_text):
         errors.append(
             Diagnostic(
                 "FILL_THESE_IN_OPTIONAL_NONE",
-                "Fill these in must mention Paste zones and optional `none` for omitted zones.",
+                "Fill these in must mention placeholder table and optional `none` for omitted zones.",
                 recipe.line + start,
                 recipe.name,
                 hint=f"Use: {FILL_CANONICAL_POINTER}",
@@ -695,7 +695,7 @@ def validate_recipe(recipe: Recipe, errors: list[Diagnostic], warnings: list[Dia
         errors.append(
             Diagnostic(
                 "UNDECLARED_PLACEHOLDER",
-                f"Prompt placeholder {{{name}}} is not listed in the Paste zones table.",
+                f"Prompt placeholder {{{name}}} is not listed in the placeholder table.",
                 line_for(recipe, "Copy prompt:"),
                 recipe.name,
             )
@@ -705,7 +705,7 @@ def validate_recipe(recipe: Recipe, errors: list[Diagnostic], warnings: list[Dia
             errors.append(
                 Diagnostic(
                     "UNUSED_FILL_ENTRY",
-                    f"Paste zones table entry {{{name}}} is not present in the copy prompt.",
+                    f"Placeholder table entry {{{name}}} is not present in the copy prompt.",
                     entry_line,
                     recipe.name,
                 )

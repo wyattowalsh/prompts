@@ -42,12 +42,12 @@ completeness (48 recipe anchors, 21 Section Map navigation anchors).
 
 Recipe headings are generated HTML `<h4>` blocks with icon-only ShieldCN badges.
 See [badge-surfaces.md](badge-surfaces.md) for marker blocks and heading-icon
-rules. Do not add **Filled example** walkthrough blocks — paste-zone tables and
+rules. Do not add **Filled example** walkthrough blocks — placeholder tables and
 hoisted previews are the input contract.
 
-## Paste Zones Table (All Recipes)
+## Placeholder Table (All Recipes)
 
-Every prompt recipe must include a four-column **paste zones** table between
+Every prompt recipe must include a four-column **placeholder table** between
 `Use for:` and `<!-- Copy prompt: -->` so readers can demystify placeholders
 before copying the template:
 
@@ -87,22 +87,38 @@ via `validate_recipe_paste_zone_table()`, preview visibility via
 `validate_paste_preview_visibility()`, and value length via
 `RECIPE_PASTE_ZONE_VALUE_LENGTH`.
 
-## Fill These In (Compact Pointer)
+## Recipe Layout And Post-Copy Metadata
+
+Every prompt recipe follows this visible structure:
+
+1. Icon-only `<h4>` heading with stable anchor.
+2. `Use for:` one-line job summary.
+3. Four-column placeholder table (no `Paste zones:` label).
+4. Optional visible **Paste preview** when Example value is `see preview below`.
+5. Horizontal rule (`---`) then `<!-- Copy prompt: -->` and fenced `text` template.
+6. Collapsed `<details>` block titled **After copy** with fill pointer, expected
+   output, upgrade path, optional control/evidence note, safety/eval checks, and
+   sources.
+7. Navigation badges, then `---` before the next recipe.
+
+Post-copy fields stay in canonical order inside the details block. Critical
+safety warnings in pattern notes and section callouts remain visible outside
+collapses.
 
 **Required and enforced** — not optional guidance. Every recipe `Fill these in:`
-block must use the canonical one-line pointer below. Do not duplicate paste-zone
+block must use the canonical one-line pointer below. Do not duplicate placeholder
 rows as bullets or omit the optional-`none` hint.
 
 ```markdown
 Fill these in:
 
-Match the **Paste zones** table above; paste `none` for optional zones you omit.
+Match the **placeholder table** above; paste `none` for optional zones you omit.
 ```
 
 Rules:
 
-- the canonical line is exact; do not shorten it to “Match the **Paste zones**
-  table above.” without the optional-`none` clause
+- the canonical line is exact; do not shorten it to “Match the **placeholder table**
+  above.” without the optional-`none` clause
 - at most two non-bullet lines are allowed after `Fill these in:`
 - `scripts/check_readme_recipes.py` enforces this via
   `validate_fill_these_in_compact()` (`FILL_THESE_IN_COMPACT` rejects legacy

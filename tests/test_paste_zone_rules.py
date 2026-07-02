@@ -13,7 +13,7 @@ import check_readme_recipes as checker  # noqa: E402
 
 
 def _compact_fill_block() -> str:
-    return "Match the **Paste zones** table above; paste `none` for optional zones you omit."
+    return "Match the **placeholder table** above; paste `none` for optional zones you omit."
 
 
 def _sample_recipe_lines(paste_zone_block: str, *, fill_block: str | None = None, preview_block: str = "") -> list[str]:
@@ -189,7 +189,7 @@ class RecipePasteZoneRulesTest(unittest.TestCase):
             "Source-Grounded Answer",
             _sample_recipe_lines(
                 _sample_paste_zone_table(),
-                fill_block="Match the **Paste zones** table above.",
+                fill_block="Match the **placeholder table** above.",
             ),
         )
         codes = {error.code for error in errors}
