@@ -213,7 +213,14 @@ Recipe format:
 
 ### Research
 
-> ◆ grounded answers · web briefs · claim checks
+<!-- LANE-CHIPS:research:START -->
+<p align="left">
+  <a href="#source-grounded-answer"><img alt="Source-Grounded Answer" src="https://shieldcn.dev/badge/Grounded-2563EB.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=20&radius=7&padX=7&iconSize=11&variant=default&logo=ri:RiQuoteText&logoColor=f8fafc"></a>
+  <a href="#web-research-brief"><img alt="Web Research Brief" src="https://shieldcn.dev/badge/Web%20brief-3B82F6.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=20&radius=7&padX=7&iconSize=11&variant=default&logo=ri:RiGlobalLine&logoColor=f8fafc"></a>
+  <a href="#claim-checker"><img alt="Claim Checker" src="https://shieldcn.dev/badge/Claims-60A5FA.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=20&radius=7&padX=7&iconSize=11&variant=default&logo=ri:RiShieldCheckLine&logoColor=f8fafc"></a>
+  <a href="#citation-matrix"><img alt="Citation Matrix" src="https://shieldcn.dev/badge/Citations-1D4ED8.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=20&radius=7&padX=7&iconSize=11&variant=default&logo=ri:RiLinksLine&logoColor=f8fafc"></a>
+</p>
+<!-- LANE-CHIPS:research:END -->
 
 #### Source-Grounded Answer
 
@@ -738,7 +745,14 @@ Sources:
 
 ### Writing
 
-> ◆ briefs · rewrites · summaries · newsletters
+<!-- LANE-CHIPS:writing:START -->
+<p align="left">
+  <a href="#executive-brief"><img alt="Executive Brief" src="https://shieldcn.dev/badge/Brief-9333EA.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=20&radius=7&padX=7&iconSize=11&variant=default&logo=ri:RiFileTextLine&logoColor=f8fafc"></a>
+  <a href="#rewrite-with-constraints"><img alt="Rewrite With Constraints" src="https://shieldcn.dev/badge/Rewrite-A855F7.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=20&radius=7&padX=7&iconSize=11&variant=default&logo=ri:RiEditLine&logoColor=f8fafc"></a>
+  <a href="#dense-summary"><img alt="Dense Summary" src="https://shieldcn.dev/badge/Summary-C084FC.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=20&radius=7&padX=7&iconSize=11&variant=default&logo=ri:RiAlignLeft&logoColor=f8fafc"></a>
+  <a href="#newsletter-draft"><img alt="Newsletter Draft" src="https://shieldcn.dev/badge/Newsletter-D946EF.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=20&radius=7&padX=7&iconSize=11&variant=default&logo=ri:RiMailLine&logoColor=f8fafc"></a>
+</p>
+<!-- LANE-CHIPS:writing:END -->
 
 #### Executive Brief
 
@@ -1224,7 +1238,14 @@ Sources:
 
 ### Coding
 
-> ◆ review · RCA · tests · API contracts
+<!-- LANE-CHIPS:coding:START -->
+<p align="left">
+  <a href="#code-review"><img alt="Code Review" src="https://shieldcn.dev/badge/Review-16A34A.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=20&radius=7&padX=7&iconSize=11&variant=default&logo=ri:RiCodeSSlashLine&logoColor=f8fafc"></a>
+  <a href="#bug-rca"><img alt="Bug RCA" src="https://shieldcn.dev/badge/RCA-22C55E.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=20&radius=7&padX=7&iconSize=11&variant=default&logo=ri:RiBugLine&logoColor=f8fafc"></a>
+  <a href="#unit-test-writer"><img alt="Unit Test Writer" src="https://shieldcn.dev/badge/Tests-4ADE80.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=20&radius=7&padX=7&iconSize=11&variant=default&logo=ri:RiTestTubeLine&logoColor=f8fafc"></a>
+  <a href="#api-contract-explainer"><img alt="API Contract Explainer" src="https://shieldcn.dev/badge/API-10B981.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=20&radius=7&padX=7&iconSize=11&variant=default&logo=ri:RiBracesLine&logoColor=f8fafc"></a>
+</p>
+<!-- LANE-CHIPS:coding:END -->
 
 #### Code Review
 
@@ -1743,7 +1764,14 @@ Sources:
 
 ### Data
 
-> ◆ JSON · tables · classification · extraction
+<!-- LANE-CHIPS:data:START -->
+<p align="left">
+  <a href="#json-extractor"><img alt="JSON Extractor" src="https://shieldcn.dev/badge/JSON-EAB308.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=20&radius=7&padX=7&iconSize=11&variant=default&logo=ri:RiBracesLine&logoColor=f8fafc"></a>
+  <a href="#table-normalizer"><img alt="Table Normalizer" src="https://shieldcn.dev/badge/Tables-FACC15.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=20&radius=7&padX=7&iconSize=11&variant=default&logo=ri:RiTableLine&logoColor=f8fafc"></a>
+  <a href="#classifier"><img alt="Classifier" src="https://shieldcn.dev/badge/Classify-CA8A04.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=20&radius=7&padX=7&iconSize=11&variant=default&logo=ri:RiPriceTag3Line&logoColor=f8fafc"></a>
+  <a href="#ner-extractor"><img alt="NER Extractor" src="https://shieldcn.dev/badge/NER-FDE047.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=20&radius=7&padX=7&iconSize=11&variant=default&logo=ri:RiUserSearchLine&logoColor=f8fafc"></a>
+</p>
+<!-- LANE-CHIPS:data:END -->
 
 #### JSON Extractor
 
@@ -2257,7 +2285,14 @@ Sources:
 
 ### Product
 
-> ◆ PRDs · stories · launch · UX review
+<!-- LANE-CHIPS:product:START -->
+<p align="left">
+  <a href="#prd-drafter"><img alt="PRD Drafter" src="https://shieldcn.dev/badge/PRD-EC4899.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=20&radius=7&padX=7&iconSize=11&variant=default&logo=ri:RiDraftLine&logoColor=f8fafc"></a>
+  <a href="#user-story-splitter"><img alt="User Story Splitter" src="https://shieldcn.dev/badge/Stories-F472B6.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=20&radius=7&padX=7&iconSize=11&variant=default&logo=ri:RiStickyNoteLine&logoColor=f8fafc"></a>
+  <a href="#launch-checklist"><img alt="Launch Checklist" src="https://shieldcn.dev/badge/Launch-FB7185.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=20&radius=7&padX=7&iconSize=11&variant=default&logo=ri:RiRocketLine&logoColor=f8fafc"></a>
+  <a href="#ux-review"><img alt="UX Review" src="https://shieldcn.dev/badge/UX-E879F9.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=20&radius=7&padX=7&iconSize=11&variant=default&logo=ri:RiLayoutLine&logoColor=f8fafc"></a>
+</p>
+<!-- LANE-CHIPS:product:END -->
 
 #### PRD Drafter
 
@@ -2743,7 +2778,14 @@ Sources:
 
 ### Operations
 
-> ◆ incidents · runbooks · logs · decisions
+<!-- LANE-CHIPS:operations:START -->
+<p align="left">
+  <a href="#incident-summary"><img alt="Incident Summary" src="https://shieldcn.dev/badge/Incident-F97316.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=20&radius=7&padX=7&iconSize=11&variant=default&logo=ri:RiAlarmWarningLine&logoColor=f8fafc"></a>
+  <a href="#runbook-generator"><img alt="Runbook Generator" src="https://shieldcn.dev/badge/Runbook-FB923C.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=20&radius=7&padX=7&iconSize=11&variant=default&logo=ri:RiBookOpenLine&logoColor=f8fafc"></a>
+  <a href="#log-triage"><img alt="Log Triage" src="https://shieldcn.dev/badge/Logs-FDBA74.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=20&radius=7&padX=7&iconSize=11&variant=default&logo=ri:RiFileSearchLine&logoColor=f8fafc"></a>
+  <a href="#decision-memo"><img alt="Decision Memo" src="https://shieldcn.dev/badge/Decision-EA580C.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=20&radius=7&padX=7&iconSize=11&variant=default&logo=ri:RiScalesLine&logoColor=f8fafc"></a>
+</p>
+<!-- LANE-CHIPS:operations:END -->
 
 #### Incident Summary
 
@@ -3229,7 +3271,14 @@ Sources:
 
 ### Agent and Tool Workflows
 
-> ◆ tools · RAG · injection defense · prompt evals
+<!-- LANE-CHIPS:agents:START -->
+<p align="left">
+  <a href="#tool-use-planner"><img alt="Tool-Use Planner" src="https://shieldcn.dev/badge/Tools-06B6D4.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=20&radius=7&padX=7&iconSize=11&variant=default&logo=ri:RiToolsLine&logoColor=f8fafc"></a>
+  <a href="#rag-answer-contract"><img alt="RAG Answer Contract" src="https://shieldcn.dev/badge/RAG-0891B2.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=20&radius=7&padX=7&iconSize=11&variant=default&logo=ri:RiDatabase2Line&logoColor=f8fafc"></a>
+  <a href="#prompt-injection-scanner"><img alt="Prompt-Injection Scanner" src="https://shieldcn.dev/badge/Injection-22D3EE.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=20&radius=7&padX=7&iconSize=11&variant=default&logo=ri:RiShieldKeyholeLine&logoColor=f8fafc"></a>
+  <a href="#prompt-optimizer"><img alt="Prompt Optimizer" src="https://shieldcn.dev/badge/Optimize-67E8F9.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=20&radius=7&padX=7&iconSize=11&variant=default&logo=ri:RiLoopRightLine&logoColor=f8fafc"></a>
+</p>
+<!-- LANE-CHIPS:agents:END -->
 
 #### Tool-Use Planner
 
@@ -3837,7 +3886,14 @@ what to change for your case:
 
 ### Reasoning
 
-> ◆ plan · verify · refine · tradeoffs
+<!-- LANE-CHIPS:reasoning:START -->
+<p align="left">
+  <a href="#plan-and-solve"><img alt="Plan-and-Solve" src="https://shieldcn.dev/badge/Plan-8B5CF6.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=20&radius=7&padX=7&iconSize=11&variant=default&logo=ri:RiRouteLine&logoColor=f8fafc"></a>
+  <a href="#verification-pass"><img alt="Verification Pass" src="https://shieldcn.dev/badge/Verify-7C3AED.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=20&radius=7&padX=7&iconSize=11&variant=default&logo=ri:RiCheckboxCircleLine&logoColor=f8fafc"></a>
+  <a href="#self-refine-pass"><img alt="Self-Refine Pass" src="https://shieldcn.dev/badge/Refine-A78BFA.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=20&radius=7&padX=7&iconSize=11&variant=default&logo=ri:RiRefreshLine&logoColor=f8fafc"></a>
+  <a href="#tradeoff-matrix"><img alt="Tradeoff Matrix" src="https://shieldcn.dev/badge/Tradeoffs-C4B5FD.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=20&radius=7&padX=7&iconSize=11&variant=default&logo=ri:RiScales3Line&logoColor=f8fafc"></a>
+</p>
+<!-- LANE-CHIPS:reasoning:END -->
 
 #### Plan-and-Solve
 

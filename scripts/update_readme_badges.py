@@ -229,6 +229,89 @@ LANE_BADGE_PARAMS = {
     "iconSize": "12",
 }
 
+LANE_CHIP_PARAMS = {
+    **COMMON_STATIC_PARAMS,
+    "split": "false",
+    "height": "20",
+    "padX": "7",
+    "iconSize": "11",
+}
+
+LANE_CHIP_SECTIONS = [
+    {
+        "key": "research",
+        "chips": [
+            {"label": "Grounded", "color": "2563EB", "logo": "ri:RiQuoteText", "href": "#source-grounded-answer", "alt": "Source-Grounded Answer"},
+            {"label": "Web brief", "color": "3B82F6", "logo": "ri:RiGlobalLine", "href": "#web-research-brief", "alt": "Web Research Brief"},
+            {"label": "Claims", "color": "60A5FA", "logo": "ri:RiShieldCheckLine", "href": "#claim-checker", "alt": "Claim Checker"},
+            {"label": "Citations", "color": "1D4ED8", "logo": "ri:RiLinksLine", "href": "#citation-matrix", "alt": "Citation Matrix"},
+        ],
+    },
+    {
+        "key": "writing",
+        "chips": [
+            {"label": "Brief", "color": "9333EA", "logo": "ri:RiFileTextLine", "href": "#executive-brief", "alt": "Executive Brief"},
+            {"label": "Rewrite", "color": "A855F7", "logo": "ri:RiEditLine", "href": "#rewrite-with-constraints", "alt": "Rewrite With Constraints"},
+            {"label": "Summary", "color": "C084FC", "logo": "ri:RiAlignLeft", "href": "#dense-summary", "alt": "Dense Summary"},
+            {"label": "Newsletter", "color": "D946EF", "logo": "ri:RiMailLine", "href": "#newsletter-draft", "alt": "Newsletter Draft"},
+        ],
+    },
+    {
+        "key": "coding",
+        "chips": [
+            {"label": "Review", "color": "16A34A", "logo": "ri:RiCodeSSlashLine", "href": "#code-review", "alt": "Code Review"},
+            {"label": "RCA", "color": "22C55E", "logo": "ri:RiBugLine", "href": "#bug-rca", "alt": "Bug RCA"},
+            {"label": "Tests", "color": "4ADE80", "logo": "ri:RiTestTubeLine", "href": "#unit-test-writer", "alt": "Unit Test Writer"},
+            {"label": "API", "color": "10B981", "logo": "ri:RiBracesLine", "href": "#api-contract-explainer", "alt": "API Contract Explainer"},
+        ],
+    },
+    {
+        "key": "data",
+        "chips": [
+            {"label": "JSON", "color": "EAB308", "logo": "ri:RiBracesLine", "href": "#json-extractor", "alt": "JSON Extractor"},
+            {"label": "Tables", "color": "FACC15", "logo": "ri:RiTableLine", "href": "#table-normalizer", "alt": "Table Normalizer"},
+            {"label": "Classify", "color": "CA8A04", "logo": "ri:RiPriceTag3Line", "href": "#classifier", "alt": "Classifier"},
+            {"label": "NER", "color": "FDE047", "logo": "ri:RiUserSearchLine", "href": "#ner-extractor", "alt": "NER Extractor"},
+        ],
+    },
+    {
+        "key": "product",
+        "chips": [
+            {"label": "PRD", "color": "EC4899", "logo": "ri:RiDraftLine", "href": "#prd-drafter", "alt": "PRD Drafter"},
+            {"label": "Stories", "color": "F472B6", "logo": "ri:RiStickyNoteLine", "href": "#user-story-splitter", "alt": "User Story Splitter"},
+            {"label": "Launch", "color": "FB7185", "logo": "ri:RiRocketLine", "href": "#launch-checklist", "alt": "Launch Checklist"},
+            {"label": "UX", "color": "E879F9", "logo": "ri:RiLayoutLine", "href": "#ux-review", "alt": "UX Review"},
+        ],
+    },
+    {
+        "key": "operations",
+        "chips": [
+            {"label": "Incident", "color": "F97316", "logo": "ri:RiAlarmWarningLine", "href": "#incident-summary", "alt": "Incident Summary"},
+            {"label": "Runbook", "color": "FB923C", "logo": "ri:RiBookOpenLine", "href": "#runbook-generator", "alt": "Runbook Generator"},
+            {"label": "Logs", "color": "FDBA74", "logo": "ri:RiFileSearchLine", "href": "#log-triage", "alt": "Log Triage"},
+            {"label": "Decision", "color": "EA580C", "logo": "ri:RiScalesLine", "href": "#decision-memo", "alt": "Decision Memo"},
+        ],
+    },
+    {
+        "key": "agents",
+        "chips": [
+            {"label": "Tools", "color": "06B6D4", "logo": "ri:RiToolsLine", "href": "#tool-use-planner", "alt": "Tool-Use Planner"},
+            {"label": "RAG", "color": "0891B2", "logo": "ri:RiDatabase2Line", "href": "#rag-answer-contract", "alt": "RAG Answer Contract"},
+            {"label": "Injection", "color": "22D3EE", "logo": "ri:RiShieldKeyholeLine", "href": "#prompt-injection-scanner", "alt": "Prompt-Injection Scanner"},
+            {"label": "Optimize", "color": "67E8F9", "logo": "ri:RiLoopRightLine", "href": "#prompt-optimizer", "alt": "Prompt Optimizer"},
+        ],
+    },
+    {
+        "key": "reasoning",
+        "chips": [
+            {"label": "Plan", "color": "8B5CF6", "logo": "ri:RiRouteLine", "href": "#plan-and-solve", "alt": "Plan-and-Solve"},
+            {"label": "Verify", "color": "7C3AED", "logo": "ri:RiCheckboxCircleLine", "href": "#verification-pass", "alt": "Verification Pass"},
+            {"label": "Refine", "color": "A78BFA", "logo": "ri:RiRefreshLine", "href": "#self-refine-pass", "alt": "Self-Refine Pass"},
+            {"label": "Tradeoffs", "color": "C4B5FD", "logo": "ri:RiScales3Line", "href": "#tradeoff-matrix", "alt": "Tradeoff Matrix"},
+        ],
+    },
+]
+
 NAV_BADGES = [
     {
         "label": "TOC",
@@ -279,6 +362,20 @@ def count_headings(markdown: str, section: str) -> int:
         if in_section and line.startswith("#### "):
             count += 1
     return count
+
+
+def chip_badge_url(chip: dict[str, str]) -> str:
+    params = {
+        **LANE_CHIP_PARAMS,
+        "variant": "default",
+        "logo": chip["logo"],
+        "logoColor": chip.get("logoColor", "f8fafc"),
+    }
+    return (
+        "https://shieldcn.dev/badge/"
+        f"{quote(chip['label'], safe='')}-{chip['color']}.svg?"
+        f"{urlencode(params, safe=':')}"
+    )
 
 
 def lane_badge_url(badge: dict[str, str]) -> str:
@@ -390,6 +487,32 @@ def render_badge_block(markdown: str) -> str:
     return "\n".join(rows)
 
 
+def render_lane_chip_block(section: dict[str, object]) -> str:
+    key = section["key"]
+    chips = section["chips"]
+    start = f"<!-- LANE-CHIPS:{key}:START -->"
+    end = f"<!-- LANE-CHIPS:{key}:END -->"
+    rows: list[str] = [start, '<p align="left">']
+    for chip in chips:
+        src = chip_badge_url(chip)
+        rows.append(image_link(chip["href"], chip["alt"], src, indent="  "))
+    rows.extend(["</p>", end])
+    return "\n".join(rows)
+
+
+def replace_lane_chips(markdown: str) -> str:
+    updated = markdown
+    for section in LANE_CHIP_SECTIONS:
+        start = f"<!-- LANE-CHIPS:{section['key']}:START -->"
+        end = f"<!-- LANE-CHIPS:{section['key']}:END -->"
+        if updated.count(start) != 1 or updated.count(end) != 1:
+            raise SystemExit(f"README lane chip markers are missing: {section['key']}")
+        block = render_lane_chip_block(section)
+        pattern = re.compile(f"{re.escape(start)}.*?{re.escape(end)}", re.DOTALL)
+        updated = pattern.sub(block, updated, count=1)
+    return updated
+
+
 def render_lane_block() -> str:
     rows: list[str] = [LANES_START]
     rows.append('<p align="center">')
@@ -414,6 +537,7 @@ def render_shortcut_block() -> str:
 
 def generated_badge_urls(markdown: str) -> list[str]:
     blocks = [render_badge_block(markdown), render_lane_block(), render_shortcut_block()]
+    blocks.extend(render_lane_chip_block(section) for section in LANE_CHIP_SECTIONS)
     urls = re.findall(r'src="(https://shieldcn\.dev[^"]+)"', "\n".join(blocks))
     # Nav badges are repeated in the README body, so list each unique URL once
     # for smoke checks without making the script rewrite every section footer.
@@ -431,7 +555,8 @@ def replace_marker_block(markdown: str, start: str, end: str, block: str) -> str
 def replace_badges(markdown: str) -> str:
     updated = replace_marker_block(markdown, START, END, render_badge_block(markdown))
     updated = replace_marker_block(updated, LANES_START, LANES_END, render_lane_block())
-    return replace_marker_block(updated, SHORTCUTS_START, SHORTCUTS_END, render_shortcut_block())
+    updated = replace_marker_block(updated, SHORTCUTS_START, SHORTCUTS_END, render_shortcut_block())
+    return replace_lane_chips(updated)
 
 
 def main() -> int:
