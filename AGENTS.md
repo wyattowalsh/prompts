@@ -87,7 +87,7 @@ link here instead of duplicating commands.
 
 `scripts/check_readme_recipes.py --check` enforces the recipe card contract
 and navigation integrity: Prompt Index link completeness (48 recipe anchors)
-and Section Map link completeness (22 navigation anchors). It also enforces
+and Section Map link completeness (21 navigation anchors). It also enforces
 paste-zone tables, compact `Fill these in` pointers, hoisted paste previews,
 and example-value length limits on all 48 recipes.
 

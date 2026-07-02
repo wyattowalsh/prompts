@@ -21,6 +21,8 @@ START = "<!-- BADGES:START -->"
 END = "<!-- BADGES:END -->"
 SHORTCUTS_START = "<!-- SHORTCUTS:START -->"
 SHORTCUTS_END = "<!-- SHORTCUTS:END -->"
+LANES_START = "<!-- LANES:START -->"
+LANES_END = "<!-- LANES:END -->"
 
 COMMON_STATIC_PARAMS = {
     "mode": "dark",
@@ -38,46 +40,49 @@ COMMON_STATIC_PARAMS = {
 CORE_BADGES = [
     {
         "label": "{prompt_count} Prompts",
-        "color": "8CA1AF",
+        "color": "14B8A6",
         "logo": "readthedocs",
-        "logoColor": "8CA1AF",
+        "logoColor": "5EEAD4",
         "href": "#prompt-library",
         "alt": "Prompt library: {prompt_count} prompts",
     },
     {
         "label": "{pattern_count} Patterns",
-        "color": "BBDDE5",
+        "color": "38BDF8",
         "logo": "gitbook",
-        "logoColor": "BBDDE5",
+        "logoColor": "7DD3FC",
         "href": "#pattern-notes",
         "alt": "Pattern notes: {pattern_count} techniques",
     },
     {
         "label": "Zero Shot",
-        "color": "334155",
+        "color": "818CF8",
         "logo": "ri:RiSparkling2Line",
+        "logoColor": "C7D2FE",
         "href": "#how-to-adapt-prompts",
         "alt": "Zero-shot first: examples optional",
     },
     {
         "label": "Evidence",
-        "color": "B31B1B",
+        "color": "F43F5E",
         "logo": "arxiv",
-        "logoColor": "B31B1B",
+        "logoColor": "FDA4AF",
         "href": "#bibliography",
         "alt": "Evidence base: papers and docs",
     },
     {
         "label": "Safety",
-        "color": "111111",
+        "color": "FB923C",
         "logo": "owasp",
+        "logoColor": "FED7AA",
         "href": "#safety-evals-and-trust-boundaries",
         "alt": "Safety and evals: gated",
     },
     {
         "label": "Benchmarks",
-        "color": "111827",
+        "color": "22D3EE",
         "logo": "ri:RiBarChartBoxLine",
+        "logoColor": "A5F3FC",
         "href": "https://artificialanalysis.ai/",
         "alt": "Benchmark context: Artificial Analysis",
     },
@@ -117,8 +122,9 @@ PROVIDER_BADGES = [
     },
     {
         "label": "Grok",
-        "color": "111111",
+        "color": "A78BFA",
         "logo": "x",
+        "logoColor": "DDD6FE",
         "href": "https://docs.x.ai/overview",
         "alt": "Grok documentation",
     },
@@ -204,16 +210,35 @@ SHORTCUT_BADGES = [
     },
 ]
 
+LANE_BADGES = [
+    {"label": "Research", "color": "3B82F6", "logo": "ri:RiMicroscopeLine", "href": "#research", "alt": "Research lane"},
+    {"label": "Writing", "color": "A855F7", "logo": "ri:RiQuillPenLine", "href": "#writing", "alt": "Writing lane"},
+    {"label": "Coding", "color": "22C55E", "logo": "ri:RiCodeBoxLine", "href": "#coding", "alt": "Coding lane"},
+    {"label": "Data", "color": "EAB308", "logo": "ri:RiDatabaseLine", "href": "#data", "alt": "Data lane"},
+    {"label": "Product", "color": "EC4899", "logo": "ri:RiLayoutGridLine", "href": "#product", "alt": "Product lane"},
+    {"label": "Ops", "color": "F97316", "logo": "ri:RiPulseLine", "href": "#operations", "alt": "Operations lane"},
+    {"label": "Agents", "color": "06B6D4", "logo": "ri:RiRobot2Line", "href": "#agent-and-tool-workflows", "alt": "Agent workflows lane"},
+    {"label": "Reasoning", "color": "8B5CF6", "logo": "ri:RiBrainLine", "href": "#reasoning", "alt": "Reasoning lane"},
+]
+
+LANE_BADGE_PARAMS = {
+    **COMMON_STATIC_PARAMS,
+    "split": "false",
+    "height": "22",
+    "padX": "8",
+    "iconSize": "12",
+}
+
 NAV_BADGES = [
     {
         "label": "TOC",
-        "color": "2563EB",
+        "color": "6366F1",
         "logo": "ri:RiListCheck",
         "alt": "Table of contents",
     },
     {
         "label": "Top",
-        "color": "16A34A",
+        "color": "10B981",
         "logo": "ri:RiArrowUpLine",
         "alt": "Back to top",
     },
@@ -254,6 +279,20 @@ def count_headings(markdown: str, section: str) -> int:
         if in_section and line.startswith("#### "):
             count += 1
     return count
+
+
+def lane_badge_url(badge: dict[str, str]) -> str:
+    params = {
+        **LANE_BADGE_PARAMS,
+        "variant": "default",
+        "logo": badge["logo"],
+        "logoColor": "f8fafc",
+    }
+    return (
+        "https://shieldcn.dev/badge/"
+        f"{quote(badge['label'], safe='')}-{badge['color']}.svg?"
+        f"{urlencode(params, safe=':')}"
+    )
 
 
 def compact_static_badge_url(badge: dict[str, str], counts: dict[str, int], variant: str) -> str:
@@ -351,6 +390,17 @@ def render_badge_block(markdown: str) -> str:
     return "\n".join(rows)
 
 
+def render_lane_block() -> str:
+    rows: list[str] = [LANES_START]
+    rows.append('<p align="center">')
+    for badge in LANE_BADGES:
+        src = lane_badge_url(badge)
+        rows.append(image_link(badge["href"], badge["alt"], src, indent="  "))
+    rows.append("</p>")
+    rows.append(LANES_END)
+    return "\n".join(rows)
+
+
 def render_shortcut_block() -> str:
     rows: list[str] = [SHORTCUTS_START]
     rows.append('<p align="center">')
@@ -363,7 +413,7 @@ def render_shortcut_block() -> str:
 
 
 def generated_badge_urls(markdown: str) -> list[str]:
-    blocks = [render_badge_block(markdown), render_shortcut_block()]
+    blocks = [render_badge_block(markdown), render_lane_block(), render_shortcut_block()]
     urls = re.findall(r'src="(https://shieldcn\.dev[^"]+)"', "\n".join(blocks))
     # Nav badges are repeated in the README body, so list each unique URL once
     # for smoke checks without making the script rewrite every section footer.
@@ -380,6 +430,7 @@ def replace_marker_block(markdown: str, start: str, end: str, block: str) -> str
 
 def replace_badges(markdown: str) -> str:
     updated = replace_marker_block(markdown, START, END, render_badge_block(markdown))
+    updated = replace_marker_block(updated, LANES_START, LANES_END, render_lane_block())
     return replace_marker_block(updated, SHORTCUTS_START, SHORTCUTS_END, render_shortcut_block())
 
 

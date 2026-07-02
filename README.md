@@ -2,20 +2,24 @@
 
 <div align="center">
 
+<p align="center">
+  <sub aria-hidden="true">◆ ─── ◆ ─── ◆</sub>
+</p>
+
 <h1>Prompt Library</h1>
 
 <p>
-  <sub>Research-backed prompt recipes and pattern notes — copy, adapt, and verify before reuse.</sub>
+  <sub>Research-backed recipes · <span style="color:#34d399">copy</span> · <span style="color:#60a5fa">adapt</span> · <span style="color:#f472b6">verify</span></sub>
 </p>
 
 <!-- BADGES:START -->
 <p align="center">
-  <a href="#prompt-library"><img alt="Prompt library: 48 prompts" src="https://shieldcn.dev/badge/48%20Prompts-8CA1AF.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=26&radius=7&padX=10&iconSize=13&variant=default&logo=readthedocs&logoColor=8CA1AF"></a>
-  <a href="#pattern-notes"><img alt="Pattern notes: 43 techniques" src="https://shieldcn.dev/badge/43%20Patterns-BBDDE5.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=26&radius=7&padX=10&iconSize=13&variant=default&logo=gitbook&logoColor=BBDDE5"></a>
-  <a href="#how-to-adapt-prompts"><img alt="Zero-shot first: examples optional" src="https://shieldcn.dev/badge/Zero%20Shot-334155.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=26&radius=7&padX=10&iconSize=13&variant=default&logo=ri:RiSparkling2Line&logoColor=f8fafc"></a>
-  <a href="#bibliography"><img alt="Evidence base: papers and docs" src="https://shieldcn.dev/badge/Evidence-B31B1B.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=26&radius=7&padX=10&iconSize=13&variant=default&logo=arxiv&logoColor=B31B1B"></a>
-  <a href="#safety-evals-and-trust-boundaries"><img alt="Safety and evals: gated" src="https://shieldcn.dev/badge/Safety-111111.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=26&radius=7&padX=10&iconSize=13&variant=default&logo=owasp&logoColor=f8fafc"></a>
-  <a href="https://artificialanalysis.ai/"><img alt="Benchmark context: Artificial Analysis" src="https://shieldcn.dev/badge/Benchmarks-111827.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=26&radius=7&padX=10&iconSize=13&variant=default&logo=ri:RiBarChartBoxLine&logoColor=f8fafc"></a>
+  <a href="#prompt-library"><img alt="Prompt library: 48 prompts" src="https://shieldcn.dev/badge/48%20Prompts-14B8A6.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=26&radius=7&padX=10&iconSize=13&variant=default&logo=readthedocs&logoColor=5EEAD4"></a>
+  <a href="#pattern-notes"><img alt="Pattern notes: 43 techniques" src="https://shieldcn.dev/badge/43%20Patterns-38BDF8.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=26&radius=7&padX=10&iconSize=13&variant=default&logo=gitbook&logoColor=7DD3FC"></a>
+  <a href="#how-to-adapt-prompts"><img alt="Zero-shot first: examples optional" src="https://shieldcn.dev/badge/Zero%20Shot-818CF8.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=26&radius=7&padX=10&iconSize=13&variant=default&logo=ri:RiSparkling2Line&logoColor=C7D2FE"></a>
+  <a href="#bibliography"><img alt="Evidence base: papers and docs" src="https://shieldcn.dev/badge/Evidence-F43F5E.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=26&radius=7&padX=10&iconSize=13&variant=default&logo=arxiv&logoColor=FDA4AF"></a>
+  <a href="#safety-evals-and-trust-boundaries"><img alt="Safety and evals: gated" src="https://shieldcn.dev/badge/Safety-FB923C.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=26&radius=7&padX=10&iconSize=13&variant=default&logo=owasp&logoColor=FED7AA"></a>
+  <a href="https://artificialanalysis.ai/"><img alt="Benchmark context: Artificial Analysis" src="https://shieldcn.dev/badge/Benchmarks-22D3EE.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=26&radius=7&padX=10&iconSize=13&variant=default&logo=ri:RiBarChartBoxLine&logoColor=A5F3FC"></a>
 </p>
 
 <p align="center">
@@ -23,7 +27,7 @@
   <a href="https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices"><img alt="Claude documentation" src="https://shieldcn.dev/badge/Claude-D97757.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=26&radius=7&padX=10&iconSize=13&variant=default&logo=anthropic&logoColor=D97757"></a>
   <a href="https://ai.google.dev/gemini-api/docs/prompting-strategies"><img alt="Gemini documentation" src="https://shieldcn.dev/badge/Gemini-8E75B2.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=26&radius=7&padX=10&iconSize=13&variant=default&logo=googlegemini&logoColor=8E75B2"></a>
   <a href="https://docs.perplexity.ai/docs/getting-started/overview"><img alt="Perplexity documentation" src="https://shieldcn.dev/badge/Perplexity-1FB8CD.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=26&radius=7&padX=10&iconSize=13&variant=default&logo=perplexity&logoColor=1FB8CD"></a>
-  <a href="https://docs.x.ai/overview"><img alt="Grok documentation" src="https://shieldcn.dev/badge/Grok-111111.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=26&radius=7&padX=10&iconSize=13&variant=default&logo=x&logoColor=f8fafc"></a>
+  <a href="https://docs.x.ai/overview"><img alt="Grok documentation" src="https://shieldcn.dev/badge/Grok-A78BFA.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=26&radius=7&padX=10&iconSize=13&variant=default&logo=x&logoColor=DDD6FE"></a>
 </p>
 
 <p align="center">
@@ -36,6 +40,19 @@
 
 <!-- BADGES:END -->
 
+<!-- LANES:START -->
+<p align="center">
+  <a href="#research"><img alt="Research lane" src="https://shieldcn.dev/badge/Research-3B82F6.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=22&radius=7&padX=8&iconSize=12&variant=default&logo=ri:RiMicroscopeLine&logoColor=f8fafc"></a>
+  <a href="#writing"><img alt="Writing lane" src="https://shieldcn.dev/badge/Writing-A855F7.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=22&radius=7&padX=8&iconSize=12&variant=default&logo=ri:RiQuillPenLine&logoColor=f8fafc"></a>
+  <a href="#coding"><img alt="Coding lane" src="https://shieldcn.dev/badge/Coding-22C55E.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=22&radius=7&padX=8&iconSize=12&variant=default&logo=ri:RiCodeBoxLine&logoColor=f8fafc"></a>
+  <a href="#data"><img alt="Data lane" src="https://shieldcn.dev/badge/Data-EAB308.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=22&radius=7&padX=8&iconSize=12&variant=default&logo=ri:RiDatabaseLine&logoColor=f8fafc"></a>
+  <a href="#product"><img alt="Product lane" src="https://shieldcn.dev/badge/Product-EC4899.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=22&radius=7&padX=8&iconSize=12&variant=default&logo=ri:RiLayoutGridLine&logoColor=f8fafc"></a>
+  <a href="#operations"><img alt="Operations lane" src="https://shieldcn.dev/badge/Ops-F97316.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=22&radius=7&padX=8&iconSize=12&variant=default&logo=ri:RiPulseLine&logoColor=f8fafc"></a>
+  <a href="#agent-and-tool-workflows"><img alt="Agent workflows lane" src="https://shieldcn.dev/badge/Agents-06B6D4.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=22&radius=7&padX=8&iconSize=12&variant=default&logo=ri:RiRobot2Line&logoColor=f8fafc"></a>
+  <a href="#reasoning"><img alt="Reasoning lane" src="https://shieldcn.dev/badge/Reasoning-8B5CF6.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=22&radius=7&padX=8&iconSize=12&variant=default&logo=ri:RiBrainLine&logoColor=f8fafc"></a>
+</p>
+<!-- LANES:END -->
+
 </div>
 
 ---
@@ -43,9 +60,7 @@
 ## Start Here
 
 > [!TIP]
-> **First visit:** choose a [control lane](#control-lanes) and a [recipe shortcut](#recipe-shortcuts),
-> then open [How To Adapt Prompts](#how-to-adapt-prompts) when the task needs schema, tools, or evals.
-> Freshness and history live in version control — see the GitHub activity badges above.
+> Pick a [control lane](#control-lanes) and [recipe shortcut](#recipe-shortcuts). Open [How To Adapt Prompts](#how-to-adapt-prompts) when you need schema, tools, or evals.
 
 ### Recipe shortcuts
 
@@ -64,10 +79,10 @@
 
 | Control lane | Use when | Upgrade interface |
 | --- | --- | --- |
-| <kbd>sources</kbd> | Claims depend on supplied or retrieved text. | Citation check or retrieval eval. |
-| <kbd>schema</kbd> | Software consumes the answer. | Structured output plus parser tests. |
-| <kbd>tools</kbd> | The workflow can act outside chat. | Allowlisted tool schema plus approval gates. |
-| <kbd>evals</kbd> | A prompt becomes reusable. | Regression set with failure cases. |
+| <kbd style="border-left:3px solid #6366f1;padding-left:6px">sources</kbd> | Claims depend on supplied or retrieved text. | Citation check or retrieval eval. |
+| <kbd style="border-left:3px solid #22c55e;padding-left:6px">schema</kbd> | Software consumes the answer. | Structured output plus parser tests. |
+| <kbd style="border-left:3px solid #f59e0b;padding-left:6px">tools</kbd> | The workflow can act outside chat. | Allowlisted tool schema plus approval gates. |
+| <kbd style="border-left:3px solid #ec4899;padding-left:6px">evals</kbd> | A prompt becomes reusable. | Regression set with failure cases. |
 
 ### Common jobs
 
@@ -83,8 +98,8 @@
 | Solve hard reasoning tasks | [Plan-and-Solve](#plan-and-solve) | One pass is brittle; add verification or independent samples. |
 
 <p align="right">
-  <a href="#table-of-contents"><img alt="Table of contents" src="https://shieldcn.dev/badge/TOC-2563EB.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiListCheck&logoColor=f8fafc"></a>
-  <a href="#prompt-library"><img alt="Back to top" src="https://shieldcn.dev/badge/Top-16A34A.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiArrowUpLine&logoColor=f8fafc"></a>
+  <a href="#table-of-contents"><img alt="Table of contents" src="https://shieldcn.dev/badge/TOC-6366F1.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiListCheck&logoColor=f8fafc"></a>
+  <a href="#prompt-library"><img alt="Back to top" src="https://shieldcn.dev/badge/Top-10B981.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiArrowUpLine&logoColor=f8fafc"></a>
 </p>
 
 ---
@@ -103,10 +118,10 @@
 
 <table>
   <tr>
-    <th>Research</th>
-    <th>Writing</th>
-    <th>Coding</th>
-    <th>Data</th>
+    <th style="background-color:#172554;color:#93c5fd">Research</th>
+    <th style="background-color:#3b0764;color:#d8b4fe">Writing</th>
+    <th style="background-color:#14532d;color:#86efac">Coding</th>
+    <th style="background-color:#713f12;color:#fde047">Data</th>
   </tr>
   <tr>
     <td valign="top"><kbd>01</kbd> <a href="#source-grounded-answer">Source-Grounded Answer</a><br><kbd>02</kbd> <a href="#web-research-brief">Web Research Brief</a><br><kbd>03</kbd> <a href="#literature-scan">Literature Scan</a><br><kbd>04</kbd> <a href="#claim-checker">Claim Checker</a><br><kbd>05</kbd> <a href="#citation-matrix">Citation Matrix</a><br><kbd>06</kbd> <a href="#disagreement-map">Disagreement Map</a></td>
@@ -115,10 +130,10 @@
     <td valign="top"><kbd>19</kbd> <a href="#json-extractor">JSON Extractor</a><br><kbd>20</kbd> <a href="#table-normalizer">Table Normalizer</a><br><kbd>21</kbd> <a href="#classifier">Classifier</a><br><kbd>22</kbd> <a href="#ner-extractor">NER Extractor</a><br><kbd>23</kbd> <a href="#sentiment-triage">Sentiment Triage</a><br><kbd>24</kbd> <a href="#synthetic-edge-cases">Synthetic Edge Cases</a></td>
   </tr>
   <tr>
-    <th>Product</th>
-    <th>Operations</th>
-    <th>Agent and tool workflows</th>
-    <th>Reasoning</th>
+    <th style="background-color:#500724;color:#f9a8d4">Product</th>
+    <th style="background-color:#431407;color:#fdba74">Operations</th>
+    <th style="background-color:#164e63;color:#67e8f9">Agent and tool workflows</th>
+    <th style="background-color:#2e1065;color:#c4b5fd">Reasoning</th>
   </tr>
   <tr>
     <td valign="top"><kbd>25</kbd> <a href="#prd-drafter">PRD Drafter</a><br><kbd>26</kbd> <a href="#user-story-splitter">User Story Splitter</a><br><kbd>27</kbd> <a href="#acceptance-criteria-writer">Acceptance Criteria Writer</a><br><kbd>28</kbd> <a href="#launch-checklist">Launch Checklist</a><br><kbd>29</kbd> <a href="#ux-review">UX Review</a><br><kbd>30</kbd> <a href="#support-macro">Support Macro</a></td>
@@ -150,7 +165,6 @@
   - [Verification and Iteration](#verification-and-iteration)
   - [Task and Workflow Snippets](#task-and-workflow-snippets)
 - [Contributing Prompt Recipes](#contributing-prompt-recipes)
-- [Notes](#notes)
 - [Bibliography](#bibliography)
 
 <details>
@@ -172,25 +186,25 @@
 Recipe format:
 
 > [!TIP]
-> Long fenced copy prompts may scroll horizontally on GitHub. That is expected when the full template must stay copyable as one block.
+> Long copy prompts may scroll horizontally on GitHub. Keep the full template copyable as one block.
 
-| Recipe field | Why it exists |
+| Recipe field | Purpose |
 | --- | --- |
 | Use for | Confirms the job before copying. |
-| Before you copy TIP | Reminds readers to use the paste zones table and `none` for unused optional zones. |
-| Paste zones | Canonical placeholder names, required/optional, example values, and notes. |
-| Paste preview | Visible multi-line sample when Example value is `see preview below`. |
-| Copy prompt | The prompt should work without examples. |
-| Fill these in | One-line pointer to the **Paste zones** table; optional zones omitted as `none`. |
-| Expected output | Defines the answer shape. |
-| Upgrade when | Shows when to add examples, retrieval, tools, schemas, or evals. |
-| Control/evidence note | Names the provider control, parser, retrieval, tool, eval, or review upgrade for higher-risk recipes. |
-| Safety/eval checks | Prevents common failure modes before reuse. |
-| Sources | Links the recipe to docs, research, or pattern notes. |
+| Before you copy TIP | Points to paste zones; use `none` for unused optional zones. |
+| Paste zones | Canonical placeholders, required/optional, examples, notes. |
+| Paste preview | Visible sample when Example value is `see preview below`. |
+| Copy prompt | Zero-shot template; examples optional. |
+| Fill these in | One-line pointer to **Paste zones**. |
+| Expected output | Answer shape. |
+| Upgrade when | When to add examples, retrieval, tools, schemas, or evals. |
+| Control/evidence note | Provider control or review upgrade for higher-risk work. |
+| Safety/eval checks | Common failure guards before reuse. |
+| Sources | Docs, research, or pattern notes. |
 
 <p align="right">
-  <a href="#table-of-contents"><img alt="Table of contents" src="https://shieldcn.dev/badge/TOC-2563EB.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiListCheck&logoColor=f8fafc"></a>
-  <a href="#prompt-library"><img alt="Back to top" src="https://shieldcn.dev/badge/Top-16A34A.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiArrowUpLine&logoColor=f8fafc"></a>
+  <a href="#table-of-contents"><img alt="Table of contents" src="https://shieldcn.dev/badge/TOC-6366F1.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiListCheck&logoColor=f8fafc"></a>
+  <a href="#prompt-library"><img alt="Back to top" src="https://shieldcn.dev/badge/Top-10B981.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiArrowUpLine&logoColor=f8fafc"></a>
 </p>
 
 ---
@@ -198,6 +212,8 @@ Recipe format:
 ## Prompt Library
 
 ### Research
+
+> ◆ grounded answers · web briefs · claim checks
 
 #### Source-Grounded Answer
 
@@ -308,8 +324,8 @@ what to change for your case:
 </details>
 
 <p align="right">
-  <a href="#table-of-contents"><img alt="Table of contents" src="https://shieldcn.dev/badge/TOC-2563EB.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiListCheck&logoColor=f8fafc"></a>
-  <a href="#prompt-library"><img alt="Back to top" src="https://shieldcn.dev/badge/Top-16A34A.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiArrowUpLine&logoColor=f8fafc"></a>
+  <a href="#table-of-contents"><img alt="Table of contents" src="https://shieldcn.dev/badge/TOC-6366F1.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiListCheck&logoColor=f8fafc"></a>
+  <a href="#prompt-library"><img alt="Back to top" src="https://shieldcn.dev/badge/Top-10B981.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiArrowUpLine&logoColor=f8fafc"></a>
 </p>
 
 #### Web Research Brief
@@ -390,8 +406,8 @@ Sources:
 - [Perplexity API overview](https://docs.perplexity.ai/docs/getting-started/overview)
 
 <p align="right">
-  <a href="#table-of-contents"><img alt="Table of contents" src="https://shieldcn.dev/badge/TOC-2563EB.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiListCheck&logoColor=f8fafc"></a>
-  <a href="#prompt-library"><img alt="Back to top" src="https://shieldcn.dev/badge/Top-16A34A.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiArrowUpLine&logoColor=f8fafc"></a>
+  <a href="#table-of-contents"><img alt="Table of contents" src="https://shieldcn.dev/badge/TOC-6366F1.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiListCheck&logoColor=f8fafc"></a>
+  <a href="#prompt-library"><img alt="Back to top" src="https://shieldcn.dev/badge/Top-10B981.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiArrowUpLine&logoColor=f8fafc"></a>
 </p>
 
 #### Literature Scan
@@ -472,8 +488,8 @@ Sources:
 - [OpenAI prompt engineering](https://developers.openai.com/api/docs/guides/prompt-engineering)
 
 <p align="right">
-  <a href="#table-of-contents"><img alt="Table of contents" src="https://shieldcn.dev/badge/TOC-2563EB.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiListCheck&logoColor=f8fafc"></a>
-  <a href="#prompt-library"><img alt="Back to top" src="https://shieldcn.dev/badge/Top-16A34A.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiArrowUpLine&logoColor=f8fafc"></a>
+  <a href="#table-of-contents"><img alt="Table of contents" src="https://shieldcn.dev/badge/TOC-6366F1.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiListCheck&logoColor=f8fafc"></a>
+  <a href="#prompt-library"><img alt="Back to top" src="https://shieldcn.dev/badge/Top-10B981.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiArrowUpLine&logoColor=f8fafc"></a>
 </p>
 
 #### Claim Checker
@@ -554,8 +570,8 @@ Sources:
 - [OWASP Top 10 for LLM Applications](https://owasp.org/www-project-top-10-for-large-language-model-applications/)
 
 <p align="right">
-  <a href="#table-of-contents"><img alt="Table of contents" src="https://shieldcn.dev/badge/TOC-2563EB.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiListCheck&logoColor=f8fafc"></a>
-  <a href="#prompt-library"><img alt="Back to top" src="https://shieldcn.dev/badge/Top-16A34A.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiArrowUpLine&logoColor=f8fafc"></a>
+  <a href="#table-of-contents"><img alt="Table of contents" src="https://shieldcn.dev/badge/TOC-6366F1.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiListCheck&logoColor=f8fafc"></a>
+  <a href="#prompt-library"><img alt="Back to top" src="https://shieldcn.dev/badge/Top-10B981.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiArrowUpLine&logoColor=f8fafc"></a>
 </p>
 
 #### Citation Matrix
@@ -634,8 +650,8 @@ Sources:
 - [OpenAI prompt engineering](https://developers.openai.com/api/docs/guides/prompt-engineering)
 
 <p align="right">
-  <a href="#table-of-contents"><img alt="Table of contents" src="https://shieldcn.dev/badge/TOC-2563EB.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiListCheck&logoColor=f8fafc"></a>
-  <a href="#prompt-library"><img alt="Back to top" src="https://shieldcn.dev/badge/Top-16A34A.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiArrowUpLine&logoColor=f8fafc"></a>
+  <a href="#table-of-contents"><img alt="Table of contents" src="https://shieldcn.dev/badge/TOC-6366F1.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiListCheck&logoColor=f8fafc"></a>
+  <a href="#prompt-library"><img alt="Back to top" src="https://shieldcn.dev/badge/Top-10B981.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiArrowUpLine&logoColor=f8fafc"></a>
 </p>
 
 #### Disagreement Map
@@ -714,13 +730,15 @@ Sources:
 - [Self-Consistency](#self-consistency)
 
 <p align="right">
-  <a href="#table-of-contents"><img alt="Table of contents" src="https://shieldcn.dev/badge/TOC-2563EB.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiListCheck&logoColor=f8fafc"></a>
-  <a href="#prompt-library"><img alt="Back to top" src="https://shieldcn.dev/badge/Top-16A34A.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiArrowUpLine&logoColor=f8fafc"></a>
+  <a href="#table-of-contents"><img alt="Table of contents" src="https://shieldcn.dev/badge/TOC-6366F1.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiListCheck&logoColor=f8fafc"></a>
+  <a href="#prompt-library"><img alt="Back to top" src="https://shieldcn.dev/badge/Top-10B981.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiArrowUpLine&logoColor=f8fafc"></a>
 </p>
 
 ---
 
 ### Writing
+
+> ◆ briefs · rewrites · summaries · newsletters
 
 #### Executive Brief
 
@@ -798,8 +816,8 @@ Sources:
 - [OpenAI prompt engineering](https://developers.openai.com/api/docs/guides/prompt-engineering)
 
 <p align="right">
-  <a href="#table-of-contents"><img alt="Table of contents" src="https://shieldcn.dev/badge/TOC-2563EB.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiListCheck&logoColor=f8fafc"></a>
-  <a href="#prompt-library"><img alt="Back to top" src="https://shieldcn.dev/badge/Top-16A34A.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiArrowUpLine&logoColor=f8fafc"></a>
+  <a href="#table-of-contents"><img alt="Table of contents" src="https://shieldcn.dev/badge/TOC-6366F1.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiListCheck&logoColor=f8fafc"></a>
+  <a href="#prompt-library"><img alt="Back to top" src="https://shieldcn.dev/badge/Top-10B981.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiArrowUpLine&logoColor=f8fafc"></a>
 </p>
 
 #### Rewrite With Constraints
@@ -878,8 +896,8 @@ Sources:
 - [Anthropic prompting best practices](https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices)
 
 <p align="right">
-  <a href="#table-of-contents"><img alt="Table of contents" src="https://shieldcn.dev/badge/TOC-2563EB.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiListCheck&logoColor=f8fafc"></a>
-  <a href="#prompt-library"><img alt="Back to top" src="https://shieldcn.dev/badge/Top-16A34A.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiArrowUpLine&logoColor=f8fafc"></a>
+  <a href="#table-of-contents"><img alt="Table of contents" src="https://shieldcn.dev/badge/TOC-6366F1.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiListCheck&logoColor=f8fafc"></a>
+  <a href="#prompt-library"><img alt="Back to top" src="https://shieldcn.dev/badge/Top-10B981.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiArrowUpLine&logoColor=f8fafc"></a>
 </p>
 
 #### Style Transfer Without Examples
@@ -958,8 +976,8 @@ Sources:
 - [Gemini prompting strategies](https://ai.google.dev/gemini-api/docs/prompting-strategies)
 
 <p align="right">
-  <a href="#table-of-contents"><img alt="Table of contents" src="https://shieldcn.dev/badge/TOC-2563EB.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiListCheck&logoColor=f8fafc"></a>
-  <a href="#prompt-library"><img alt="Back to top" src="https://shieldcn.dev/badge/Top-16A34A.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiArrowUpLine&logoColor=f8fafc"></a>
+  <a href="#table-of-contents"><img alt="Table of contents" src="https://shieldcn.dev/badge/TOC-6366F1.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiListCheck&logoColor=f8fafc"></a>
+  <a href="#prompt-library"><img alt="Back to top" src="https://shieldcn.dev/badge/Top-10B981.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiArrowUpLine&logoColor=f8fafc"></a>
 </p>
 
 #### Dense Summary
@@ -1038,8 +1056,8 @@ Sources:
 - [OpenAI prompt engineering](https://developers.openai.com/api/docs/guides/prompt-engineering)
 
 <p align="right">
-  <a href="#table-of-contents"><img alt="Table of contents" src="https://shieldcn.dev/badge/TOC-2563EB.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiListCheck&logoColor=f8fafc"></a>
-  <a href="#prompt-library"><img alt="Back to top" src="https://shieldcn.dev/badge/Top-16A34A.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiArrowUpLine&logoColor=f8fafc"></a>
+  <a href="#table-of-contents"><img alt="Table of contents" src="https://shieldcn.dev/badge/TOC-6366F1.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiListCheck&logoColor=f8fafc"></a>
+  <a href="#prompt-library"><img alt="Back to top" src="https://shieldcn.dev/badge/Top-10B981.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiArrowUpLine&logoColor=f8fafc"></a>
 </p>
 
 #### FAQ Generator
@@ -1118,8 +1136,8 @@ Sources:
 - [Gemini prompting strategies](https://ai.google.dev/gemini-api/docs/prompting-strategies)
 
 <p align="right">
-  <a href="#table-of-contents"><img alt="Table of contents" src="https://shieldcn.dev/badge/TOC-2563EB.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiListCheck&logoColor=f8fafc"></a>
-  <a href="#prompt-library"><img alt="Back to top" src="https://shieldcn.dev/badge/Top-16A34A.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiArrowUpLine&logoColor=f8fafc"></a>
+  <a href="#table-of-contents"><img alt="Table of contents" src="https://shieldcn.dev/badge/TOC-6366F1.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiListCheck&logoColor=f8fafc"></a>
+  <a href="#prompt-library"><img alt="Back to top" src="https://shieldcn.dev/badge/Top-10B981.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiArrowUpLine&logoColor=f8fafc"></a>
 </p>
 
 #### Newsletter Draft
@@ -1198,13 +1216,15 @@ Sources:
 - [OpenAI prompt engineering](https://developers.openai.com/api/docs/guides/prompt-engineering)
 
 <p align="right">
-  <a href="#table-of-contents"><img alt="Table of contents" src="https://shieldcn.dev/badge/TOC-2563EB.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiListCheck&logoColor=f8fafc"></a>
-  <a href="#prompt-library"><img alt="Back to top" src="https://shieldcn.dev/badge/Top-16A34A.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiArrowUpLine&logoColor=f8fafc"></a>
+  <a href="#table-of-contents"><img alt="Table of contents" src="https://shieldcn.dev/badge/TOC-6366F1.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiListCheck&logoColor=f8fafc"></a>
+  <a href="#prompt-library"><img alt="Back to top" src="https://shieldcn.dev/badge/Top-10B981.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiArrowUpLine&logoColor=f8fafc"></a>
 </p>
 
 ---
 
 ### Coding
+
+> ◆ review · RCA · tests · API contracts
 
 #### Code Review
 
@@ -1311,8 +1331,8 @@ what to change for your case:
 </details>
 
 <p align="right">
-  <a href="#table-of-contents"><img alt="Table of contents" src="https://shieldcn.dev/badge/TOC-2563EB.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiListCheck&logoColor=f8fafc"></a>
-  <a href="#prompt-library"><img alt="Back to top" src="https://shieldcn.dev/badge/Top-16A34A.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiArrowUpLine&logoColor=f8fafc"></a>
+  <a href="#table-of-contents"><img alt="Table of contents" src="https://shieldcn.dev/badge/TOC-6366F1.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiListCheck&logoColor=f8fafc"></a>
+  <a href="#prompt-library"><img alt="Back to top" src="https://shieldcn.dev/badge/Top-10B981.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiArrowUpLine&logoColor=f8fafc"></a>
 </p>
 
 #### Bug RCA
@@ -1391,8 +1411,8 @@ Sources:
 - [Anthropic prompting best practices](https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices)
 
 <p align="right">
-  <a href="#table-of-contents"><img alt="Table of contents" src="https://shieldcn.dev/badge/TOC-2563EB.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiListCheck&logoColor=f8fafc"></a>
-  <a href="#prompt-library"><img alt="Back to top" src="https://shieldcn.dev/badge/Top-16A34A.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiArrowUpLine&logoColor=f8fafc"></a>
+  <a href="#table-of-contents"><img alt="Table of contents" src="https://shieldcn.dev/badge/TOC-6366F1.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiListCheck&logoColor=f8fafc"></a>
+  <a href="#prompt-library"><img alt="Back to top" src="https://shieldcn.dev/badge/Top-10B981.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiArrowUpLine&logoColor=f8fafc"></a>
 </p>
 
 #### Unit Test Writer
@@ -1471,8 +1491,8 @@ Sources:
 - [OpenAI prompt engineering](https://developers.openai.com/api/docs/guides/prompt-engineering)
 
 <p align="right">
-  <a href="#table-of-contents"><img alt="Table of contents" src="https://shieldcn.dev/badge/TOC-2563EB.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiListCheck&logoColor=f8fafc"></a>
-  <a href="#prompt-library"><img alt="Back to top" src="https://shieldcn.dev/badge/Top-16A34A.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiArrowUpLine&logoColor=f8fafc"></a>
+  <a href="#table-of-contents"><img alt="Table of contents" src="https://shieldcn.dev/badge/TOC-6366F1.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiListCheck&logoColor=f8fafc"></a>
+  <a href="#prompt-library"><img alt="Back to top" src="https://shieldcn.dev/badge/Top-10B981.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiArrowUpLine&logoColor=f8fafc"></a>
 </p>
 
 #### Refactor Planner
@@ -1551,8 +1571,8 @@ Sources:
 - [OpenAI prompt engineering](https://developers.openai.com/api/docs/guides/prompt-engineering)
 
 <p align="right">
-  <a href="#table-of-contents"><img alt="Table of contents" src="https://shieldcn.dev/badge/TOC-2563EB.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiListCheck&logoColor=f8fafc"></a>
-  <a href="#prompt-library"><img alt="Back to top" src="https://shieldcn.dev/badge/Top-16A34A.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiArrowUpLine&logoColor=f8fafc"></a>
+  <a href="#table-of-contents"><img alt="Table of contents" src="https://shieldcn.dev/badge/TOC-6366F1.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiListCheck&logoColor=f8fafc"></a>
+  <a href="#prompt-library"><img alt="Back to top" src="https://shieldcn.dev/badge/Top-10B981.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiArrowUpLine&logoColor=f8fafc"></a>
 </p>
 
 #### PR Description
@@ -1631,8 +1651,8 @@ Sources:
 - [Gemini prompting strategies](https://ai.google.dev/gemini-api/docs/prompting-strategies)
 
 <p align="right">
-  <a href="#table-of-contents"><img alt="Table of contents" src="https://shieldcn.dev/badge/TOC-2563EB.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiListCheck&logoColor=f8fafc"></a>
-  <a href="#prompt-library"><img alt="Back to top" src="https://shieldcn.dev/badge/Top-16A34A.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiArrowUpLine&logoColor=f8fafc"></a>
+  <a href="#table-of-contents"><img alt="Table of contents" src="https://shieldcn.dev/badge/TOC-6366F1.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiListCheck&logoColor=f8fafc"></a>
+  <a href="#prompt-library"><img alt="Back to top" src="https://shieldcn.dev/badge/Top-10B981.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiArrowUpLine&logoColor=f8fafc"></a>
 </p>
 
 #### API Contract Explainer
@@ -1715,13 +1735,15 @@ Sources:
 - [Gemini structured output](https://ai.google.dev/gemini-api/docs/structured-output)
 
 <p align="right">
-  <a href="#table-of-contents"><img alt="Table of contents" src="https://shieldcn.dev/badge/TOC-2563EB.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiListCheck&logoColor=f8fafc"></a>
-  <a href="#prompt-library"><img alt="Back to top" src="https://shieldcn.dev/badge/Top-16A34A.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiArrowUpLine&logoColor=f8fafc"></a>
+  <a href="#table-of-contents"><img alt="Table of contents" src="https://shieldcn.dev/badge/TOC-6366F1.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiListCheck&logoColor=f8fafc"></a>
+  <a href="#prompt-library"><img alt="Back to top" src="https://shieldcn.dev/badge/Top-10B981.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiArrowUpLine&logoColor=f8fafc"></a>
 </p>
 
 ---
 
 ### Data
+
+> ◆ JSON · tables · classification · extraction
 
 #### JSON Extractor
 
@@ -1823,8 +1845,8 @@ what to change for your case:
 </details>
 
 <p align="right">
-  <a href="#table-of-contents"><img alt="Table of contents" src="https://shieldcn.dev/badge/TOC-2563EB.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiListCheck&logoColor=f8fafc"></a>
-  <a href="#prompt-library"><img alt="Back to top" src="https://shieldcn.dev/badge/Top-16A34A.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiArrowUpLine&logoColor=f8fafc"></a>
+  <a href="#table-of-contents"><img alt="Table of contents" src="https://shieldcn.dev/badge/TOC-6366F1.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiListCheck&logoColor=f8fafc"></a>
+  <a href="#prompt-library"><img alt="Back to top" src="https://shieldcn.dev/badge/Top-10B981.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiArrowUpLine&logoColor=f8fafc"></a>
 </p>
 
 #### Table Normalizer
@@ -1903,8 +1925,8 @@ Sources:
 - [Gemini structured output](https://ai.google.dev/gemini-api/docs/structured-output)
 
 <p align="right">
-  <a href="#table-of-contents"><img alt="Table of contents" src="https://shieldcn.dev/badge/TOC-2563EB.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiListCheck&logoColor=f8fafc"></a>
-  <a href="#prompt-library"><img alt="Back to top" src="https://shieldcn.dev/badge/Top-16A34A.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiArrowUpLine&logoColor=f8fafc"></a>
+  <a href="#table-of-contents"><img alt="Table of contents" src="https://shieldcn.dev/badge/TOC-6366F1.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiListCheck&logoColor=f8fafc"></a>
+  <a href="#prompt-library"><img alt="Back to top" src="https://shieldcn.dev/badge/Top-10B981.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiArrowUpLine&logoColor=f8fafc"></a>
 </p>
 
 #### Classifier
@@ -1985,8 +2007,8 @@ Sources:
 - [OpenAI prompt engineering](https://developers.openai.com/api/docs/guides/prompt-engineering)
 
 <p align="right">
-  <a href="#table-of-contents"><img alt="Table of contents" src="https://shieldcn.dev/badge/TOC-2563EB.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiListCheck&logoColor=f8fafc"></a>
-  <a href="#prompt-library"><img alt="Back to top" src="https://shieldcn.dev/badge/Top-16A34A.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiArrowUpLine&logoColor=f8fafc"></a>
+  <a href="#table-of-contents"><img alt="Table of contents" src="https://shieldcn.dev/badge/TOC-6366F1.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiListCheck&logoColor=f8fafc"></a>
+  <a href="#prompt-library"><img alt="Back to top" src="https://shieldcn.dev/badge/Top-10B981.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiArrowUpLine&logoColor=f8fafc"></a>
 </p>
 
 #### NER Extractor
@@ -2067,8 +2089,8 @@ Sources:
 - [OpenAI Structured Outputs](https://developers.openai.com/api/docs/guides/structured-outputs)
 
 <p align="right">
-  <a href="#table-of-contents"><img alt="Table of contents" src="https://shieldcn.dev/badge/TOC-2563EB.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiListCheck&logoColor=f8fafc"></a>
-  <a href="#prompt-library"><img alt="Back to top" src="https://shieldcn.dev/badge/Top-16A34A.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiArrowUpLine&logoColor=f8fafc"></a>
+  <a href="#table-of-contents"><img alt="Table of contents" src="https://shieldcn.dev/badge/TOC-6366F1.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiListCheck&logoColor=f8fafc"></a>
+  <a href="#prompt-library"><img alt="Back to top" src="https://shieldcn.dev/badge/Top-10B981.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiArrowUpLine&logoColor=f8fafc"></a>
 </p>
 
 #### Sentiment Triage
@@ -2147,8 +2169,8 @@ Sources:
 - [OpenAI prompt engineering](https://developers.openai.com/api/docs/guides/prompt-engineering)
 
 <p align="right">
-  <a href="#table-of-contents"><img alt="Table of contents" src="https://shieldcn.dev/badge/TOC-2563EB.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiListCheck&logoColor=f8fafc"></a>
-  <a href="#prompt-library"><img alt="Back to top" src="https://shieldcn.dev/badge/Top-16A34A.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiArrowUpLine&logoColor=f8fafc"></a>
+  <a href="#table-of-contents"><img alt="Table of contents" src="https://shieldcn.dev/badge/TOC-6366F1.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiListCheck&logoColor=f8fafc"></a>
+  <a href="#prompt-library"><img alt="Back to top" src="https://shieldcn.dev/badge/Top-10B981.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiArrowUpLine&logoColor=f8fafc"></a>
 </p>
 
 #### Synthetic Edge Cases
@@ -2227,13 +2249,15 @@ Sources:
 - [OpenAI evaluation best practices](https://developers.openai.com/api/docs/guides/evaluation-best-practices)
 
 <p align="right">
-  <a href="#table-of-contents"><img alt="Table of contents" src="https://shieldcn.dev/badge/TOC-2563EB.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiListCheck&logoColor=f8fafc"></a>
-  <a href="#prompt-library"><img alt="Back to top" src="https://shieldcn.dev/badge/Top-16A34A.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiArrowUpLine&logoColor=f8fafc"></a>
+  <a href="#table-of-contents"><img alt="Table of contents" src="https://shieldcn.dev/badge/TOC-6366F1.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiListCheck&logoColor=f8fafc"></a>
+  <a href="#prompt-library"><img alt="Back to top" src="https://shieldcn.dev/badge/Top-10B981.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiArrowUpLine&logoColor=f8fafc"></a>
 </p>
 
 ---
 
 ### Product
+
+> ◆ PRDs · stories · launch · UX review
 
 #### PRD Drafter
 
@@ -2311,8 +2335,8 @@ Sources:
 - [Gemini prompting strategies](https://ai.google.dev/gemini-api/docs/prompting-strategies)
 
 <p align="right">
-  <a href="#table-of-contents"><img alt="Table of contents" src="https://shieldcn.dev/badge/TOC-2563EB.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiListCheck&logoColor=f8fafc"></a>
-  <a href="#prompt-library"><img alt="Back to top" src="https://shieldcn.dev/badge/Top-16A34A.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiArrowUpLine&logoColor=f8fafc"></a>
+  <a href="#table-of-contents"><img alt="Table of contents" src="https://shieldcn.dev/badge/TOC-6366F1.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiListCheck&logoColor=f8fafc"></a>
+  <a href="#prompt-library"><img alt="Back to top" src="https://shieldcn.dev/badge/Top-10B981.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiArrowUpLine&logoColor=f8fafc"></a>
 </p>
 
 #### User Story Splitter
@@ -2391,8 +2415,8 @@ Sources:
 - [OpenAI prompt engineering](https://developers.openai.com/api/docs/guides/prompt-engineering)
 
 <p align="right">
-  <a href="#table-of-contents"><img alt="Table of contents" src="https://shieldcn.dev/badge/TOC-2563EB.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiListCheck&logoColor=f8fafc"></a>
-  <a href="#prompt-library"><img alt="Back to top" src="https://shieldcn.dev/badge/Top-16A34A.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiArrowUpLine&logoColor=f8fafc"></a>
+  <a href="#table-of-contents"><img alt="Table of contents" src="https://shieldcn.dev/badge/TOC-6366F1.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiListCheck&logoColor=f8fafc"></a>
+  <a href="#prompt-library"><img alt="Back to top" src="https://shieldcn.dev/badge/Top-10B981.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiArrowUpLine&logoColor=f8fafc"></a>
 </p>
 
 #### Acceptance Criteria Writer
@@ -2471,8 +2495,8 @@ Sources:
 - [Anthropic prompting best practices](https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices)
 
 <p align="right">
-  <a href="#table-of-contents"><img alt="Table of contents" src="https://shieldcn.dev/badge/TOC-2563EB.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiListCheck&logoColor=f8fafc"></a>
-  <a href="#prompt-library"><img alt="Back to top" src="https://shieldcn.dev/badge/Top-16A34A.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiArrowUpLine&logoColor=f8fafc"></a>
+  <a href="#table-of-contents"><img alt="Table of contents" src="https://shieldcn.dev/badge/TOC-6366F1.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiListCheck&logoColor=f8fafc"></a>
+  <a href="#prompt-library"><img alt="Back to top" src="https://shieldcn.dev/badge/Top-10B981.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiArrowUpLine&logoColor=f8fafc"></a>
 </p>
 
 #### Launch Checklist
@@ -2551,8 +2575,8 @@ Sources:
 - [Gemini prompting strategies](https://ai.google.dev/gemini-api/docs/prompting-strategies)
 
 <p align="right">
-  <a href="#table-of-contents"><img alt="Table of contents" src="https://shieldcn.dev/badge/TOC-2563EB.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiListCheck&logoColor=f8fafc"></a>
-  <a href="#prompt-library"><img alt="Back to top" src="https://shieldcn.dev/badge/Top-16A34A.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiArrowUpLine&logoColor=f8fafc"></a>
+  <a href="#table-of-contents"><img alt="Table of contents" src="https://shieldcn.dev/badge/TOC-6366F1.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiListCheck&logoColor=f8fafc"></a>
+  <a href="#prompt-library"><img alt="Back to top" src="https://shieldcn.dev/badge/Top-10B981.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiArrowUpLine&logoColor=f8fafc"></a>
 </p>
 
 #### UX Review
@@ -2631,8 +2655,8 @@ Sources:
 - [Anthropic prompting best practices](https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices)
 
 <p align="right">
-  <a href="#table-of-contents"><img alt="Table of contents" src="https://shieldcn.dev/badge/TOC-2563EB.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiListCheck&logoColor=f8fafc"></a>
-  <a href="#prompt-library"><img alt="Back to top" src="https://shieldcn.dev/badge/Top-16A34A.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiArrowUpLine&logoColor=f8fafc"></a>
+  <a href="#table-of-contents"><img alt="Table of contents" src="https://shieldcn.dev/badge/TOC-6366F1.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiListCheck&logoColor=f8fafc"></a>
+  <a href="#prompt-library"><img alt="Back to top" src="https://shieldcn.dev/badge/Top-10B981.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiArrowUpLine&logoColor=f8fafc"></a>
 </p>
 
 #### Support Macro
@@ -2711,13 +2735,15 @@ Sources:
 - [Anthropic prompting best practices](https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices)
 
 <p align="right">
-  <a href="#table-of-contents"><img alt="Table of contents" src="https://shieldcn.dev/badge/TOC-2563EB.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiListCheck&logoColor=f8fafc"></a>
-  <a href="#prompt-library"><img alt="Back to top" src="https://shieldcn.dev/badge/Top-16A34A.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiArrowUpLine&logoColor=f8fafc"></a>
+  <a href="#table-of-contents"><img alt="Table of contents" src="https://shieldcn.dev/badge/TOC-6366F1.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiListCheck&logoColor=f8fafc"></a>
+  <a href="#prompt-library"><img alt="Back to top" src="https://shieldcn.dev/badge/Top-10B981.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiArrowUpLine&logoColor=f8fafc"></a>
 </p>
 
 ---
 
 ### Operations
+
+> ◆ incidents · runbooks · logs · decisions
 
 #### Incident Summary
 
@@ -2795,8 +2821,8 @@ Sources:
 - [Anthropic prompting best practices](https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices)
 
 <p align="right">
-  <a href="#table-of-contents"><img alt="Table of contents" src="https://shieldcn.dev/badge/TOC-2563EB.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiListCheck&logoColor=f8fafc"></a>
-  <a href="#prompt-library"><img alt="Back to top" src="https://shieldcn.dev/badge/Top-16A34A.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiArrowUpLine&logoColor=f8fafc"></a>
+  <a href="#table-of-contents"><img alt="Table of contents" src="https://shieldcn.dev/badge/TOC-6366F1.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiListCheck&logoColor=f8fafc"></a>
+  <a href="#prompt-library"><img alt="Back to top" src="https://shieldcn.dev/badge/Top-10B981.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiArrowUpLine&logoColor=f8fafc"></a>
 </p>
 
 #### Runbook Generator
@@ -2875,8 +2901,8 @@ Sources:
 - [OWASP Top 10 for LLM Applications](https://owasp.org/www-project-top-10-for-large-language-model-applications/)
 
 <p align="right">
-  <a href="#table-of-contents"><img alt="Table of contents" src="https://shieldcn.dev/badge/TOC-2563EB.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiListCheck&logoColor=f8fafc"></a>
-  <a href="#prompt-library"><img alt="Back to top" src="https://shieldcn.dev/badge/Top-16A34A.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiArrowUpLine&logoColor=f8fafc"></a>
+  <a href="#table-of-contents"><img alt="Table of contents" src="https://shieldcn.dev/badge/TOC-6366F1.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiListCheck&logoColor=f8fafc"></a>
+  <a href="#prompt-library"><img alt="Back to top" src="https://shieldcn.dev/badge/Top-10B981.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiArrowUpLine&logoColor=f8fafc"></a>
 </p>
 
 #### Log Triage
@@ -2955,8 +2981,8 @@ Sources:
 - [OpenAI prompt engineering](https://developers.openai.com/api/docs/guides/prompt-engineering)
 
 <p align="right">
-  <a href="#table-of-contents"><img alt="Table of contents" src="https://shieldcn.dev/badge/TOC-2563EB.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiListCheck&logoColor=f8fafc"></a>
-  <a href="#prompt-library"><img alt="Back to top" src="https://shieldcn.dev/badge/Top-16A34A.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiArrowUpLine&logoColor=f8fafc"></a>
+  <a href="#table-of-contents"><img alt="Table of contents" src="https://shieldcn.dev/badge/TOC-6366F1.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiListCheck&logoColor=f8fafc"></a>
+  <a href="#prompt-library"><img alt="Back to top" src="https://shieldcn.dev/badge/Top-10B981.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiArrowUpLine&logoColor=f8fafc"></a>
 </p>
 
 #### Risk Register
@@ -3035,8 +3061,8 @@ Sources:
 - [OpenAI prompt engineering](https://developers.openai.com/api/docs/guides/prompt-engineering)
 
 <p align="right">
-  <a href="#table-of-contents"><img alt="Table of contents" src="https://shieldcn.dev/badge/TOC-2563EB.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiListCheck&logoColor=f8fafc"></a>
-  <a href="#prompt-library"><img alt="Back to top" src="https://shieldcn.dev/badge/Top-16A34A.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiArrowUpLine&logoColor=f8fafc"></a>
+  <a href="#table-of-contents"><img alt="Table of contents" src="https://shieldcn.dev/badge/TOC-6366F1.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiListCheck&logoColor=f8fafc"></a>
+  <a href="#prompt-library"><img alt="Back to top" src="https://shieldcn.dev/badge/Top-10B981.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiArrowUpLine&logoColor=f8fafc"></a>
 </p>
 
 #### Decision Memo
@@ -3115,8 +3141,8 @@ Sources:
 - [OpenAI prompt engineering](https://developers.openai.com/api/docs/guides/prompt-engineering)
 
 <p align="right">
-  <a href="#table-of-contents"><img alt="Table of contents" src="https://shieldcn.dev/badge/TOC-2563EB.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiListCheck&logoColor=f8fafc"></a>
-  <a href="#prompt-library"><img alt="Back to top" src="https://shieldcn.dev/badge/Top-16A34A.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiArrowUpLine&logoColor=f8fafc"></a>
+  <a href="#table-of-contents"><img alt="Table of contents" src="https://shieldcn.dev/badge/TOC-6366F1.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiListCheck&logoColor=f8fafc"></a>
+  <a href="#prompt-library"><img alt="Back to top" src="https://shieldcn.dev/badge/Top-10B981.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiArrowUpLine&logoColor=f8fafc"></a>
 </p>
 
 #### Meeting Action Extractor
@@ -3195,13 +3221,15 @@ Sources:
 - [Gemini structured output](https://ai.google.dev/gemini-api/docs/structured-output)
 
 <p align="right">
-  <a href="#table-of-contents"><img alt="Table of contents" src="https://shieldcn.dev/badge/TOC-2563EB.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiListCheck&logoColor=f8fafc"></a>
-  <a href="#prompt-library"><img alt="Back to top" src="https://shieldcn.dev/badge/Top-16A34A.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiArrowUpLine&logoColor=f8fafc"></a>
+  <a href="#table-of-contents"><img alt="Table of contents" src="https://shieldcn.dev/badge/TOC-6366F1.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiListCheck&logoColor=f8fafc"></a>
+  <a href="#prompt-library"><img alt="Back to top" src="https://shieldcn.dev/badge/Top-10B981.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiArrowUpLine&logoColor=f8fafc"></a>
 </p>
 
 ---
 
 ### Agent and Tool Workflows
+
+> ◆ tools · RAG · injection defense · prompt evals
 
 #### Tool-Use Planner
 
@@ -3308,8 +3336,8 @@ what to change for your case:
 </details>
 
 <p align="right">
-  <a href="#table-of-contents"><img alt="Table of contents" src="https://shieldcn.dev/badge/TOC-2563EB.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiListCheck&logoColor=f8fafc"></a>
-  <a href="#prompt-library"><img alt="Back to top" src="https://shieldcn.dev/badge/Top-16A34A.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiArrowUpLine&logoColor=f8fafc"></a>
+  <a href="#table-of-contents"><img alt="Table of contents" src="https://shieldcn.dev/badge/TOC-6366F1.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiListCheck&logoColor=f8fafc"></a>
+  <a href="#prompt-library"><img alt="Back to top" src="https://shieldcn.dev/badge/Top-10B981.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiArrowUpLine&logoColor=f8fafc"></a>
 </p>
 
 #### RAG Answer Contract
@@ -3420,8 +3448,8 @@ what to change for your case:
 </details>
 
 <p align="right">
-  <a href="#table-of-contents"><img alt="Table of contents" src="https://shieldcn.dev/badge/TOC-2563EB.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiListCheck&logoColor=f8fafc"></a>
-  <a href="#prompt-library"><img alt="Back to top" src="https://shieldcn.dev/badge/Top-16A34A.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiArrowUpLine&logoColor=f8fafc"></a>
+  <a href="#table-of-contents"><img alt="Table of contents" src="https://shieldcn.dev/badge/TOC-6366F1.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiListCheck&logoColor=f8fafc"></a>
+  <a href="#prompt-library"><img alt="Back to top" src="https://shieldcn.dev/badge/Top-10B981.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiArrowUpLine&logoColor=f8fafc"></a>
 </p>
 
 #### Prompt-Injection Scanner
@@ -3502,8 +3530,8 @@ Sources:
 - [OWASP Top 10 for LLM Applications](https://owasp.org/www-project-top-10-for-large-language-model-applications/)
 
 <p align="right">
-  <a href="#table-of-contents"><img alt="Table of contents" src="https://shieldcn.dev/badge/TOC-2563EB.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiListCheck&logoColor=f8fafc"></a>
-  <a href="#prompt-library"><img alt="Back to top" src="https://shieldcn.dev/badge/Top-16A34A.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiArrowUpLine&logoColor=f8fafc"></a>
+  <a href="#table-of-contents"><img alt="Table of contents" src="https://shieldcn.dev/badge/TOC-6366F1.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiListCheck&logoColor=f8fafc"></a>
+  <a href="#prompt-library"><img alt="Back to top" src="https://shieldcn.dev/badge/Top-10B981.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiArrowUpLine&logoColor=f8fafc"></a>
 </p>
 
 #### Eval-Set Generator
@@ -3584,8 +3612,8 @@ Sources:
 - [Evaluation Flywheel](#evaluation-flywheel)
 
 <p align="right">
-  <a href="#table-of-contents"><img alt="Table of contents" src="https://shieldcn.dev/badge/TOC-2563EB.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiListCheck&logoColor=f8fafc"></a>
-  <a href="#prompt-library"><img alt="Back to top" src="https://shieldcn.dev/badge/Top-16A34A.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiArrowUpLine&logoColor=f8fafc"></a>
+  <a href="#table-of-contents"><img alt="Table of contents" src="https://shieldcn.dev/badge/TOC-6366F1.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiListCheck&logoColor=f8fafc"></a>
+  <a href="#prompt-library"><img alt="Back to top" src="https://shieldcn.dev/badge/Top-10B981.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiArrowUpLine&logoColor=f8fafc"></a>
 </p>
 
 #### Regression Judge
@@ -3692,8 +3720,8 @@ what to change for your case:
 </details>
 
 <p align="right">
-  <a href="#table-of-contents"><img alt="Table of contents" src="https://shieldcn.dev/badge/TOC-2563EB.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiListCheck&logoColor=f8fafc"></a>
-  <a href="#prompt-library"><img alt="Back to top" src="https://shieldcn.dev/badge/Top-16A34A.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiArrowUpLine&logoColor=f8fafc"></a>
+  <a href="#table-of-contents"><img alt="Table of contents" src="https://shieldcn.dev/badge/TOC-6366F1.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiListCheck&logoColor=f8fafc"></a>
+  <a href="#prompt-library"><img alt="Back to top" src="https://shieldcn.dev/badge/Top-10B981.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiArrowUpLine&logoColor=f8fafc"></a>
 </p>
 
 #### Prompt Optimizer
@@ -3801,13 +3829,15 @@ what to change for your case:
 </details>
 
 <p align="right">
-  <a href="#table-of-contents"><img alt="Table of contents" src="https://shieldcn.dev/badge/TOC-2563EB.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiListCheck&logoColor=f8fafc"></a>
-  <a href="#prompt-library"><img alt="Back to top" src="https://shieldcn.dev/badge/Top-16A34A.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiArrowUpLine&logoColor=f8fafc"></a>
+  <a href="#table-of-contents"><img alt="Table of contents" src="https://shieldcn.dev/badge/TOC-6366F1.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiListCheck&logoColor=f8fafc"></a>
+  <a href="#prompt-library"><img alt="Back to top" src="https://shieldcn.dev/badge/Top-10B981.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiArrowUpLine&logoColor=f8fafc"></a>
 </p>
 
 ---
 
 ### Reasoning
+
+> ◆ plan · verify · refine · tradeoffs
 
 #### Plan-and-Solve
 
@@ -3885,8 +3915,8 @@ Sources:
 - [OpenAI prompt engineering](https://developers.openai.com/api/docs/guides/prompt-engineering)
 
 <p align="right">
-  <a href="#table-of-contents"><img alt="Table of contents" src="https://shieldcn.dev/badge/TOC-2563EB.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiListCheck&logoColor=f8fafc"></a>
-  <a href="#prompt-library"><img alt="Back to top" src="https://shieldcn.dev/badge/Top-16A34A.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiArrowUpLine&logoColor=f8fafc"></a>
+  <a href="#table-of-contents"><img alt="Table of contents" src="https://shieldcn.dev/badge/TOC-6366F1.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiListCheck&logoColor=f8fafc"></a>
+  <a href="#prompt-library"><img alt="Back to top" src="https://shieldcn.dev/badge/Top-10B981.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiArrowUpLine&logoColor=f8fafc"></a>
 </p>
 
 #### Step-Back Answer
@@ -3965,8 +3995,8 @@ Sources:
 - [Gemini prompting strategies](https://ai.google.dev/gemini-api/docs/prompting-strategies)
 
 <p align="right">
-  <a href="#table-of-contents"><img alt="Table of contents" src="https://shieldcn.dev/badge/TOC-2563EB.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiListCheck&logoColor=f8fafc"></a>
-  <a href="#prompt-library"><img alt="Back to top" src="https://shieldcn.dev/badge/Top-16A34A.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiArrowUpLine&logoColor=f8fafc"></a>
+  <a href="#table-of-contents"><img alt="Table of contents" src="https://shieldcn.dev/badge/TOC-6366F1.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiListCheck&logoColor=f8fafc"></a>
+  <a href="#prompt-library"><img alt="Back to top" src="https://shieldcn.dev/badge/Top-10B981.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiArrowUpLine&logoColor=f8fafc"></a>
 </p>
 
 #### Verification Pass
@@ -4045,8 +4075,8 @@ Sources:
 - [OpenAI evaluation best practices](https://developers.openai.com/api/docs/guides/evaluation-best-practices)
 
 <p align="right">
-  <a href="#table-of-contents"><img alt="Table of contents" src="https://shieldcn.dev/badge/TOC-2563EB.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiListCheck&logoColor=f8fafc"></a>
-  <a href="#prompt-library"><img alt="Back to top" src="https://shieldcn.dev/badge/Top-16A34A.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiArrowUpLine&logoColor=f8fafc"></a>
+  <a href="#table-of-contents"><img alt="Table of contents" src="https://shieldcn.dev/badge/TOC-6366F1.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiListCheck&logoColor=f8fafc"></a>
+  <a href="#prompt-library"><img alt="Back to top" src="https://shieldcn.dev/badge/Top-10B981.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiArrowUpLine&logoColor=f8fafc"></a>
 </p>
 
 #### Self-Refine Pass
@@ -4125,8 +4155,8 @@ Sources:
 - [Anthropic prompting best practices](https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices)
 
 <p align="right">
-  <a href="#table-of-contents"><img alt="Table of contents" src="https://shieldcn.dev/badge/TOC-2563EB.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiListCheck&logoColor=f8fafc"></a>
-  <a href="#prompt-library"><img alt="Back to top" src="https://shieldcn.dev/badge/Top-16A34A.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiArrowUpLine&logoColor=f8fafc"></a>
+  <a href="#table-of-contents"><img alt="Table of contents" src="https://shieldcn.dev/badge/TOC-6366F1.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiListCheck&logoColor=f8fafc"></a>
+  <a href="#prompt-library"><img alt="Back to top" src="https://shieldcn.dev/badge/Top-10B981.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiArrowUpLine&logoColor=f8fafc"></a>
 </p>
 
 #### Panel Review
@@ -4256,8 +4286,8 @@ what to change for your case:
 </details>
 
 <p align="right">
-  <a href="#table-of-contents"><img alt="Table of contents" src="https://shieldcn.dev/badge/TOC-2563EB.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiListCheck&logoColor=f8fafc"></a>
-  <a href="#prompt-library"><img alt="Back to top" src="https://shieldcn.dev/badge/Top-16A34A.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiArrowUpLine&logoColor=f8fafc"></a>
+  <a href="#table-of-contents"><img alt="Table of contents" src="https://shieldcn.dev/badge/TOC-6366F1.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiListCheck&logoColor=f8fafc"></a>
+  <a href="#prompt-library"><img alt="Back to top" src="https://shieldcn.dev/badge/Top-10B981.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiArrowUpLine&logoColor=f8fafc"></a>
 </p>
 
 #### Tradeoff Matrix
@@ -4336,24 +4366,23 @@ Sources:
 - [Anthropic prompting best practices](https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices)
 
 <p align="right">
-  <a href="#table-of-contents"><img alt="Table of contents" src="https://shieldcn.dev/badge/TOC-2563EB.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiListCheck&logoColor=f8fafc"></a>
-  <a href="#prompt-library"><img alt="Back to top" src="https://shieldcn.dev/badge/Top-16A34A.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiArrowUpLine&logoColor=f8fafc"></a>
+  <a href="#table-of-contents"><img alt="Table of contents" src="https://shieldcn.dev/badge/TOC-6366F1.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiListCheck&logoColor=f8fafc"></a>
+  <a href="#prompt-library"><img alt="Back to top" src="https://shieldcn.dev/badge/Top-10B981.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiArrowUpLine&logoColor=f8fafc"></a>
 </p>
 
 ---
 
 ## How To Adapt Prompts
 
-Use the recipes as interfaces, not magic phrases.
+Treat recipes as interfaces, not magic phrases.
 
-1. Keep the task sentence concrete.
-2. Put durable instructions before context.
-3. Put trusted context and untrusted input in separate delimited blocks.
-4. Specify the output contract before the model writes.
-5. Ask for concise rationale, citations, checks, uncertainty, or a tool trace instead of visible long chain-of-thought.[^private-reasoning]
-6. Add examples only when the zero-shot recipe fails on style, labels, or edge cases.
-7. Add provider structured output or tool definitions when downstream software depends on the result.
-8. Add a regression eval before sharing the prompt as a reusable workflow.
+1. Keep the task concrete; durable instructions before context.
+2. Separate trusted context and untrusted input in delimited blocks.
+3. Specify the output contract before the model writes.
+4. Ask for concise rationale, citations, checks, or uncertainty — not public long chain-of-thought.
+5. Add examples only when zero-shot fails on style, labels, or edge cases.
+6. Add structured output or tools when software consumes the result.
+7. Add a regression eval before promoting a prompt to a shared workflow.
 
 <details>
 <summary><strong>Escalation flow</strong></summary>
@@ -4372,38 +4401,29 @@ flowchart LR
 
 </details>
 
-Escalation checklist:
-
-- The zero-shot recipe failed on a real example, not just taste.
-- The missing capability is examples, retrieval, tools, schema enforcement, or eval coverage.
-- Trusted context and untrusted input are separated.
-- The output contract is explicit enough for the reader or downstream tool.
-- Missing-evidence, refusal, uncertainty, and review behavior are specified.
-- Repeated or automated use has a regression case.
-
 <p align="right">
-  <a href="#table-of-contents"><img alt="Table of contents" src="https://shieldcn.dev/badge/TOC-2563EB.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiListCheck&logoColor=f8fafc"></a>
-  <a href="#prompt-library"><img alt="Back to top" src="https://shieldcn.dev/badge/Top-16A34A.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiArrowUpLine&logoColor=f8fafc"></a>
+  <a href="#table-of-contents"><img alt="Table of contents" src="https://shieldcn.dev/badge/TOC-6366F1.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiListCheck&logoColor=f8fafc"></a>
+  <a href="#prompt-library"><img alt="Back to top" src="https://shieldcn.dev/badge/Top-10B981.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiArrowUpLine&logoColor=f8fafc"></a>
 </p>
 
 ---
 
 ## Provider Controls
 
-Provider badges link to docs, not endorsements or guarantees.[^provider-links] Verify current behavior in the same pass when a prompt depends on model-specific controls.[^source-freshness]
+Provider badges link to docs, not endorsements. Verify model-specific controls in the same pass when a recipe depends on them.
 
-| Provider | Current docs-backed controls to check | Prompt implication |
+| Provider | Check first | Prompt implication |
 | --- | --- | --- |
-| OpenAI | [Prompt guidance](https://developers.openai.com/api/docs/guides/prompt-guidance), [prompt engineering](https://developers.openai.com/api/docs/guides/prompt-engineering), [Structured Outputs](https://developers.openai.com/api/docs/guides/structured-outputs), [tools](https://developers.openai.com/api/docs/guides/tools), [evaluation best practices](https://developers.openai.com/api/docs/guides/evaluation-best-practices) | Prefer schemas, tools, evaluation metadata, and concise rationale over more prompt prose when those are the actual interface. |
-| Anthropic Claude | [Prompting best practices](https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices), [tool use](https://platform.claude.com/docs/en/agents-and-tools/tool-use/overview), [structured outputs](https://platform.claude.com/docs/en/build-with-claude/structured-outputs) | Use clear structure, examples when needed, explicit tool boundaries, and model-supported thinking controls where available. |
-| Google Gemini | [Prompting strategies](https://ai.google.dev/gemini-api/docs/prompting-strategies), [structured output](https://ai.google.dev/gemini-api/docs/structured-output), [function calling](https://ai.google.dev/gemini-api/docs/function-calling), [thinking](https://ai.google.dev/gemini-api/docs/thinking) | Treat thinking, grounding, function calling, and schema support as provider controls rather than generic template text. |
-| Perplexity | [API overview](https://docs.perplexity.ai/docs/getting-started/overview), [Search API](https://docs.perplexity.ai/docs/search/quickstart), [Agent API](https://docs.perplexity.ai/docs/agent-api/quickstart) | Use for search-answering workflows where citations, freshness, and retrieval behavior matter; verify exact API options before claiming support. |
-| Grok / xAI | [xAI overview](https://docs.x.ai/overview), [quickstart](https://docs.x.ai/developers/quickstart), [tools](https://docs.x.ai/developers/tools/overview), [REST API](https://docs.x.ai/developers/rest-api-reference/inference) | Link to docs and verify model/API behavior live; do not infer compatibility from other OpenAI-compatible APIs. |
-| Artificial Analysis | [Artificial Analysis](https://artificialanalysis.ai/) | Use as benchmark context for model/provider selection, not as evidence that a prompt recipe works.[^artificial-analysis] |
+| OpenAI | [Prompt guidance](https://developers.openai.com/api/docs/guides/prompt-guidance), [Structured Outputs](https://developers.openai.com/api/docs/guides/structured-outputs), [tools](https://developers.openai.com/api/docs/guides/tools), [evals](https://developers.openai.com/api/docs/guides/evaluation-best-practices) | Prefer schema, tools, and eval metadata over more prose when those are the real interface. |
+| Anthropic Claude | [Prompting](https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices), [tools](https://platform.claude.com/docs/en/agents-and-tools/tool-use/overview), [structured outputs](https://platform.claude.com/docs/en/build-with-claude/structured-outputs) | Clear structure, explicit tool boundaries, provider thinking controls when available. |
+| Google Gemini | [Prompting](https://ai.google.dev/gemini-api/docs/prompting-strategies), [structured output](https://ai.google.dev/gemini-api/docs/structured-output), [function calling](https://ai.google.dev/gemini-api/docs/function-calling), [thinking](https://ai.google.dev/gemini-api/docs/thinking) | Treat thinking, grounding, function calling, and schema as API controls, not template filler. |
+| Perplexity | [API overview](https://docs.perplexity.ai/docs/getting-started/overview), [Search API](https://docs.perplexity.ai/docs/search/quickstart), [Agent API](https://docs.perplexity.ai/docs/agent-api/quickstart) | Search workflows where citations and freshness matter; verify API options live. |
+| Grok / xAI | [Overview](https://docs.x.ai/overview), [quickstart](https://docs.x.ai/developers/quickstart), [tools](https://docs.x.ai/developers/tools/overview) | Verify behavior live; do not assume OpenAI-compatible parity. |
+| Artificial Analysis | [Artificial Analysis](https://artificialanalysis.ai/) | Benchmark context for model selection — not recipe evidence. |
 
 <p align="right">
-  <a href="#table-of-contents"><img alt="Table of contents" src="https://shieldcn.dev/badge/TOC-2563EB.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiListCheck&logoColor=f8fafc"></a>
-  <a href="#prompt-library"><img alt="Back to top" src="https://shieldcn.dev/badge/Top-16A34A.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiArrowUpLine&logoColor=f8fafc"></a>
+  <a href="#table-of-contents"><img alt="Table of contents" src="https://shieldcn.dev/badge/TOC-6366F1.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiListCheck&logoColor=f8fafc"></a>
+  <a href="#prompt-library"><img alt="Back to top" src="https://shieldcn.dev/badge/Top-10B981.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiArrowUpLine&logoColor=f8fafc"></a>
 </p>
 
 ---
@@ -4413,28 +4433,23 @@ Provider badges link to docs, not endorsements or guarantees.[^provider-links] V
 ### Evidence Legend
 
 > [!NOTE]
-> Tiers rate **method families**, not proof that any exact recipe works on your model or corpus.[^evidence-scope]
-> Full tier definitions and caveats: [card-contract.md](.agents/skills/readme-catalog-steward/references/card-contract.md).[^evidence-tiers]
+> Tiers rate **method families**, not proof on your model or corpus. Definitions: [card-contract.md](.agents/skills/readme-catalog-steward/references/card-contract.md).
 
-| Tier | Meaning | Use in this README |
+| Tier | Meaning | Use here |
 | --- | --- | --- |
-| **Strong** | Primary research with replicated benchmark evidence, official provider guidance, or both. | Safe default when the task match is close and cost is acceptable. |
-| **Moderate** | Primary research exists, but the result is task-sensitive, model-sensitive, or higher cost. | Use when the benefit justifies testing. |
-| **Emerging** | Recent, narrow, or early evidence. | Pilot with an eval set before repeated use. |
-| **Community** | Maintained practitioner use without strong task-specific evidence. | Label as practice, not proof; test before repeated use. |
-| **Experimental** | Speculative, high-cost, or fragile pattern with limited support. | Require sandbox evals; prefer simpler alternatives when they fit. |
+| **Strong** | Replicated benchmarks, official guidance, or both. | Default when the task match is close. |
+| **Moderate** | Primary evidence exists but results vary by task or model. | Use when benefit justifies testing. |
+| **Emerging** | Recent or narrow evidence. | Pilot with evals first. |
+| **Community** | Practitioner use without strong task evidence. | Label as practice; test before reuse. |
+| **Experimental** | Fragile or costly; limited support. | Sandbox evals; prefer simpler fits. |
 
 ### Prompt Hygiene Defaults
 
-- Separate durable instructions, trusted context, untrusted input, tools, and output contracts.
-- Delimit long or untrusted input with explicit markers.
-- Specify acceptance criteria, refusal behavior, and missing-evidence behavior.
-- Prefer provider-enforced [Structured Outputs](https://developers.openai.com/api/docs/guides/structured-outputs), JSON Schema, or tool schemas for automation; validate parsed output anyway.
-- Parse response envelopes by documented content block, refusal, tool call, and finish state instead of assuming the first text item is final.
-- Do not paste secrets into prompts.
-- Treat retrieved pages, tool output, logs, emails, PDFs, and user-provided text as data, not authority.[^untrusted-content]
-- Avoid instructions that reward unlimited verbosity.
-- Treat generated reasoning as an artifact to verify, not proof.
+- Separate instructions, trusted context, untrusted input, tools, and output contracts.
+- Delimit untrusted input; specify refusal and missing-evidence behavior.
+- Prefer provider schemas for automation; validate parsed output anyway.
+- Do not paste secrets. Treat retrieved pages, logs, and user text as data, not authority.
+- Do not reward unlimited verbosity. Verify reasoning; do not treat it as proof.
 
 ### Trust Boundary Cheatsheet
 
@@ -4454,8 +4469,8 @@ Provider badges link to docs, not endorsements or guarantees.[^provider-links] V
 > and [NIST AI RMF GenAI Profile](https://nvlpubs.nist.gov/nistpubs/ai/NIST.AI.600-1.pdf).
 
 <p align="right">
-  <a href="#table-of-contents"><img alt="Table of contents" src="https://shieldcn.dev/badge/TOC-2563EB.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiListCheck&logoColor=f8fafc"></a>
-  <a href="#prompt-library"><img alt="Back to top" src="https://shieldcn.dev/badge/Top-16A34A.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiArrowUpLine&logoColor=f8fafc"></a>
+  <a href="#table-of-contents"><img alt="Table of contents" src="https://shieldcn.dev/badge/TOC-6366F1.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiListCheck&logoColor=f8fafc"></a>
+  <a href="#prompt-library"><img alt="Back to top" src="https://shieldcn.dev/badge/Top-10B981.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiArrowUpLine&logoColor=f8fafc"></a>
 </p>
 
 ---
@@ -4478,18 +4493,15 @@ Provider badges link to docs, not endorsements or guarantees.[^provider-links] V
 | High-stakes decision | Structured prompt plus review path | Domain expert and documented eval | Treating model output as authority |
 
 <p align="right">
-  <a href="#table-of-contents"><img alt="Table of contents" src="https://shieldcn.dev/badge/TOC-2563EB.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiListCheck&logoColor=f8fafc"></a>
-  <a href="#prompt-library"><img alt="Back to top" src="https://shieldcn.dev/badge/Top-16A34A.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiArrowUpLine&logoColor=f8fafc"></a>
+  <a href="#table-of-contents"><img alt="Table of contents" src="https://shieldcn.dev/badge/TOC-6366F1.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiListCheck&logoColor=f8fafc"></a>
+  <a href="#prompt-library"><img alt="Back to top" src="https://shieldcn.dev/badge/Top-10B981.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiArrowUpLine&logoColor=f8fafc"></a>
 </p>
 
 ---
 
 ## Pattern Notes
 
-Pattern notes are the supporting taxonomy behind the copyable recipes. Each
-note keeps the useful interface fields: definition, best use, avoid when,
-copyable skeleton or recipe link, model/API controls, cost, failure modes,
-evidence tier, source type, eval requirement, caveat, and clickable sources.
+Supporting taxonomy behind the recipes. Each note keeps definition, best use, avoid when, template or recipe link, controls, cost, failure modes, evidence tier, eval requirement, caveat, and sources.
 
 ### Core Prompt Construction
 
@@ -4975,8 +4987,8 @@ Return:
 - Sources: [OWASP Top 10 for LLM Applications](https://owasp.org/www-project-top-10-for-large-language-model-applications/), [Ignore Previous Prompt](https://arxiv.org/abs/2211.09527), [Automatic and Universal Prompt Injection Attacks](https://arxiv.org/abs/2403.04957).
 
 <p align="right">
-  <a href="#table-of-contents"><img alt="Table of contents" src="https://shieldcn.dev/badge/TOC-2563EB.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiListCheck&logoColor=f8fafc"></a>
-  <a href="#prompt-library"><img alt="Back to top" src="https://shieldcn.dev/badge/Top-16A34A.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiArrowUpLine&logoColor=f8fafc"></a>
+  <a href="#table-of-contents"><img alt="Table of contents" src="https://shieldcn.dev/badge/TOC-6366F1.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiListCheck&logoColor=f8fafc"></a>
+  <a href="#prompt-library"><img alt="Back to top" src="https://shieldcn.dev/badge/Top-10B981.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiArrowUpLine&logoColor=f8fafc"></a>
 </p>
 
 ---
@@ -5360,8 +5372,8 @@ Rules:
 - Sources: [Multimodal Chain-of-Thought Reasoning](https://arxiv.org/abs/2302.00923), [OpenAI text generation](https://developers.openai.com/api/docs/guides/text), [Google Gemini prompting strategies](https://ai.google.dev/gemini-api/docs/prompting-strategies).
 
 <p align="right">
-  <a href="#table-of-contents"><img alt="Table of contents" src="https://shieldcn.dev/badge/TOC-2563EB.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiListCheck&logoColor=f8fafc"></a>
-  <a href="#prompt-library"><img alt="Back to top" src="https://shieldcn.dev/badge/Top-16A34A.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiArrowUpLine&logoColor=f8fafc"></a>
+  <a href="#table-of-contents"><img alt="Table of contents" src="https://shieldcn.dev/badge/TOC-6366F1.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiListCheck&logoColor=f8fafc"></a>
+  <a href="#prompt-library"><img alt="Back to top" src="https://shieldcn.dev/badge/Top-10B981.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiArrowUpLine&logoColor=f8fafc"></a>
 </p>
 
 ---
@@ -5584,8 +5596,8 @@ Process:
 - Sources: [OpenAI evaluation best practices](https://developers.openai.com/api/docs/guides/evaluation-best-practices), [OpenAI Cookbook eval flywheel](https://github.com/openai/openai-cookbook/blob/main/examples/evaluation/Building_resilient_prompts_using_an_evaluation_flywheel.md), [Microsoft Foundry observability](https://learn.microsoft.com/en-us/azure/foundry/concepts/observability).
 
 <p align="right">
-  <a href="#table-of-contents"><img alt="Table of contents" src="https://shieldcn.dev/badge/TOC-2563EB.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiListCheck&logoColor=f8fafc"></a>
-  <a href="#prompt-library"><img alt="Back to top" src="https://shieldcn.dev/badge/Top-16A34A.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiArrowUpLine&logoColor=f8fafc"></a>
+  <a href="#table-of-contents"><img alt="Table of contents" src="https://shieldcn.dev/badge/TOC-6366F1.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiListCheck&logoColor=f8fafc"></a>
+  <a href="#prompt-library"><img alt="Back to top" src="https://shieldcn.dev/badge/Top-10B981.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiArrowUpLine&logoColor=f8fafc"></a>
 </p>
 
 ---
@@ -6119,97 +6131,45 @@ Task:
 - Sources: [EmotionPrompt](https://arxiv.org/abs/2307.11760), [On Second Thought, Let's Not Think Step by Step](https://arxiv.org/abs/2212.08061), [Prompting Science Report 1](https://arxiv.org/abs/2503.04818).
 
 <p align="right">
-  <a href="#table-of-contents"><img alt="Table of contents" src="https://shieldcn.dev/badge/TOC-2563EB.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiListCheck&logoColor=f8fafc"></a>
-  <a href="#prompt-library"><img alt="Back to top" src="https://shieldcn.dev/badge/Top-16A34A.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiArrowUpLine&logoColor=f8fafc"></a>
+  <a href="#table-of-contents"><img alt="Table of contents" src="https://shieldcn.dev/badge/TOC-6366F1.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiListCheck&logoColor=f8fafc"></a>
+  <a href="#prompt-library"><img alt="Back to top" src="https://shieldcn.dev/badge/Top-10B981.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiArrowUpLine&logoColor=f8fafc"></a>
 </p>
 
 ---
 
 ## Contributing Prompt Recipes
 
-Prompt recipes are promoted by usefulness plus evidence, not novelty. README checks validate documentation quality, not real model behavior.[^validation-scope]
+Recipes earn their place by usefulness and evidence, not novelty. README checks validate documentation quality, not runtime model behavior.
 
-Before adding or changing a prompt recipe or pattern note:
+Before adding or changing a recipe or pattern note:
 
-- [ ] Identify the task type, user, and expected output consumer.
-- [ ] Define success criteria and representative failure cases before editing.
-- [ ] Check whether model choice, retrieval/context, tool design, schema
-      enforcement, or eval coverage is a better fix than prompt prose.
-- [ ] Add at least one primary research source, official doc, standard, or
-      explicit **Community** or **Experimental** label.
-- [ ] Keep every source/resource as a clickable link.
-- [ ] Include best-use, avoid-when, cost, latency, failure-mode, caveat, and eval notes.
-- [ ] Record provider, model snapshot, reasoning/thinking controls, decoding
-      settings, tools, schema version, retrieval corpus, and context source.
-- [ ] Avoid visible long chain-of-thought as a default instruction.
-- [ ] Delimit untrusted input in the template.
-- [ ] Prefer structured output when another tool consumes the result.
-- [ ] Include adversarial prompt-injection cases for RAG or tool workflows.
-- [ ] Include refusal, abstention, missing-evidence, and parser-invalid cases.
-- [ ] Require human/domain review for legal, medical, financial, employment,
-      safety, security, or other high-stakes decisions.
-- [ ] For production or repeated use, maintain an eval set and update the prompt
-      only when the eval improves or the tradeoff is documented.
+- [ ] Name task type, user, and output consumer.
+- [ ] Define success criteria and failure cases before editing.
+- [ ] Check whether model, retrieval, tools, schema, or evals beat more prompt prose.
+- [ ] Add a primary source or label **Community** / **Experimental** explicitly.
+- [ ] Keep sources clickable; include best-use, avoid-when, cost, latency, failure modes, caveat, and eval notes.
+- [ ] Delimit untrusted input; prefer structured output for machine consumers.
+- [ ] Add injection, refusal, abstention, and parser-invalid cases for agent workflows.
+- [ ] Require human review for legal, medical, financial, employment, safety, or security decisions.
+- [ ] Maintain a regression eval before repeated or production use.
 
-For non-trivial README maintenance, use the repo-local
-[README Catalog Steward](.agents/skills/readme-catalog-steward/SKILL.md)
-skill so source freshness, recipe, pattern-note, safety, and validation rules stay
-consistent.
+For non-trivial README work, use the [README Catalog Steward](.agents/skills/readme-catalog-steward/SKILL.md) skill.
 
-Recommended validation for this README:[^validation-scope]
-
-Run the canonical validation block in [AGENTS.md § Validation](AGENTS.md#validation).
+Validation: run the block in [AGENTS.md § Validation](AGENTS.md#validation).
 
 <details>
-<summary><strong>Markdown Quality Gate</strong></summary>
+<summary><strong>Markdown quality gate</strong></summary>
 
 - [ ] Heading anchors resolve on GitHub.
-- [ ] Alert blocks render as GitHub alerts.
-- [ ] Mermaid diagram renders and remains readable in light and dark themes.
-- [ ] Critical safety warnings are visible, not hidden in collapses.
-- [ ] Badge image alt text remains meaningful without images.
-- [ ] Badge and source links pass validation.
-- [ ] Every prompt recipe has a copyable template, and every pattern note has a
-      recipe link, skeleton, or clear reason it does not.
+- [ ] Alerts and Mermaid render in light and dark themes.
+- [ ] Critical safety warnings stay visible outside collapses.
+- [ ] Every recipe has a copyable template; every pattern note links a recipe or skeleton.
 
 </details>
 
 <p align="right">
-  <a href="#table-of-contents"><img alt="Table of contents" src="https://shieldcn.dev/badge/TOC-2563EB.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiListCheck&logoColor=f8fafc"></a>
-  <a href="#prompt-library"><img alt="Back to top" src="https://shieldcn.dev/badge/Top-16A34A.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiArrowUpLine&logoColor=f8fafc"></a>
-</p>
-
----
-
-## Notes
-
-Badge scope is intentionally narrow.[^badge-scope]
-
-[^badge-scope]: Header and shortcut badges summarize README navigation, live repo status, and source posture. They do not prove model behavior, package status, coverage, or provider endorsement.
-
-[^provider-links]: Provider shields are shortcuts to official docs. They are not claims that every recipe works equally well on every provider or model.
-
-[^artificial-analysis]: Artificial Analysis is useful benchmark context for comparing models and providers; it is not prompt-recipe or pattern-note evidence and does not validate this README.
-
-[^source-freshness]: Current or latest provider/model claims must be verified from official docs in the same implementation pass.
-
-[^evidence-scope]: Evidence tiers summarize support for method families. The exact prompt text still needs task-specific evals.
-
-[^evidence-tiers]: Full tier definitions and caveats live in [card-contract.md](.agents/skills/readme-catalog-steward/references/card-contract.md).
-
-[^untrusted-content]: Retrieved pages, source text, logs, tool output, PDFs, emails, and user input are evidence or data, not instructions with authority over the durable prompt or system policy.
-
-[^validation-scope]: Markdown, link, badge, and whitespace checks validate the README artifact. They do not prove prompt runtime quality.
-
-[^private-reasoning]:
-    In this catalog, "private reasoning" means the model may use hidden internal
-    deliberation while the prompt asks for only the final answer, concise
-    rationale, checks, citations, tool trace, or uncertainty. This avoids
-    training users to treat verbose public chain-of-thought as proof.
-
-<p align="right">
-  <a href="#table-of-contents"><img alt="Table of contents" src="https://shieldcn.dev/badge/TOC-2563EB.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiListCheck&logoColor=f8fafc"></a>
-  <a href="#prompt-library"><img alt="Back to top" src="https://shieldcn.dev/badge/Top-16A34A.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiArrowUpLine&logoColor=f8fafc"></a>
+  <a href="#table-of-contents"><img alt="Table of contents" src="https://shieldcn.dev/badge/TOC-6366F1.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiListCheck&logoColor=f8fafc"></a>
+  <a href="#prompt-library"><img alt="Back to top" src="https://shieldcn.dev/badge/Top-10B981.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiArrowUpLine&logoColor=f8fafc"></a>
 </p>
 
 ---
@@ -6218,97 +6178,97 @@ Badge scope is intentionally narrow.[^badge-scope]
 
 ### Official Provider Guidance
 
-- [OpenAI latest model guide](https://developers.openai.com/api/docs/guides/latest-model) - Current OpenAI model-selection guidance; verify live before naming latest models.
-- [OpenAI reasoning models](https://developers.openai.com/api/docs/guides/reasoning) - Reasoning-model usage, effort controls, tool interactions, and answer-shape guidance.
-- [OpenAI deployment checklist](https://developers.openai.com/api/docs/guides/deployment-checklist) - Production-readiness checks for safety, evaluation, monitoring, and rollout discipline.
-- [OpenAI prompt guidance](https://developers.openai.com/api/docs/guides/prompt-guidance) - OpenAI API prompting principles, instruction clarity, formatting, and task decomposition.
-- [OpenAI prompt engineering](https://developers.openai.com/api/docs/guides/prompt-engineering) - Official prompt design guide used for baseline recipe hygiene.
-- [OpenAI Structured Outputs](https://developers.openai.com/api/docs/guides/structured-outputs) - JSON Schema and schema-constrained output behavior for parser-safe prompts.
-- [OpenAI tools](https://developers.openai.com/api/docs/guides/tools) - Tool/function definition, tool choice, and model-tool interaction guidance.
-- [OpenAI evaluation best practices](https://developers.openai.com/api/docs/guides/evaluation-best-practices) - Evaluation design, grading, and regression workflow guidance for prompt changes.
-- [OpenAI Cookbook Evaluation Flywheel](https://github.com/openai/openai-cookbook/blob/main/examples/evaluation/Building_resilient_prompts_using_an_evaluation_flywheel.md) - Practical eval-loop example for improving prompts from observed failures.
-- [Anthropic models overview](https://platform.claude.com/docs/en/about-claude/models/overview) - Claude model lineup, capabilities, and availability; verify before model-specific claims.
-- [Anthropic Claude Fable 5 and Mythos 5 docs](https://platform.claude.com/docs/en/about-claude/models/introducing-claude-fable-5-and-claude-mythos-5) - Anthropic model-specific page; use only with same-pass availability verification.
-- [Anthropic Fable/Mythos access update](https://www.anthropic.com/news/fable-mythos-access) - Announcement context for Fable/Mythos access, not general prompting evidence.
-- [Anthropic prompt engineering overview](https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/overview) - Claude prompting principles, examples, and XML-style structure guidance.
-- [Anthropic Extended Thinking](https://platform.claude.com/docs/en/build-with-claude/extended-thinking) - Provider controls for private extended reasoning rather than visible CoT.
-- [Anthropic Structured Outputs](https://platform.claude.com/docs/en/build-with-claude/structured-outputs) - Claude structured-output guidance for schema-like response contracts.
-- [Anthropic tool use](https://platform.claude.com/docs/en/agents-and-tools/tool-use/overview) - Claude tool-calling patterns, tool definitions, and tool-result handling.
-- [Anthropic model deprecations](https://platform.claude.com/docs/en/about-claude/model-deprecations) - Deprecation schedule used to avoid stale model references.
-- [Google Gemini prompting strategies](https://ai.google.dev/gemini-api/docs/prompting-strategies) - Gemini prompting patterns, examples, and task-setup recommendations.
-- [Google Gemini thinking](https://ai.google.dev/gemini-api/docs/thinking) - Gemini thinking controls and budget guidance for reasoning-heavy tasks.
-- [Google Gemini structured output](https://ai.google.dev/gemini-api/docs/structured-output) - Gemini JSON and schema-oriented output guidance.
-- [Google Gemini function calling](https://ai.google.dev/gemini-api/docs/function-calling) - Gemini tool/function calling interface and orchestration guidance.
-- [Google Gemini grounding with Search](https://ai.google.dev/gemini-api/docs/google-search) - Google Search grounding setup and citation behavior for freshness-sensitive answers.
-- [Perplexity API overview](https://docs.perplexity.ai/docs/getting-started/overview) - Perplexity API orientation for search-centered answer generation.
-- [Perplexity Search API](https://docs.perplexity.ai/docs/search/quickstart) - Search API quickstart for retrieval-first workflows.
-- [Perplexity Agent API](https://docs.perplexity.ai/docs/agent-api/quickstart) - Agent API quickstart for tool-backed research workflows.
-- [xAI overview](https://docs.x.ai/overview) - xAI API documentation entrypoint; use as docs link, not behavior proof.
-- [xAI quickstart](https://docs.x.ai/developers/quickstart) - xAI setup and first-request guidance.
-- [xAI tools](https://docs.x.ai/developers/tools/overview) - xAI tool-use documentation for supported tool interfaces.
-- [xAI REST API](https://docs.x.ai/developers/rest-api-reference/inference) - xAI REST reference for endpoint-level integration details.
-- [Microsoft Foundry prompt engineering](https://learn.microsoft.com/en-us/azure/foundry/openai/concepts/prompt-engineering) - Azure/OpenAI prompting guidance for deployed enterprise settings.
-- [Azure OpenAI structured outputs](https://learn.microsoft.com/en-us/azure/foundry/openai/how-to/structured-outputs) - Azure-specific structured-output setup and constraints.
-- [Microsoft Foundry observability](https://learn.microsoft.com/en-us/azure/foundry/concepts/observability) - Observability guidance for production AI apps and eval telemetry.
+- [OpenAI latest model guide](https://developers.openai.com/api/docs/guides/latest-model)
+- [OpenAI reasoning models](https://developers.openai.com/api/docs/guides/reasoning)
+- [OpenAI deployment checklist](https://developers.openai.com/api/docs/guides/deployment-checklist)
+- [OpenAI prompt guidance](https://developers.openai.com/api/docs/guides/prompt-guidance)
+- [OpenAI prompt engineering](https://developers.openai.com/api/docs/guides/prompt-engineering)
+- [OpenAI Structured Outputs](https://developers.openai.com/api/docs/guides/structured-outputs)
+- [OpenAI tools](https://developers.openai.com/api/docs/guides/tools)
+- [OpenAI evaluation best practices](https://developers.openai.com/api/docs/guides/evaluation-best-practices)
+- [OpenAI Cookbook Evaluation Flywheel](https://github.com/openai/openai-cookbook/blob/main/examples/evaluation/Building_resilient_prompts_using_an_evaluation_flywheel.md)
+- [Anthropic models overview](https://platform.claude.com/docs/en/about-claude/models/overview)
+- [Anthropic Claude Fable 5 and Mythos 5 docs](https://platform.claude.com/docs/en/about-claude/models/introducing-claude-fable-5-and-claude-mythos-5)
+- [Anthropic Fable/Mythos access update](https://www.anthropic.com/news/fable-mythos-access)
+- [Anthropic prompt engineering overview](https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/overview)
+- [Anthropic Extended Thinking](https://platform.claude.com/docs/en/build-with-claude/extended-thinking)
+- [Anthropic Structured Outputs](https://platform.claude.com/docs/en/build-with-claude/structured-outputs)
+- [Anthropic tool use](https://platform.claude.com/docs/en/agents-and-tools/tool-use/overview)
+- [Anthropic model deprecations](https://platform.claude.com/docs/en/about-claude/model-deprecations)
+- [Google Gemini prompting strategies](https://ai.google.dev/gemini-api/docs/prompting-strategies)
+- [Google Gemini thinking](https://ai.google.dev/gemini-api/docs/thinking)
+- [Google Gemini structured output](https://ai.google.dev/gemini-api/docs/structured-output)
+- [Google Gemini function calling](https://ai.google.dev/gemini-api/docs/function-calling)
+- [Google Gemini grounding with Search](https://ai.google.dev/gemini-api/docs/google-search)
+- [Perplexity API overview](https://docs.perplexity.ai/docs/getting-started/overview)
+- [Perplexity Search API](https://docs.perplexity.ai/docs/search/quickstart)
+- [Perplexity Agent API](https://docs.perplexity.ai/docs/agent-api/quickstart)
+- [xAI overview](https://docs.x.ai/overview)
+- [xAI quickstart](https://docs.x.ai/developers/quickstart)
+- [xAI tools](https://docs.x.ai/developers/tools/overview)
+- [xAI REST API](https://docs.x.ai/developers/rest-api-reference/inference)
+- [Microsoft Foundry prompt engineering](https://learn.microsoft.com/en-us/azure/foundry/openai/concepts/prompt-engineering)
+- [Azure OpenAI structured outputs](https://learn.microsoft.com/en-us/azure/foundry/openai/how-to/structured-outputs)
+- [Microsoft Foundry observability](https://learn.microsoft.com/en-us/azure/foundry/concepts/observability)
 
 ### Standards and Safety
 
-- [OWASP Top 10 for LLM Applications](https://owasp.org/www-project-top-10-for-large-language-model-applications/) - Practitioner risk taxonomy for prompt injection, tool misuse, and data leakage.
-- [NIST AI RMF Generative AI Profile](https://nvlpubs.nist.gov/nistpubs/ai/NIST.AI.600-1.pdf) - Risk-management profile for generative AI governance and human-review boundaries.
+- [OWASP Top 10 for LLM Applications](https://owasp.org/www-project-top-10-for-large-language-model-applications/)
+- [NIST AI RMF Generative AI Profile](https://nvlpubs.nist.gov/nistpubs/ai/NIST.AI.600-1.pdf)
 
 ### Surveys and Taxonomies
 
-- [The Prompt Report](https://arxiv.org/abs/2406.06608) - Broad systematic taxonomy of prompt engineering techniques and terminology.
-- [Prompting Science Report 1](https://arxiv.org/abs/2503.04818) - Caveat-focused report arguing prompt effects are contingent and task-dependent.
-- [Prompting Science Report 2](https://arxiv.org/abs/2506.07142) - Report on declining CoT value in newer models and tasks.
-- [A Survey of Context Engineering for LLMs](https://arxiv.org/abs/2507.13334) - Survey of context selection, organization, compression, and inference-time information design.
+- [The Prompt Report](https://arxiv.org/abs/2406.06608)
+- [Prompting Science Report 1](https://arxiv.org/abs/2503.04818)
+- [Prompting Science Report 2](https://arxiv.org/abs/2506.07142)
+- [A Survey of Context Engineering for LLMs](https://arxiv.org/abs/2507.13334)
 
 ### Prompting and Reasoning Methods
 
-- [Language Models are Few-Shot Learners](https://arxiv.org/abs/2005.14165) - GPT-3 paper popularizing in-context few-shot learning as prompting.
-- [Large Language Models are Zero-Shot Reasoners](https://arxiv.org/abs/2205.11916) - Introduces zero-shot chain-of-thought prompting for reasoning benchmarks.
-- [On Second Thought, Let's Not Think Step by Step](https://arxiv.org/abs/2212.08061) - Negative result showing CoT can increase bias and toxicity.
-- [Language Models Don't Always Say What They Think](https://arxiv.org/abs/2305.04388) - Evidence that generated rationales can be unfaithful to model behavior.
-- [Active Prompting with Chain-of-Thought](https://arxiv.org/abs/2302.12246) - Selects uncertain examples for annotation to improve CoT demonstrations.
-- [Plan-and-Solve Prompting](https://arxiv.org/abs/2305.04091) - Adds planning before solution to reduce zero-shot reasoning omissions.
-- [Take a Step Back](https://arxiv.org/abs/2310.06117) - Uses abstraction-first questions to improve reasoning transfer.
-- [Improving Language Models with Intentional Analysis](https://arxiv.org/abs/2502.04689) - Studies intent-aware analysis as a reasoning aid.
-- [Chain of Draft](https://arxiv.org/abs/2502.18600) - Tests concise intermediate reasoning to reduce token cost and latency.
-- [Skeleton-of-Thought](https://arxiv.org/abs/2307.15337) - Generates an answer skeleton first, then expands points in parallel.
-- [Algorithm of Thoughts](https://arxiv.org/abs/2308.10379) - Prompts models to explore ideas using algorithm-like search traces.
-- [Tree of Thoughts](https://arxiv.org/abs/2305.10601) - Searches over multiple intermediate reasoning branches for deliberate problem solving.
-- [Graph of Thoughts](https://arxiv.org/abs/2308.09687) - Generalizes thought search into graph-structured transformations and aggregation.
-- [Program of Thoughts Prompting](https://arxiv.org/abs/2211.12588) - Separates computation from reasoning by generating executable programs.
-- [PAL: Program-aided Language Models](https://arxiv.org/abs/2211.10435) - Uses generated Python programs to solve arithmetic and symbolic tasks.
-- [Multimodal Chain-of-Thought Reasoning](https://arxiv.org/abs/2302.00923) - Applies CoT-style rationales to vision-language reasoning tasks.
-- [Self-Consistency Improves Chain of Thought](https://arxiv.org/abs/2203.11171) - Samples multiple reasoning paths and aggregates answers for robustness.
-- [ReAct](https://arxiv.org/abs/2210.03629) - Interleaves reasoning traces with external actions for tool and environment use.
-- [Chain-of-Verification](https://arxiv.org/abs/2309.11495) - Generates and answers verification questions to reduce hallucinations.
-- [Self-Refine](https://arxiv.org/abs/2303.17651) - Iteratively critiques and revises outputs using model-generated feedback.
-- [Reflexion](https://arxiv.org/abs/2303.11366) - Adds verbal feedback memory to improve language-agent behavior across trials.
-- [Chain of Density](https://arxiv.org/abs/2309.04269) - Iteratively makes summaries more entity-dense while preserving readability.
-- [EmotionPrompt](https://arxiv.org/abs/2307.11760) - Tests emotional-stimulus prompts; treat as experimental and eval-gated.
+- [Language Models are Few-Shot Learners](https://arxiv.org/abs/2005.14165)
+- [Large Language Models are Zero-Shot Reasoners](https://arxiv.org/abs/2205.11916)
+- [On Second Thought, Let's Not Think Step by Step](https://arxiv.org/abs/2212.08061)
+- [Language Models Don't Always Say What They Think](https://arxiv.org/abs/2305.04388)
+- [Active Prompting with Chain-of-Thought](https://arxiv.org/abs/2302.12246)
+- [Plan-and-Solve Prompting](https://arxiv.org/abs/2305.04091)
+- [Take a Step Back](https://arxiv.org/abs/2310.06117)
+- [Improving Language Models with Intentional Analysis](https://arxiv.org/abs/2502.04689)
+- [Chain of Draft](https://arxiv.org/abs/2502.18600)
+- [Skeleton-of-Thought](https://arxiv.org/abs/2307.15337)
+- [Algorithm of Thoughts](https://arxiv.org/abs/2308.10379)
+- [Tree of Thoughts](https://arxiv.org/abs/2305.10601)
+- [Graph of Thoughts](https://arxiv.org/abs/2308.09687)
+- [Program of Thoughts Prompting](https://arxiv.org/abs/2211.12588)
+- [PAL: Program-aided Language Models](https://arxiv.org/abs/2211.10435)
+- [Multimodal Chain-of-Thought Reasoning](https://arxiv.org/abs/2302.00923)
+- [Self-Consistency Improves Chain of Thought](https://arxiv.org/abs/2203.11171)
+- [ReAct](https://arxiv.org/abs/2210.03629)
+- [Chain-of-Verification](https://arxiv.org/abs/2309.11495)
+- [Self-Refine](https://arxiv.org/abs/2303.17651)
+- [Reflexion](https://arxiv.org/abs/2303.11366)
+- [Chain of Density](https://arxiv.org/abs/2309.04269)
+- [EmotionPrompt](https://arxiv.org/abs/2307.11760)
 
 ### RAG, Security, and Optimization
 
-- [Retrieval-Augmented Generation](https://arxiv.org/abs/2005.11401) - Foundational retrieval-plus-generation architecture for knowledge-intensive tasks.
-- [Lost in the Middle](https://arxiv.org/abs/2307.03172) - Shows long-context models can underuse information placed mid-context.
-- [Ignore Previous Prompt](https://arxiv.org/abs/2211.09527) - Early prompt-injection attack taxonomy for instruction-following systems.
-- [Automatic and Universal Prompt Injection Attacks](https://arxiv.org/abs/2403.04957) - Demonstrates automated universal attacks against prompt-conditioned models.
-- [Large Language Models are Human-Level Prompt Engineers](https://arxiv.org/abs/2211.01910) - Introduces automatic prompt engineer methods for prompt search.
-- [OPRO](https://arxiv.org/abs/2309.03409) - Uses LLMs themselves as optimizers over natural-language prompts.
-- [DSPy](https://arxiv.org/abs/2310.03714) - Framework for declarative LM pipelines with learned prompts and demonstrations.
+- [Retrieval-Augmented Generation](https://arxiv.org/abs/2005.11401)
+- [Lost in the Middle](https://arxiv.org/abs/2307.03172)
+- [Ignore Previous Prompt](https://arxiv.org/abs/2211.09527)
+- [Automatic and Universal Prompt Injection Attacks](https://arxiv.org/abs/2403.04957)
+- [Large Language Models are Human-Level Prompt Engineers](https://arxiv.org/abs/2211.01910)
+- [OPRO](https://arxiv.org/abs/2309.03409)
+- [DSPy](https://arxiv.org/abs/2310.03714)
 
 ### Practitioner and Documentation Resources
 
-- [PromptingGuide.ai](https://www.promptingguide.ai/) - Maintained practitioner guide for examples; useful context, not primary evidence.
-- [Artificial Analysis](https://artificialanalysis.ai/) - Benchmark and pricing context for model selection, not prompt-method proof.
-- [ShieldCN showcase](https://shieldcn.dev/showcase) - Visual examples for the generated README badge surfaces.
-- [ShieldCN API reference](https://shieldcn.dev/docs/api-reference) - Parameter reference for reproducible ShieldCN badge generation.
-- [GitHub basic writing and formatting syntax](https://docs.github.com/en/get-started/writing-on-github/getting-started-with-writing-and-formatting-on-github/basic-writing-and-formatting-syntax) - Official GFM syntax reference for README formatting.
-- [GitHub Mermaid diagrams](https://docs.github.com/en/get-started/writing-on-github/working-with-advanced-formatting/creating-diagrams) - Official GitHub guidance for Mermaid diagrams in Markdown.
+- [PromptingGuide.ai](https://www.promptingguide.ai/)
+- [Artificial Analysis](https://artificialanalysis.ai/)
+- [ShieldCN showcase](https://shieldcn.dev/showcase)
+- [ShieldCN API reference](https://shieldcn.dev/docs/api-reference)
+- [GitHub basic writing and formatting syntax](https://docs.github.com/en/get-started/writing-on-github/getting-started-with-writing-and-formatting-on-github/basic-writing-and-formatting-syntax)
+- [GitHub Mermaid diagrams](https://docs.github.com/en/get-started/writing-on-github/working-with-advanced-formatting/creating-diagrams)
 
 <p align="right">
-  <a href="#table-of-contents"><img alt="Table of contents" src="https://shieldcn.dev/badge/TOC-2563EB.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiListCheck&logoColor=f8fafc"></a>
-  <a href="#prompt-library"><img alt="Back to top" src="https://shieldcn.dev/badge/Top-16A34A.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiArrowUpLine&logoColor=f8fafc"></a>
+  <a href="#table-of-contents"><img alt="Table of contents" src="https://shieldcn.dev/badge/TOC-6366F1.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiListCheck&logoColor=f8fafc"></a>
+  <a href="#prompt-library"><img alt="Back to top" src="https://shieldcn.dev/badge/Top-10B981.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiArrowUpLine&logoColor=f8fafc"></a>
 </p>

@@ -855,7 +855,6 @@ SECTION_MAP_PARENT_HEADINGS = [
     "Pattern Selection Matrix",
     "Pattern Notes",
     "Contributing Prompt Recipes",
-    "Notes",
     "Bibliography",
 ]
 
@@ -919,8 +918,8 @@ def validate_section_map(lines: list[str], errors: list[Diagnostic]) -> int:
     links = re.findall(r"\(#([^)]+)\)", map_text)
     expected = build_section_map_expected_anchors()
     unique_links = set(links)
-    if len(links) != 22 or len(unique_links) != 22:
-        errors.append(Diagnostic("SECTION_MAP_COUNT", "Section Map must contain 22 unique links.", start + 1))
+    if len(links) != 21 or len(unique_links) != 21:
+        errors.append(Diagnostic("SECTION_MAP_COUNT", "Section Map must contain 21 unique links.", start + 1))
     missing = sorted(expected - unique_links)
     extra = sorted(unique_links - expected)
     for anchor in missing:
