@@ -40,18 +40,40 @@ Run the canonical validation block in
 linter enforces required recipe fields plus Prompt Index and Section Map link
 completeness.
 
+## Paste Zones Table (All Recipes)
+
+Every prompt recipe must include a four-column **paste zones** table between
+`Use for:` and `<!-- Copy prompt: -->` so readers can demystify placeholders
+before copying the template:
+
+`| Placeholder | Req | Example value | Notes |`
+
+Rules:
+
+- one row per placeholder declared in `Fill these in:`
+- Placeholder column uses `` `{name}` `` matching the fill entry
+- Req column is `yes` for required placeholders and `no` for optional ones
+- Example value uses literal paste values, not meta-descriptions (reserve those
+  for Notes)
+- the table must appear in the main recipe body, not only inside a collapsed
+  `<details>` block
+
+Optional **paste preview** blockquotes may still appear in filled examples for
+multi-line zones (diffs, memos, schemas, logs, retrieved sources).
+
+`scripts/check_readme_recipes.py` enforces paste-zone tables on all 48 recipes
+via `validate_recipe_paste_zone_table()`.
+
 ## Filled Example Blocks
 
 Eight high-traffic recipes include one collapsed `<details>` block titled
-**Filled example**. These blocks are documentation walkthroughs — paste zones and
-illustrative sample output for the copy prompt above. They are **not** in-prompt
-few-shot unless `Upgrade when` explicitly directs adding examples to the prompt.
+**Filled example**. These blocks are documentation walkthroughs — illustrative
+sample output for the copy prompt above. They are **not** in-prompt few-shot
+unless `Upgrade when` explicitly directs adding examples to the prompt.
 
 Each block must include:
 
 - a `[!NOTE]` walkthrough disclaimer (`Walkthrough only.`)
-- **filled paste zones** with a four-column table:
-  `Placeholder | Req | Example value | Notes`
 - optional **paste preview** blockquotes for multi-line zones (diffs, memos,
   schemas, logs, retrieved sources)
 - **expected output shape** with a two-column table:
@@ -60,11 +82,11 @@ Each block must include:
   when the workflow is reusable)
 
 Do not use `####` headings or fenced ` ```text ` blocks inside filled examples.
-Do not instruct readers to paste sample output into the prompt. Use literal paste
-values in the input table; reserve meta-descriptions for the Notes column.
+Do not instruct readers to paste sample output into the prompt.
 
 `scripts/check_readme_recipes.py` enforces filled-example structure on the eight
-target recipes only.
+target recipes only. Input placeholder tables belong above the copy prompt, not
+inside filled examples.
 
 ## Template Hygiene
 

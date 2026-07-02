@@ -62,7 +62,7 @@ VISIBLE_COT_PATTERNS = [
 ]
 
 FILLED_EXAMPLE_DISCLAIMER_MARKERS = ("[!NOTE]", "Walkthrough only.")
-FILLED_EXAMPLE_INPUT_TABLE_HEADER = "| Placeholder | Req | Example value | Notes |"
+PASTE_ZONE_TABLE_HEADER = "| Placeholder | Req | Example value | Notes |"
 FILLED_EXAMPLE_OUTPUT_TABLE_HEADER = "| Output field | Example |"
 FILLED_EXAMPLE_META_VALUE_PATTERNS = [
     re.compile(pattern, re.IGNORECASE)
@@ -323,6 +323,42 @@ def collect_filled_example_errors(recipe_name: str, details: str, fill: dict[str
     return errors
 
 
+def collect_recipe_paste_zone_errors(
+    recipe_name: str,
+    recipe_lines: list[str],
+    fill: dict[str, tuple[str, int]],
+    line: int = 1,
+) -> list[Diagnostic]:
+    recipe = Recipe(name=recipe_name, category="Fixture", line=line, start=0, end=len(recipe_lines), lines=recipe_lines)
+    errors: list[Diagnostic] = []
+    positions = field_positions(recipe, errors)
+    validate_recipe_paste_zone_table(recipe, positions, fill, errors)
+    return errors
+
+
+def text_outside_details(text: str) -> str:
+    result = text
+    while True:
+        start = result.find("<details>")
+        if start == -1:
+            break
+        end = result.find("</details>", start)
+        if end == -1:
+            break
+        result = result[:start] + result[end + len("</details>") :]
+    return result
+
+
+def recipe_body_before_copy_prompt(recipe: Recipe, positions: dict[str, int]) -> str:
+    if "Use for:" not in positions or "Copy prompt:" not in positions:
+        return ""
+    return "\n".join(recipe.lines[positions["Use for:"] : positions["Copy prompt:"]])
+
+
+def paste_zone_table_rows(text: str, header: str) -> list[str]:
+    return filled_example_table_rows(text, header)
+
+
 def filled_example_table_rows(details: str, header: str) -> list[str]:
     lines = details.splitlines()
     try:
@@ -346,6 +382,128 @@ def validate_filled_example_format(recipe: Recipe, details: str, errors: list[Di
         )
 
 
+def validate_recipe_paste_zone_table(
+    recipe: Recipe,
+    positions: dict[str, int],
+    fill: dict[str, tuple[str, int]],
+    errors: list[Diagnostic],
+) -> None:
+    region = recipe_body_before_copy_prompt(recipe, positions)
+    if not region:
+        errors.append(
+            Diagnostic(
+                "RECIPE_PASTE_ZONE_REGION",
+                "Recipe missing Use for or Copy prompt markers for paste-zone validation.",
+                recipe.line,
+                recipe.name,
+            )
+        )
+        return
+
+    visible_region = text_outside_details(region)
+    if PASTE_ZONE_TABLE_HEADER not in visible_region:
+        if PASTE_ZONE_TABLE_HEADER in region:
+            errors.append(
+                Diagnostic(
+                    "RECIPE_PASTE_ZONE_IN_DETAILS",
+                    "Paste-zone table must appear above Copy prompt, not only inside a collapsed details block.",
+                    recipe.line,
+                    recipe.name,
+                )
+            )
+        else:
+            errors.append(
+                Diagnostic(
+                    "RECIPE_PASTE_ZONE_TABLE",
+                    "Recipe missing paste-zone table header between Use for and Copy prompt.",
+                    recipe.line,
+                    recipe.name,
+                )
+            )
+        return
+
+    input_rows = paste_zone_table_rows(visible_region, PASTE_ZONE_TABLE_HEADER)
+    if len(input_rows) < 1:
+        errors.append(
+            Diagnostic(
+                "RECIPE_PASTE_ZONE_ROWS",
+                "Paste-zone table has no data rows between Use for and Copy prompt.",
+                recipe.line,
+                recipe.name,
+            )
+        )
+
+    declared_names = set(fill)
+    table_names: set[str] = set()
+    for row in input_rows:
+        cells = [cell.strip() for cell in row.strip("|").split("|")]
+        if len(cells) < 4:
+            errors.append(
+                Diagnostic(
+                    "RECIPE_PASTE_ZONE_COLUMNS",
+                    f"Paste-zone table row must have four columns: {row!r}.",
+                    recipe.line,
+                    recipe.name,
+                )
+            )
+            continue
+        placeholder_cell, req_cell, example_value = cells[0], cells[1].lower().strip(), cells[2]
+        match = re.search(r"`\{([^}]+)\}`", placeholder_cell)
+        if not match:
+            errors.append(
+                Diagnostic(
+                    "RECIPE_PASTE_ZONE_PLACEHOLDER",
+                    f"Paste-zone Placeholder column must use `{{name}}` form: {placeholder_cell!r}.",
+                    recipe.line,
+                    recipe.name,
+                )
+            )
+            continue
+        name = match.group(1)
+        table_names.add(name)
+        if req_cell not in {"yes", "no"}:
+            errors.append(
+                Diagnostic(
+                    "RECIPE_PASTE_ZONE_REQ",
+                    f"Paste-zone Req column must be yes or no for {{{name}}}; got {req_cell!r}.",
+                    recipe.line,
+                    recipe.name,
+                )
+            )
+        elif name in fill:
+            expected_req = "yes" if fill[name][0] == "required" else "no"
+            if req_cell != expected_req:
+                errors.append(
+                    Diagnostic(
+                        "RECIPE_PASTE_ZONE_REQ_MISMATCH",
+                        f"Paste-zone Req for {{{name}}} must be {expected_req!r} to match Fill these in.",
+                        recipe.line,
+                        recipe.name,
+                    )
+                )
+        for pattern in FILLED_EXAMPLE_META_VALUE_PATTERNS:
+            if pattern.search(example_value):
+                errors.append(
+                    Diagnostic(
+                        "RECIPE_PASTE_ZONE_META",
+                        f"Paste-zone Example value uses meta-language for {{{name}}}: {example_value!r}.",
+                        recipe.line,
+                        recipe.name,
+                    )
+                )
+                break
+
+    for name in sorted(declared_names - table_names):
+        errors.append(
+            Diagnostic(
+                "RECIPE_PASTE_ZONE_PLACEHOLDER_COVERAGE",
+                f"Paste-zone table missing row for {{{name}}}.",
+                recipe.line,
+                recipe.name,
+            )
+        )
+
+
 def validate_filled_example_details(recipe: Recipe, details: str, fill: dict[str, tuple[str, int]], errors: list[Diagnostic]) -> None:
     validate_filled_example_format(recipe, details, errors)
     for marker in FILLED_EXAMPLE_DISCLAIMER_MARKERS:
@@ -353,18 +511,10 @@ def validate_filled_example_details(recipe: Recipe, details: str, fill: dict[str
             errors.append(
                 Diagnostic("FILLED_EXAMPLE_DISCLAIMER", f"Filled example missing {marker!r}.", recipe.line, recipe.name)
             )
-    if FILLED_EXAMPLE_INPUT_TABLE_HEADER not in details:
-        errors.append(
-            Diagnostic("FILLED_EXAMPLE_INPUT_TABLE", "Filled example missing the four-column input table header.", recipe.line, recipe.name)
-        )
     if FILLED_EXAMPLE_OUTPUT_TABLE_HEADER not in details:
         errors.append(
             Diagnostic("FILLED_EXAMPLE_OUTPUT_TABLE", "Filled example missing the output table header.", recipe.line, recipe.name)
         )
-
-    input_rows = filled_example_table_rows(details, FILLED_EXAMPLE_INPUT_TABLE_HEADER)
-    if len(input_rows) < 1:
-        errors.append(Diagnostic("FILLED_EXAMPLE_INPUT_ROWS", "Filled example input table has no data rows.", recipe.line, recipe.name))
 
     output_rows = filled_example_table_rows(details, FILLED_EXAMPLE_OUTPUT_TABLE_HEADER)
     align_fields = RECIPE_OUTPUT_ALIGN_FIELDS.get(recipe.name, ())
@@ -379,41 +529,12 @@ def validate_filled_example_details(recipe: Recipe, details: str, fill: dict[str
             )
         )
 
-    for row in input_rows:
-        cells = [cell.strip() for cell in row.strip("|").split("|")]
-        if len(cells) < 3:
-            continue
-        example_value = cells[2]
-        for pattern in FILLED_EXAMPLE_META_VALUE_PATTERNS:
-            if pattern.search(example_value):
-                errors.append(
-                    Diagnostic(
-                        "FILLED_EXAMPLE_META",
-                        f"Filled example input uses meta-language in Example value: {example_value!r}.",
-                        recipe.line,
-                        recipe.name,
-                    )
-                )
-                break
-
     for pattern in FILLED_EXAMPLE_OUTPUT_PASTE_PATTERNS:
         if pattern.search(details):
             errors.append(
                 Diagnostic("FILLED_EXAMPLE_OUTPUT_PASTE", "Filled example must not instruct pasting sample output into the prompt.", recipe.line, recipe.name)
             )
             break
-
-    declared_names = set(fill)
-    table_names = set(re.findall(r"`\{([^}]+)\}`", details.split("expected output shape:", 1)[0]))
-    for name in sorted(declared_names - table_names):
-        errors.append(
-            Diagnostic(
-                "FILLED_EXAMPLE_PLACEHOLDER_COVERAGE",
-                f"Filled example input table missing row for {{{name}}}.",
-                recipe.line,
-                recipe.name,
-            )
-        )
 
     output_field_names = output_table_field_names(output_rows)
     for field in align_fields:
@@ -457,6 +578,7 @@ def validate_recipe(recipe: Recipe, errors: list[Diagnostic], warnings: list[Dia
         errors.append(Diagnostic("MISSING_TEXT_PROMPT", "Missing fenced text prompt under Copy prompt.", recipe.line, recipe.name))
 
     fill = fill_entries(recipe, positions)
+    validate_recipe_paste_zone_table(recipe, positions, fill, errors)
     prompt_text = "\n".join("\n".join(block[2]) for block in blocks)
     placeholders = set(re.findall(r"\{([A-Za-z0-9_]+)\}", prompt_text))
     declared = set(fill)
@@ -506,7 +628,7 @@ def validate_recipe(recipe: Recipe, errors: list[Diagnostic], warnings: list[Dia
             errors.append(Diagnostic("FILLED_EXAMPLE", "Target recipe must have exactly one Filled example block.", recipe.line, recipe.name))
         else:
             details = recipe.text.split("<summary><strong>Filled example</strong></summary>", 1)[1].split("</details>", 1)[0]
-            for label in ["filled paste zones", "expected output shape", "what to change for your case"]:
+            for label in ["expected output shape", "what to change for your case"]:
                 if label not in details:
                     errors.append(Diagnostic("FILLED_EXAMPLE_LABEL", f"Filled example missing {label}.", recipe.line, recipe.name))
             validate_filled_example_details(recipe, details, fill, errors)
@@ -733,10 +855,13 @@ def run(readme: Path) -> dict[str, object]:
             "prompt_index_links",
             "section_map_links",
             "filled_examples",
+            "recipe_paste_zone_table",
+            "recipe_paste_zone_rows",
+            "recipe_paste_zone_req",
+            "recipe_paste_zone_meta",
+            "recipe_paste_zone_placeholder_coverage",
             "filled_example_disclaimer",
-            "filled_example_input_table",
             "filled_example_output_table",
-            "filled_example_meta",
             "filled_example_output_align",
             "filled_example_fixtures",
             "control_evidence_notes",
