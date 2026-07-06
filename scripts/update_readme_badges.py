@@ -155,7 +155,7 @@ DYNAMIC_GITHUB_BADGES = [
     },
     {
         "endpoint": "stars",
-        "href": "https://github.com/{owner}/{repo}/stargazers",
+        "href": "https://github.com/{owner}/{repo}",
         "alt": "GitHub stars",
         "params": {"logo": "github"},
     },

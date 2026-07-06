@@ -10,6 +10,10 @@ on:
       - scripts/audit_paste_zone_cells.py
       - scripts/hoist_paste_preview.py
       - scripts/update_readme_badges.py
+      - scripts/check_sources_manifest.py
+      - sources.yaml
+      - docs/audit/**
+      - LICENSE
       - tests/**
       - .gitignore
       - .github/workflows/readme-quality.yml
@@ -24,6 +28,10 @@ on:
       - scripts/audit_paste_zone_cells.py
       - scripts/hoist_paste_preview.py
       - scripts/update_readme_badges.py
+      - scripts/check_sources_manifest.py
+      - sources.yaml
+      - docs/audit/**
+      - LICENSE
       - tests/**
       - .gitignore
       - .github/workflows/readme-quality.yml
@@ -64,13 +72,17 @@ jobs:
         shell: bash
         run: python3 -m unittest discover -s tests -v
 
+      - name: Source manifest check
+        shell: bash
+        run: python3 scripts/check_sources_manifest.py --check
+
       - name: Generated badge check
         shell: bash
         env:
           PYTHONPYCACHEPREFIX: /tmp/prompts-pycache
         run: |
           python3 scripts/update_readme_badges.py --check
-          python3 -m py_compile scripts/update_readme_badges.py scripts/check_readme_recipes.py scripts/audit_paste_zone_cells.py scripts/hoist_paste_preview.py
+          python3 -m py_compile scripts/update_readme_badges.py scripts/check_readme_recipes.py scripts/audit_paste_zone_cells.py scripts/hoist_paste_preview.py scripts/check_sources_manifest.py
 
       - name: Markdown lint
         shell: bash
@@ -80,6 +92,7 @@ jobs:
             AGENTS.md
             .agents/skills/readme-catalog-steward/SKILL.md
             .agents/skills/readme-catalog-steward/references/*.md
+            docs/audit/*.md
           )
           npx -y markdownlint-cli2@0.22.1 "${DOCS[@]}"
 
@@ -91,11 +104,15 @@ jobs:
             AGENTS.md
             .agents/skills/readme-catalog-steward/SKILL.md
             .agents/skills/readme-catalog-steward/references/*.md
+            docs/audit/*.md
           )
           npx -y markdown-link-check@3.14.2 "${DOCS[@]}"
 
       - name: Skill eval JSON syntax
-        run: python3 -m json.tool .agents/skills/readme-catalog-steward/evals/evals.json >/dev/null
+        shell: bash
+        run: |
+          python3 -m json.tool .agents/skills/readme-catalog-steward/evals/evals.json >/dev/null
+          python3 -m json.tool .agents/skills/readme-catalog-steward/evals/adversarial-fixtures.json >/dev/null
 
       - name: Workflow YAML syntax
         run: npx -y js-yaml@5.2.1 .github/workflows/readme-quality.yml >/dev/null
@@ -108,16 +125,21 @@ jobs:
             AGENTS.md
             .agents/skills/readme-catalog-steward/SKILL.md
             .agents/skills/readme-catalog-steward/references/*.md
+            docs/audit/*.md
           )
           git diff --check -- \
             "${DOCS[@]}" \
             .agents/skills/readme-catalog-steward/evals/evals.json \
+            .agents/skills/readme-catalog-steward/evals/adversarial-fixtures.json \
             .gitignore \
             .github/workflows/readme-quality.yml \
             scripts/check_readme_recipes.py \
             scripts/update_readme_badges.py \
             scripts/audit_paste_zone_cells.py \
-            scripts/hoist_paste_preview.py
+            scripts/hoist_paste_preview.py \
+            scripts/check_sources_manifest.py \
+            sources.yaml \
+            docs/audit/*.md
 
       - name: Badge URL smoke check
         shell: bash

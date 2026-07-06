@@ -100,10 +100,12 @@ DOCS=(
   AGENTS.md
   .agents/skills/readme-catalog-steward/SKILL.md
   .agents/skills/readme-catalog-steward/references/*.md
+  docs/audit/*.md
 )
 python3 scripts/check_readme_recipes.py --readme README.md --check
 python3 scripts/audit_paste_zone_cells.py --check --strict-warn
 python3 -m unittest discover -s tests -v
+python3 scripts/check_sources_manifest.py --check
 npx -y markdownlint-cli2@0.22.1 "${DOCS[@]}"
 npx -y markdown-link-check@3.14.2 "${DOCS[@]}"
 python3 scripts/update_readme_badges.py --check
@@ -111,18 +113,25 @@ PYTHONPYCACHEPREFIX=/tmp/prompts-pycache python3 -m py_compile \
   scripts/update_readme_badges.py \
   scripts/check_readme_recipes.py \
   scripts/audit_paste_zone_cells.py \
-  scripts/hoist_paste_preview.py
+  scripts/hoist_paste_preview.py \
+  scripts/check_sources_manifest.py
 python3 -m json.tool .agents/skills/readme-catalog-steward/evals/evals.json >/dev/null
+python3 -m json.tool \
+  .agents/skills/readme-catalog-steward/evals/adversarial-fixtures.json >/dev/null
 npx -y js-yaml@5.2.1 .github/workflows/readme-quality.yml >/dev/null
 git diff --check -- \
   "${DOCS[@]}" \
   .agents/skills/readme-catalog-steward/evals/evals.json \
+  .agents/skills/readme-catalog-steward/evals/adversarial-fixtures.json \
   .gitignore \
   .github/workflows/readme-quality.yml \
   scripts/check_readme_recipes.py \
   scripts/update_readme_badges.py \
   scripts/audit_paste_zone_cells.py \
-  scripts/hoist_paste_preview.py
+  scripts/hoist_paste_preview.py \
+  scripts/check_sources_manifest.py \
+  sources.yaml \
+  docs/audit/*.md
 ```
 
 If badges change, update generated badges and inspect every ShieldCN URL:
