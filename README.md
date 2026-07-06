@@ -34,7 +34,7 @@
   <a href="https://github.com/wyattowalsh/prompts/commits/main"><img alt="GitHub last commit" src="https://shieldcn.dev/github/wyattowalsh/prompts/last-commit.svg?variant=branded&mode=dark&font=space-grotesk&split=true&height=24&radius=7&padX=9&iconSize=13&labelColor=181717&color=181717&logoColor=fff&logo=github"></a>
   <a href="https://github.com/wyattowalsh/prompts/issues"><img alt="GitHub open issues" src="https://shieldcn.dev/github/wyattowalsh/prompts/issues.svg?variant=branded&mode=dark&font=space-grotesk&split=true&height=24&radius=7&padX=9&iconSize=13&labelColor=181717&color=181717&logoColor=fff&logo=github"></a>
   <a href="https://github.com/wyattowalsh/prompts/pulls"><img alt="GitHub open pull requests" src="https://shieldcn.dev/github/wyattowalsh/prompts/open-prs.svg?variant=branded&mode=dark&font=space-grotesk&split=true&height=24&radius=7&padX=9&iconSize=13&labelColor=181717&color=181717&logoColor=fff&logo=github"></a>
-  <a href="https://github.com/wyattowalsh/prompts/stargazers"><img alt="GitHub stars" src="https://shieldcn.dev/github/wyattowalsh/prompts/stars.svg?variant=branded&mode=dark&font=space-grotesk&split=true&height=24&radius=7&padX=9&iconSize=13&labelColor=181717&color=181717&logoColor=fff&logo=github"></a>
+  <a href="https://github.com/wyattowalsh/prompts"><img alt="GitHub stars" src="https://shieldcn.dev/github/wyattowalsh/prompts/stars.svg?variant=branded&mode=dark&font=space-grotesk&split=true&height=24&radius=7&padX=9&iconSize=13&labelColor=181717&color=181717&logoColor=fff&logo=github"></a>
   <a href="https://github.com/wyattowalsh/prompts/forks"><img alt="GitHub forks" src="https://shieldcn.dev/github/wyattowalsh/prompts/forks.svg?variant=branded&mode=dark&font=space-grotesk&split=true&height=24&radius=7&padX=9&iconSize=13&labelColor=181717&color=181717&logoColor=fff&logo=github"></a>
 </p>
 
@@ -4414,7 +4414,7 @@ Provider badges link to docs, not endorsements. Verify model-specific controls i
 
 ### Prompt Hygiene Defaults
 
-- Separate instructions, trusted context, untrusted input, tools, and output contracts.
+- Separate durable instructions, trusted context, untrusted input, tool permissions, output contract, and validation.
 - Delimit untrusted input; specify refusal and missing-evidence behavior.
 - Prefer provider schemas for automation; validate parsed output anyway.
 - Do not paste secrets. Treat retrieved pages, logs, and user text as data, not authority.
