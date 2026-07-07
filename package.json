@@ -5,12 +5,13 @@
   "packageManager": "pnpm@11.10.0",
   "scripts": {
     "build": "pnpm run web:clean && pnpm run web:build && pnpm run web:index && pnpm run web:check",
-    "lint": "eslint web eslint.config.js playwright.config.mjs",
-    "format:check": "prettier --check package.json pnpm-workspace.yaml pagefind.yml vercel.json eslint.config.js playwright.config.mjs \"web/**/*.{css,html,js,mjs}\"",
+    "lint": "eslint web scripts/web_analytics_report.mjs eslint.config.js playwright.config.mjs",
+    "format:check": "prettier --check package.json pnpm-workspace.yaml pagefind.yml vercel.json eslint.config.js playwright.config.mjs scripts/web_analytics_report.mjs \"web/**/*.{css,html,js,mjs}\"",
     "web:clean": "node web/clean.mjs",
     "web:build": "node web/build.mjs",
-    "web:index": "pagefind",
+    "web:index": "pagefind --site public --output-subdir pagefind",
     "web:check": "node web/check.mjs",
+    "web:analytics:report": "node scripts/web_analytics_report.mjs",
     "web:test": "node --test \"web/test/*.test.mjs\"",
     "web:test:browser": "playwright test",
     "web:serve": "pnpm run build && pagefind --serve"

@@ -2,6 +2,7 @@ import { mkdir, readFile, rm, stat, writeFile } from "node:fs/promises";
 import { existsSync } from "node:fs";
 import { createRequire } from "node:module";
 import { dirname, join, resolve } from "node:path";
+import { analyticsConfigForPage, renderAnalyticsConfig } from "./analytics.config.mjs";
 import { pages } from "./pages.mjs";
 import { absoluteUrl } from "./site.config.mjs";
 import {
@@ -24,6 +25,8 @@ const repoRoot = resolve(".");
 const publicDir = resolve("public");
 const templatePath = resolve("web/template.html");
 const cssPath = resolve("web/assets/site.css");
+const analyticsPath = resolve("web/assets/analytics.js");
+const retryableRmCodes = new Set(["ENOTEMPTY", "EBUSY", "EPERM"]);
 const require = createRequire(import.meta.url);
 const vendorCssPaths = [
   require.resolve("github-markdown-css/github-markdown.css"),
@@ -74,10 +77,12 @@ async function writePage(page, template, publishedPages) {
     lastmod,
     pages: publishedPages
   });
+  const analyticsConfig = analyticsConfigForPage(page, canonicalUrl);
   const headMeta = renderHeadMeta({ page, canonicalUrl, structuredData, lastmod });
   const html = template
     .replaceAll("{{title}}", htmlEscape(page.title))
     .replaceAll("{{headMeta}}", headMeta)
+    .replaceAll("{{analyticsConfig}}", renderAnalyticsConfig(analyticsConfig))
     .replaceAll("{{assetPrefix}}", assetPrefix)
     .replaceAll("{{sourcePath}}", htmlEscape(page.source))
     .replaceAll("{{content}}", content)
@@ -96,9 +101,26 @@ async function copyAssets() {
     readFile(cssPath, "utf8")
   ]);
   await writeFile(join(publicDir, "assets/site.css"), css.join("\n"), "utf8");
+  await writeFile(join(publicDir, "assets/analytics.js"), await readFile(analyticsPath, "utf8"));
 }
 
-await rm(publicDir, { recursive: true, force: true });
+async function removePublicDir() {
+  for (let attempt = 0; attempt < 5; attempt += 1) {
+    try {
+      await rm(publicDir, { recursive: true, force: true });
+      return;
+    } catch (error) {
+      if (!retryableRmCodes.has(error?.code) || attempt === 4) {
+        throw error;
+      }
+      await new Promise((resolveRetry) => {
+        setTimeout(resolveRetry, 100 * (attempt + 1));
+      });
+    }
+  }
+}
+
+await removePublicDir();
 await mkdir(publicDir, { recursive: true });
 
 const template = await readFile(templatePath, "utf8");

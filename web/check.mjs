@@ -5,6 +5,7 @@ import { absoluteUrl } from "./site.config.mjs";
 
 const requiredFiles = [
   "public/index.html",
+  "public/assets/analytics.js",
   "public/assets/site.css",
   "public/sitemap.xml",
   "public/robots.txt",
@@ -73,7 +74,9 @@ const requiredSnippets = [
   'rel="alternate" type="text/markdown" title="Canonical Markdown source"',
   '<script type="application/ld+json">',
   "<pagefind-modal-trigger",
-  "<pagefind-modal"
+  "<pagefind-modal",
+  'id="prompts-analytics-config"',
+  'src="assets/analytics.js"'
 ];
 
 for (const snippet of requiredSnippets) {
@@ -84,6 +87,31 @@ for (const snippet of requiredSnippets) {
 
 if (home.includes("<script>alert(") || home.includes("javascript:")) {
   throw new Error("Generated home page contains an unsafe script or javascript URL snippet.");
+}
+
+const analyticsConfigMatch = home.match(
+  /<script id="prompts-analytics-config" type="application\/json">([\s\S]*?)<\/script>/
+);
+if (!analyticsConfigMatch) {
+  throw new Error("Generated home page is missing analytics config JSON.");
+}
+const analyticsConfig = JSON.parse(analyticsConfigMatch[1]);
+if (!["none", "posthog", "umami", "test"].includes(analyticsConfig.provider)) {
+  throw new Error(`Unsupported generated analytics provider: ${analyticsConfig.provider}`);
+}
+if (analyticsConfig.provider === "posthog" && !analyticsConfig.siteId) {
+  throw new Error("PostHog analytics config is missing a public project key.");
+}
+if (
+  analyticsConfig.provider === "umami" &&
+  (!analyticsConfig.siteId || !analyticsConfig.scriptSrc)
+) {
+  throw new Error("Umami analytics config is missing a website id.");
+}
+for (const secretMarker of ["POSTHOG_PERSONAL_API_KEY", "WEB_ANALYTICS_REPORT_TOKEN"]) {
+  if (home.includes(secretMarker)) {
+    throw new Error(`Generated HTML contains server-side secret marker: ${secretMarker}`);
+  }
 }
 
 for (const file of await htmlFiles("public")) {
