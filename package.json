@@ -9,7 +9,7 @@
     "format:check": "prettier --check package.json pnpm-workspace.yaml pagefind.yml vercel.json eslint.config.js playwright.config.mjs scripts/web_analytics_report.mjs \"web/**/*.{css,html,js,mjs}\"",
     "web:clean": "node web/clean.mjs",
     "web:build": "node web/build.mjs",
-    "web:index": "pagefind --site public --output-subdir pagefind",
+    "web:index": "node web/index.mjs",
     "web:check": "node web/check.mjs",
     "web:analytics:report": "node scripts/web_analytics_report.mjs",
     "web:test": "node --test \"web/test/*.test.mjs\"",

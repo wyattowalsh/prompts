@@ -117,3 +117,7 @@ public/
 playwright-report/
 test-results/
 .vercel/
+.env
+.env.*
+!.env.example
+!.env.*.example

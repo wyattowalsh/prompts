@@ -2,6 +2,7 @@ import { rm } from "node:fs/promises";
 import { resolve } from "node:path";
 
 const publicDir = resolve("public");
+const temporaryIndexDir = resolve(".pagefind-index");
 const retryableCodes = new Set(["ENOTEMPTY", "EBUSY", "EPERM"]);
 
 for (let attempt = 0; attempt < 5; attempt += 1) {
@@ -17,3 +18,5 @@ for (let attempt = 0; attempt < 5; attempt += 1) {
     });
   }
 }
+
+await rm(temporaryIndexDir, { recursive: true, force: true });

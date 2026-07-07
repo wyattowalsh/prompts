@@ -245,12 +245,13 @@ function createProvider(config, win, doc) {
     };
   }
 
-  if (config.provider === "umami" && config.siteId && config.host) {
+  if (config.provider === "umami" && config.siteId && (config.scriptSrc || config.host)) {
     const queue = [];
     const script = doc.createElement("script");
+    const scriptSrc = config.scriptSrc || `${config.host.replace(/\/+$/u, "")}/script.js`;
     script.async = true;
     script.defer = true;
-    script.src = config.scriptSrc || `${config.host.replace(/\/+$/u, "")}/script.js`;
+    script.src = scriptSrc;
     script.dataset.websiteId = config.siteId;
     script.dataset.autoTrack = "false";
     script.addEventListener("load", () => {

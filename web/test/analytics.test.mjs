@@ -133,3 +133,81 @@ test("test provider posts local event batches", async () => {
   assert.equal(payloads[0].events[0].event, "site_page_view");
   assert.equal(payloads[0].events[0].properties.utm_source, "test");
 });
+
+function fakeBrowserContext() {
+  const scripts = [];
+  const win = {
+    navigator: {},
+    location: new URL("https://prompts.example/"),
+    sessionStorage: null
+  };
+  const doc = {
+    title: "Prompt Library",
+    referrer: "",
+    createElement(tagName) {
+      assert.equal(tagName, "script");
+      return {
+        async: false,
+        defer: false,
+        dataset: {},
+        addEventListener() {}
+      };
+    },
+    head: {
+      append(script) {
+        scripts.push(script);
+      }
+    }
+  };
+  return { doc, scripts, win };
+}
+
+test("umami provider accepts explicit script source without host", async () => {
+  const { doc, scripts, win } = fakeBrowserContext();
+  const analytics = createAnalytics(
+    {
+      enabled: true,
+      provider: "umami",
+      host: "",
+      scriptSrc: "https://analytics.example/script.js",
+      siteId: "website-id",
+      route: homePage.route,
+      sourcePath: homePage.source,
+      pageTitle: homePage.title
+    },
+    win,
+    doc
+  );
+
+  assert.equal(analytics.enabled, true);
+  assert.equal(await analytics.track("site_page_view"), true);
+  assert.equal(scripts.length, 1);
+  assert.equal(scripts[0].src, "https://analytics.example/script.js");
+  assert.equal(scripts[0].dataset.websiteId, "website-id");
+  assert.equal(scripts[0].dataset.autoTrack, "false");
+});
+
+test("umami provider derives script source from host when source is omitted", async () => {
+  const { doc, scripts, win } = fakeBrowserContext();
+  const analytics = createAnalytics(
+    {
+      enabled: true,
+      provider: "umami",
+      host: "https://analytics.example/",
+      scriptSrc: "",
+      siteId: "website-id",
+      route: homePage.route,
+      sourcePath: homePage.source,
+      pageTitle: homePage.title
+    },
+    win,
+    doc
+  );
+
+  assert.equal(analytics.enabled, true);
+  assert.equal(await analytics.track("site_page_view"), true);
+  assert.equal(scripts.length, 1);
+  assert.equal(scripts[0].src, "https://analytics.example/script.js");
+  assert.equal(scripts[0].dataset.websiteId, "website-id");
+  assert.equal(scripts[0].dataset.autoTrack, "false");
+});
