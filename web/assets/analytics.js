@@ -1,6 +1,8 @@
 const CONFIG_ID = "prompts-analytics-config";
 const SESSION_ID_KEY = "prompts.analytics.session";
 const SEARCH_DEBOUNCE_MS = 800;
+const SEARCH_SETTLE_TIMEOUT_MS = 1_500;
+const SEARCH_SETTLE_INTERVAL_MS = 75;
 const MIN_SEARCH_LENGTH = 2;
 const MAX_QUERY_LENGTH = 96;
 const MAX_PROPERTY_LENGTH = 180;
@@ -8,6 +10,20 @@ const MAX_VISIBLE_MS = 30 * 60 * 1000;
 const DWELL_EVENT_MIN_MS = 1_000;
 const SCROLL_MILESTONES = [25, 50, 75, 90, 100];
 const DNT_VALUES = new Set(["1", "yes", "true"]);
+const PAGEFIND_RESULT_ROW_SELECTORS = [
+  "pagefind-modal .pf-result:not([aria-hidden='true'])",
+  ".pagefind-ui .pf-result:not([aria-hidden='true'])",
+  "pagefind-modal .pagefind-ui__result",
+  ".pagefind-ui__result",
+  "pagefind-modal [data-result]"
+];
+const PAGEFIND_RESULT_ROW_SELECTOR = PAGEFIND_RESULT_ROW_SELECTORS.join(", ");
+const PAGEFIND_BUSY_SELECTOR = "pagefind-modal [aria-busy='true'], .pagefind-ui [aria-busy='true']";
+const PAGEFIND_EMPTY_SUMMARY_SELECTOR =
+  "pagefind-modal pagefind-summary, pagefind-modal .pf-summary, .pagefind-ui__message";
+const PAGEFIND_LINK_SELECTOR = "pagefind-modal a[href], .pagefind-ui a[href]";
+const PAGEFIND_PRIMARY_LINK_SELECTOR = ".pf-result-link, .pagefind-ui__result-link";
+const PAGEFIND_SUB_RESULT_LINK_SELECTOR = ".pf-heading-link";
 
 function isRecord(value) {
   return typeof value === "object" && value !== null && !Array.isArray(value);
@@ -310,16 +326,62 @@ export function createAnalytics(config, win = globalThis.window, doc = globalThi
   };
 }
 
+function pagefindResultRows(doc) {
+  const rows = [];
+  const seen = new Set();
+  for (const selector of PAGEFIND_RESULT_ROW_SELECTORS) {
+    for (const row of doc.querySelectorAll(selector)) {
+      if (seen.has(row) || row.getAttribute("aria-hidden") === "true") continue;
+      seen.add(row);
+      rows.push(row);
+    }
+  }
+  return rows;
+}
+
 function resultCount(doc) {
-  const selectors = [
-    "pagefind-modal .pagefind-ui__result",
-    ".pagefind-ui__result",
-    "pagefind-modal [data-result]"
-  ];
-  return selectors.reduce(
-    (count, selector) => Math.max(count, doc.querySelectorAll(selector).length),
-    0
-  );
+  return pagefindResultRows(doc).length;
+}
+
+function pagefindResultsBusy(doc) {
+  return Boolean(doc.querySelector(PAGEFIND_BUSY_SELECTOR));
+}
+
+function pagefindEmptySummaryVisible(doc) {
+  const summaryText = [...doc.querySelectorAll(PAGEFIND_EMPTY_SUMMARY_SELECTOR)]
+    .map((node) => node.textContent || "")
+    .join(" ")
+    .toLowerCase();
+  return /\b(?:0|no) results?\b/u.test(summaryText);
+}
+
+function waitFor(win, ms) {
+  return new Promise((resolve) => {
+    win.setTimeout(resolve, ms);
+  });
+}
+
+async function settledResultCount(doc, win) {
+  const startedAt = win.performance?.now?.() ?? Date.now();
+  while ((win.performance?.now?.() ?? Date.now()) - startedAt < SEARCH_SETTLE_TIMEOUT_MS) {
+    const count = resultCount(doc);
+    if (!pagefindResultsBusy(doc) && (count > 0 || pagefindEmptySummaryVisible(doc))) return count;
+    await waitFor(win, SEARCH_SETTLE_INTERVAL_MS);
+  }
+  return resultCount(doc);
+}
+
+function resultRankForLink(link, doc) {
+  const row = link.closest?.(PAGEFIND_RESULT_ROW_SELECTOR);
+  if (!row) return 0;
+  const rank = pagefindResultRows(doc).indexOf(row) + 1;
+  return rank > 0 ? rank : 0;
+}
+
+function resultLinkKind(link) {
+  if (link.matches?.(PAGEFIND_PRIMARY_LINK_SELECTOR)) return "primary";
+  if (link.matches?.(PAGEFIND_SUB_RESULT_LINK_SELECTOR)) return "sub_result";
+  return "other";
 }
 
 function nearestSearchInput(event) {
@@ -334,14 +396,18 @@ function instrumentSearch(analytics, config, win, doc) {
   let timer = 0;
   let lastQueryKey = "";
   let currentQuery = "";
+  let searchSequence = 0;
   const captureRawSearch = config.captureRawSearch === true;
 
-  async function trackSearch(query) {
+  async function trackSearch(query, sequence) {
     const normalized = normalizeSearchQuery(query);
     const sanitized = sanitizeSearchQuery(normalized);
     if (sanitized.length < MIN_SEARCH_LENGTH) return;
-    const queryHash = await hashSearchQuery(sanitized, win);
-    const count = resultCount(doc);
+    const [queryHash, count] = await Promise.all([
+      hashSearchQuery(sanitized, win),
+      settledResultCount(doc, win)
+    ]);
+    if (sequence !== searchSequence || sanitizeSearchQuery(currentQuery) !== sanitized) return;
     const key = `${queryHash}:${count}`;
     if (key === lastQueryKey) return;
     lastQueryKey = key;
@@ -369,9 +435,11 @@ function instrumentSearch(analytics, config, win, doc) {
       const input = nearestSearchInput(event);
       if (!input) return;
       currentQuery = input.value;
+      searchSequence += 1;
+      const sequence = searchSequence;
       win.clearTimeout(timer);
       timer = win.setTimeout(() => {
-        void trackSearch(currentQuery);
+        void trackSearch(currentQuery, sequence);
       }, SEARCH_DEBOUNCE_MS);
     },
     true
@@ -384,7 +452,8 @@ function instrumentSearch(analytics, config, win, doc) {
       if (!input || event.key !== "Enter") return;
       win.clearTimeout(timer);
       currentQuery = input.value;
-      void trackSearch(currentQuery);
+      searchSequence += 1;
+      void trackSearch(currentQuery, searchSequence);
     },
     true
   );
@@ -392,17 +461,18 @@ function instrumentSearch(analytics, config, win, doc) {
   doc.addEventListener(
     "click",
     (event) => {
-      const link = event.target?.closest?.("pagefind-modal a[href], .pagefind-ui a[href]");
+      const link = event.target?.closest?.(PAGEFIND_LINK_SELECTOR);
       if (!link) return;
-      const links = [...doc.querySelectorAll("pagefind-modal a[href], .pagefind-ui a[href]")];
-      const rank = links.indexOf(link) + 1;
+      const rank = resultRankForLink(link, doc);
+      const linkKind = resultLinkKind(link);
       void hashSearchQuery(currentQuery, win).then((queryHash) => {
         void analytics.track("site_search_result_click", {
           query_hash: queryHash,
           search_query_hash: queryHash,
           result_rank: rank > 0 ? rank : 0,
           search_result_rank: rank > 0 ? rank : 0,
-          result_path: link.getAttribute("href") || ""
+          result_path: link.getAttribute("href") || "",
+          result_link_kind: linkKind
         });
       });
     },

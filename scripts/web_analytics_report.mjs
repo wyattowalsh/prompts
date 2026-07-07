@@ -127,11 +127,18 @@ function rows(data) {
   return Array.isArray(data?.results) ? data.results : [];
 }
 
+function markdownTableCell(value) {
+  return String(value ?? "")
+    .replace(/[\r\n\t]+/gu, " ")
+    .trim()
+    .replace(/\|/gu, "\\|");
+}
+
 function table(headers, tableRows) {
   if (tableRows.length === 0) return "_No matching events._\n";
-  const header = `| ${headers.join(" | ")} |`;
+  const header = `| ${headers.map(markdownTableCell).join(" | ")} |`;
   const divider = `| ${headers.map(() => "---").join(" | ")} |`;
-  const body = tableRows.map((row) => `| ${row.map((value) => String(value ?? "")).join(" | ")} |`);
+  const body = tableRows.map((row) => `| ${row.map(markdownTableCell).join(" | ")} |`);
   return [header, divider, ...body, ""].join("\n");
 }
 
