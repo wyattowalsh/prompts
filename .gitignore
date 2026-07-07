@@ -110,3 +110,10 @@ $RECYCLE.BIN/
 
 # Python bytecode
 __pycache__/
+
+# JavaScript dependencies and generated web artifacts
+node_modules/
+public/
+playwright-report/
+test-results/
+.vercel/

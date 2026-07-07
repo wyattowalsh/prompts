@@ -158,14 +158,17 @@ That block includes recipe contract checks (Prompt Index and Section Map
 completeness), paste-zone cell length audit
 (`scripts/audit_paste_zone_cells.py`), unit tests, markdown lint, link checks,
 badge drift (`scripts/update_readme_badges.py --check`), `py_compile` with
-`PYTHONPYCACHEPREFIX`, JSON/YAML syntax, whitespace diff checks, and conditional
-badge URL inspection when README badge URLs changed.
+`PYTHONPYCACHEPREFIX`, JSON/YAML syntax, Vercel/static-site checks, whitespace
+diff checks, and conditional badge URL inspection when README badge URLs
+changed.
 
 Completion criteria:
 
 - Markdown lint, link check, JSON syntax, YAML syntax, and whitespace checks pass.
 - Generated badge checks and README badge SVG checks pass when README badge URLs
   changed.
+- Generated HTML does not publish `.agents/` or unpublished relative Markdown
+  links; repo-local stewardship links are routed to GitHub source URLs.
 - Referenced skill files exist and no unindexed references were added.
 - `git status --short --branch` shows only intentional changes.
 

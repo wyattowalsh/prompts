@@ -98,41 +98,74 @@ Paste-zone cell length audits use `scripts/audit_paste_zone_cells.py`.
 DOCS=(
   README.md
   AGENTS.md
+  DESIGN.md
   .agents/skills/readme-catalog-steward/SKILL.md
   .agents/skills/readme-catalog-steward/references/*.md
   docs/audit/*.md
 )
+pnpm install --frozen-lockfile
 python3 scripts/check_readme_recipes.py --readme README.md --check
 python3 scripts/audit_paste_zone_cells.py --check --strict-warn
 python3 -m unittest discover -s tests -v
 python3 scripts/check_sources_manifest.py --check
-npx -y markdownlint-cli2@0.22.1 "${DOCS[@]}"
-npx -y markdown-link-check@3.14.2 "${DOCS[@]}"
+pnpm exec markdownlint-cli2 "${DOCS[@]}"
+pnpm exec markdown-link-check "${DOCS[@]}"
 python3 scripts/update_readme_badges.py --check
 PYTHONPYCACHEPREFIX=/tmp/prompts-pycache python3 -m py_compile \
   scripts/update_readme_badges.py \
   scripts/check_readme_recipes.py \
   scripts/audit_paste_zone_cells.py \
   scripts/hoist_paste_preview.py \
+  scripts/format_recipe_catalog.py \
   scripts/check_sources_manifest.py
 python3 -m json.tool .agents/skills/readme-catalog-steward/evals/evals.json >/dev/null
 python3 -m json.tool \
   .agents/skills/readme-catalog-steward/evals/adversarial-fixtures.json >/dev/null
-npx -y js-yaml@5.2.1 .github/workflows/readme-quality.yml >/dev/null
+python3 -m json.tool vercel.json >/dev/null
+pnpm exec js-yaml .github/workflows/readme-quality.yml >/dev/null
+pnpm exec js-yaml .pre-commit-config.yaml >/dev/null
+pnpm run lint
+pnpm run format:check
+pnpm run web:test
+pnpm run build
+pnpm run web:test:browser
 git diff --check -- \
   "${DOCS[@]}" \
   .agents/skills/readme-catalog-steward/evals/evals.json \
   .agents/skills/readme-catalog-steward/evals/adversarial-fixtures.json \
+  .pre-commit-config.yaml \
   .gitignore \
   .github/workflows/readme-quality.yml \
+  package.json \
+  pnpm-lock.yaml \
+  pnpm-workspace.yaml \
+  pagefind.yml \
+  vercel.json \
+  eslint.config.js \
+  prettier.config.cjs \
+  playwright.config.mjs \
+  justfile \
+  web \
   scripts/check_readme_recipes.py \
   scripts/update_readme_badges.py \
   scripts/audit_paste_zone_cells.py \
   scripts/hoist_paste_preview.py \
+  scripts/format_recipe_catalog.py \
   scripts/check_sources_manifest.py \
   sources.yaml \
   docs/audit/*.md
 ```
+
+Local pre-commit hooks live in `.pre-commit-config.yaml` and mirror the fast,
+deterministic subset of this block. When `pre-commit` is available, run
+`pre-commit run --all-files` before commits. Networked link, ShieldCN badge URL,
+and browser smoke checks are pre-push/manual hooks; run
+`pre-commit run --hook-stage pre-push --all-files` when you need local parity
+with CI's external and browser checks. On dirty trees with new untracked project
+files, prefer the `justfile` wrappers: `just precommit` and `just prepush` feed
+tracked plus untracked non-ignored files into pre-commit explicitly.
+`just validate-fast` is deterministic and `just validate` adds the heavier
+checks.
 
 If badges change, update generated badges and inspect every ShieldCN URL:
 
@@ -154,5 +187,18 @@ Keep GitHub Actions focused on deterministic README quality:
 - generated badge drift checks
 - whitespace diff checks
 - badge URL checks when badge URLs change
+- generated web build, Pagefind search indexing, and browser smoke checks
 
-Do not add deployment jobs unless the repository gains a real deployment target.
+The generated web site lives under `web/` source files and builds to ignored
+`public/` output. `README.md` remains the prompt catalog SSOT; only explicitly
+allowlisted Markdown routes in `web/pages.mjs` may become public pages. Vercel
+deployment uses `vercel.json` with `pnpm run build` and `public/` output;
+GitHub Actions remains a quality workflow and does not deploy.
+SEO/AEO artifacts (`sitemap.xml`, `robots.txt`, `llms.txt`, `llms-full.txt`,
+canonical URLs, Open Graph/Twitter tags, and JSON-LD) are generated from
+`web/site.config.mjs`, `web/pages.mjs`, and the allowlisted Markdown sources.
+Set `WEB_BASE_URL` for production builds unless a verified host provides Vercel
+system URL variables. Do not hardcode an unverified live domain as the canonical
+default; the fallback URL is for local previews only.
+`DESIGN.md` documents the static-site architecture and non-goals, but this
+validation block remains the single source of truth for required checks.

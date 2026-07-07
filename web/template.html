@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="generator" content="README-derived static site" />
+    {{headMeta}}
+    <link rel="stylesheet" href="{{assetPrefix}}assets/site.css" />
+    <link rel="stylesheet" href="{{assetPrefix}}pagefind/pagefind-component-ui.css" />
+    <script src="{{assetPrefix}}pagefind/pagefind-component-ui.js" type="module"></script>
+  </head>
+  <body>
+    <header class="site-header" data-pagefind-ignore="all">
+      <a class="site-title" href="{{assetPrefix}}">Prompt Library</a>
+      <nav class="site-actions" aria-label="Site">
+        <a href="{{assetPrefix}}#prompt-library">Catalog</a>
+        <a href="{{assetPrefix}}#bibliography">Sources</a>
+        <a href="https://github.com/wyattowalsh/prompts/blob/main/{{sourcePath}}">Source</a>
+        <pagefind-modal-trigger placeholder="Search"></pagefind-modal-trigger>
+      </nav>
+    </header>
+    <main class="markdown-body site-content" {{pagefindBody}}>{{content}}</main>
+    <pagefind-modal reset-on-close></pagefind-modal>
+  </body>
+</html>

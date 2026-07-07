@@ -1,0 +1,4 @@
+site: public
+force_language: en
+include_characters: "<>{}_/-"
+write_playground: false

@@ -843,6 +843,11 @@ def build_section_map_expected_anchors() -> set[str]:
     return anchors
 
 
+def build_prompt_library_category_anchors() -> set[str]:
+    used: dict[str, int] = {}
+    return {github_anchor(title, used) for title in PROMPT_LIBRARY_CATEGORIES}
+
+
 def validate_prompt_index(lines: list[str], recipes: list[Recipe], errors: list[Diagnostic]) -> int:
     region = find_subsection(lines, "## Table of Contents", "### Prompt Index")
     if region is None:
@@ -903,7 +908,8 @@ def validate_recipe_map(lines: list[str], recipes: list[Recipe], errors: list[Di
     if len(recipe_links) != 48 or len(unique_links) != 48:
         errors.append(Diagnostic("RECIPE_MAP_COUNT", "Collapsed recipe map must contain 48 unique links.", 1))
     missing = sorted(set(expected) - unique_links)
-    extra = sorted(unique_links - set(expected))
+    allowed_links = set(expected) | build_prompt_library_category_anchors()
+    extra = sorted(set(links) - allowed_links)
     for anchor in missing:
         errors.append(Diagnostic("RECIPE_MAP_MISSING", f"Recipe map missing link to #{anchor}.", 1, expected.get(anchor)))
     for anchor in extra:

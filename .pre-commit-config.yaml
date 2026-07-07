@@ -1,0 +1,197 @@
+minimum_pre_commit_version: "3.2.0"
+
+default_install_hook_types:
+  - pre-commit
+  - pre-push
+
+default_stages:
+  - pre-commit
+
+repos:
+  - repo: local
+    hooks:
+      - id: readme-recipe-contract
+        name: README recipe contract
+        entry: bash -c 'PYTHONDONTWRITEBYTECODE=1 python3 scripts/check_readme_recipes.py --readme README.md --check'
+        language: system
+        pass_filenames: false
+        files: ^(README\.md|scripts/check_readme_recipes\.py)$
+
+      - id: paste-zone-cell-audit
+        name: Paste-zone cell audit
+        entry: bash -c 'PYTHONDONTWRITEBYTECODE=1 python3 scripts/audit_paste_zone_cells.py --check --strict-warn'
+        language: system
+        pass_filenames: false
+        files: ^(README\.md|scripts/(audit_paste_zone_cells|check_readme_recipes)\.py)$
+
+      - id: readme-badge-drift
+        name: README generated badge drift
+        entry: bash -c 'PYTHONDONTWRITEBYTECODE=1 python3 scripts/update_readme_badges.py --check'
+        language: system
+        pass_filenames: false
+        files: ^(README\.md|scripts/update_readme_badges\.py)$
+
+      - id: source-manifest-check
+        name: Source manifest check
+        entry: bash -c 'PYTHONDONTWRITEBYTECODE=1 python3 scripts/check_sources_manifest.py --check'
+        language: system
+        pass_filenames: false
+        files: ^(README\.md|sources\.yaml|docs/audit/.*\.md|scripts/check_sources_manifest\.py)$
+
+      - id: readme-unit-tests
+        name: README contract unit tests
+        entry: bash -c 'PYTHONDONTWRITEBYTECODE=1 python3 -m unittest discover -s tests -v'
+        language: system
+        pass_filenames: false
+        files: ^(README\.md|scripts/.*\.py|tests/.*\.py)$
+
+      - id: readme-scripts-py-compile
+        name: README scripts py_compile
+        entry: >-
+          bash -c 'PYTHONPYCACHEPREFIX="${TMPDIR:-/tmp}/prompts-pycache-precommit"
+          python3 -m py_compile
+          scripts/update_readme_badges.py
+          scripts/check_readme_recipes.py
+          scripts/audit_paste_zone_cells.py
+          scripts/hoist_paste_preview.py
+          scripts/format_recipe_catalog.py
+          scripts/check_sources_manifest.py'
+        language: system
+        pass_filenames: false
+        files: ^scripts/.*\.py$
+
+      - id: skill-evals-json
+        name: Skill eval JSON syntax
+        entry: >-
+          bash -c 'python3 -m json.tool .agents/skills/readme-catalog-steward/evals/evals.json >/dev/null
+          && python3 -m json.tool .agents/skills/readme-catalog-steward/evals/adversarial-fixtures.json >/dev/null'
+        language: system
+        pass_filenames: false
+        files: ^\.agents/skills/readme-catalog-steward/evals/(evals|adversarial-fixtures)\.json$
+
+      - id: workflow-yaml-syntax
+        name: Workflow and pre-commit YAML syntax
+        entry: >-
+          bash -c 'pnpm exec js-yaml .github/workflows/readme-quality.yml >/dev/null
+          && pnpm exec js-yaml .pre-commit-config.yaml >/dev/null
+          && python3 -m json.tool vercel.json >/dev/null'
+        language: system
+        pass_filenames: false
+        files: ^(\.github/workflows/readme-quality\.yml|\.pre-commit-config\.yaml|vercel\.json)$
+
+      - id: markdownlint-docs
+        name: Markdown lint docs
+        entry: >-
+          bash -c 'DOCS=(
+          README.md
+          AGENTS.md
+          DESIGN.md
+          .agents/skills/readme-catalog-steward/SKILL.md
+          .agents/skills/readme-catalog-steward/references/*.md
+          docs/audit/*.md
+          );
+          pnpm exec markdownlint-cli2 "${DOCS[@]}"'
+        language: system
+        pass_filenames: false
+        files: ^(README\.md|AGENTS\.md|DESIGN\.md|\.agents/skills/readme-catalog-steward/.*\.md|docs/audit/.*\.md)$
+
+      - id: web-generated-site-check
+        name: Web generated-site check
+        entry: >-
+          bash -c 'pnpm run lint
+          && pnpm run format:check
+          && pnpm run web:test
+          && pnpm run build'
+        language: system
+        pass_filenames: false
+        files: ^(README\.md|CONTRIBUTING\.md|SECURITY\.md|CODE_OF_CONDUCT\.md|web/|package\.json|pnpm-lock\.yaml|pnpm-workspace\.yaml|pagefind\.yml|vercel\.json|eslint\.config\.js|prettier\.config\.cjs|playwright\.config\.mjs)$
+
+      - id: staged-whitespace
+        name: Staged whitespace check
+        entry: >-
+          bash -c 'git diff --cached --check --
+          README.md
+          AGENTS.md
+          DESIGN.md
+          .pre-commit-config.yaml
+          .agents/skills/readme-catalog-steward/SKILL.md
+          .agents/skills/readme-catalog-steward/references/*.md
+          docs/audit/*.md
+          .agents/skills/readme-catalog-steward/evals/evals.json
+          .agents/skills/readme-catalog-steward/evals/adversarial-fixtures.json
+          LICENSE
+          .gitignore
+          .github/workflows/readme-quality.yml
+          package.json
+          pnpm-lock.yaml
+          pnpm-workspace.yaml
+          pagefind.yml
+          vercel.json
+          eslint.config.js
+          prettier.config.cjs
+          playwright.config.mjs
+          justfile
+          web
+          scripts
+          tests
+          sources.yaml'
+        language: system
+        pass_filenames: false
+        always_run: true
+
+      - id: markdown-link-check-docs
+        name: Markdown link check docs
+        entry: >-
+          bash -c 'DOCS=(
+          README.md
+          AGENTS.md
+          DESIGN.md
+          .agents/skills/readme-catalog-steward/SKILL.md
+          .agents/skills/readme-catalog-steward/references/*.md
+          docs/audit/*.md
+          );
+          pnpm exec markdown-link-check "${DOCS[@]}"'
+        language: system
+        pass_filenames: false
+        files: ^(README\.md|AGENTS\.md|DESIGN\.md|\.agents/skills/readme-catalog-steward/.*\.md|docs/audit/.*\.md)$
+        stages:
+          - pre-push
+          - manual
+
+      - id: web-browser-smoke
+        name: Web browser smoke
+        entry: pnpm run web:test:browser
+        language: system
+        pass_filenames: false
+        files: ^(README\.md|CONTRIBUTING\.md|SECURITY\.md|CODE_OF_CONDUCT\.md|web/|package\.json|pnpm-lock\.yaml|pnpm-workspace\.yaml|pagefind\.yml|vercel\.json|eslint\.config\.js|prettier\.config\.cjs|playwright\.config\.mjs)$
+        stages:
+          - pre-push
+          - manual
+
+      - id: shieldcn-badge-url-smoke
+        name: ShieldCN badge URL smoke check
+        entry: >-
+          bash -c 'set -euo pipefail;
+          mapfile -t badges < <(python3 scripts/update_readme_badges.py --list-urls);
+          if [ "${#badges[@]}" -eq 0 ]; then
+            echo "No ShieldCN badge URLs found.";
+            exit 0;
+          fi;
+          for badge in "${badges[@]}"; do
+            echo "Checking $badge";
+            headers="$(mktemp "${TMPDIR:-/tmp}/prompts-badge.XXXXXX")";
+            curl --fail --silent --show-error --location --head --retry 3 --retry-delay 2 "$badge" >"$headers";
+            if ! grep -iq "content-type: .*image/svg+xml" "$headers"; then
+              echo "Expected image/svg+xml for $badge";
+              cat "$headers";
+              rm -f "$headers";
+              exit 1;
+            fi;
+            rm -f "$headers";
+          done'
+        language: system
+        pass_filenames: false
+        files: ^(README\.md|scripts/update_readme_badges\.py)$
+        stages:
+          - pre-push
+          - manual

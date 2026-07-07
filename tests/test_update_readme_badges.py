@@ -120,6 +120,14 @@ class RenderJobMapBlockTest(unittest.TestCase):
         self.assertNotIn("[Source-Grounded Answer](#source-grounded-answer)", block)
 
 
+class DynamicGithubBadgeLinksTest(unittest.TestCase):
+    def test_stars_badge_links_to_public_repo_tab(self) -> None:
+        stars_badge = next(badge for badge in badges.DYNAMIC_GITHUB_BADGES if badge["endpoint"] == "stars")
+
+        self.assertEqual(stars_badge["href"], "https://github.com/{owner}/{repo}?tab=stars")
+        self.assertNotIn("/stargazers", stars_badge["href"])
+
+
 class ApplyRecipeHeadingBadgesTest(unittest.TestCase):
     def test_apply_recipe_heading_badges_from_markdown_h4(self) -> None:
         markdown = "\n".join(

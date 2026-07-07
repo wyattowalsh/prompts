@@ -165,6 +165,21 @@ class AuditPasteZoneCellsTest(unittest.TestCase):
             for key in ("recipes", "cells", "warn", "error"):
                 self.assertIn(key, payload["counts"])
 
+    def test_check_fails_when_prompt_library_missing(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            readme = Path(tmp) / "README.md"
+            readme.write_text("# Empty\n", encoding="utf-8")
+            result = audit.audit_readme(readme)
+
+            self.assertFalse(result["ok"])
+            self.assertEqual(result["counts"]["recipes"], 0)
+            codes = {error["code"] for error in result["parse_errors"]}
+            self.assertIn("MISSING_SECTION", codes)
+
+            argv = ["audit_paste_zone_cells.py", "--readme", str(readme), "--check"]
+            with patch.object(sys, "argv", argv):
+                self.assertEqual(audit.main(), 1)
+
 
 if __name__ == "__main__":
     unittest.main()

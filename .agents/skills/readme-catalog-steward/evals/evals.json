@@ -24,7 +24,7 @@
       "expected_behavior": [
         "Verifies method-specific official docs or primary sources before editing.",
         "Applies the full README Card Contract including paste-zone table rules.",
-        "Uses the canonical Fill these in pointer: Match the **Paste zones** table above; paste `none` for optional zones you omit.",
+        "Uses the canonical Fill these in pointer: Match the **placeholder table** above; paste `none` for optional zones you omit.",
         "Updates badge/heading config in scripts/update_readme_badges.py when adding recipes.",
         "Includes safety, cost, latency, failure-mode, caveat, and eval notes.",
         "Avoids visible long chain-of-thought as a default template instruction."
@@ -32,7 +32,8 @@
       "assertions": [
         "Includes clickable source URLs or states that source verification is missing.",
         "Includes an eval requirement.",
-        "Separates trusted context from untrusted input in any template."
+        "Separates trusted context from untrusted input in any template.",
+        "Does not use the legacy **Paste zones** label for the canonical Fill these in pointer."
       ]
     },
     {

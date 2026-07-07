@@ -55,13 +55,14 @@ def audit_readme(readme: Path) -> dict[str, object]:
             )
     return {
         "readme": str(readme),
-        "ok": over_error == 0,
+        "ok": over_error == 0 and not errors,
         "counts": {
             "recipes": len(recipes),
             "cells": len(rows),
             "warn": over_warn,
             "error": over_error,
         },
+        "parse_errors": [error.as_dict() for error in errors],
         "rows": rows,
     }
 
@@ -72,6 +73,10 @@ def print_report(result: dict[str, object]) -> None:
         f"Paste-zone cell audit: {counts['cells']} cells across {counts['recipes']} recipes "
         f"({counts['warn']} warn >{WARN_LENGTH}, {counts['error']} error >{ERROR_LENGTH})."
     )
+    for diagnostic in result["parse_errors"]:
+        location = f"{result['readme']}:{diagnostic['line']}"
+        recipe = f" [{diagnostic['recipe']}]" if diagnostic.get("recipe") else ""
+        print(f"error: {location}: {diagnostic['code']}{recipe}: {diagnostic['message']}")
     for row in result["rows"]:
         if row["status"] == "ok":
             continue
@@ -96,6 +101,9 @@ def main() -> int:
     if args.check and not result["ok"]:
         return 1
     counts = result["counts"]
+    if args.check and counts["recipes"] != 48:
+        print(f"error: {args.readme}: expected 48 recipes, found {counts['recipes']}", file=sys.stderr)
+        return 1
     if args.strict_warn and counts["warn"] > 0:
         return 1
     return 0

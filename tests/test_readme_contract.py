@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import sys
+import tempfile
 import unittest
 from pathlib import Path
 
@@ -33,6 +34,21 @@ class GoldenReadmeContractTest(unittest.TestCase):
     def test_golden_readme_recipe_count(self) -> None:
         result = checker.run(README)
         self.assertEqual(result["counts"]["recipes"], RECIPE_COUNT)
+
+    def test_recipe_map_rejects_extra_non_recipe_link(self) -> None:
+        original = README.read_text(encoding="utf-8")
+        mutated = original.replace(
+            "<!-- JOB-MAP:END -->",
+            '<a href="#not-a-recipe-anchor">Invalid recipe map link</a>\n<!-- JOB-MAP:END -->',
+            1,
+        )
+        with tempfile.TemporaryDirectory() as tmp:
+            readme = Path(tmp) / "README.md"
+            readme.write_text(mutated, encoding="utf-8")
+            result = checker.run(readme)
+
+        codes = {error["code"] for error in result["errors"]}
+        self.assertIn("RECIPE_MAP_EXTRA", codes)
 
 
 if __name__ == "__main__":
