@@ -50,6 +50,8 @@ repos:
         entry: >-
           bash -c 'PYTHONPYCACHEPREFIX="${TMPDIR:-/tmp}/prompts-pycache-precommit"
           python3 -m py_compile
+          scripts/catalog_constants.py
+          scripts/recipe_heading.py
           scripts/update_readme_badges.py
           scripts/check_readme_recipes.py
           scripts/audit_paste_zone_cells.py
@@ -170,28 +172,10 @@ repos:
 
       - id: shieldcn-badge-url-smoke
         name: ShieldCN badge URL smoke check
-        entry: >-
-          bash -c 'set -euo pipefail;
-          mapfile -t badges < <(python3 scripts/update_readme_badges.py --list-urls);
-          if [ "${#badges[@]}" -eq 0 ]; then
-            echo "No ShieldCN badge URLs found.";
-            exit 0;
-          fi;
-          for badge in "${badges[@]}"; do
-            echo "Checking $badge";
-            headers="$(mktemp "${TMPDIR:-/tmp}/prompts-badge.XXXXXX")";
-            curl --fail --silent --show-error --location --head --retry 3 --retry-delay 2 "$badge" >"$headers";
-            if ! grep -iq "content-type: .*image/svg+xml" "$headers"; then
-              echo "Expected image/svg+xml for $badge";
-              cat "$headers";
-              rm -f "$headers";
-              exit 1;
-            fi;
-            rm -f "$headers";
-          done'
+        entry: bash scripts/check_badge_urls.sh
         language: system
         pass_filenames: false
-        files: ^(README\.md|scripts/update_readme_badges\.py)$
+        files: ^(README\.md|scripts/update_readme_badges\.py|scripts/check_badge_urls\.sh)$
         stages:
           - pre-push
           - manual

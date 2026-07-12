@@ -13,9 +13,16 @@ on:
       - scripts/format_recipe_catalog.py
       - scripts/update_readme_badges.py
       - scripts/check_sources_manifest.py
+      - scripts/web_analytics_report.mjs
+      - scripts/catalog_constants.py
+      - scripts/recipe_heading.py
+      - scripts/check_badge_urls.sh
       - sources.yaml
       - docs/audit/**
       - LICENSE
+      - CONTRIBUTING.md
+      - SECURITY.md
+      - CODE_OF_CONDUCT.md
       - web/**
       - package.json
       - pnpm-lock.yaml
@@ -44,9 +51,16 @@ on:
       - scripts/format_recipe_catalog.py
       - scripts/update_readme_badges.py
       - scripts/check_sources_manifest.py
+      - scripts/web_analytics_report.mjs
+      - scripts/catalog_constants.py
+      - scripts/recipe_heading.py
+      - scripts/check_badge_urls.sh
       - sources.yaml
       - docs/audit/**
       - LICENSE
+      - CONTRIBUTING.md
+      - SECURITY.md
+      - CODE_OF_CONDUCT.md
       - web/**
       - package.json
       - pnpm-lock.yaml
@@ -75,6 +89,8 @@ jobs:
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Set up pnpm
         uses: pnpm/action-setup@v4
@@ -120,6 +136,8 @@ jobs:
         run: |
           python3 scripts/update_readme_badges.py --check
           python3 -m py_compile \
+            scripts/catalog_constants.py \
+            scripts/recipe_heading.py \
             scripts/update_readme_badges.py \
             scripts/check_readme_recipes.py \
             scripts/audit_paste_zone_cells.py \
@@ -184,7 +202,10 @@ jobs:
 
       - name: Whitespace check
         shell: bash
+        env:
+          PYTHONDONTWRITEBYTECODE: "1"
         run: |
+          set -euo pipefail
           DOCS=(
             README.md
             AGENTS.md
@@ -193,48 +214,38 @@ jobs:
             .agents/skills/readme-catalog-steward/references/*.md
             docs/audit/*.md
           )
-          git diff --check -- \
-            "${DOCS[@]}" \
-            .agents/skills/readme-catalog-steward/evals/evals.json \
-            .agents/skills/readme-catalog-steward/evals/adversarial-fixtures.json \
-            .pre-commit-config.yaml \
-            .gitignore \
-            .github/workflows/readme-quality.yml \
-            package.json \
-            pnpm-lock.yaml \
-            pnpm-workspace.yaml \
-            pagefind.yml \
-            vercel.json \
-            eslint.config.js \
-            prettier.config.cjs \
-            playwright.config.mjs \
-            justfile \
-            web \
-            scripts/check_readme_recipes.py \
-            scripts/update_readme_badges.py \
-            scripts/audit_paste_zone_cells.py \
-            scripts/hoist_paste_preview.py \
-            scripts/format_recipe_catalog.py \
-            scripts/check_sources_manifest.py \
-            sources.yaml \
-            docs/audit/*.md
+          PATHS=(
+            "${DOCS[@]}"
+            .agents/skills/readme-catalog-steward/evals/evals.json
+            .agents/skills/readme-catalog-steward/evals/adversarial-fixtures.json
+            .pre-commit-config.yaml
+            .gitignore
+            .github/workflows/readme-quality.yml
+            package.json
+            pnpm-lock.yaml
+            pnpm-workspace.yaml
+            pagefind.yml
+            vercel.json
+            eslint.config.js
+            prettier.config.cjs
+            playwright.config.mjs
+            justfile
+            web
+            scripts
+            tests
+            sources.yaml
+            LICENSE
+          )
+          if [ "${{ github.event_name }}" = "pull_request" ]; then
+            BASE="${{ github.event.pull_request.base.sha }}"
+            git diff --check "${BASE}...HEAD" -- "${PATHS[@]}"
+          elif [ "${{ github.event_name }}" = "push" ] && [ "${{ github.event.before }}" != "0000000000000000000000000000000000000000" ]; then
+            git diff --check "${{ github.event.before }}...HEAD" -- "${PATHS[@]}"
+          else
+            # Fallback for first push / manual runs: check working tree (clean checkout is a no-op).
+            git diff --check -- "${PATHS[@]}"
+          fi
 
       - name: Badge URL smoke check
         shell: bash
-        run: |
-          set -euo pipefail
-          mapfile -t badges < <(python3 scripts/update_readme_badges.py --list-urls)
-          if [ "${#badges[@]}" -eq 0 ]; then
-            echo "No ShieldCN badge URLs found."
-            exit 0
-          fi
-
-          for badge in "${badges[@]}"; do
-            echo "Checking $badge"
-            curl --fail --silent --show-error --location --head --retry 3 --retry-delay 2 "$badge" >/tmp/badge.headers
-            if ! grep -iq 'content-type: .*image/svg+xml' /tmp/badge.headers; then
-              echo "Expected image/svg+xml for $badge"
-              cat /tmp/badge.headers
-              exit 1
-            fi
-          done
+        run: bash scripts/check_badge_urls.sh

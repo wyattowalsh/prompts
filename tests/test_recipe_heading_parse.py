@@ -60,6 +60,20 @@ class ParseRecipeHeadingNameTest(unittest.TestCase):
         parsed = checker.parse_recipe_heading_name(lines[0], lines, 0)
         self.assertIsNone(parsed)
 
+    def test_unclosed_h4_does_not_swallow_next_recipe(self) -> None:
+        """Broken open must not parse by borrowing the next recipe's </h4>."""
+        lines = [
+            '<h4 id="broken-recipe">',
+            '  <img src="https://shieldcn.dev/badge/-2563EB.svg" alt="Broken Recipe" />',
+            "  Broken Recipe",
+            # missing </h4>
+            *_html_recipe_heading(slug="web-research-brief", name="Web Research Brief"),
+        ]
+        self.assertIsNone(checker.parse_recipe_heading_name(lines[0], lines, 0))
+        name, next_index = checker.parse_recipe_heading_name(lines[3], lines, 3)
+        self.assertEqual(name, "Web Research Brief")
+        self.assertEqual(next_index, 7)
+
     def test_malformed_h4_without_img_name_pattern(self) -> None:
         lines = [
             '<h4 id="no-img-recipe">',

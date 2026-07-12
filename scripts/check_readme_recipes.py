@@ -6,8 +6,59 @@ from __future__ import annotations
 import argparse
 import json
 import re
+import sys
 from dataclasses import dataclass
 from pathlib import Path
+
+# Allow `python3 scripts/check_readme_recipes.py` without installing a package.
+_SCRIPTS_DIR = Path(__file__).resolve().parent
+if str(_SCRIPTS_DIR) not in sys.path:
+    sys.path.insert(0, str(_SCRIPTS_DIR))
+
+from catalog_constants import (  # noqa: E402
+    CLASS_SIGNAL_PATTERNS,
+    CONTROL_NOTE_RECIPES,
+    PATTERN_NOTE_COUNT,
+    RECIPE_CLASS,
+    RECIPE_COUNT,
+    SECTION_MAP_COUNT,
+    STRICT_VALIDATION_CLASSES,
+)
+from recipe_heading import (  # noqa: E402
+    RECIPE_H4_OPEN_RE,
+    github_anchor,
+    parse_recipe_heading,
+    skip_malformed_h4_block,
+)
+
+def class_signal_haystack(recipe_text: str) -> str:
+    """Copy-prompt body used for STRICT class signal checks (exclude Sources tails)."""
+    fence = re.search(r"```text\n([\s\S]*?)```", recipe_text)
+    body = fence.group(1) if fence else recipe_text
+    body = re.split(r"\nSources:", body, maxsplit=1)[0]
+    return body
+
+
+def validate_strict_class_signals(recipe: Recipe, errors: list[Diagnostic]) -> None:
+    """Require at least one class-appropriate signal in high-risk recipe templates."""
+    class_name = RECIPE_CLASS.get(recipe.name)
+    if class_name not in STRICT_VALIDATION_CLASSES:
+        return
+    pattern_text = CLASS_SIGNAL_PATTERNS.get(class_name)
+    if not pattern_text:
+        return
+    haystack = class_signal_haystack(recipe.text)
+    if not re.search(pattern_text, haystack, re.IGNORECASE):
+        errors.append(
+            Diagnostic(
+                "STRICT_CLASS_SIGNAL_MISSING",
+                f"Recipe class {class_name!r} is missing a required class signal "
+                f"(pattern /{pattern_text}/) in the copy prompt haystack.",
+                recipe.line,
+                recipe.name,
+                hint="Add class-appropriate durable/validation language for this job class.",
+            )
+        )
 
 
 REQUIRED_FIELDS = [
@@ -19,23 +70,6 @@ REQUIRED_FIELDS = [
     "Safety/eval checks:",
     "Sources:",
 ]
-
-CONTROL_NOTE_RECIPES = {
-    "Source-Grounded Answer",
-    "Web Research Brief",
-    "Literature Scan",
-    "Claim Checker",
-    "JSON Extractor",
-    "Classifier",
-    "NER Extractor",
-    "Tool-Use Planner",
-    "RAG Answer Contract",
-    "Prompt-Injection Scanner",
-    "Eval-Set Generator",
-    "Regression Judge",
-    "Prompt Optimizer",
-    "Panel Review",
-}
 
 VISIBLE_COT_PATTERNS = [
     re.compile(pattern, re.IGNORECASE)
@@ -80,38 +114,16 @@ RECIPE_PASTE_ZONE_META_VALUE_PATTERNS = [
 MARKDOWN_LINK_RE = re.compile(r"\[([^\]]+)\]\([^)]*\)")
 INLINE_CODE_RE = re.compile(r"`+[^`]*`+")
 SENTENCE_TERMINATOR_RE = re.compile(r"[.!?](?=\s|$)")
-RECIPE_H4_OPEN_RE = re.compile(r'^<h4 id="([^"]+)">\s*$')
-RECIPE_H4_NAME_RE = re.compile(r"<img[^>]*>\s*(.+?)\s*</h4>", re.DOTALL)
 
-
-def parse_recipe_heading_name(line: str, lines: list[str], index: int) -> tuple[str, int] | None:
-    if line.startswith("#### "):
-        return line[5:].strip(), index + 1
-    if not RECIPE_H4_OPEN_RE.match(line):
+# Back-compat alias used by tests and call sites.
+def parse_recipe_heading_name(
+    line: str, lines: list[str], index: int
+) -> tuple[str, int] | None:
+    parsed = parse_recipe_heading(line, lines, index)
+    if parsed is None:
         return None
-    block_end = index
-    while block_end < len(lines) and "</h4>" not in lines[block_end]:
-        block_end += 1
-    if block_end >= len(lines):
-        return None
-    block = "\n".join(lines[index : block_end + 1])
-    name_match = RECIPE_H4_NAME_RE.search(block)
-    if not name_match:
-        return None
-    name = re.sub(r"<[^>]+>", "", name_match.group(1)).strip()
-    return name, block_end + 1
-
-
-def skip_malformed_h4_block(lines: list[str], start: int, section_end: int) -> int:
-    index = start + 1
-    while index < section_end:
-        line = lines[index]
-        if "</h4>" in line:
-            return index + 1
-        if line.startswith("### ") or line.startswith("## "):
-            return index
-        index += 1
-    return section_end
+    name, next_index, _slug = parsed
+    return name, next_index
 
 
 @dataclass(frozen=True)
@@ -159,18 +171,6 @@ def in_fence_by_line(lines: list[str]) -> list[bool]:
     return states
 
 
-def github_anchor(title: str, used: dict[str, int]) -> str:
-    anchor = title.strip().lower()
-    anchor = re.sub(r"[^\w\s-]", "", anchor)
-    anchor = re.sub(r"\s+", "-", anchor)
-    base = anchor
-    seen = used.get(base, 0)
-    used[base] = seen + 1
-    if seen:
-        return f"{base}-{seen}"
-    return base
-
-
 def find_section(lines: list[str], heading: str) -> tuple[int, int] | None:
     start = None
     fence = in_fence_by_line(lines)
@@ -209,7 +209,7 @@ def parse_recipes(lines: list[str], errors: list[Diagnostic]) -> list[Recipe]:
             index += 1
             continue
         if RECIPE_H4_OPEN_RE.match(line):
-            parsed = parse_recipe_heading_name(line, lines, index)
+            parsed = parse_recipe_heading(line, lines, index)
             if parsed is None:
                 errors.append(
                     Diagnostic(
@@ -221,13 +221,24 @@ def parse_recipes(lines: list[str], errors: list[Diagnostic]) -> list[Recipe]:
                 )
                 index = skip_malformed_h4_block(lines, index, end)
                 continue
-            name, next_index = parsed
+            name, next_index, slug = parsed
+            expected_slug = github_anchor(name, {})
+            if slug is not None and slug != expected_slug:
+                errors.append(
+                    Diagnostic(
+                        "RECIPE_HEADING_SLUG_MISMATCH",
+                        f"Heading id {slug!r} does not match github_anchor({name!r})={expected_slug!r}.",
+                        index + 1,
+                        recipe=name,
+                        hint="Regenerate with scripts/update_readme_badges.py.",
+                    )
+                )
             headings.append((index, name, category))
             index = next_index
             continue
-        parsed = parse_recipe_heading_name(line, lines, index)
+        parsed = parse_recipe_heading(line, lines, index)
         if parsed is not None:
-            name, next_index = parsed
+            name, next_index, _slug = parsed
             headings.append((index, name, category))
             index = next_index
             continue
@@ -774,6 +785,26 @@ def validate_recipe(recipe: Recipe, errors: list[Diagnostic], warnings: list[Dia
             if guardrail not in rag_text:
                 errors.append(Diagnostic("RAG_GUARDRAIL", f"RAG recipe missing guardrail: {guardrail}.", recipe.line, recipe.name))
 
+    # Tool side-effect language is reserved for Tool-Use Planner (not eval/scanner/optimizer packs).
+    if recipe.name != "Tool-Use Planner":
+        for forbidden in (
+            "classify side effects before any mutating step",
+            "only the trusted policy block may authorize side effects",
+            "Require explicit approval before mutating, credentialed, or irreversible tool actions",
+        ):
+            if forbidden in recipe.text:
+                errors.append(
+                    Diagnostic(
+                        "TOOLS_CLASS_CONTAMINATION",
+                        f"Recipe contains tool-side-effect language reserved for Tool-Use Planner: {forbidden!r}.",
+                        recipe.line,
+                        recipe.name,
+                        hint="Use class-appropriate durable/validation/safety text for this job.",
+                    )
+                )
+
+    validate_strict_class_signals(recipe, errors)
+
     return {
         "name": recipe.name,
         "line": recipe.line,
@@ -881,8 +912,14 @@ def validate_section_map(lines: list[str], errors: list[Diagnostic]) -> int:
     links = re.findall(r"\(#([^)]+)\)", map_text)
     expected = build_section_map_expected_anchors()
     unique_links = set(links)
-    if len(links) != 21 or len(unique_links) != 21:
-        errors.append(Diagnostic("SECTION_MAP_COUNT", "Section Map must contain 21 unique links.", start + 1))
+    if len(links) != SECTION_MAP_COUNT or len(unique_links) != SECTION_MAP_COUNT:
+        errors.append(
+            Diagnostic(
+                "SECTION_MAP_COUNT",
+                f"Section Map must contain {SECTION_MAP_COUNT} unique links.",
+                start + 1,
+            )
+        )
     missing = sorted(expected - unique_links)
     extra = sorted(unique_links - expected)
     for anchor in missing:
@@ -922,16 +959,46 @@ def run(readme: Path) -> dict[str, object]:
     errors: list[Diagnostic] = []
     warnings: list[Diagnostic] = []
     recipes = parse_recipes(lines, errors)
-    if len(recipes) != 48:
-        errors.append(Diagnostic("RECIPE_COUNT", f"Expected 48 recipes, found {len(recipes)}.", 1))
+    if len(recipes) != RECIPE_COUNT:
+        errors.append(
+            Diagnostic("RECIPE_COUNT", f"Expected {RECIPE_COUNT} recipes, found {len(recipes)}.", 1)
+        )
+
+    recipe_names = {recipe.name for recipe in recipes}
+    class_names = set(RECIPE_CLASS)
+    if class_names != recipe_names and len(recipes) == RECIPE_COUNT:
+        for name in sorted(recipe_names - class_names):
+            errors.append(
+                Diagnostic(
+                    "RECIPE_CLASS_MISSING",
+                    f"Recipe {name!r} is missing from RECIPE_CLASS in catalog_constants.py.",
+                    1,
+                    name,
+                )
+            )
+        for name in sorted(class_names - recipe_names):
+            errors.append(
+                Diagnostic(
+                    "RECIPE_CLASS_EXTRA",
+                    f"RECIPE_CLASS entry {name!r} does not match a Prompt Library recipe.",
+                    1,
+                    name,
+                )
+            )
 
     recipe_results = [validate_recipe(recipe, errors, warnings) for recipe in recipes]
     map_count = validate_recipe_map(lines, recipes, errors)
     prompt_index_count = validate_prompt_index(lines, recipes, errors)
     section_map_count = validate_section_map(lines, errors)
     pattern_count = count_pattern_notes(lines)
-    if pattern_count != 43:
-        errors.append(Diagnostic("PATTERN_NOTE_COUNT", f"Expected 43 pattern notes, found {pattern_count}.", 1))
+    if pattern_count != PATTERN_NOTE_COUNT:
+        errors.append(
+            Diagnostic(
+                "PATTERN_NOTE_COUNT",
+                f"Expected {PATTERN_NOTE_COUNT} pattern notes, found {pattern_count}.",
+                1,
+            )
+        )
 
     control_count = sum(sum(1 for line in recipe.lines if line.startswith("Control/evidence note:")) for recipe in recipes)
 

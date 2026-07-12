@@ -6,6 +6,15 @@ import {
   jsonForHtmlScript,
   renderAnalyticsConfig
 } from "../analytics.config.mjs";
+import { readFileSync } from "node:fs";
+import { resolve } from "node:path";
+import {
+  assertAnalyticsCspCompatible,
+  assertVercelAnalyticsCspCompatible,
+  extractVercelCsp,
+  isDomainOrSubdomain,
+  parseCsp
+} from "../csp-analytics.mjs";
 import {
   createAnalytics,
   hashSearchQuery,
@@ -27,6 +36,154 @@ test("analytics config is disabled by default", () => {
     scriptSrc: "",
     captureRawSearch: false
   });
+});
+
+const STRICT_CSP =
+  "default-src 'self'; script-src 'self'; connect-src 'self'; style-src 'self' 'unsafe-inline'";
+const POSTHOG_CSP =
+  "default-src 'self'; script-src 'self' https://*.posthog.com; connect-src 'self' https://*.posthog.com";
+
+test("isDomainOrSubdomain uses label-slice (rejects suffix spoofs)", () => {
+  assert.equal(isDomainOrSubdomain("posthog.com", "posthog.com"), true);
+  assert.equal(isDomainOrSubdomain("us.i.posthog.com", "posthog.com"), true);
+  assert.equal(isDomainOrSubdomain("eu.i.posthog.com", "posthog.com"), true);
+  assert.equal(isDomainOrSubdomain("not-posthog.com", "posthog.com"), false);
+  assert.equal(isDomainOrSubdomain("evilposthog.com", "posthog.com"), false);
+  assert.equal(isDomainOrSubdomain("posthog.com.evil.com", "posthog.com"), false);
+});
+
+test("CSP compat allows none and test under strict CSP", () => {
+  assert.doesNotThrow(() => assertAnalyticsCspCompatible({ provider: "none", csp: STRICT_CSP }));
+  assert.doesNotThrow(() => assertAnalyticsCspCompatible({ provider: "test", csp: STRICT_CSP }));
+});
+
+test("CSP compat rejects PostHog under self-only CSP", () => {
+  assert.throws(
+    () => assertAnalyticsCspCompatible({ provider: "posthog", csp: STRICT_CSP }),
+    /\*\.posthog\.com/
+  );
+});
+
+test("CSP compat accepts PostHog when wildcard hosts are present", () => {
+  assert.doesNotThrow(() =>
+    assertAnalyticsCspCompatible({
+      provider: "posthog",
+      csp: POSTHOG_CSP,
+      posthogHost: "us.i.posthog.com"
+    })
+  );
+  // Default host is us.i.posthog.com (under posthog.com).
+  assert.doesNotThrow(() =>
+    assertAnalyticsCspCompatible({ provider: "posthog", csp: POSTHOG_CSP })
+  );
+});
+
+test("CSP compat rejects non-PostHog host even when wildcard CSP allows PostHog", () => {
+  assert.throws(
+    () =>
+      assertAnalyticsCspCompatible({
+        provider: "posthog",
+        csp: POSTHOG_CSP,
+        posthogHost: "evil.example.com"
+      }),
+    /must be posthog\.com or a DNS subdomain/
+  );
+});
+
+test("CSP compat accepts concrete PostHog regional hosts", () => {
+  const csp =
+    "script-src 'self' https://us.i.posthog.com; connect-src 'self' https://us.i.posthog.com";
+  assert.doesNotThrow(() =>
+    assertAnalyticsCspCompatible({
+      provider: "posthog",
+      csp,
+      posthogHost: "us.i.posthog.com"
+    })
+  );
+  assert.throws(
+    () =>
+      assertAnalyticsCspCompatible({
+        provider: "posthog",
+        csp,
+        posthogHost: "eu.i.posthog.com"
+      }),
+    /\*\.posthog\.com/
+  );
+});
+
+test("CSP compat rejects PostHog spoof hosts in CSP tokens", () => {
+  for (const host of ["not-posthog.com", "evilposthog.com"]) {
+    const csp = `script-src 'self' https://${host}; connect-src 'self' https://${host}`;
+    assert.throws(
+      () => assertAnalyticsCspCompatible({ provider: "posthog", csp }),
+      /must be posthog\.com|allow https:\/\/\*\.posthog\.com/
+    );
+  }
+});
+
+test("extractVercelCsp reads Content-Security-Policy from vercel.json shape", () => {
+  const vercel = JSON.parse(readFileSync(resolve("vercel.json"), "utf8"));
+  const csp = extractVercelCsp(vercel);
+  assert.match(csp, /script-src/);
+  assert.match(csp, /'self'/);
+});
+
+test("assertVercelAnalyticsCspCompatible fails posthog against real vercel self CSP", () => {
+  const vercel = JSON.parse(readFileSync(resolve("vercel.json"), "utf8"));
+  assert.throws(
+    () =>
+      assertVercelAnalyticsCspCompatible(vercel, {
+        provider: "posthog",
+        posthogHost: "us.i.posthog.com"
+      }),
+    /\*\.posthog\.com/
+  );
+});
+
+test("assertVercelAnalyticsCspCompatible passes none against real vercel CSP", () => {
+  const vercel = JSON.parse(readFileSync(resolve("vercel.json"), "utf8"));
+  assert.doesNotThrow(() => assertVercelAnalyticsCspCompatible(vercel, { provider: "none" }));
+});
+
+test("assertVercelAnalyticsCspCompatible passes posthog with synthetic allow CSP", () => {
+  const vercel = {
+    headers: [
+      {
+        source: "/(.*)",
+        headers: [{ key: "Content-Security-Policy", value: POSTHOG_CSP }]
+      }
+    ]
+  };
+  assert.doesNotThrow(() =>
+    assertVercelAnalyticsCspCompatible(vercel, {
+      provider: "posthog",
+      posthogHost: "us.i.posthog.com"
+    })
+  );
+});
+
+test("CSP compat requires Umami script host allowlist", () => {
+  assert.throws(
+    () =>
+      assertAnalyticsCspCompatible({
+        provider: "umami",
+        csp: STRICT_CSP,
+        umamiScriptHost: "analytics.example.com"
+      }),
+    /Umami analytics requires CSP script-src/
+  );
+  assert.doesNotThrow(() =>
+    assertAnalyticsCspCompatible({
+      provider: "umami",
+      csp: "script-src 'self' https://analytics.example.com; connect-src 'self'",
+      umamiScriptHost: "analytics.example.com"
+    })
+  );
+});
+
+test("parseCsp splits directives", () => {
+  const map = parseCsp("script-src 'self' https://x.test; connect-src 'self'");
+  assert.deepEqual(map.get("script-src"), ["'self'", "https://x.test"]);
 });
 
 test("analytics config builds complete PostHog public config", () => {

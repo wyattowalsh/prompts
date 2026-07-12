@@ -46,6 +46,11 @@ function providerConfig(provider, env) {
         "WEB_ANALYTICS_PROVIDER=posthog requires WEB_ANALYTICS_POSTHOG_KEY or WEB_ANALYTICS_SITE_ID."
       );
     }
+    if (!siteId.startsWith("phc_")) {
+      throw new Error(
+        "PostHog WEB_ANALYTICS_POSTHOG_KEY must be a project key starting with phc_ (not a personal API key)."
+      );
+    }
     return {
       host: cleanUrl(
         env.WEB_ANALYTICS_POSTHOG_HOST || env.WEB_ANALYTICS_HOST,
@@ -66,6 +71,23 @@ function providerConfig(provider, env) {
   if (!scriptSrc) {
     throw new Error(
       "WEB_ANALYTICS_PROVIDER=umami requires WEB_ANALYTICS_UMAMI_SRC or WEB_ANALYTICS_UMAMI_HOST."
+    );
+  }
+  let scriptUrl;
+  try {
+    scriptUrl = new URL(scriptSrc);
+  } catch {
+    throw new Error(`Invalid Umami script URL: ${scriptSrc}`);
+  }
+  const allowedHosts = new Set(
+    String(env.WEB_ANALYTICS_UMAMI_ALLOWED_HOSTS || scriptUrl.host)
+      .split(",")
+      .map((value) => value.trim())
+      .filter(Boolean)
+  );
+  if (!allowedHosts.has(scriptUrl.host)) {
+    throw new Error(
+      `Umami script host ${scriptUrl.host} is not in WEB_ANALYTICS_UMAMI_ALLOWED_HOSTS (${[...allowedHosts].join(", ")}).`
     );
   }
   return {

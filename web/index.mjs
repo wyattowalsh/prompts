@@ -13,9 +13,23 @@ const pagefindBin = resolve(
 
 function runPagefind() {
   return new Promise((resolveRun, rejectRun) => {
-    const child = spawn(pagefindBin, ["--site", "public", "--output-path", temporaryIndexDir], {
-      stdio: "inherit"
-    });
+    const child = spawn(
+      pagefindBin,
+      [
+        "--site",
+        "public",
+        "--output-path",
+        temporaryIndexDir,
+        "--force-language",
+        "en",
+        "--include-characters",
+        "<>{}_/-"
+      ],
+      {
+        stdio: "inherit",
+        cwd: resolve(".")
+      }
+    );
     child.on("error", rejectRun);
     child.on("exit", (code) => {
       if (code === 0) {

@@ -1,103 +1,1195 @@
 # Source freshness manifest for README provider, standards, and research claims.
-# Keep this file machine-checkable by scripts/check_sources_manifest.py.
-# Dates are UTC ISO dates.
+# Auto-expanded from all non-badge external https URLs cited in README.md.
+# Keep machine-checkable by scripts/check_sources_manifest.py.
+# Dates are UTC ISO dates. last_checked is inventory-refresh date; re-verify for 'latest model' claims.
+# Coverage: 119 unique external README sources (badge hosts excluded).
 
-- id: openai-structured-outputs
-  owner: OpenAI
-  url: https://developers.openai.com/api/docs/guides/structured-outputs
-  source_type: official doc
-  status: checked
-  last_checked: 2026-07-04
-  claim_scope: API-level schema controls for machine-consumed outputs.
-  replacement_url: none
-  notes: Prefer Structured Outputs over prompt-only JSON contracts when the API supports it.
-
-- id: openai-reasoning
-  owner: OpenAI
-  url: https://developers.openai.com/api/docs/guides/reasoning
-  source_type: official doc
-  status: checked
-  last_checked: 2026-07-04
-  claim_scope: Reasoning controls and summaries for supported OpenAI models.
-  replacement_url: none
-  notes: Treat reasoning controls as API configuration, not as visible chain-of-thought instructions.
-
-- id: anthropic-structured-outputs
+- id: anthropic-about-claude-model-deprecations
   owner: Anthropic
-  url: https://platform.claude.com/docs/en/build-with-claude/structured-outputs
+  url: https://platform.claude.com/docs/en/about-claude/model-deprecations
   source_type: official doc
   status: checked
-  last_checked: 2026-07-04
-  claim_scope: Claude JSON output configuration and strict tool-use structured output guidance.
+  last_checked: 2026-07-11
+  claim_scope: External source cited in the catalog (README refs ~1).
   replacement_url: none
-  notes: Verify model and tool-use support before translating README patterns into Claude API calls.
+  notes: Verify live before latest/current model or API claims. Prefer this over secondary blogs.
+
+- id: anthropic-about-claude-models-introducing-claude-fable-5-and-claude-mythos-5
+  owner: Anthropic
+  url: https://platform.claude.com/docs/en/about-claude/models/introducing-claude-fable-5-and-claude-mythos-5
+  source_type: official doc
+  status: checked
+  last_checked: 2026-07-11
+  claim_scope: External source cited in the catalog (README refs ~1).
+  replacement_url: none
+  notes: Verify live before latest/current model or API claims. Prefer this over secondary blogs.
+
+- id: anthropic-about-claude-models-overview
+  owner: Anthropic
+  url: https://platform.claude.com/docs/en/about-claude/models/overview
+  source_type: official doc
+  status: checked
+  last_checked: 2026-07-11
+  claim_scope: External source cited in the catalog (README refs ~1).
+  replacement_url: none
+  notes: Verify live before latest/current model or API claims. Prefer this over secondary blogs.
+
+- id: anthropic-agents-and-tools-tool-use-manage-tool-context
+  owner: Anthropic
+  url: https://platform.claude.com/docs/en/agents-and-tools/tool-use/manage-tool-context
+  source_type: official doc
+  status: checked
+  last_checked: 2026-07-11
+  claim_scope: Tool use, function calling, or agent tool boundaries.
+  replacement_url: none
+  notes: Verify live before latest/current model or API claims. Prefer this over secondary blogs.
+
+- id: anthropic-build-with-claude-context-windows
+  owner: Anthropic
+  url: https://platform.claude.com/docs/en/build-with-claude/context-windows
+  source_type: official doc
+  status: checked
+  last_checked: 2026-07-11
+  claim_scope: External source cited in the catalog (README refs ~2).
+  replacement_url: none
+  notes: Verify live before latest/current model or API claims. Prefer this over secondary blogs.
+
+- id: anthropic-build-with-claude-prompt-caching
+  owner: Anthropic
+  url: https://platform.claude.com/docs/en/build-with-claude/prompt-caching
+  source_type: official doc
+  status: checked
+  last_checked: 2026-07-11
+  claim_scope: Official prompting guidance.
+  replacement_url: none
+  notes: Verify live before latest/current model or API claims. Prefer this over secondary blogs.
+
+- id: anthropic-build-with-claude-prompt-engineering-claude-prompting-best-practices
+  owner: Anthropic
+  url: https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices
+  source_type: official doc
+  status: checked
+  last_checked: 2026-07-11
+  claim_scope: Official prompting guidance.
+  replacement_url: none
+  notes: Verify live before latest/current model or API claims. Prefer this over secondary blogs.
+
+- id: anthropic-build-with-claude-prompt-engineering-reduce-hallucinations
+  owner: Anthropic
+  url: https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/reduce-hallucinations
+  source_type: official doc
+  status: checked
+  last_checked: 2026-07-11
+  claim_scope: Official prompting guidance.
+  replacement_url: none
+  notes: Verify live before latest/current model or API claims. Prefer this over secondary blogs.
+
+- id: anthropic-citations
+  owner: Anthropic
+  url: https://platform.claude.com/docs/en/build-with-claude/citations
+  source_type: official doc
+  status: checked
+  last_checked: 2026-07-11
+  claim_scope: Citation formatting for grounded answers.
+  replacement_url: none
+  notes: Verify live before latest/current model or API claims. Prefer this over secondary blogs.
 
 - id: anthropic-extended-thinking
   owner: Anthropic
   url: https://platform.claude.com/docs/en/build-with-claude/extended-thinking
   source_type: official doc
   status: checked
-  last_checked: 2026-07-04
-  claim_scope: Claude extended thinking controls and model-specific caveats.
+  last_checked: 2026-07-11
+  claim_scope: Provider reasoning or thinking controls.
   replacement_url: none
-  notes: Keep provider thinking controls separate from provider-neutral prompt templates.
+  notes: Verify live before latest/current model or API claims. Prefer this over secondary blogs.
 
-- id: google-gemini-structured-output
-  owner: Google
-  url: https://ai.google.dev/gemini-api/docs/structured-output
+- id: anthropic-news-fable-mythos-access
+  owner: Anthropic
+  url: https://www.anthropic.com/news/fable-mythos-access
   source_type: official doc
   status: checked
-  last_checked: 2026-07-04
-  claim_scope: Gemini structured output and response schema support.
+  last_checked: 2026-07-11
+  claim_scope: External source cited in the catalog (README refs ~1).
   replacement_url: none
-  notes: Verify model-specific schema and tool compatibility before adding provider-specific examples.
+  notes: Verify live before latest/current model or API claims. Prefer this over secondary blogs.
+
+- id: anthropic-prompt-engineering-overview
+  owner: Anthropic
+  url: https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/overview
+  source_type: official doc
+  status: checked
+  last_checked: 2026-07-11
+  claim_scope: Official prompting guidance.
+  replacement_url: none
+  notes: Verify live before latest/current model or API claims. Prefer this over secondary blogs.
+
+- id: anthropic-structured-outputs
+  owner: Anthropic
+  url: https://platform.claude.com/docs/en/build-with-claude/structured-outputs
+  source_type: official doc
+  status: checked
+  last_checked: 2026-07-11
+  claim_scope: Structured or schema-constrained model outputs.
+  replacement_url: none
+  notes: Verify live before latest/current model or API claims. Prefer this over secondary blogs.
+
+- id: anthropic-tool-use
+  owner: Anthropic
+  url: https://platform.claude.com/docs/en/agents-and-tools/tool-use/overview
+  source_type: official doc
+  status: checked
+  last_checked: 2026-07-11
+  claim_scope: Tool use, function calling, or agent tool boundaries.
+  replacement_url: none
+  notes: Verify live before latest/current model or API claims. Prefer this over secondary blogs.
+
+- id: github-get-started-writing-on-github-getting-started-with-writing-and-formatting-on-git
+  owner: GitHub
+  url: https://docs.github.com/en/get-started/writing-on-github/getting-started-with-writing-and-formatting-on-github/basic-writing-and-formatting-syntax
+  source_type: official doc
+  status: checked
+  last_checked: 2026-07-11
+  claim_scope: External source cited in the catalog (README refs ~3).
+  replacement_url: none
+  notes: Verify live before latest/current model or API claims. Prefer this over secondary blogs.
+
+- id: github-get-started-writing-on-github-working-with-advanced-formatting
+  owner: GitHub
+  url: https://docs.github.com/en/get-started/writing-on-github/working-with-advanced-formatting/creating-diagrams
+  source_type: official doc
+  status: checked
+  last_checked: 2026-07-11
+  claim_scope: External source cited in the catalog (README refs ~2).
+  replacement_url: none
+  notes: Verify live before latest/current model or API claims. Prefer this over secondary blogs.
 
 - id: google-gemini-function-calling
   owner: Google
   url: https://ai.google.dev/gemini-api/docs/function-calling
   source_type: official doc
   status: checked
-  last_checked: 2026-07-04
-  claim_scope: Gemini function declarations and tool-calling API behavior.
+  last_checked: 2026-07-11
+  claim_scope: Tool use, function calling, or agent tool boundaries.
   replacement_url: none
-  notes: Tool contracts should use API declarations where software actions are required.
+  notes: Verify live before latest/current model or API claims. Prefer this over secondary blogs.
 
-- id: owasp-llm-top-10
-  owner: OWASP
-  url: https://owasp.org/www-project-top-10-for-large-language-model-applications/
+- id: google-gemini-gemini-api-code-execution
+  owner: Google
+  url: https://ai.google.dev/gemini-api/docs/code-execution
+  source_type: official doc
+  status: checked
+  last_checked: 2026-07-11
+  claim_scope: External source cited in the catalog (README refs ~2).
+  replacement_url: none
+  notes: Verify live before latest/current model or API claims. Prefer this over secondary blogs.
+
+- id: google-gemini-gemini-api-url-context
+  owner: Google
+  url: https://ai.google.dev/gemini-api/docs/url-context
+  source_type: official doc
+  status: checked
+  last_checked: 2026-07-11
+  claim_scope: Search, grounding, retrieval, or URL-context controls.
+  replacement_url: none
+  notes: Verify live before latest/current model or API claims. Prefer this over secondary blogs.
+
+- id: google-gemini-grounding-search
+  owner: Google
+  url: https://ai.google.dev/gemini-api/docs/google-search
+  source_type: official doc
+  status: checked
+  last_checked: 2026-07-11
+  claim_scope: Search, grounding, retrieval, or URL-context controls.
+  replacement_url: none
+  notes: Verify live before latest/current model or API claims. Prefer this over secondary blogs.
+
+- id: google-gemini-prompting-strategies
+  owner: Google
+  url: https://ai.google.dev/gemini-api/docs/prompting-strategies
+  source_type: official doc
+  status: checked
+  last_checked: 2026-07-11
+  claim_scope: Official prompting guidance.
+  replacement_url: none
+  notes: Verify live before latest/current model or API claims. Prefer this over secondary blogs.
+
+- id: google-gemini-responsible
+  owner: Google
+  url: https://ai.google.dev/responsible
+  source_type: official doc
+  status: checked
+  last_checked: 2026-07-11
+  claim_scope: External source cited in the catalog (README refs ~1).
+  replacement_url: none
+  notes: Verify live before latest/current model or API claims. Prefer this over secondary blogs.
+
+- id: google-gemini-structured-output
+  owner: Google
+  url: https://ai.google.dev/gemini-api/docs/structured-output
+  source_type: official doc
+  status: checked
+  last_checked: 2026-07-11
+  claim_scope: Structured or schema-constrained model outputs.
+  replacement_url: none
+  notes: Verify live before latest/current model or API claims. Prefer this over secondary blogs.
+
+- id: google-gemini-thinking
+  owner: Google
+  url: https://ai.google.dev/gemini-api/docs/thinking
+  source_type: official doc
+  status: checked
+  last_checked: 2026-07-11
+  claim_scope: Provider reasoning or thinking controls.
+  replacement_url: none
+  notes: Verify live before latest/current model or API claims. Prefer this over secondary blogs.
+
+- id: azure-azure-foundry-observability
+  owner: Microsoft
+  url: https://learn.microsoft.com/en-us/azure/foundry/concepts/observability
+  source_type: official doc
+  status: checked
+  last_checked: 2026-07-11
+  claim_scope: External source cited in the catalog (README refs ~2).
+  replacement_url: none
+  notes: Verify live before latest/current model or API claims. Prefer this over secondary blogs.
+
+- id: azure-foundry-evaluations
+  owner: Microsoft
+  url: https://learn.microsoft.com/en-us/azure/foundry/how-to/evaluate-generative-ai-app
+  source_type: official doc
+  status: checked
+  last_checked: 2026-07-11
+  claim_scope: Evaluation, agent evals, or trace grading guidance.
+  replacement_url: none
+  notes: Verify live before latest/current model or API claims. Prefer this over secondary blogs.
+
+- id: azure-foundry-openai-prompt-engineering
+  owner: Microsoft
+  url: https://learn.microsoft.com/en-us/azure/foundry/openai/concepts/prompt-engineering
+  source_type: official doc
+  status: checked
+  last_checked: 2026-07-11
+  claim_scope: Official prompting guidance.
+  replacement_url: none
+  notes: Verify live before latest/current model or API claims. Prefer this over secondary blogs.
+
+- id: azure-foundry-prompt-shields
+  owner: Microsoft
+  url: https://learn.microsoft.com/en-us/azure/foundry/openai/concepts/content-filter-prompt-shields
+  source_type: official doc
+  status: checked
+  last_checked: 2026-07-11
+  claim_scope: Official prompting guidance.
+  replacement_url: none
+  notes: Verify live before latest/current model or API claims. Prefer this over secondary blogs.
+
+- id: azure-foundry-structured-outputs
+  owner: Microsoft
+  url: https://learn.microsoft.com/en-us/azure/foundry/openai/how-to/structured-outputs
+  source_type: official doc
+  status: checked
+  last_checked: 2026-07-11
+  claim_scope: Structured or schema-constrained model outputs.
+  replacement_url: none
+  notes: Verify live before latest/current model or API claims. Prefer this over secondary blogs.
+
+- id: openai-api-agent-evals
+  owner: OpenAI
+  url: https://developers.openai.com/api/docs/guides/agent-evals
+  source_type: official doc
+  status: checked
+  last_checked: 2026-07-11
+  claim_scope: Evaluation, agent evals, or trace grading guidance.
+  replacement_url: none
+  notes: Verify live before latest/current model or API claims. Prefer this over secondary blogs.
+
+- id: openai-api-agents-guardrails-approvals
+  owner: OpenAI
+  url: https://developers.openai.com/api/docs/guides/agents/guardrails-approvals
+  source_type: official doc
+  status: checked
+  last_checked: 2026-07-11
+  claim_scope: External source cited in the catalog (README refs ~2).
+  replacement_url: none
+  notes: Verify live before latest/current model or API claims. Prefer this over secondary blogs.
+
+- id: openai-api-deployment-checklist
+  owner: OpenAI
+  url: https://developers.openai.com/api/docs/guides/deployment-checklist
+  source_type: official doc
+  status: checked
+  last_checked: 2026-07-11
+  claim_scope: External source cited in the catalog (README refs ~1).
+  replacement_url: none
+  notes: Verify live before latest/current model or API claims. Prefer this over secondary blogs.
+
+- id: openai-api-prompt-caching
+  owner: OpenAI
+  url: https://developers.openai.com/api/docs/guides/prompt-caching
+  source_type: official doc
+  status: checked
+  last_checked: 2026-07-11
+  claim_scope: Official prompting guidance.
+  replacement_url: none
+  notes: Verify live before latest/current model or API claims. Prefer this over secondary blogs.
+
+- id: openai-api-prompt-guidance
+  owner: OpenAI
+  url: https://developers.openai.com/api/docs/guides/prompt-guidance
+  source_type: official doc
+  status: checked
+  last_checked: 2026-07-11
+  claim_scope: Official prompting guidance.
+  replacement_url: none
+  notes: Verify live before latest/current model or API claims. Prefer this over secondary blogs.
+
+- id: openai-api-prompting
+  owner: OpenAI
+  url: https://developers.openai.com/api/docs/guides/prompting
+  source_type: official doc
+  status: checked
+  last_checked: 2026-07-11
+  claim_scope: Official prompting guidance.
+  replacement_url: none
+  notes: Verify live before latest/current model or API claims. Prefer this over secondary blogs.
+
+- id: openai-api-text
+  owner: OpenAI
+  url: https://developers.openai.com/api/docs/guides/text
+  source_type: official doc
+  status: checked
+  last_checked: 2026-07-11
+  claim_scope: External source cited in the catalog (README refs ~1).
+  replacement_url: none
+  notes: Verify live before latest/current model or API claims. Prefer this over secondary blogs.
+
+- id: openai-api-tools-code-interpreter
+  owner: OpenAI
+  url: https://developers.openai.com/api/docs/guides/tools-code-interpreter
+  source_type: official doc
+  status: checked
+  last_checked: 2026-07-11
+  claim_scope: Tool use, function calling, or agent tool boundaries.
+  replacement_url: none
+  notes: Verify live before latest/current model or API claims. Prefer this over secondary blogs.
+
+- id: openai-api-tools-web-search
+  owner: OpenAI
+  url: https://developers.openai.com/api/docs/guides/tools-web-search
+  source_type: official doc
+  status: checked
+  last_checked: 2026-07-11
+  claim_scope: Tool use, function calling, or agent tool boundaries.
+  replacement_url: none
+  notes: Verify live before latest/current model or API claims. Prefer this over secondary blogs.
+
+- id: openai-api-trace-grading
+  owner: OpenAI
+  url: https://developers.openai.com/api/docs/guides/trace-grading
+  source_type: official doc
+  status: checked
+  last_checked: 2026-07-11
+  claim_scope: Evaluation, agent evals, or trace grading guidance.
+  replacement_url: none
+  notes: Verify live before latest/current model or API claims. Prefer this over secondary blogs.
+
+- id: openai-citation-formatting
+  owner: OpenAI
+  url: https://developers.openai.com/api/docs/guides/citation-formatting
+  source_type: official doc
+  status: checked
+  last_checked: 2026-07-11
+  claim_scope: Citation formatting for grounded answers.
+  replacement_url: none
+  notes: Verify live before latest/current model or API claims. Prefer this over secondary blogs.
+
+- id: openai-evaluation-best-practices
+  owner: OpenAI
+  url: https://developers.openai.com/api/docs/guides/evaluation-best-practices
+  source_type: official doc
+  status: checked
+  last_checked: 2026-07-11
+  claim_scope: Evaluation, agent evals, or trace grading guidance.
+  replacement_url: none
+  notes: Verify live before latest/current model or API claims. Prefer this over secondary blogs.
+
+- id: openai-function-calling
+  owner: OpenAI
+  url: https://developers.openai.com/api/docs/guides/function-calling
+  source_type: official doc
+  status: checked
+  last_checked: 2026-07-11
+  claim_scope: Tool use, function calling, or agent tool boundaries.
+  replacement_url: none
+  notes: Verify live before latest/current model or API claims. Prefer this over secondary blogs.
+
+- id: openai-latest-model
+  owner: OpenAI
+  url: https://developers.openai.com/api/docs/guides/latest-model
+  source_type: official doc
+  status: checked
+  last_checked: 2026-07-11
+  claim_scope: External source cited in the catalog (README refs ~1).
+  replacement_url: none
+  notes: Verify live before latest/current model or API claims. Prefer this over secondary blogs.
+
+- id: openai-prompt-engineering
+  owner: OpenAI
+  url: https://developers.openai.com/api/docs/guides/prompt-engineering
+  source_type: official doc
+  status: checked
+  last_checked: 2026-07-11
+  claim_scope: Official prompting guidance.
+  replacement_url: none
+  notes: Verify live before latest/current model or API claims. Prefer this over secondary blogs.
+
+- id: openai-reasoning
+  owner: OpenAI
+  url: https://developers.openai.com/api/docs/guides/reasoning
+  source_type: official doc
+  status: checked
+  last_checked: 2026-07-11
+  claim_scope: Provider reasoning or thinking controls.
+  replacement_url: none
+  notes: Verify live before latest/current model or API claims. Prefer this over secondary blogs.
+
+- id: openai-retrieval
+  owner: OpenAI
+  url: https://developers.openai.com/api/docs/guides/retrieval
+  source_type: official doc
+  status: checked
+  last_checked: 2026-07-11
+  claim_scope: Search, grounding, retrieval, or URL-context controls.
+  replacement_url: none
+  notes: Verify live before latest/current model or API claims. Prefer this over secondary blogs.
+
+- id: openai-structured-outputs
+  owner: OpenAI
+  url: https://developers.openai.com/api/docs/guides/structured-outputs
+  source_type: official doc
+  status: checked
+  last_checked: 2026-07-11
+  claim_scope: Structured or schema-constrained model outputs.
+  replacement_url: none
+  notes: Verify live before latest/current model or API claims. Prefer this over secondary blogs.
+
+- id: openai-tools
+  owner: OpenAI
+  url: https://developers.openai.com/api/docs/guides/tools
+  source_type: official doc
+  status: checked
+  last_checked: 2026-07-11
+  claim_scope: Tool use, function calling, or agent tool boundaries.
+  replacement_url: none
+  notes: Verify live before latest/current model or API claims. Prefer this over secondary blogs.
+
+- id: perplexity-agent-api-quickstart
+  owner: Perplexity
+  url: https://docs.perplexity.ai/docs/agent-api/quickstart
+  source_type: official doc
+  status: checked
+  last_checked: 2026-07-11
+  claim_scope: External source cited in the catalog (README refs ~2).
+  replacement_url: none
+  notes: Verify live before latest/current model or API claims. Prefer this over secondary blogs.
+
+- id: perplexity-getting-started-overview
+  owner: Perplexity
+  url: https://docs.perplexity.ai/docs/getting-started/overview
+  source_type: official doc
+  status: checked
+  last_checked: 2026-07-11
+  claim_scope: External source cited in the catalog (README refs ~2).
+  replacement_url: none
+  notes: Verify live before latest/current model or API claims. Prefer this over secondary blogs.
+
+- id: perplexity-search-post
+  owner: Perplexity
+  url: https://docs.perplexity.ai/api-reference/search-post
+  source_type: official doc
+  status: checked
+  last_checked: 2026-07-11
+  claim_scope: Search, grounding, retrieval, or URL-context controls.
+  replacement_url: none
+  notes: Verify live before latest/current model or API claims. Prefer this over secondary blogs.
+
+- id: perplexity-search-quickstart
+  owner: Perplexity
+  url: https://docs.perplexity.ai/docs/search/quickstart
+  source_type: official doc
+  status: checked
+  last_checked: 2026-07-11
+  claim_scope: Search, grounding, retrieval, or URL-context controls.
+  replacement_url: none
+  notes: Verify live before latest/current model or API claims. Prefer this over secondary blogs.
+
+- id: perplexity-tools-web-search
+  owner: Perplexity
+  url: https://docs.perplexity.ai/docs/agent-api/tools/web-search
+  source_type: official doc
+  status: checked
+  last_checked: 2026-07-11
+  claim_scope: Tool use, function calling, or agent tool boundaries.
+  replacement_url: none
+  notes: Verify live before latest/current model or API claims. Prefer this over secondary blogs.
+
+- id: xai-developers-quickstart
+  owner: xAI
+  url: https://docs.x.ai/developers/quickstart
+  source_type: official doc
+  status: checked
+  last_checked: 2026-07-11
+  claim_scope: External source cited in the catalog (README refs ~1).
+  replacement_url: none
+  notes: Verify live before latest/current model or API claims. Prefer this over secondary blogs.
+
+- id: xai-developers-rest-api-reference-inference
+  owner: xAI
+  url: https://docs.x.ai/developers/rest-api-reference/inference
+  source_type: official doc
+  status: checked
+  last_checked: 2026-07-11
+  claim_scope: External source cited in the catalog (README refs ~1).
+  replacement_url: none
+  notes: Verify live before latest/current model or API claims. Prefer this over secondary blogs.
+
+- id: xai-developers-tools-overview
+  owner: xAI
+  url: https://docs.x.ai/developers/tools/overview
+  source_type: official doc
+  status: checked
+  last_checked: 2026-07-11
+  claim_scope: Tool use, function calling, or agent tool boundaries.
+  replacement_url: none
+  notes: Verify live before latest/current model or API claims. Prefer this over secondary blogs.
+
+- id: xai-function-calling
+  owner: xAI
+  url: https://docs.x.ai/developers/tools/function-calling
+  source_type: official doc
+  status: checked
+  last_checked: 2026-07-11
+  claim_scope: Tool use, function calling, or agent tool boundaries.
+  replacement_url: none
+  notes: Verify live before latest/current model or API claims. Prefer this over secondary blogs.
+
+- id: xai-overview
+  owner: xAI
+  url: https://docs.x.ai/overview
+  source_type: official doc
+  status: checked
+  last_checked: 2026-07-11
+  claim_scope: External source cited in the catalog (README refs ~3).
+  replacement_url: none
+  notes: Verify live before latest/current model or API claims. Prefer this over secondary blogs.
+
+- id: xai-reasoning
+  owner: xAI
+  url: https://docs.x.ai/developers/model-capabilities/text/reasoning
+  source_type: official doc
+  status: checked
+  last_checked: 2026-07-11
+  claim_scope: Provider reasoning or thinking controls.
+  replacement_url: none
+  notes: Verify live before latest/current model or API claims. Prefer this over secondary blogs.
+
+- id: xai-structured-outputs
+  owner: xAI
+  url: https://docs.x.ai/developers/model-capabilities/text/structured-outputs
+  source_type: official doc
+  status: checked
+  last_checked: 2026-07-11
+  claim_scope: Structured or schema-constrained model outputs.
+  replacement_url: none
+  notes: Verify live before latest/current model or API claims. Prefer this over secondary blogs.
+
+- id: xai-web-search
+  owner: xAI
+  url: https://docs.x.ai/developers/tools/web-search
+  source_type: official doc
+  status: checked
+  last_checked: 2026-07-11
+  claim_scope: Tool use, function calling, or agent tool boundaries.
+  replacement_url: none
+  notes: Verify live before latest/current model or API claims. Prefer this over secondary blogs.
+
+- id: nist-ai-risk-management-framework-ai-rmf-playbook
+  owner: NIST
+  url: https://www.nist.gov/itl/ai-risk-management-framework/ai-rmf-playbook
   source_type: standard
   status: checked
-  last_checked: 2026-07-04
-  claim_scope: LLM application risk categories including prompt injection and insecure output handling.
+  last_checked: 2026-07-11
+  claim_scope: AI risk management or generative AI governance.
   replacement_url: none
-  notes: Use as the baseline safety taxonomy for prompt-injection, output-handling, agency, and overreliance checks.
+  notes: Safety or governance standard. Prefer primary page over stale mirrors.
+
+- id: nist-data-publications-agentdojo-inspect
+  owner: NIST
+  url: https://www.nist.gov/data-publications/agentdojo-inspect
+  source_type: standard
+  status: checked
+  last_checked: 2026-07-11
+  claim_scope: AI risk management or generative AI governance.
+  replacement_url: none
+  notes: Safety or governance standard. Prefer primary page over stale mirrors.
 
 - id: nist-genai-profile
   owner: NIST
   url: https://www.nist.gov/publications/artificial-intelligence-risk-management-framework-generative-artificial-intelligence
   source_type: standard
   status: checked
-  last_checked: 2026-07-04
-  claim_scope: Generative AI risk management, measurement, and governance expectations.
+  last_checked: 2026-07-11
+  claim_scope: AI risk management or generative AI governance.
   replacement_url: none
-  notes: Use for production-readiness and evaluation governance language.
+  notes: Safety or governance standard. Prefer primary page over stale mirrors.
 
-- id: mitre-atlas
-  owner: MITRE
-  url: https://atlas.mitre.org/
+- id: nist-itl-ai-risk-management-framework
+  owner: NIST
+  url: https://www.nist.gov/itl/ai-risk-management-framework
   source_type: standard
   status: checked
-  last_checked: 2026-07-04
-  claim_scope: Adversary tactics and techniques for AI systems.
+  last_checked: 2026-07-11
+  claim_scope: AI risk management or generative AI governance.
   replacement_url: none
-  notes: Use for adversarial technique mapping in safety/eval fixtures.
+  notes: Safety or governance standard. Prefer primary page over stale mirrors.
+
+- id: nist-publications-artificial-intelligence-risk-management-framework-ai-rmf-10
+  owner: NIST
+  url: https://www.nist.gov/publications/artificial-intelligence-risk-management-framework-ai-rmf-10
+  source_type: standard
+  status: checked
+  last_checked: 2026-07-11
+  claim_scope: AI risk management or generative AI governance.
+  replacement_url: none
+  notes: Safety or governance standard. Prefer primary page over stale mirrors.
+
+- id: owasp-ai-agent-security-cheatsheet
+  owner: OWASP
+  url: https://cheatsheetseries.owasp.org/cheatsheets/AI_Agent_Security_Cheat_Sheet.html
+  source_type: standard
+  status: checked
+  last_checked: 2026-07-11
+  claim_scope: Safety, injection defense, or adversarial technique reference.
+  replacement_url: none
+  notes: Safety or governance standard. Prefer primary page over stale mirrors.
+
+- id: owasp-genai-llm-top-10
+  owner: OWASP
+  url: https://genai.owasp.org/llm-top-10/
+  source_type: standard
+  status: checked
+  last_checked: 2026-07-11
+  claim_scope: Safety, injection defense, or adversarial technique reference.
+  replacement_url: none
+  notes: Safety or governance standard. Prefer primary page over stale mirrors.
+
+- id: owasp-llm-top-10
+  owner: OWASP
+  url: https://owasp.org/www-project-top-10-for-large-language-model-applications/
+  source_type: standard
+  status: checked
+  last_checked: 2026-07-11
+  claim_scope: Safety, injection defense, or adversarial technique reference.
+  replacement_url: none
+  notes: Safety or governance standard. Prefer primary page over stale mirrors.
+
+- id: owasp-prompt-injection-cheatsheet
+  owner: OWASP
+  url: https://cheatsheetseries.owasp.org/cheatsheets/LLM_Prompt_Injection_Prevention_Cheat_Sheet.html
+  source_type: standard
+  status: checked
+  last_checked: 2026-07-11
+  claim_scope: Official prompting guidance.
+  replacement_url: none
+  notes: Safety or governance standard. Prefer primary page over stale mirrors.
+
+- id: arxiv-2507-13334
+  owner: Research community
+  url: https://arxiv.org/abs/2507.13334
+  source_type: survey
+  status: checked
+  last_checked: 2026-07-11
+  claim_scope: Primary research paper cited in catalog recipes or pattern notes (README refs ~2).
+  replacement_url: none
+  notes: Survey taxonomy context. Not current provider behavior.
 
 - id: prompt-report
   owner: Research community
   url: https://arxiv.org/abs/2406.06608
   source_type: survey
   status: checked
-  last_checked: 2026-07-04
-  claim_scope: Prompting method taxonomy and evidence-tier context.
+  last_checked: 2026-07-11
+  claim_scope: Primary research paper cited in catalog recipes or pattern notes (README refs ~19).
   replacement_url: none
-  notes: Treat as survey evidence, not current provider API guidance.
+  notes: Survey taxonomy context. Not current provider behavior.
+
+- id: acl-2024-findings-emnlp-888
+  owner: ACL Anthology
+  url: https://aclanthology.org/2024.findings-emnlp.888/
+  source_type: primary paper
+  status: checked
+  last_checked: 2026-07-11
+  claim_scope: External source cited in the catalog (README refs ~3).
+  replacement_url: none
+  notes: Method or benchmark evidence. Not a provider API contract. Verify version/title via abstract page.
+
+- id: agentdojo
+  owner: Research community
+  url: https://arxiv.org/abs/2406.13352
+  source_type: primary paper
+  status: checked
+  last_checked: 2026-07-11
+  claim_scope: Primary research paper cited in catalog recipes or pattern notes (README refs ~4).
+  replacement_url: none
+  notes: Method or benchmark evidence. Not a provider API contract. Verify version/title via abstract page.
+
+- id: arxiv-2005-11401
+  owner: Research community
+  url: https://arxiv.org/abs/2005.11401
+  source_type: primary paper
+  status: checked
+  last_checked: 2026-07-11
+  claim_scope: Primary research paper cited in catalog recipes or pattern notes (README refs ~4).
+  replacement_url: none
+  notes: Method or benchmark evidence. Not a provider API contract. Verify version/title via abstract page.
+
+- id: arxiv-2005-14165
+  owner: Research community
+  url: https://arxiv.org/abs/2005.14165
+  source_type: primary paper
+  status: checked
+  last_checked: 2026-07-11
+  claim_scope: Primary research paper cited in catalog recipes or pattern notes (README refs ~2).
+  replacement_url: none
+  notes: Method or benchmark evidence. Not a provider API contract. Verify version/title via abstract page.
+
+- id: arxiv-2203-06566
+  owner: Research community
+  url: https://arxiv.org/abs/2203.06566
+  source_type: primary paper
+  status: checked
+  last_checked: 2026-07-11
+  claim_scope: Primary research paper cited in catalog recipes or pattern notes (README refs ~1).
+  replacement_url: none
+  notes: Method or benchmark evidence. Not a provider API contract. Verify version/title via abstract page.
+
+- id: arxiv-2203-11171
+  owner: Research community
+  url: https://arxiv.org/abs/2203.11171
+  source_type: primary paper
+  status: checked
+  last_checked: 2026-07-11
+  claim_scope: Primary research paper cited in catalog recipes or pattern notes (README refs ~2).
+  replacement_url: none
+  notes: Method or benchmark evidence. Not a provider API contract. Verify version/title via abstract page.
+
+- id: arxiv-2205-11916
+  owner: Research community
+  url: https://arxiv.org/abs/2205.11916
+  source_type: primary paper
+  status: checked
+  last_checked: 2026-07-11
+  claim_scope: Primary research paper cited in catalog recipes or pattern notes (README refs ~2).
+  replacement_url: none
+  notes: Method or benchmark evidence. Not a provider API contract. Verify version/title via abstract page.
+
+- id: arxiv-2210-03629
+  owner: Research community
+  url: https://arxiv.org/abs/2210.03629
+  source_type: primary paper
+  status: checked
+  last_checked: 2026-07-11
+  claim_scope: Primary research paper cited in catalog recipes or pattern notes (README refs ~2).
+  replacement_url: none
+  notes: Method or benchmark evidence. Not a provider API contract. Verify version/title via abstract page.
+
+- id: arxiv-2211-01910
+  owner: Research community
+  url: https://arxiv.org/abs/2211.01910
+  source_type: primary paper
+  status: checked
+  last_checked: 2026-07-11
+  claim_scope: Primary research paper cited in catalog recipes or pattern notes (README refs ~2).
+  replacement_url: none
+  notes: Method or benchmark evidence. Not a provider API contract. Verify version/title via abstract page.
+
+- id: arxiv-2211-09527
+  owner: Research community
+  url: https://arxiv.org/abs/2211.09527
+  source_type: primary paper
+  status: checked
+  last_checked: 2026-07-11
+  claim_scope: Primary research paper cited in catalog recipes or pattern notes (README refs ~2).
+  replacement_url: none
+  notes: Method or benchmark evidence. Not a provider API contract. Verify version/title via abstract page.
+
+- id: arxiv-2211-10435
+  owner: Research community
+  url: https://arxiv.org/abs/2211.10435
+  source_type: primary paper
+  status: checked
+  last_checked: 2026-07-11
+  claim_scope: Primary research paper cited in catalog recipes or pattern notes (README refs ~2).
+  replacement_url: none
+  notes: Method or benchmark evidence. Not a provider API contract. Verify version/title via abstract page.
+
+- id: arxiv-2211-12588
+  owner: Research community
+  url: https://arxiv.org/abs/2211.12588
+  source_type: primary paper
+  status: checked
+  last_checked: 2026-07-11
+  claim_scope: Primary research paper cited in catalog recipes or pattern notes (README refs ~2).
+  replacement_url: none
+  notes: Method or benchmark evidence. Not a provider API contract. Verify version/title via abstract page.
+
+- id: arxiv-2212-08061
+  owner: Research community
+  url: https://arxiv.org/abs/2212.08061
+  source_type: primary paper
+  status: checked
+  last_checked: 2026-07-11
+  claim_scope: Primary research paper cited in catalog recipes or pattern notes (README refs ~3).
+  replacement_url: none
+  notes: Method or benchmark evidence. Not a provider API contract. Verify version/title via abstract page.
+
+- id: arxiv-2302-00923
+  owner: Research community
+  url: https://arxiv.org/abs/2302.00923
+  source_type: primary paper
+  status: checked
+  last_checked: 2026-07-11
+  claim_scope: Primary research paper cited in catalog recipes or pattern notes (README refs ~2).
+  replacement_url: none
+  notes: Method or benchmark evidence. Not a provider API contract. Verify version/title via abstract page.
+
+- id: arxiv-2302-05733
+  owner: Research community
+  url: https://arxiv.org/abs/2302.05733
+  source_type: primary paper
+  status: checked
+  last_checked: 2026-07-11
+  claim_scope: Primary research paper cited in catalog recipes or pattern notes (README refs ~2).
+  replacement_url: none
+  notes: Method or benchmark evidence. Not a provider API contract. Verify version/title via abstract page.
+
+- id: arxiv-2302-12246
+  owner: Research community
+  url: https://arxiv.org/abs/2302.12246
+  source_type: primary paper
+  status: checked
+  last_checked: 2026-07-11
+  claim_scope: Primary research paper cited in catalog recipes or pattern notes (README refs ~2).
+  replacement_url: none
+  notes: Method or benchmark evidence. Not a provider API contract. Verify version/title via abstract page.
+
+- id: arxiv-2303-11366
+  owner: Research community
+  url: https://arxiv.org/abs/2303.11366
+  source_type: primary paper
+  status: checked
+  last_checked: 2026-07-11
+  claim_scope: Primary research paper cited in catalog recipes or pattern notes (README refs ~2).
+  replacement_url: none
+  notes: Method or benchmark evidence. Not a provider API contract. Verify version/title via abstract page.
+
+- id: arxiv-2303-17651
+  owner: Research community
+  url: https://arxiv.org/abs/2303.17651
+  source_type: primary paper
+  status: checked
+  last_checked: 2026-07-11
+  claim_scope: Primary research paper cited in catalog recipes or pattern notes (README refs ~2).
+  replacement_url: none
+  notes: Method or benchmark evidence. Not a provider API contract. Verify version/title via abstract page.
+
+- id: arxiv-2305-04091
+  owner: Research community
+  url: https://arxiv.org/abs/2305.04091
+  source_type: primary paper
+  status: checked
+  last_checked: 2026-07-11
+  claim_scope: Primary research paper cited in catalog recipes or pattern notes (README refs ~2).
+  replacement_url: none
+  notes: Method or benchmark evidence. Not a provider API contract. Verify version/title via abstract page.
+
+- id: arxiv-2305-04388
+  owner: Research community
+  url: https://arxiv.org/abs/2305.04388
+  source_type: primary paper
+  status: checked
+  last_checked: 2026-07-11
+  claim_scope: Primary research paper cited in catalog recipes or pattern notes (README refs ~2).
+  replacement_url: none
+  notes: Method or benchmark evidence. Not a provider API contract. Verify version/title via abstract page.
+
+- id: arxiv-2305-10601
+  owner: Research community
+  url: https://arxiv.org/abs/2305.10601
+  source_type: primary paper
+  status: checked
+  last_checked: 2026-07-11
+  claim_scope: Primary research paper cited in catalog recipes or pattern notes (README refs ~2).
+  replacement_url: none
+  notes: Method or benchmark evidence. Not a provider API contract. Verify version/title via abstract page.
+
+- id: arxiv-2305-14325
+  owner: Research community
+  url: https://arxiv.org/abs/2305.14325
+  source_type: primary paper
+  status: checked
+  last_checked: 2026-07-11
+  claim_scope: Primary research paper cited in catalog recipes or pattern notes (README refs ~2).
+  replacement_url: none
+  notes: Method or benchmark evidence. Not a provider API contract. Verify version/title via abstract page.
+
+- id: arxiv-2307-03172
+  owner: Research community
+  url: https://arxiv.org/abs/2307.03172
+  source_type: primary paper
+  status: checked
+  last_checked: 2026-07-11
+  claim_scope: Primary research paper cited in catalog recipes or pattern notes (README refs ~4).
+  replacement_url: none
+  notes: Method or benchmark evidence. Not a provider API contract. Verify version/title via abstract page.
+
+- id: arxiv-2307-05300
+  owner: Research community
+  url: https://arxiv.org/abs/2307.05300
+  source_type: primary paper
+  status: checked
+  last_checked: 2026-07-11
+  claim_scope: Primary research paper cited in catalog recipes or pattern notes (README refs ~3).
+  replacement_url: none
+  notes: Method or benchmark evidence. Not a provider API contract. Verify version/title via abstract page.
+
+- id: arxiv-2307-11760
+  owner: Research community
+  url: https://arxiv.org/abs/2307.11760
+  source_type: primary paper
+  status: checked
+  last_checked: 2026-07-11
+  claim_scope: Primary research paper cited in catalog recipes or pattern notes (README refs ~2).
+  replacement_url: none
+  notes: Method or benchmark evidence. Not a provider API contract. Verify version/title via abstract page.
+
+- id: arxiv-2307-15337
+  owner: Research community
+  url: https://arxiv.org/abs/2307.15337
+  source_type: primary paper
+  status: checked
+  last_checked: 2026-07-11
+  claim_scope: Primary research paper cited in catalog recipes or pattern notes (README refs ~2).
+  replacement_url: none
+  notes: Method or benchmark evidence. Not a provider API contract. Verify version/title via abstract page.
+
+- id: arxiv-2308-07201
+  owner: Research community
+  url: https://arxiv.org/abs/2308.07201
+  source_type: primary paper
+  status: checked
+  last_checked: 2026-07-11
+  claim_scope: Primary research paper cited in catalog recipes or pattern notes (README refs ~3).
+  replacement_url: none
+  notes: Method or benchmark evidence. Not a provider API contract. Verify version/title via abstract page.
+
+- id: arxiv-2308-09687
+  owner: Research community
+  url: https://arxiv.org/abs/2308.09687
+  source_type: primary paper
+  status: checked
+  last_checked: 2026-07-11
+  claim_scope: Primary research paper cited in catalog recipes or pattern notes (README refs ~2).
+  replacement_url: none
+  notes: Method or benchmark evidence. Not a provider API contract. Verify version/title via abstract page.
+
+- id: arxiv-2308-10379
+  owner: Research community
+  url: https://arxiv.org/abs/2308.10379
+  source_type: primary paper
+  status: checked
+  last_checked: 2026-07-11
+  claim_scope: Primary research paper cited in catalog recipes or pattern notes (README refs ~2).
+  replacement_url: none
+  notes: Method or benchmark evidence. Not a provider API contract. Verify version/title via abstract page.
+
+- id: arxiv-2309-03409
+  owner: Research community
+  url: https://arxiv.org/abs/2309.03409
+  source_type: primary paper
+  status: checked
+  last_checked: 2026-07-11
+  claim_scope: Primary research paper cited in catalog recipes or pattern notes (README refs ~2).
+  replacement_url: none
+  notes: Method or benchmark evidence. Not a provider API contract. Verify version/title via abstract page.
+
+- id: arxiv-2309-04269
+  owner: Research community
+  url: https://arxiv.org/abs/2309.04269
+  source_type: primary paper
+  status: checked
+  last_checked: 2026-07-11
+  claim_scope: Primary research paper cited in catalog recipes or pattern notes (README refs ~2).
+  replacement_url: none
+  notes: Method or benchmark evidence. Not a provider API contract. Verify version/title via abstract page.
+
+- id: arxiv-2309-11495
+  owner: Research community
+  url: https://arxiv.org/abs/2309.11495
+  source_type: primary paper
+  status: checked
+  last_checked: 2026-07-11
+  claim_scope: Primary research paper cited in catalog recipes or pattern notes (README refs ~3).
+  replacement_url: none
+  notes: Method or benchmark evidence. Not a provider API contract. Verify version/title via abstract page.
+
+- id: arxiv-2310-03714
+  owner: Research community
+  url: https://arxiv.org/abs/2310.03714
+  source_type: primary paper
+  status: checked
+  last_checked: 2026-07-11
+  claim_scope: Primary research paper cited in catalog recipes or pattern notes (README refs ~2).
+  replacement_url: none
+  notes: Method or benchmark evidence. Not a provider API contract. Verify version/title via abstract page.
+
+- id: arxiv-2310-06117
+  owner: Research community
+  url: https://arxiv.org/abs/2310.06117
+  source_type: primary paper
+  status: checked
+  last_checked: 2026-07-11
+  claim_scope: Primary research paper cited in catalog recipes or pattern notes (README refs ~2).
+  replacement_url: none
+  notes: Method or benchmark evidence. Not a provider API contract. Verify version/title via abstract page.
+
+- id: arxiv-2311-17371
+  owner: Research community
+  url: https://arxiv.org/abs/2311.17371
+  source_type: primary paper
+  status: checked
+  last_checked: 2026-07-11
+  claim_scope: Primary research paper cited in catalog recipes or pattern notes (README refs ~2).
+  replacement_url: none
+  notes: Method or benchmark evidence. Not a provider API contract. Verify version/title via abstract page.
+
+- id: arxiv-2402-05120
+  owner: Research community
+  url: https://arxiv.org/abs/2402.05120
+  source_type: primary paper
+  status: checked
+  last_checked: 2026-07-11
+  claim_scope: Primary research paper cited in catalog recipes or pattern notes (README refs ~1).
+  replacement_url: none
+  notes: Method or benchmark evidence. Not a provider API contract. Verify version/title via abstract page.
+
+- id: arxiv-2403-04957
+  owner: Research community
+  url: https://arxiv.org/abs/2403.04957
+  source_type: primary paper
+  status: checked
+  last_checked: 2026-07-11
+  claim_scope: Primary research paper cited in catalog recipes or pattern notes (README refs ~2).
+  replacement_url: none
+  notes: Method or benchmark evidence. Not a provider API contract. Verify version/title via abstract page.
+
+- id: arxiv-2502-04689
+  owner: Research community
+  url: https://arxiv.org/abs/2502.04689
+  source_type: primary paper
+  status: checked
+  last_checked: 2026-07-11
+  claim_scope: Primary research paper cited in catalog recipes or pattern notes (README refs ~2).
+  replacement_url: none
+  notes: Method or benchmark evidence. Not a provider API contract. Verify version/title via abstract page.
+
+- id: arxiv-2502-08788v2
+  owner: Research community
+  url: https://arxiv.org/html/2502.08788v2
+  source_type: primary paper
+  status: checked
+  last_checked: 2026-07-11
+  claim_scope: Primary research paper cited in catalog recipes or pattern notes (README refs ~1).
+  replacement_url: none
+  notes: Method or benchmark evidence. Not a provider API contract. Verify version/title via abstract page.
+
+- id: arxiv-2502-18600
+  owner: Research community
+  url: https://arxiv.org/abs/2502.18600
+  source_type: primary paper
+  status: checked
+  last_checked: 2026-07-11
+  claim_scope: Primary research paper cited in catalog recipes or pattern notes (README refs ~2).
+  replacement_url: none
+  notes: Method or benchmark evidence. Not a provider API contract. Verify version/title via abstract page.
+
+- id: arxiv-2503-04818
+  owner: Research community
+  url: https://arxiv.org/abs/2503.04818
+  source_type: primary paper
+  status: checked
+  last_checked: 2026-07-11
+  claim_scope: Primary research paper cited in catalog recipes or pattern notes (README refs ~3).
+  replacement_url: none
+  notes: Method or benchmark evidence. Not a provider API contract. Verify version/title via abstract page.
+
+- id: arxiv-2504-14891
+  owner: Research community
+  url: https://arxiv.org/abs/2504.14891
+  source_type: primary paper
+  status: checked
+  last_checked: 2026-07-11
+  claim_scope: Primary research paper cited in catalog recipes or pattern notes (README refs ~3).
+  replacement_url: none
+  notes: Method or benchmark evidence. Not a provider API contract. Verify version/title via abstract page.
+
+- id: arxiv-2506-07142
+  owner: Research community
+  url: https://arxiv.org/abs/2506.07142
+  source_type: primary paper
+  status: checked
+  last_checked: 2026-07-11
+  claim_scope: Primary research paper cited in catalog recipes or pattern notes (README refs ~3).
+  replacement_url: none
+  notes: Method or benchmark evidence. Not a provider API contract. Verify version/title via abstract page.
+
+- id: artificial-analysis
+  owner: Artificial Analysis
+  url: https://artificialanalysis.ai/
+  source_type: practitioner
+  status: checked
+  last_checked: 2026-07-11
+  claim_scope: External source cited in the catalog (README refs ~3).
+  replacement_url: none
+  notes: Practitioner resource. Cross-check against primary papers or official docs for production claims.
+
+- id: promptingguide-ai
+  owner: DAIR.AI
+  url: https://www.promptingguide.ai/
+  source_type: practitioner
+  status: checked
+  last_checked: 2026-07-11
+  claim_scope: External source cited in the catalog (README refs ~1).
+  replacement_url: none
+  notes: Practitioner resource. Cross-check against primary papers or official docs for production claims.
+
+- id: github-openai-openai-cookbook-blob
+  owner: GitHub
+  url: https://github.com/openai/openai-cookbook/blob/main/examples/evaluation/Building_resilient_prompts_using_an_evaluation_flywheel.md
+  source_type: practitioner
+  status: checked
+  last_checked: 2026-07-11
+  claim_scope: Evaluation, agent evals, or trace grading guidance.
+  replacement_url: none
+  notes: Practitioner resource. Cross-check against primary papers or official docs for production claims.
+
+- id: gail-research-and-insights-playing-pretend-expert-personas
+  owner: Wharton
+  url: https://gail.wharton.upenn.edu/research-and-insights/playing-pretend-expert-personas/
+  source_type: practitioner
+  status: checked
+  last_checked: 2026-07-11
+  claim_scope: Search, grounding, retrieval, or URL-context controls.
+  replacement_url: none
+  notes: Practitioner resource. Cross-check against primary papers or official docs for production claims.

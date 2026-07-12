@@ -46,10 +46,36 @@ untrusted evidence. Markdown rendering must pass through the sanitizer before
 publication. Allowed HTML and style attributes are intentionally narrow and
 should only expand when a README feature has a concrete rendering need.
 
-Generated HTML checks must reject obvious unsafe snippets, raw GitHub alert
-markers, unpublished relative Markdown links, and relative `.agents/` links.
-Raw Markdown discovery files such as `llms-full.txt` may preserve README source
-syntax, but browser HTML must be clean.
+Generated HTML checks must reject obvious unsafe snippets (including bare
+executable `<script>` blocks after allowlisting JSON-LD and the analytics config
+JSON script), raw GitHub alert markers, unpublished relative Markdown links, and
+relative `.agents/` links. Raw Markdown discovery files such as `llms-full.txt`
+may preserve README source syntax, but browser HTML must be clean.
+
+### Analytics and Content-Security-Policy
+
+Production `vercel.json` ships a **strict** CSP (`script-src` / `connect-src`
+`'self'`) while analytics defaults to `WEB_ANALYTICS_PROVIDER=none`. That pairing
+is intentional. Enabling PostHog or Umami without widening CSP will break third-
+party scripts in browsers. Before enabling analytics:
+
+1. Keep the provider at `none` until CSP is updated.
+2. For PostHog, allow `https://*.posthog.com` in `script-src` and `connect-src`
+   (see [PostHog CSP docs](https://posthog.com/docs/advanced/content-security-policy)).
+3. For Umami, allow the self-hosted script and API hosts.
+4. Optional build gate: set `WEB_ANALYTICS_CSP_ENFORCE=1` so `web/build.mjs`
+   loads `vercel.json` CSP and runs `assertAnalyticsCspCompatible` against the
+   configured provider before writing `public/`. Unset (default) skips the check.
+   Unit coverage lives in `web/test/analytics.test.mjs`.
+
+Do not pre-open third-party hosts in CSP while analytics remains disabled.
+
+### Recipe vs pattern ItemList split
+
+Home JSON-LD uses dual `ItemList` graphs (48 prompt recipes + 43 pattern notes).
+Classification currently treats h4 headings with an icon `<img>` as recipes and
+h4s without as pattern notes. Generated-site checks assert both counts. Avoid
+adding decorative images to pattern-note headings without updating the extractor.
 
 ## Link Policy
 

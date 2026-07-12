@@ -5,13 +5,14 @@ import hljs from "highlight.js";
 import GithubSlugger from "github-slugger";
 import sanitizeHtml from "sanitize-html";
 import { repositoryFileUrl } from "./site.config.mjs";
+import { sourceRoute as staticSourceRoute } from "./routes.mjs";
 
-const ROUTE_BY_SOURCE = new Map([
-  ["README.md", "/"],
-  ["CONTRIBUTING.md", "/contributing/"],
-  ["SECURITY.md", "/security/"],
-  ["CODE_OF_CONDUCT.md", "/code-of-conduct/"]
-]);
+/** Optional published-route set for this build (set via setPublishedRoutes). */
+let publishedRoutes = null;
+
+export function setPublishedRoutes(routes) {
+  publishedRoutes = routes ? new Set(routes) : null;
+}
 
 const SAFE_STYLE_VALUE = /^(?:#[0-9a-fA-F]{3,8}|[a-zA-Z]+|rgb\([0-9,\s]+\)|rgba\([0-9,\s.]+\))$/;
 
@@ -164,11 +165,19 @@ export function relativePrefix(route) {
 }
 
 export function routeToOutputParts(route) {
-  return route === "/" ? ["index.html"] : [...route.split("/").filter(Boolean), "index.html"];
+  const parts =
+    route === "/" ? ["index.html"] : [...route.split("/").filter(Boolean), "index.html"];
+  if (parts.some((part) => part === ".." || part === ".")) {
+    throw new Error(`Refusing unsafe route segments: ${route}`);
+  }
+  return parts;
 }
 
 export function sourceRoute(source) {
-  return ROUTE_BY_SOURCE.get(source);
+  const route = staticSourceRoute(source);
+  if (!route) return null;
+  if (publishedRoutes && !publishedRoutes.has(route)) return null;
+  return route;
 }
 
 function repoSourceUrl(path, fragment = "") {

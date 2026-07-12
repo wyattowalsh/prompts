@@ -23,7 +23,7 @@ py-test:
     PYTHONDONTWRITEBYTECODE=1 python3 -m unittest discover -s tests -v
 
 py-compile:
-    PYTHONPYCACHEPREFIX="${TMPDIR:-/tmp}/prompts-pycache-just" python3 -m py_compile scripts/update_readme_badges.py scripts/check_readme_recipes.py scripts/audit_paste_zone_cells.py scripts/hoist_paste_preview.py scripts/format_recipe_catalog.py scripts/check_sources_manifest.py
+    PYTHONPYCACHEPREFIX="${TMPDIR:-/tmp}/prompts-pycache-just" python3 -m py_compile scripts/catalog_constants.py scripts/recipe_heading.py scripts/update_readme_badges.py scripts/check_readme_recipes.py scripts/audit_paste_zone_cells.py scripts/hoist_paste_preview.py scripts/format_recipe_catalog.py scripts/check_sources_manifest.py
 
 eval-json:
     python3 -m json.tool .agents/skills/readme-catalog-steward/evals/evals.json >/dev/null
@@ -65,6 +65,6 @@ precommit:
 prepush:
     git ls-files --cached --others --exclude-standard -z | xargs -0 pre-commit run --hook-stage pre-push --files
 
-validate-fast: readme-check sources-check py-test py-compile eval-json yaml-check web-lint web-test web-build whitespace
+validate-fast: readme-check sources-check py-test py-compile eval-json yaml-check docs-lint web-lint web-test web-build whitespace
 
 validate: validate-fast docs-links precommit prepush

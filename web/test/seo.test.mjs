@@ -9,6 +9,8 @@ import {
 import {
   buildStructuredData,
   extractHeadingItems,
+  extractPatternHeadingItems,
+  extractRecipeHeadingItems,
   renderHeadMeta,
   renderLlmsTxt,
   renderRobotsTxt,
@@ -88,11 +90,39 @@ test("builds canonical repository source URLs", () => {
 test("extracts visible heading items for item list structured data", () => {
   const items = extractHeadingItems(
     '<h4 id="source-grounded-answer"><img alt=""> Source-Grounded Answer</h4>',
-    "https://docs.example.com/prompts/"
+    "https://docs.example.com/prompts/",
+    4,
+    { requireImg: true }
   );
   assert.equal(items.length, 1);
   assert.equal(items[0].name, "Source-Grounded Answer");
   assert.equal(items[0].url, "https://docs.example.com/prompts/#source-grounded-answer");
+});
+
+test("splits recipe and pattern heading lists", () => {
+  const html = [
+    '<h4 id="source-grounded-answer"><img alt=""> Source-Grounded Answer</h4>',
+    '<h4 id="chain-of-thought">Chain-of-Thought</h4>'
+  ].join("");
+  const recipes = extractRecipeHeadingItems(html, "https://docs.example.com/prompts/");
+  const patterns = extractPatternHeadingItems(html, "https://docs.example.com/prompts/");
+  assert.equal(recipes.length, 1);
+  assert.equal(recipes[0].name, "Source-Grounded Answer");
+  assert.equal(patterns.length, 1);
+  assert.equal(patterns[0].name, "Chain-of-Thought");
+});
+
+test("img presence couples pattern-looking titles into the recipe list", () => {
+  // Documents RV-S-005 risk: a decorative img on a pattern note reclassifies it.
+  const html =
+    '<h4 id="chain-of-thought"><img alt=""> Chain-of-Thought</h4>' +
+    '<h4 id="direct-zero-shot">Direct Zero-Shot</h4>';
+  const recipes = extractRecipeHeadingItems(html, "https://docs.example.com/prompts/");
+  const patterns = extractPatternHeadingItems(html, "https://docs.example.com/prompts/");
+  assert.equal(recipes.length, 1);
+  assert.equal(recipes[0].name, "Chain-of-Thought");
+  assert.equal(patterns.length, 1);
+  assert.equal(patterns[0].name, "Direct Zero-Shot");
 });
 
 test("builds structured data graph for the home collection page", () => {
@@ -100,27 +130,30 @@ test("builds structured data graph for the home collection page", () => {
     const data = buildStructuredData({
       page: homePage,
       canonicalUrl: absoluteUrl("/"),
-      content: '<h4 id="source-grounded-answer">Source-Grounded Answer</h4>',
+      content:
+        '<h4 id="source-grounded-answer"><img alt=""> Source-Grounded Answer</h4><h4 id="chain-of-thought">Chain-of-Thought</h4>',
       lastmod: "2026-07-06T00:00:00.000Z",
       pages: [homePage]
     });
     assert.equal(data["@context"], "https://schema.org");
-    assert.equal(data["@graph"][0]["@type"], "WebSite");
-    assert.deepEqual(data["@graph"][0].hasPart, [
-      { "@id": "https://docs.example.com/prompts/#webpage" }
-    ]);
-    assert.equal(data["@graph"][1]["@type"], "CollectionPage");
-    assert.equal(data["@graph"][1].isBasedOn.url, rawRepositoryFileUrl("README.md"));
-    assert.equal(
-      data["@graph"][1].mainEntity["@id"],
-      "https://docs.example.com/prompts/#catalog-entries"
+    const types = data["@graph"].map((node) => node["@type"]);
+    assert.ok(types.includes("WebSite"));
+    assert.ok(types.includes("Organization"));
+    assert.ok(types.includes("Person"));
+    assert.ok(types.includes("CollectionPage"));
+    const website = data["@graph"].find((node) => node["@type"] === "WebSite");
+    assert.deepEqual(website.hasPart, [{ "@id": "https://docs.example.com/prompts/#webpage" }]);
+    const collection = data["@graph"].find((node) => node["@type"] === "CollectionPage");
+    assert.equal(collection.isBasedOn.url, rawRepositoryFileUrl("README.md"));
+    assert.equal(collection.mainEntity["@id"], "https://docs.example.com/prompts/#prompt-recipes");
+    const recipeList = data["@graph"].find(
+      (node) => node["@type"] === "ItemList" && node.name === "Prompt recipes"
     );
-    assert.equal(data["@graph"][2]["@type"], "ItemList");
-    assert.equal(data["@graph"][2].name, "Prompt recipes and pattern notes");
-    assert.equal(
-      data["@graph"][2].mainEntityOfPage["@id"],
-      "https://docs.example.com/prompts/#webpage"
+    assert.equal(recipeList.numberOfItems, 1);
+    const patternList = data["@graph"].find(
+      (node) => node["@type"] === "ItemList" && node.name === "Pattern notes"
     );
+    assert.equal(patternList.numberOfItems, 1);
   });
 });
 
@@ -129,7 +162,7 @@ test("renders page head discovery metadata", () => {
     const structuredData = buildStructuredData({
       page: homePage,
       canonicalUrl: absoluteUrl("/"),
-      content: '<h4 id="source-grounded-answer">Source-Grounded Answer</h4>',
+      content: '<h4 id="source-grounded-answer"><img alt=""> Source-Grounded Answer</h4>',
       lastmod: "2026-07-06T00:00:00.000Z",
       pages: [homePage]
     });
@@ -143,6 +176,9 @@ test("renders page head discovery metadata", () => {
     assert.match(head, /type="text\/plain" title="LLMs manifest"/);
     assert.match(head, /type="text\/plain" title="Full Markdown export"/);
     assert.match(head, /type="text\/markdown" title="Canonical Markdown source"/);
+    assert.match(head, /property="og:image"/);
+    assert.match(head, /name="twitter:card" content="summary_large_image"/);
+    assert.match(head, /rel="icon"/);
   });
 });
 
@@ -158,6 +194,11 @@ test("renders crawl and AI-readable discovery artifacts", () => {
     assert.match(renderSitemap(entries), /<urlset/);
     assert.match(renderSitemap(entries), /<loc>https:\/\/docs\.example\.com\/prompts\/<\/loc>/);
     assert.match(renderRobotsTxt(), /Sitemap: https:\/\/docs\.example\.com\/prompts\/sitemap\.xml/);
-    assert.match(renderLlmsTxt(entries), /Full Markdown export/);
+    assert.match(renderRobotsTxt(), /Disallow: \/pagefind\//);
+    assert.match(renderRobotsTxt(), /User-agent: GPTBot/);
+    const homeContent = '<h4 id="source-grounded-answer"><img alt=""> Source-Grounded Answer</h4>';
+    assert.match(renderLlmsTxt(entries, { homeContent }), /Full Markdown export/);
+    assert.match(renderLlmsTxt(entries, { homeContent }), /## Prompt recipes/);
+    assert.match(renderLlmsTxt(entries, { homeContent }), /#source-grounded-answer/);
   });
 });

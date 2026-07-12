@@ -1,6 +1,8 @@
 import { readdir, readFile } from "node:fs/promises";
 import { existsSync } from "node:fs";
 import { join, resolve } from "node:path";
+import { assertCleanGeneratedHtml } from "./assert-clean-html.mjs";
+import { PATTERN_NOTE_COUNT, RECIPE_COUNT } from "./catalog-counts.mjs";
 import { absoluteUrl } from "./site.config.mjs";
 
 const requiredFiles = [
@@ -36,32 +38,6 @@ async function htmlFiles(dir) {
   return files;
 }
 
-function assertCleanGeneratedHtml(file, html) {
-  const alertMarker = html.match(/\[!(?:TIP|NOTE|IMPORTANT|WARNING|CAUTION)\]/);
-  if (alertMarker) {
-    throw new Error(
-      `Generated HTML contains raw GitHub alert marker in ${file}: ${alertMarker[0]}`
-    );
-  }
-
-  for (const match of html.matchAll(/\s(href|src)="([^"]+)"/g)) {
-    const attr = match[1];
-    const value = match[2];
-    const external =
-      value.startsWith("http://") || value.startsWith("https://") || value.startsWith("mailto:");
-    if (external || value.startsWith("#") || value.startsWith("?")) {
-      continue;
-    }
-    const pathSegments = value.split(/[?#]/, 1)[0].split("/").filter(Boolean);
-    if (pathSegments.includes(".agents")) {
-      throw new Error(`Generated HTML contains unpublished .agents/ ${attr} in ${file}: ${value}`);
-    }
-    if (attr === "href" && /^[^#?]+\.md(?:#[^?]+)?$/i.test(value)) {
-      throw new Error(`Generated HTML contains unpublished Markdown href in ${file}: ${value}`);
-    }
-  }
-}
-
 const home = await readFile("public/index.html", "utf8");
 const requiredSnippets = [
   "data-pagefind-body",
@@ -85,8 +61,16 @@ for (const snippet of requiredSnippets) {
   }
 }
 
-if (home.includes("<script>alert(") || home.includes("javascript:")) {
+if (home.includes("<script>alert(") || /\sjavascript:/i.test(home)) {
   throw new Error("Generated home page contains an unsafe script or javascript URL snippet.");
+}
+
+if (!home.includes('rel="icon"') || !home.includes("og:image")) {
+  throw new Error("Generated home page is missing favicon or Open Graph image tags.");
+}
+
+if (!home.includes("skip-link") || !home.includes('id="main-content"')) {
+  throw new Error("Generated home page is missing skip link or main landmark id.");
 }
 
 const analyticsConfigMatch = home.match(
@@ -125,7 +109,7 @@ if (!structuredDataMatch) {
 
 const structuredData = JSON.parse(structuredDataMatch[1]);
 const graphTypes = new Set(structuredData["@graph"]?.map((node) => node["@type"]) ?? []);
-for (const type of ["WebSite", "CollectionPage", "ItemList"]) {
+for (const type of ["WebSite", "CollectionPage", "ItemList", "Organization", "Person"]) {
   if (!graphTypes.has(type)) {
     throw new Error(`Generated JSON-LD is missing ${type}.`);
   }
@@ -134,6 +118,24 @@ for (const type of ["WebSite", "CollectionPage", "ItemList"]) {
 const collectionPage = structuredData["@graph"]?.find((node) => node["@type"] === "CollectionPage");
 if (!collectionPage?.isBasedOn?.url || !collectionPage?.mainEntity?.["@id"]) {
   throw new Error("Generated CollectionPage JSON-LD is missing source or mainEntity links.");
+}
+
+const recipeList = structuredData["@graph"]?.find(
+  (node) => node["@type"] === "ItemList" && node.name === "Prompt recipes"
+);
+if (!recipeList || recipeList.numberOfItems !== RECIPE_COUNT) {
+  throw new Error(
+    `Generated Prompt recipes ItemList must have numberOfItems ${RECIPE_COUNT}, got ${recipeList?.numberOfItems}`
+  );
+}
+
+const patternList = structuredData["@graph"]?.find(
+  (node) => node["@type"] === "ItemList" && node.name === "Pattern notes"
+);
+if (!patternList || patternList.numberOfItems !== PATTERN_NOTE_COUNT) {
+  throw new Error(
+    `Generated Pattern notes ItemList must have numberOfItems ${PATTERN_NOTE_COUNT}, got ${patternList?.numberOfItems}`
+  );
 }
 
 const sitemap = await readFile("public/sitemap.xml", "utf8");
@@ -156,10 +158,26 @@ const robots = await readFile("public/robots.txt", "utf8");
 if (!robots.includes(`Sitemap: ${absoluteUrl("sitemap.xml")}`)) {
   throw new Error("Generated robots.txt is missing the canonical sitemap URL.");
 }
+if (!robots.includes("Disallow: /pagefind/")) {
+  throw new Error("Generated robots.txt must disallow /pagefind/.");
+}
 
 const llms = await readFile("public/llms.txt", "utf8");
 if (!llms.includes("Full Markdown export") || !llms.includes("Canonical repository")) {
   throw new Error("Generated llms.txt is missing expected AI-readable source pointers.");
+}
+if (!llms.includes("## Prompt recipes") || !llms.includes("#source-grounded-answer")) {
+  throw new Error("Generated llms.txt is missing the prompt recipe index section.");
+}
+
+for (const asset of [
+  "public/assets/og-default.png",
+  "public/assets/favicon.svg",
+  "public/assets/apple-touch-icon.png"
+]) {
+  if (!existsSync(resolve(asset))) {
+    throw new Error(`Missing generated social/icon asset: ${asset}`);
+  }
 }
 
 console.log("Generated site check passed.");

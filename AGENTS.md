@@ -37,8 +37,11 @@ This repository maintains a research-backed prompt engineering catalog. Treat
 
 ## README Recipe And Pattern Contract
 
-When adding or changing a prompt recipe or pattern note, include the fields that
-fit the format:
+Recipes (48 Prompt Library cards) and pattern notes use **different** field sets.
+See `.agents/skills/readme-catalog-steward/references/card-contract.md` for the
+enforced recipe layout. Do not apply the pattern-note field list to recipe cards.
+
+**Pattern notes** should include fields that fit:
 
 - Definition
 - Best use
@@ -53,6 +56,10 @@ fit the format:
 - Caveat
 - Clickable sources
 
+**Recipes** use: Use for, placeholder/paste-zone table, Copy prompt,
+Fill these in, Expected output, Upgrade when, optional Control/evidence note,
+Safety/eval checks, Sources (see checker + card-contract).
+
 Templates should separate:
 
 - durable instructions
@@ -60,7 +67,7 @@ Templates should separate:
 - untrusted input
 - tool permissions and side effects
 - output contract
-- validation before final answer
+- validation before final answer (class-appropriate, not generic for all jobs)
 
 ## Source And Freshness Rules
 
@@ -112,6 +119,8 @@ pnpm exec markdownlint-cli2 "${DOCS[@]}"
 pnpm exec markdown-link-check "${DOCS[@]}"
 python3 scripts/update_readme_badges.py --check
 PYTHONPYCACHEPREFIX=/tmp/prompts-pycache python3 -m py_compile \
+  scripts/catalog_constants.py \
+  scripts/recipe_heading.py \
   scripts/update_readme_badges.py \
   scripts/check_readme_recipes.py \
   scripts/audit_paste_zone_cells.py \

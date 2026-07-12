@@ -26,7 +26,20 @@ export function siteBaseUrl() {
   }
   const value = raw || site.defaultBaseUrl;
   const withProtocol = /^https?:\/\//i.test(value) ? value : `https://${value}`;
-  return withProtocol.endsWith("/") ? withProtocol : `${withProtocol}/`;
+  const normalized = withProtocol.endsWith("/") ? withProtocol : `${withProtocol}/`;
+
+  // Optional production guard: refuse baking *.vercel.app when a custom domain is required.
+  if (
+    process.env.WEB_REQUIRE_CUSTOM_DOMAIN === "1" &&
+    process.env.VERCEL === "1" &&
+    /\.vercel\.app\/?$/i.test(normalized)
+  ) {
+    throw new Error(
+      "WEB_REQUIRE_CUSTOM_DOMAIN=1 forbids *.vercel.app canonical hosts. Set WEB_BASE_URL to the public custom domain (e.g. https://prompts.w4w.dev)."
+    );
+  }
+
+  return normalized;
 }
 
 export function absoluteUrl(route, baseUrl = siteBaseUrl()) {

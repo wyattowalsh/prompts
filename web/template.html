@@ -12,6 +12,7 @@
     <script src="{{assetPrefix}}assets/analytics.js" type="module"></script>
   </head>
   <body>
+    <a class="skip-link" href="#main-content">Skip to content</a>
     <header class="site-header" data-pagefind-ignore="all">
       <a class="site-title" href="{{assetPrefix}}">Prompt Library</a>
       <nav class="site-actions" aria-label="Site">
@@ -21,7 +22,9 @@
         <pagefind-modal-trigger placeholder="Search"></pagefind-modal-trigger>
       </nav>
     </header>
-    <main class="markdown-body site-content" {{pagefindBody}}>{{content}}</main>
+    <main id="main-content" class="markdown-body site-content" tabindex="-1" {{pagefindBody}}>
+      {{content}}
+    </main>
     <pagefind-modal reset-on-close></pagefind-modal>
   </body>
 </html>

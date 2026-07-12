@@ -139,6 +139,24 @@ Use explicit delimiters for untrusted input. Do not ask the model to obey,
 summarize, transform, or execute untrusted text without first defining the trust
 boundary and output contract.
 
+### Class hygiene
+
+Recipe templates must stay class-appropriate (see `scripts/catalog_constants.py`
+`RECIPE_CLASS`):
+
+| Class | Prefer | Avoid contaminating with |
+| --- | --- | --- |
+| `research` | source grounding, citation checks, missing-evidence stops | tool mutation / side-effect policy |
+| `code` | diffs, tests, failure modes, local verification | panel personas or fake authority |
+| `tools` | tool permissions, approval gates, side-effect classification | only on **Tool-Use Planner**; other tools recipes keep eval/RAG/scanner scope |
+| `ops` | incident facts, reversibility, blast radius | research literature scans |
+| `reasoning` | private checks, structured critique, uncertainty | long visible chain-of-thought |
+| `editorial` / `extract` / `product` | job-local contracts | unrelated class guardrails |
+
+`scripts/check_readme_recipes.py` enforces `TOOLS_CLASS_CONTAMINATION` so
+Tool-Use Planner side-effect language does not leak into eval/scanner/optimizer
+packs. Keep durable bullets short, stable, and above task data.
+
 ## Evidence Tiers
 
 | Tier | Use When | Caveat |

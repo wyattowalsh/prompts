@@ -259,6 +259,13 @@ def main() -> None:
         if FILL_CANONICAL_POINTER not in readme:
             raise SystemExit("README missing canonical fill pointer")
         return
+    # One-shot migration tool: refuse to re-apply on already-compact catalog.
+    if "### After copy" in readme or "<summary>After copy</summary>" in readme:
+        if "Paste zones:" not in readme:
+            raise SystemExit(
+                "README already uses compact After-copy details; format_recipe_catalog is a one-shot migrator. "
+                "Refuse to re-apply. Use --check to verify, or restore a pre-transform backup."
+            )
     transformed = transform_readme(readme)
     if args.dry_run:
         print(transformed[:4000])

@@ -27,11 +27,41 @@
 
 html {
   scroll-behavior: smooth;
+  scroll-padding-top: 4.5rem;
 }
 
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
+  }
+}
+
+.skip-link {
+  position: absolute;
+  left: 0.75rem;
+  top: 0.75rem;
+  z-index: 100;
+  padding: 0.5rem 0.75rem;
+  border-radius: 0.375rem;
+  background: var(--site-panel);
+  color: var(--site-fg);
+  border: 1px solid var(--site-border);
+  text-decoration: none;
+  transform: translateY(-150%);
+  transition: transform 0.15s ease;
+}
+
+.skip-link:focus {
+  transform: translateY(0);
+}
+
+.markdown-body.site-content :is(h1, h2, h3, h4, h5, h6) {
+  scroll-margin-top: 4.5rem;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --site-panel: #161b22;
   }
 }
 
