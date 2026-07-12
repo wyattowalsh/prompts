@@ -105,7 +105,7 @@ Official reference: [PostHog Content Security Policy](https://posthog.com/docs/a
 | RV-S-013 | LOCAL closed | Host-first PostHog CSP; no wildcard short-circuit for evil hosts |
 | RV-S-014 | LOCAL closed | `extractVercelCsp` / `assertVercelAnalyticsCspCompatible` unit tests |
 | RV-S-015 | LOCAL closed | Removed dead `allowsPosthog` export (host-first assert is SSOT) |
-| RV-S-006 | **OPEN (user)** | Production `WEB_BASE_URL` + rebuild |
+| RV-S-006 | **LIVE closed** | Production env + redeploy; identity on prompts.w4w.dev |
 
 ## Out of scope until directed
 
