@@ -76,13 +76,13 @@
 
 - id: anthropic-build-with-claude-prompt-engineering-reduce-hallucinations
   owner: Anthropic
-  url: https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/reduce-hallucinations
+  url: https://platform.claude.com/docs/en/test-and-evaluate/strengthen-guardrails/reduce-hallucinations
   source_type: official doc
   status: checked
-  last_checked: 2026-07-11
-  claim_scope: Official prompting guidance.
+  last_checked: 2026-07-12
+  claim_scope: Official guidance on reducing hallucinations and strengthening guardrails.
   replacement_url: none
-  notes: Verify live before latest/current model or API claims. Prefer this over secondary blogs.
+  notes: Moved from retired prompt-engineering path; verified 200 on 2026-07-12.
 
 - id: anthropic-citations
   owner: Anthropic

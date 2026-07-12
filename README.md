@@ -6205,7 +6205,7 @@ Validation: run the block in [AGENTS.md § Validation](AGENTS.md#validation).
 - [Anthropic Fable/Mythos access update](https://www.anthropic.com/news/fable-mythos-access)
 - [Anthropic prompt engineering overview](https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/overview)
 - [Anthropic prompting best practices](https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices)
-- [Anthropic reduce hallucinations](https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/reduce-hallucinations)
+- [Anthropic reduce hallucinations](https://platform.claude.com/docs/en/test-and-evaluate/strengthen-guardrails/reduce-hallucinations)
 - [Anthropic Extended Thinking](https://platform.claude.com/docs/en/build-with-claude/extended-thinking)
 - [Anthropic Structured Outputs](https://platform.claude.com/docs/en/build-with-claude/structured-outputs)
 - [Anthropic citations](https://platform.claude.com/docs/en/build-with-claude/citations)

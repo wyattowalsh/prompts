@@ -29,23 +29,27 @@ WEB_BASE_URL=https://prompts.w4w.dev pnpm run build
 
 ## Live production gap (H0)
 
-Probed `https://prompts.w4w.dev/` on **2026-07-12**:
+Probed `https://prompts.w4w.dev/` on **2026-07-12** after Production
+`WEB_BASE_URL=https://prompts.w4w.dev`, `WEB_REQUIRE_CUSTOM_DOMAIN=1`, commit
+`0795d84`, and `vercel deploy --prod`:
 
 | Check | Live |
 | --- | --- |
-| HTTP 200 | PASS |
-| Canonical host | **FAIL** — still `https://prompts-six-eta.vercel.app/` |
-| `og:url` host | **FAIL** — still Vercel default project URL |
-| `og:image` | **FAIL** — missing on live (local build has it) |
-| robots Sitemap | **FAIL** — `https://prompts-six-eta.vercel.app/sitemap.xml` |
-| sitemap loc | **FAIL** — vercel.app |
-| `prompts.w4w.dev` in HTML | **0** (target: many) |
-| `vercel.app` in HTML | **~106** (target: 0 for identity URLs) |
-| last-modified | **2026-07-07** — stale vs this tree |
+| HTTP 200 | **PASS** |
+| Canonical host | **PASS** — `https://prompts.w4w.dev/` |
+| `og:url` host | **PASS** — `https://prompts.w4w.dev/` |
+| `og:image` | **PASS** — `https://prompts.w4w.dev/assets/og-default.png` |
+| Favicon | **PASS** |
+| robots Sitemap | **PASS** — `https://prompts.w4w.dev/sitemap.xml` |
+| sitemap loc | **PASS** — prompts.w4w.dev |
+| `prompts.w4w.dev` in HTML | **~120** |
+| `vercel.app` in HTML | **0** |
+| Dual ItemList (recipes + patterns) | **PASS** |
+| CSP / nosniff / frame-deny | **PASS** |
+| llms.txt | **PASS** |
 
-Root cause: build-time `siteBaseUrl` without Production `WEB_BASE_URL`, plus no redeploy of the remediated tree.
-
-Project link (from `.vercel/project.json`): `prj_kT03mNmTjXXBMazMs6nrziQzYQM0` / team `team_901f2wfuPzIVurGCpjTJsAW8`.
+Project (`.vercel/project.json`): `prj_kT03mNmTjXXBMazMs6nrziQzYQM0` /
+`team_901f2wfuPzIVurGCpjTJsAW8`.
 
 ## User actions to close H0 + W7
 
