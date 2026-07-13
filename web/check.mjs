@@ -7,8 +7,7 @@ import { absoluteUrl } from "./site.config.mjs";
 
 const requiredFiles = [
   "public/index.html",
-  "public/assets/analytics.js",
-  "public/assets/site.css",
+  "public/assets/manifest.json",
   "public/sitemap.xml",
   "public/robots.txt",
   "public/llms.txt",
@@ -21,6 +20,17 @@ const requiredFiles = [
 for (const file of requiredFiles) {
   if (!existsSync(resolve(file))) {
     throw new Error(`Missing generated site file: ${file}`);
+  }
+}
+
+const assetManifest = JSON.parse(await readFile("public/assets/manifest.json", "utf8"));
+for (const key of ["site.css", "analytics.js", "site-ui.mjs"]) {
+  const rel = assetManifest[key];
+  if (!rel || !existsSync(resolve("public", rel))) {
+    throw new Error(`Missing hashed asset for ${key}: ${rel || "(unset)"}`);
+  }
+  if (!/\.[a-f0-9]{12}\./i.test(rel)) {
+    throw new Error(`Asset ${key} is not content-hashed: ${rel}`);
   }
 }
 
@@ -52,7 +62,8 @@ const requiredSnippets = [
   "<pagefind-modal-trigger",
   "<pagefind-modal",
   'id="prompts-analytics-config"',
-  'src="assets/analytics.js"'
+  "scroll-progress",
+  "site-ui"
 ];
 
 for (const snippet of requiredSnippets) {
@@ -116,8 +127,15 @@ for (const type of ["WebSite", "CollectionPage", "ItemList", "Organization", "Pe
 }
 
 const collectionPage = structuredData["@graph"]?.find((node) => node["@type"] === "CollectionPage");
-if (!collectionPage?.isBasedOn?.url || !collectionPage?.mainEntity?.["@id"]) {
+if (!collectionPage?.isBasedOn?.url || !collectionPage?.mainEntity) {
   throw new Error("Generated CollectionPage JSON-LD is missing source or mainEntity links.");
+}
+const mainEntityRefs = Array.isArray(collectionPage.mainEntity)
+  ? collectionPage.mainEntity
+  : [collectionPage.mainEntity];
+const mainEntityIds = new Set(mainEntityRefs.map((entry) => entry?.["@id"]).filter(Boolean));
+if (mainEntityIds.size < 1) {
+  throw new Error("Generated CollectionPage JSON-LD mainEntity is empty.");
 }
 
 const recipeList = structuredData["@graph"]?.find(
@@ -136,6 +154,36 @@ if (!patternList || patternList.numberOfItems !== PATTERN_NOTE_COUNT) {
   throw new Error(
     `Generated Pattern notes ItemList must have numberOfItems ${PATTERN_NOTE_COUNT}, got ${patternList?.numberOfItems}`
   );
+}
+if (recipeList?.["@id"] && !mainEntityIds.has(recipeList["@id"])) {
+  throw new Error("CollectionPage.mainEntity must reference the Prompt recipes ItemList.");
+}
+if (patternList?.["@id"] && !mainEntityIds.has(patternList["@id"])) {
+  throw new Error("CollectionPage.mainEntity must reference the Pattern notes ItemList.");
+}
+if (recipeList?.itemListElement && recipeList.itemListElement.length !== recipeList.numberOfItems) {
+  throw new Error("Prompt recipes ItemList numberOfItems does not match itemListElement length.");
+}
+if (
+  patternList?.itemListElement &&
+  patternList.itemListElement.length !== patternList.numberOfItems
+) {
+  throw new Error("Pattern notes ItemList numberOfItems does not match itemListElement length.");
+}
+const recipeSlugs = new Set(
+  (recipeList?.itemListElement || [])
+    .map((item) => String(item.url || "").split("#")[1])
+    .filter(Boolean)
+);
+const patternSlugs = new Set(
+  (patternList?.itemListElement || [])
+    .map((item) => String(item.url || "").split("#")[1])
+    .filter(Boolean)
+);
+for (const slug of recipeSlugs) {
+  if (patternSlugs.has(slug)) {
+    throw new Error(`ItemList membership collision on slug #${slug}`);
+  }
 }
 
 const sitemap = await readFile("public/sitemap.xml", "utf8");

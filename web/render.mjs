@@ -222,6 +222,30 @@ export function rewriteLinks(html, route) {
   });
 }
 
+/**
+ * Web-only chrome: make After-copy disclosure labels unique per recipe (a11y).
+ * Does not mutate README.md; applied after Markdown render + sanitize.
+ */
+export function enhanceAfterCopySummaries(html) {
+  let lastRecipeName = "";
+  return html.replace(/<h4\b[^>]*>[\s\S]*?<\/h4>|<summary>([\s\S]*?)<\/summary>/gi, (match) => {
+    if (/^<h4\b/i.test(match)) {
+      const hasImg = /<img\b/i.test(match);
+      const text = match
+        .replace(/<[^>]+>/g, " ")
+        .replace(/\s+/g, " ")
+        .trim();
+      if (hasImg && text) lastRecipeName = text;
+      return match;
+    }
+    if (!lastRecipeName) return match;
+    if (!/After copy/i.test(match)) return match;
+    if (match.includes(lastRecipeName)) return match;
+    return `<summary><strong>After copy — ${lastRecipeName}</strong> — fill · output · upgrade · safety · sources</summary>`;
+  });
+}
+
 export function renderMarkdownPage(markdown, route) {
-  return rewriteLinks(sanitizeRenderedHtml(renderAlerts(markdownToHtml(markdown))), route);
+  const html = rewriteLinks(sanitizeRenderedHtml(renderAlerts(markdownToHtml(markdown))), route);
+  return enhanceAfterCopySummaries(html);
 }

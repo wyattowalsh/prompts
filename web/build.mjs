@@ -1,5 +1,6 @@
 import { mkdir, readFile, rm, stat, writeFile } from "node:fs/promises";
 import { existsSync } from "node:fs";
+import { createHash } from "node:crypto";
 import { createRequire } from "node:module";
 import { execFileSync } from "node:child_process";
 import { dirname, join, resolve } from "node:path";
@@ -33,9 +34,32 @@ const publicDir = resolve("public");
 const templatePath = resolve("web/template.html");
 const cssPath = resolve("web/assets/site.css");
 const analyticsPath = resolve("web/assets/analytics.js");
+const siteUiPath = resolve("web/assets/site-ui.mjs");
 const staticAssetNames = ["og-default.png", "favicon.svg", "favicon.ico", "apple-touch-icon.png"];
 const retryableRmCodes = new Set(["ENOTEMPTY", "EBUSY", "EPERM"]);
 const require = createRequire(import.meta.url);
+/** @type {Record<string, string>} */
+let assetManifest = {
+  "site.css": "assets/site.css",
+  "analytics.js": "assets/analytics.js",
+  "site-ui.mjs": "assets/site-ui.mjs"
+};
+
+function contentHash(buffer) {
+  return createHash("sha256").update(buffer).digest("hex").slice(0, 12);
+}
+
+async function writeHashedAsset(logicalName, content) {
+  const hash = contentHash(Buffer.isBuffer(content) ? content : Buffer.from(content));
+  const extMatch = logicalName.match(/\.([^.]+)$/);
+  const ext = extMatch ? extMatch[1] : "bin";
+  const base = logicalName.replace(/\.([^.]+)$/, "");
+  const hashed = `${base}.${hash}.${ext}`;
+  const rel = `assets/${hashed}`;
+  await writeFile(join(publicDir, rel), content);
+  assetManifest[logicalName] = rel;
+  return rel;
+}
 
 function gitLastmodIso(sourcePath) {
   try {
@@ -94,6 +118,9 @@ function applyTemplate(template, replacements) {
     "headMeta",
     "analyticsConfig",
     "assetPrefix",
+    "siteCssHref",
+    "analyticsSrc",
+    "siteUiSrc",
     "sourcePath",
     "pagefindBody",
     "content"
@@ -134,6 +161,9 @@ async function writePage(page, template, publishedPages) {
     headMeta,
     analyticsConfig: renderAnalyticsConfig(analyticsConfig),
     assetPrefix,
+    siteCssHref: `${assetPrefix}${assetManifest["site.css"]}`,
+    analyticsSrc: `${assetPrefix}${assetManifest["analytics.js"]}`,
+    siteUiSrc: `${assetPrefix}${assetManifest["site-ui.mjs"]}`,
     sourcePath: htmlEscape(page.source),
     content,
     pagefindBody: page.index ? "data-pagefind-body" : ""
@@ -149,14 +179,16 @@ async function copyAssets() {
   await mkdir(join(publicDir, "assets"), { recursive: true });
   const vendorCss = await loadVendorCss();
   const siteCss = await readFile(cssPath, "utf8");
-  await writeFile(join(publicDir, "assets/site.css"), `${vendorCss}\n${siteCss}`, "utf8");
-  await writeFile(join(publicDir, "assets/analytics.js"), await readFile(analyticsPath, "utf8"));
+  await writeHashedAsset("site.css", `${vendorCss}\n${siteCss}`);
+  await writeHashedAsset("analytics.js", await readFile(analyticsPath));
+  await writeHashedAsset("site-ui.mjs", await readFile(siteUiPath));
   for (const name of staticAssetNames) {
     const src = resolve("web/assets", name);
     if (existsSync(src)) {
       await writeFile(join(publicDir, "assets", name), await readFile(src));
     }
   }
+  await writeFile(join(publicDir, "assets/manifest.json"), JSON.stringify(assetManifest, null, 2));
 }
 
 async function removePublicDir() {
@@ -200,6 +232,7 @@ async function enforceAnalyticsCspIfRequested() {
 await enforceAnalyticsCspIfRequested();
 await removePublicDir();
 await mkdir(publicDir, { recursive: true });
+await copyAssets();
 
 const template = await readFile(templatePath, "utf8");
 const publishedPages = await discoverPublishedPages();
@@ -209,8 +242,6 @@ for (const page of publishedPages) {
   const entry = await writePage(page, template, publishedPages);
   if (entry) written.push(entry);
 }
-
-await copyAssets();
 await writeFile(join(publicDir, "sitemap.xml"), renderSitemap(written), "utf8");
 await writeFile(join(publicDir, "robots.txt"), renderRobotsTxt(), "utf8");
 const home = written.find((entry) => entry.page.route === "/");

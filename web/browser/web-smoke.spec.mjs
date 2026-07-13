@@ -50,6 +50,11 @@ async function latestAnalyticsEvent(page, eventName) {
   return null;
 }
 
+/** Search control: interim fallback button, then Pagefind .pf-trigger-btn. */
+function searchTrigger(page) {
+  return page.getByRole("button", { name: "Search" }).first();
+}
+
 test("home page renders README catalog and preserves anchors", async ({ page }) => {
   await gotoHome(page);
   await page.goto("/#web-research-brief");
@@ -58,10 +63,34 @@ test("home page renders README catalog and preserves anchors", async ({ page }) 
 
 test("search modal opens from the generated Pagefind component", async ({ page }) => {
   await gotoHome(page);
-  const searchButton = page.getByRole("button", { name: "Search" });
-  await searchButton.click();
-  await expect(searchButton).toHaveAttribute("aria-expanded", "true");
-  await expect(page.locator("pagefind-modal dialog[open] input[type='search']")).toBeFocused();
+  await searchTrigger(page).click();
+  await expect(page.locator(".pf-trigger-btn")).toHaveAttribute("aria-expanded", "true", {
+    timeout: 15_000
+  });
+  await expect(page.locator("pagefind-modal dialog[open] input[type='search']")).toBeFocused({
+    timeout: 15_000
+  });
+});
+
+test("scroll progress bar is present and updates", async ({ page }) => {
+  await gotoHome(page);
+  const bar = page.locator(".scroll-progress");
+  // scaleX(0) at rest is intentionally zero-width; assert attachment + ARIA.
+  await expect(bar).toBeAttached();
+  await expect(bar).toHaveAttribute("role", "progressbar");
+  await page.evaluate(() => window.scrollTo(0, document.body.scrollHeight));
+  await expect
+    .poll(async () => Number(await bar.getAttribute("aria-valuenow")), { timeout: 5_000 })
+    .toBeGreaterThan(0);
+});
+
+test("copy button copies a prompt fence", async ({ page, context }) => {
+  await context.grantPermissions(["clipboard-read", "clipboard-write"]);
+  await gotoHome(page);
+  const btn = page.locator(".copy-btn").first();
+  await expect(btn).toBeVisible();
+  await btn.click();
+  await expect(btn).toHaveText(/Copied/i, { timeout: 3_000 });
 });
 
 test("mobile viewport keeps tables scrollable", async ({ page }) => {
@@ -90,7 +119,7 @@ test("analytics test transport captures explicit page and search events", async 
 
   await expect.poll(() => eventNames(page)).toContain("site_page_view");
 
-  const searchButton = page.getByRole("button", { name: "Search" });
+  const searchButton = searchTrigger(page);
   await searchButton.click();
   const searchInput = page.locator("pagefind-modal dialog[open] input[type='search']");
   await searchInput.fill("structured outputs");
@@ -136,7 +165,7 @@ test("analytics test transport captures zero-result searches", async ({ page }) 
   await gotoHome(page);
   await enableTestAnalytics(page);
 
-  const searchButton = page.getByRole("button", { name: "Search" });
+  const searchButton = searchTrigger(page);
   await searchButton.click();
   const searchInput = page.locator("pagefind-modal dialog[open] input[type='search']");
   await searchInput.fill("zzzzzz-no-result-20260707");
@@ -155,7 +184,7 @@ test("analytics test transport ignores stale pending searches", async ({ page })
   await gotoHome(page);
   await enableTestAnalytics(page);
 
-  const searchButton = page.getByRole("button", { name: "Search" });
+  const searchButton = searchTrigger(page);
   await searchButton.click();
   const searchInput = page.locator("pagefind-modal dialog[open] input[type='search']");
   await page.evaluate(() => {

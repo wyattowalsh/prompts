@@ -51,13 +51,24 @@ function providerConfig(provider, env) {
         "PostHog WEB_ANALYTICS_POSTHOG_KEY must be a project key starting with phc_ (not a personal API key)."
       );
     }
-    return {
-      host: cleanUrl(
-        env.WEB_ANALYTICS_POSTHOG_HOST || env.WEB_ANALYTICS_HOST,
-        "https://us.i.posthog.com"
-      ),
-      siteId
-    };
+    const host = cleanUrl(
+      env.WEB_ANALYTICS_POSTHOG_HOST || env.WEB_ANALYTICS_HOST,
+      "https://us.i.posthog.com"
+    );
+    let hostname;
+    try {
+      hostname = new URL(host).hostname.toLowerCase();
+    } catch {
+      throw new Error(`Invalid PostHog host URL: ${host}`);
+    }
+    const labels = hostname.split(".").filter(Boolean);
+    const isPosthog =
+      hostname === "posthog.com" ||
+      (labels.length >= 2 && labels.slice(-2).join(".") === "posthog.com");
+    if (!isPosthog) {
+      throw new Error(`PostHog host must be posthog.com or a DNS subdomain (got ${hostname}).`);
+    }
+    return { host, siteId };
   }
 
   const siteId = cleanString(env.WEB_ANALYTICS_UMAMI_WEBSITE_ID || env.WEB_ANALYTICS_SITE_ID);

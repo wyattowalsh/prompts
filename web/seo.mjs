@@ -80,7 +80,11 @@ export function buildStructuredData({ page, canonicalUrl, content, lastmod, page
     "@id": orgId,
     name: site.name,
     url: siteBaseUrl(),
-    sameAs: [site.repositoryUrl]
+    sameAs: [site.repositoryUrl],
+    logo: {
+      "@type": "ImageObject",
+      url: absoluteUrl("assets/og-default.png")
+    }
   };
 
   const author = {
@@ -113,8 +117,13 @@ export function buildStructuredData({ page, canonicalUrl, content, lastmod, page
     about: site.topicTags.map((name) => ({ "@type": "Thing", name }))
   };
 
-  if (recipeItems.length > 0) {
-    pageNode.mainEntity = { "@id": recipeListId };
+  const mainEntities = [];
+  if (recipeItems.length > 0) mainEntities.push({ "@id": recipeListId });
+  if (patternItems.length > 0) mainEntities.push({ "@id": patternListId });
+  if (mainEntities.length === 1) {
+    pageNode.mainEntity = mainEntities[0];
+  } else if (mainEntities.length > 1) {
+    pageNode.mainEntity = mainEntities;
   }
 
   const graph = [

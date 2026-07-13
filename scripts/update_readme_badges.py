@@ -520,7 +520,7 @@ def render_recipe_heading(badge: dict[str, str]) -> str:
     name = badge["name"]
     return (
         f'<h4 id="{badge["slug"]}">\n'
-        f'  <img src="{src}" alt="{name}" title="{name}" height="28" '
+        f'  <img src="{src}" alt="" title="{name}" height="28" width="28" '
         f'loading="lazy" decoding="async" '
         f'style="vertical-align:text-bottom;margin-right:0.35em;" />\n'
         f'  {name}\n'

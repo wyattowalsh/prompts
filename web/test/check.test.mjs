@@ -23,11 +23,15 @@ test("JSON-LD script is allowlisted", () => {
   );
 });
 
-test("analytics config script is allowlisted", () => {
+test("analytics config script is allowlisted only as application/json without src", () => {
   assert.doesNotThrow(() =>
     assertNoUnsafeInlineScripts(
       '<script id="prompts-analytics-config" type="application/json">{"provider":"none"}</script>'
     )
+  );
+  assert.throws(
+    () => assertNoUnsafeInlineScripts('<script id="prompts-analytics-config">alert(1)</script>'),
+    /inline executable/
   );
 });
 

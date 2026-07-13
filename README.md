@@ -270,7 +270,7 @@ Recipe format:
 <!-- LANE-CHIPS:research:END -->
 
 <h4 id="source-grounded-answer">
-  <img src="https://shieldcn.dev/badge/-2563EB.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=28&radius=7&padX=6&iconSize=16&variant=default&logo=ri:RiQuoteText&logoColor=f8fafc&label=" alt="Source-Grounded Answer" title="Source-Grounded Answer" height="28" loading="lazy" decoding="async" style="vertical-align:text-bottom;margin-right:0.35em;" />
+  <img src="https://shieldcn.dev/badge/-2563EB.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=28&radius=7&padX=6&iconSize=16&variant=default&logo=ri:RiQuoteText&logoColor=f8fafc&label=" alt="" title="Source-Grounded Answer" height="28" width="28" loading="lazy" decoding="async" style="vertical-align:text-bottom;margin-right:0.35em;" />
   Source-Grounded Answer
 </h4>
 
@@ -364,7 +364,7 @@ Sources:
 ---
 
 <h4 id="web-research-brief">
-  <img src="https://shieldcn.dev/badge/-3B82F6.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=28&radius=7&padX=6&iconSize=16&variant=default&logo=ri:RiGlobalLine&logoColor=f8fafc&label=" alt="Web Research Brief" title="Web Research Brief" height="28" loading="lazy" decoding="async" style="vertical-align:text-bottom;margin-right:0.35em;" />
+  <img src="https://shieldcn.dev/badge/-3B82F6.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=28&radius=7&padX=6&iconSize=16&variant=default&logo=ri:RiGlobalLine&logoColor=f8fafc&label=" alt="" title="Web Research Brief" height="28" width="28" loading="lazy" decoding="async" style="vertical-align:text-bottom;margin-right:0.35em;" />
   Web Research Brief
 </h4>
 
@@ -448,7 +448,7 @@ Sources:
 ---
 
 <h4 id="literature-scan">
-  <img src="https://shieldcn.dev/badge/-1E40AF.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=28&radius=7&padX=6&iconSize=16&variant=default&logo=ri:RiBookReadLine&logoColor=f8fafc&label=" alt="Literature Scan" title="Literature Scan" height="28" loading="lazy" decoding="async" style="vertical-align:text-bottom;margin-right:0.35em;" />
+  <img src="https://shieldcn.dev/badge/-1E40AF.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=28&radius=7&padX=6&iconSize=16&variant=default&logo=ri:RiBookReadLine&logoColor=f8fafc&label=" alt="" title="Literature Scan" height="28" width="28" loading="lazy" decoding="async" style="vertical-align:text-bottom;margin-right:0.35em;" />
   Literature Scan
 </h4>
 
@@ -532,7 +532,7 @@ Sources:
 ---
 
 <h4 id="claim-checker">
-  <img src="https://shieldcn.dev/badge/-60A5FA.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=28&radius=7&padX=6&iconSize=16&variant=default&logo=ri:RiShieldCheckLine&logoColor=f8fafc&label=" alt="Claim Checker" title="Claim Checker" height="28" loading="lazy" decoding="async" style="vertical-align:text-bottom;margin-right:0.35em;" />
+  <img src="https://shieldcn.dev/badge/-60A5FA.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=28&radius=7&padX=6&iconSize=16&variant=default&logo=ri:RiShieldCheckLine&logoColor=f8fafc&label=" alt="" title="Claim Checker" height="28" width="28" loading="lazy" decoding="async" style="vertical-align:text-bottom;margin-right:0.35em;" />
   Claim Checker
 </h4>
 
@@ -616,7 +616,7 @@ Sources:
 ---
 
 <h4 id="citation-matrix">
-  <img src="https://shieldcn.dev/badge/-1D4ED8.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=28&radius=7&padX=6&iconSize=16&variant=default&logo=ri:RiLinksLine&logoColor=f8fafc&label=" alt="Citation Matrix" title="Citation Matrix" height="28" loading="lazy" decoding="async" style="vertical-align:text-bottom;margin-right:0.35em;" />
+  <img src="https://shieldcn.dev/badge/-1D4ED8.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=28&radius=7&padX=6&iconSize=16&variant=default&logo=ri:RiLinksLine&logoColor=f8fafc&label=" alt="" title="Citation Matrix" height="28" width="28" loading="lazy" decoding="async" style="vertical-align:text-bottom;margin-right:0.35em;" />
   Citation Matrix
 </h4>
 
@@ -698,7 +698,7 @@ Sources:
 ---
 
 <h4 id="disagreement-map">
-  <img src="https://shieldcn.dev/badge/-93C5FD.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=28&radius=7&padX=6&iconSize=16&variant=default&logo=ri:RiDivideLine&logoColor=f8fafc&label=" alt="Disagreement Map" title="Disagreement Map" height="28" loading="lazy" decoding="async" style="vertical-align:text-bottom;margin-right:0.35em;" />
+  <img src="https://shieldcn.dev/badge/-93C5FD.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=28&radius=7&padX=6&iconSize=16&variant=default&logo=ri:RiDivideLine&logoColor=f8fafc&label=" alt="" title="Disagreement Map" height="28" width="28" loading="lazy" decoding="async" style="vertical-align:text-bottom;margin-right:0.35em;" />
   Disagreement Map
 </h4>
 
@@ -793,7 +793,7 @@ Sources:
 ---
 
 <h4 id="executive-brief">
-  <img src="https://shieldcn.dev/badge/-9333EA.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=28&radius=7&padX=6&iconSize=16&variant=default&logo=ri:RiFileTextLine&logoColor=f8fafc&label=" alt="Executive Brief" title="Executive Brief" height="28" loading="lazy" decoding="async" style="vertical-align:text-bottom;margin-right:0.35em;" />
+  <img src="https://shieldcn.dev/badge/-9333EA.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=28&radius=7&padX=6&iconSize=16&variant=default&logo=ri:RiFileTextLine&logoColor=f8fafc&label=" alt="" title="Executive Brief" height="28" width="28" loading="lazy" decoding="async" style="vertical-align:text-bottom;margin-right:0.35em;" />
   Executive Brief
 </h4>
 
@@ -874,7 +874,7 @@ Sources:
 ---
 
 <h4 id="rewrite-with-constraints">
-  <img src="https://shieldcn.dev/badge/-A855F7.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=28&radius=7&padX=6&iconSize=16&variant=default&logo=ri:RiEditLine&logoColor=f8fafc&label=" alt="Rewrite With Constraints" title="Rewrite With Constraints" height="28" loading="lazy" decoding="async" style="vertical-align:text-bottom;margin-right:0.35em;" />
+  <img src="https://shieldcn.dev/badge/-A855F7.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=28&radius=7&padX=6&iconSize=16&variant=default&logo=ri:RiEditLine&logoColor=f8fafc&label=" alt="" title="Rewrite With Constraints" height="28" width="28" loading="lazy" decoding="async" style="vertical-align:text-bottom;margin-right:0.35em;" />
   Rewrite With Constraints
 </h4>
 
@@ -955,7 +955,7 @@ Sources:
 ---
 
 <h4 id="style-transfer-without-examples">
-  <img src="https://shieldcn.dev/badge/-C026D3.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=28&radius=7&padX=6&iconSize=16&variant=default&logo=ri:RiPaletteLine&logoColor=f8fafc&label=" alt="Style Transfer Without Examples" title="Style Transfer Without Examples" height="28" loading="lazy" decoding="async" style="vertical-align:text-bottom;margin-right:0.35em;" />
+  <img src="https://shieldcn.dev/badge/-C026D3.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=28&radius=7&padX=6&iconSize=16&variant=default&logo=ri:RiPaletteLine&logoColor=f8fafc&label=" alt="" title="Style Transfer Without Examples" height="28" width="28" loading="lazy" decoding="async" style="vertical-align:text-bottom;margin-right:0.35em;" />
   Style Transfer Without Examples
 </h4>
 
@@ -1036,7 +1036,7 @@ Sources:
 ---
 
 <h4 id="dense-summary">
-  <img src="https://shieldcn.dev/badge/-C084FC.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=28&radius=7&padX=6&iconSize=16&variant=default&logo=ri:RiAlignLeft&logoColor=f8fafc&label=" alt="Dense Summary" title="Dense Summary" height="28" loading="lazy" decoding="async" style="vertical-align:text-bottom;margin-right:0.35em;" />
+  <img src="https://shieldcn.dev/badge/-C084FC.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=28&radius=7&padX=6&iconSize=16&variant=default&logo=ri:RiAlignLeft&logoColor=f8fafc&label=" alt="" title="Dense Summary" height="28" width="28" loading="lazy" decoding="async" style="vertical-align:text-bottom;margin-right:0.35em;" />
   Dense Summary
 </h4>
 
@@ -1117,7 +1117,7 @@ Sources:
 ---
 
 <h4 id="faq-generator">
-  <img src="https://shieldcn.dev/badge/-A21CAF.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=28&radius=7&padX=6&iconSize=16&variant=default&logo=ri:RiQuestionnaireLine&logoColor=f8fafc&label=" alt="FAQ Generator" title="FAQ Generator" height="28" loading="lazy" decoding="async" style="vertical-align:text-bottom;margin-right:0.35em;" />
+  <img src="https://shieldcn.dev/badge/-A21CAF.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=28&radius=7&padX=6&iconSize=16&variant=default&logo=ri:RiQuestionnaireLine&logoColor=f8fafc&label=" alt="" title="FAQ Generator" height="28" width="28" loading="lazy" decoding="async" style="vertical-align:text-bottom;margin-right:0.35em;" />
   FAQ Generator
 </h4>
 
@@ -1198,7 +1198,7 @@ Sources:
 ---
 
 <h4 id="newsletter-draft">
-  <img src="https://shieldcn.dev/badge/-D946EF.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=28&radius=7&padX=6&iconSize=16&variant=default&logo=ri:RiMailLine&logoColor=f8fafc&label=" alt="Newsletter Draft" title="Newsletter Draft" height="28" loading="lazy" decoding="async" style="vertical-align:text-bottom;margin-right:0.35em;" />
+  <img src="https://shieldcn.dev/badge/-D946EF.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=28&radius=7&padX=6&iconSize=16&variant=default&logo=ri:RiMailLine&logoColor=f8fafc&label=" alt="" title="Newsletter Draft" height="28" width="28" loading="lazy" decoding="async" style="vertical-align:text-bottom;margin-right:0.35em;" />
   Newsletter Draft
 </h4>
 
@@ -1292,7 +1292,7 @@ Sources:
 ---
 
 <h4 id="code-review">
-  <img src="https://shieldcn.dev/badge/-16A34A.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=28&radius=7&padX=6&iconSize=16&variant=default&logo=ri:RiCodeSSlashLine&logoColor=f8fafc&label=" alt="Code Review" title="Code Review" height="28" loading="lazy" decoding="async" style="vertical-align:text-bottom;margin-right:0.35em;" />
+  <img src="https://shieldcn.dev/badge/-16A34A.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=28&radius=7&padX=6&iconSize=16&variant=default&logo=ri:RiCodeSSlashLine&logoColor=f8fafc&label=" alt="" title="Code Review" height="28" width="28" loading="lazy" decoding="async" style="vertical-align:text-bottom;margin-right:0.35em;" />
   Code Review
 </h4>
 
@@ -1382,7 +1382,7 @@ Sources:
 ---
 
 <h4 id="bug-rca">
-  <img src="https://shieldcn.dev/badge/-22C55E.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=28&radius=7&padX=6&iconSize=16&variant=default&logo=ri:RiBugLine&logoColor=f8fafc&label=" alt="Bug RCA" title="Bug RCA" height="28" loading="lazy" decoding="async" style="vertical-align:text-bottom;margin-right:0.35em;" />
+  <img src="https://shieldcn.dev/badge/-22C55E.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=28&radius=7&padX=6&iconSize=16&variant=default&logo=ri:RiBugLine&logoColor=f8fafc&label=" alt="" title="Bug RCA" height="28" width="28" loading="lazy" decoding="async" style="vertical-align:text-bottom;margin-right:0.35em;" />
   Bug RCA
 </h4>
 
@@ -1464,7 +1464,7 @@ Sources:
 ---
 
 <h4 id="unit-test-writer">
-  <img src="https://shieldcn.dev/badge/-4ADE80.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=28&radius=7&padX=6&iconSize=16&variant=default&logo=ri:RiTestTubeLine&logoColor=f8fafc&label=" alt="Unit Test Writer" title="Unit Test Writer" height="28" loading="lazy" decoding="async" style="vertical-align:text-bottom;margin-right:0.35em;" />
+  <img src="https://shieldcn.dev/badge/-4ADE80.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=28&radius=7&padX=6&iconSize=16&variant=default&logo=ri:RiTestTubeLine&logoColor=f8fafc&label=" alt="" title="Unit Test Writer" height="28" width="28" loading="lazy" decoding="async" style="vertical-align:text-bottom;margin-right:0.35em;" />
   Unit Test Writer
 </h4>
 
@@ -1546,7 +1546,7 @@ Sources:
 ---
 
 <h4 id="refactor-planner">
-  <img src="https://shieldcn.dev/badge/-059669.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=28&radius=7&padX=6&iconSize=16&variant=default&logo=ri:RiFlowChart&logoColor=f8fafc&label=" alt="Refactor Planner" title="Refactor Planner" height="28" loading="lazy" decoding="async" style="vertical-align:text-bottom;margin-right:0.35em;" />
+  <img src="https://shieldcn.dev/badge/-059669.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=28&radius=7&padX=6&iconSize=16&variant=default&logo=ri:RiFlowChart&logoColor=f8fafc&label=" alt="" title="Refactor Planner" height="28" width="28" loading="lazy" decoding="async" style="vertical-align:text-bottom;margin-right:0.35em;" />
   Refactor Planner
 </h4>
 
@@ -1628,7 +1628,7 @@ Sources:
 ---
 
 <h4 id="pr-description">
-  <img src="https://shieldcn.dev/badge/-34D399.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=28&radius=7&padX=6&iconSize=16&variant=default&logo=ri:RiGitPullRequestLine&logoColor=f8fafc&label=" alt="PR Description" title="PR Description" height="28" loading="lazy" decoding="async" style="vertical-align:text-bottom;margin-right:0.35em;" />
+  <img src="https://shieldcn.dev/badge/-34D399.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=28&radius=7&padX=6&iconSize=16&variant=default&logo=ri:RiGitPullRequestLine&logoColor=f8fafc&label=" alt="" title="PR Description" height="28" width="28" loading="lazy" decoding="async" style="vertical-align:text-bottom;margin-right:0.35em;" />
   PR Description
 </h4>
 
@@ -1710,7 +1710,7 @@ Sources:
 ---
 
 <h4 id="api-contract-explainer">
-  <img src="https://shieldcn.dev/badge/-10B981.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=28&radius=7&padX=6&iconSize=16&variant=default&logo=ri:RiBracesLine&logoColor=f8fafc&label=" alt="API Contract Explainer" title="API Contract Explainer" height="28" loading="lazy" decoding="async" style="vertical-align:text-bottom;margin-right:0.35em;" />
+  <img src="https://shieldcn.dev/badge/-10B981.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=28&radius=7&padX=6&iconSize=16&variant=default&logo=ri:RiBracesLine&logoColor=f8fafc&label=" alt="" title="API Contract Explainer" height="28" width="28" loading="lazy" decoding="async" style="vertical-align:text-bottom;margin-right:0.35em;" />
   API Contract Explainer
 </h4>
 
@@ -1809,7 +1809,7 @@ Sources:
 ---
 
 <h4 id="json-extractor">
-  <img src="https://shieldcn.dev/badge/-EAB308.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=28&radius=7&padX=6&iconSize=16&variant=default&logo=ri:RiNodeTree&logoColor=f8fafc&label=" alt="JSON Extractor" title="JSON Extractor" height="28" loading="lazy" decoding="async" style="vertical-align:text-bottom;margin-right:0.35em;" />
+  <img src="https://shieldcn.dev/badge/-EAB308.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=28&radius=7&padX=6&iconSize=16&variant=default&logo=ri:RiNodeTree&logoColor=f8fafc&label=" alt="" title="JSON Extractor" height="28" width="28" loading="lazy" decoding="async" style="vertical-align:text-bottom;margin-right:0.35em;" />
   JSON Extractor
 </h4>
 
@@ -1896,7 +1896,7 @@ Sources:
 ---
 
 <h4 id="table-normalizer">
-  <img src="https://shieldcn.dev/badge/-FACC15.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=28&radius=7&padX=6&iconSize=16&variant=default&logo=ri:RiTableLine&logoColor=f8fafc&label=" alt="Table Normalizer" title="Table Normalizer" height="28" loading="lazy" decoding="async" style="vertical-align:text-bottom;margin-right:0.35em;" />
+  <img src="https://shieldcn.dev/badge/-FACC15.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=28&radius=7&padX=6&iconSize=16&variant=default&logo=ri:RiTableLine&logoColor=f8fafc&label=" alt="" title="Table Normalizer" height="28" width="28" loading="lazy" decoding="async" style="vertical-align:text-bottom;margin-right:0.35em;" />
   Table Normalizer
 </h4>
 
@@ -1977,7 +1977,7 @@ Sources:
 ---
 
 <h4 id="classifier">
-  <img src="https://shieldcn.dev/badge/-CA8A04.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=28&radius=7&padX=6&iconSize=16&variant=default&logo=ri:RiPriceTag3Line&logoColor=f8fafc&label=" alt="Classifier" title="Classifier" height="28" loading="lazy" decoding="async" style="vertical-align:text-bottom;margin-right:0.35em;" />
+  <img src="https://shieldcn.dev/badge/-CA8A04.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=28&radius=7&padX=6&iconSize=16&variant=default&logo=ri:RiPriceTag3Line&logoColor=f8fafc&label=" alt="" title="Classifier" height="28" width="28" loading="lazy" decoding="async" style="vertical-align:text-bottom;margin-right:0.35em;" />
   Classifier
 </h4>
 
@@ -2060,7 +2060,7 @@ Sources:
 ---
 
 <h4 id="ner-extractor">
-  <img src="https://shieldcn.dev/badge/-FDE047.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=28&radius=7&padX=6&iconSize=16&variant=default&logo=ri:RiUserSearchLine&logoColor=f8fafc&label=" alt="NER Extractor" title="NER Extractor" height="28" loading="lazy" decoding="async" style="vertical-align:text-bottom;margin-right:0.35em;" />
+  <img src="https://shieldcn.dev/badge/-FDE047.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=28&radius=7&padX=6&iconSize=16&variant=default&logo=ri:RiUserSearchLine&logoColor=f8fafc&label=" alt="" title="NER Extractor" height="28" width="28" loading="lazy" decoding="async" style="vertical-align:text-bottom;margin-right:0.35em;" />
   NER Extractor
 </h4>
 
@@ -2143,7 +2143,7 @@ Sources:
 ---
 
 <h4 id="sentiment-triage">
-  <img src="https://shieldcn.dev/badge/-F59E0B.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=28&radius=7&padX=6&iconSize=16&variant=default&logo=ri:RiEmotionLine&logoColor=f8fafc&label=" alt="Sentiment Triage" title="Sentiment Triage" height="28" loading="lazy" decoding="async" style="vertical-align:text-bottom;margin-right:0.35em;" />
+  <img src="https://shieldcn.dev/badge/-F59E0B.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=28&radius=7&padX=6&iconSize=16&variant=default&logo=ri:RiEmotionLine&logoColor=f8fafc&label=" alt="" title="Sentiment Triage" height="28" width="28" loading="lazy" decoding="async" style="vertical-align:text-bottom;margin-right:0.35em;" />
   Sentiment Triage
 </h4>
 
@@ -2224,7 +2224,7 @@ Sources:
 ---
 
 <h4 id="synthetic-edge-cases">
-  <img src="https://shieldcn.dev/badge/-D97706.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=28&radius=7&padX=6&iconSize=16&variant=default&logo=ri:RiCornerDownRightLine&logoColor=f8fafc&label=" alt="Synthetic Edge Cases" title="Synthetic Edge Cases" height="28" loading="lazy" decoding="async" style="vertical-align:text-bottom;margin-right:0.35em;" />
+  <img src="https://shieldcn.dev/badge/-D97706.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=28&radius=7&padX=6&iconSize=16&variant=default&logo=ri:RiCornerDownRightLine&logoColor=f8fafc&label=" alt="" title="Synthetic Edge Cases" height="28" width="28" loading="lazy" decoding="async" style="vertical-align:text-bottom;margin-right:0.35em;" />
   Synthetic Edge Cases
 </h4>
 
@@ -2318,7 +2318,7 @@ Sources:
 ---
 
 <h4 id="prd-drafter">
-  <img src="https://shieldcn.dev/badge/-EC4899.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=28&radius=7&padX=6&iconSize=16&variant=default&logo=ri:RiDraftLine&logoColor=f8fafc&label=" alt="PRD Drafter" title="PRD Drafter" height="28" loading="lazy" decoding="async" style="vertical-align:text-bottom;margin-right:0.35em;" />
+  <img src="https://shieldcn.dev/badge/-EC4899.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=28&radius=7&padX=6&iconSize=16&variant=default&logo=ri:RiDraftLine&logoColor=f8fafc&label=" alt="" title="PRD Drafter" height="28" width="28" loading="lazy" decoding="async" style="vertical-align:text-bottom;margin-right:0.35em;" />
   PRD Drafter
 </h4>
 
@@ -2399,7 +2399,7 @@ Sources:
 ---
 
 <h4 id="user-story-splitter">
-  <img src="https://shieldcn.dev/badge/-F472B6.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=28&radius=7&padX=6&iconSize=16&variant=default&logo=ri:RiStickyNoteLine&logoColor=f8fafc&label=" alt="User Story Splitter" title="User Story Splitter" height="28" loading="lazy" decoding="async" style="vertical-align:text-bottom;margin-right:0.35em;" />
+  <img src="https://shieldcn.dev/badge/-F472B6.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=28&radius=7&padX=6&iconSize=16&variant=default&logo=ri:RiStickyNoteLine&logoColor=f8fafc&label=" alt="" title="User Story Splitter" height="28" width="28" loading="lazy" decoding="async" style="vertical-align:text-bottom;margin-right:0.35em;" />
   User Story Splitter
 </h4>
 
@@ -2480,7 +2480,7 @@ Sources:
 ---
 
 <h4 id="acceptance-criteria-writer">
-  <img src="https://shieldcn.dev/badge/-BE185D.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=28&radius=7&padX=6&iconSize=16&variant=default&logo=ri:RiListCheck2&logoColor=f8fafc&label=" alt="Acceptance Criteria Writer" title="Acceptance Criteria Writer" height="28" loading="lazy" decoding="async" style="vertical-align:text-bottom;margin-right:0.35em;" />
+  <img src="https://shieldcn.dev/badge/-BE185D.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=28&radius=7&padX=6&iconSize=16&variant=default&logo=ri:RiListCheck2&logoColor=f8fafc&label=" alt="" title="Acceptance Criteria Writer" height="28" width="28" loading="lazy" decoding="async" style="vertical-align:text-bottom;margin-right:0.35em;" />
   Acceptance Criteria Writer
 </h4>
 
@@ -2561,7 +2561,7 @@ Sources:
 ---
 
 <h4 id="launch-checklist">
-  <img src="https://shieldcn.dev/badge/-FB7185.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=28&radius=7&padX=6&iconSize=16&variant=default&logo=ri:RiRocketLine&logoColor=f8fafc&label=" alt="Launch Checklist" title="Launch Checklist" height="28" loading="lazy" decoding="async" style="vertical-align:text-bottom;margin-right:0.35em;" />
+  <img src="https://shieldcn.dev/badge/-FB7185.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=28&radius=7&padX=6&iconSize=16&variant=default&logo=ri:RiRocketLine&logoColor=f8fafc&label=" alt="" title="Launch Checklist" height="28" width="28" loading="lazy" decoding="async" style="vertical-align:text-bottom;margin-right:0.35em;" />
   Launch Checklist
 </h4>
 
@@ -2642,7 +2642,7 @@ Sources:
 ---
 
 <h4 id="ux-review">
-  <img src="https://shieldcn.dev/badge/-E879F9.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=28&radius=7&padX=6&iconSize=16&variant=default&logo=ri:RiLayoutLine&logoColor=f8fafc&label=" alt="UX Review" title="UX Review" height="28" loading="lazy" decoding="async" style="vertical-align:text-bottom;margin-right:0.35em;" />
+  <img src="https://shieldcn.dev/badge/-E879F9.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=28&radius=7&padX=6&iconSize=16&variant=default&logo=ri:RiLayoutLine&logoColor=f8fafc&label=" alt="" title="UX Review" height="28" width="28" loading="lazy" decoding="async" style="vertical-align:text-bottom;margin-right:0.35em;" />
   UX Review
 </h4>
 
@@ -2723,7 +2723,7 @@ Sources:
 ---
 
 <h4 id="support-macro">
-  <img src="https://shieldcn.dev/badge/-F9A8D4.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=28&radius=7&padX=6&iconSize=16&variant=default&logo=ri:RiCustomerService2Line&logoColor=f8fafc&label=" alt="Support Macro" title="Support Macro" height="28" loading="lazy" decoding="async" style="vertical-align:text-bottom;margin-right:0.35em;" />
+  <img src="https://shieldcn.dev/badge/-F9A8D4.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=28&radius=7&padX=6&iconSize=16&variant=default&logo=ri:RiCustomerService2Line&logoColor=f8fafc&label=" alt="" title="Support Macro" height="28" width="28" loading="lazy" decoding="async" style="vertical-align:text-bottom;margin-right:0.35em;" />
   Support Macro
 </h4>
 
@@ -2817,7 +2817,7 @@ Sources:
 ---
 
 <h4 id="incident-summary">
-  <img src="https://shieldcn.dev/badge/-F97316.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=28&radius=7&padX=6&iconSize=16&variant=default&logo=ri:RiAlarmWarningLine&logoColor=f8fafc&label=" alt="Incident Summary" title="Incident Summary" height="28" loading="lazy" decoding="async" style="vertical-align:text-bottom;margin-right:0.35em;" />
+  <img src="https://shieldcn.dev/badge/-F97316.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=28&radius=7&padX=6&iconSize=16&variant=default&logo=ri:RiAlarmWarningLine&logoColor=f8fafc&label=" alt="" title="Incident Summary" height="28" width="28" loading="lazy" decoding="async" style="vertical-align:text-bottom;margin-right:0.35em;" />
   Incident Summary
 </h4>
 
@@ -2899,7 +2899,7 @@ Sources:
 ---
 
 <h4 id="runbook-generator">
-  <img src="https://shieldcn.dev/badge/-FB923C.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=28&radius=7&padX=6&iconSize=16&variant=default&logo=ri:RiBookOpenLine&logoColor=f8fafc&label=" alt="Runbook Generator" title="Runbook Generator" height="28" loading="lazy" decoding="async" style="vertical-align:text-bottom;margin-right:0.35em;" />
+  <img src="https://shieldcn.dev/badge/-FB923C.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=28&radius=7&padX=6&iconSize=16&variant=default&logo=ri:RiBookOpenLine&logoColor=f8fafc&label=" alt="" title="Runbook Generator" height="28" width="28" loading="lazy" decoding="async" style="vertical-align:text-bottom;margin-right:0.35em;" />
   Runbook Generator
 </h4>
 
@@ -2981,7 +2981,7 @@ Sources:
 ---
 
 <h4 id="log-triage">
-  <img src="https://shieldcn.dev/badge/-FDBA74.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=28&radius=7&padX=6&iconSize=16&variant=default&logo=ri:RiFileSearchLine&logoColor=f8fafc&label=" alt="Log Triage" title="Log Triage" height="28" loading="lazy" decoding="async" style="vertical-align:text-bottom;margin-right:0.35em;" />
+  <img src="https://shieldcn.dev/badge/-FDBA74.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=28&radius=7&padX=6&iconSize=16&variant=default&logo=ri:RiFileSearchLine&logoColor=f8fafc&label=" alt="" title="Log Triage" height="28" width="28" loading="lazy" decoding="async" style="vertical-align:text-bottom;margin-right:0.35em;" />
   Log Triage
 </h4>
 
@@ -3063,7 +3063,7 @@ Sources:
 ---
 
 <h4 id="risk-register">
-  <img src="https://shieldcn.dev/badge/-C2410C.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=28&radius=7&padX=6&iconSize=16&variant=default&logo=ri:RiAlertLine&logoColor=f8fafc&label=" alt="Risk Register" title="Risk Register" height="28" loading="lazy" decoding="async" style="vertical-align:text-bottom;margin-right:0.35em;" />
+  <img src="https://shieldcn.dev/badge/-C2410C.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=28&radius=7&padX=6&iconSize=16&variant=default&logo=ri:RiAlertLine&logoColor=f8fafc&label=" alt="" title="Risk Register" height="28" width="28" loading="lazy" decoding="async" style="vertical-align:text-bottom;margin-right:0.35em;" />
   Risk Register
 </h4>
 
@@ -3145,7 +3145,7 @@ Sources:
 ---
 
 <h4 id="decision-memo">
-  <img src="https://shieldcn.dev/badge/-EA580C.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=28&radius=7&padX=6&iconSize=16&variant=default&logo=ri:RiScalesLine&logoColor=f8fafc&label=" alt="Decision Memo" title="Decision Memo" height="28" loading="lazy" decoding="async" style="vertical-align:text-bottom;margin-right:0.35em;" />
+  <img src="https://shieldcn.dev/badge/-EA580C.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=28&radius=7&padX=6&iconSize=16&variant=default&logo=ri:RiScalesLine&logoColor=f8fafc&label=" alt="" title="Decision Memo" height="28" width="28" loading="lazy" decoding="async" style="vertical-align:text-bottom;margin-right:0.35em;" />
   Decision Memo
 </h4>
 
@@ -3227,7 +3227,7 @@ Sources:
 ---
 
 <h4 id="meeting-action-extractor">
-  <img src="https://shieldcn.dev/badge/-FD7E14.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=28&radius=7&padX=6&iconSize=16&variant=default&logo=ri:RiCalendarCheckLine&logoColor=f8fafc&label=" alt="Meeting Action Extractor" title="Meeting Action Extractor" height="28" loading="lazy" decoding="async" style="vertical-align:text-bottom;margin-right:0.35em;" />
+  <img src="https://shieldcn.dev/badge/-FD7E14.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=28&radius=7&padX=6&iconSize=16&variant=default&logo=ri:RiCalendarCheckLine&logoColor=f8fafc&label=" alt="" title="Meeting Action Extractor" height="28" width="28" loading="lazy" decoding="async" style="vertical-align:text-bottom;margin-right:0.35em;" />
   Meeting Action Extractor
 </h4>
 
@@ -3322,7 +3322,7 @@ Sources:
 ---
 
 <h4 id="tool-use-planner">
-  <img src="https://shieldcn.dev/badge/-06B6D4.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=28&radius=7&padX=6&iconSize=16&variant=default&logo=ri:RiToolsLine&logoColor=f8fafc&label=" alt="Tool-Use Planner" title="Tool-Use Planner" height="28" loading="lazy" decoding="async" style="vertical-align:text-bottom;margin-right:0.35em;" />
+  <img src="https://shieldcn.dev/badge/-06B6D4.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=28&radius=7&padX=6&iconSize=16&variant=default&logo=ri:RiToolsLine&logoColor=f8fafc&label=" alt="" title="Tool-Use Planner" height="28" width="28" loading="lazy" decoding="async" style="vertical-align:text-bottom;margin-right:0.35em;" />
   Tool-Use Planner
 </h4>
 
@@ -3411,7 +3411,7 @@ Sources:
 ---
 
 <h4 id="rag-answer-contract">
-  <img src="https://shieldcn.dev/badge/-0891B2.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=28&radius=7&padX=6&iconSize=16&variant=default&logo=ri:RiDatabase2Line&logoColor=f8fafc&label=" alt="RAG Answer Contract" title="RAG Answer Contract" height="28" loading="lazy" decoding="async" style="vertical-align:text-bottom;margin-right:0.35em;" />
+  <img src="https://shieldcn.dev/badge/-0891B2.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=28&radius=7&padX=6&iconSize=16&variant=default&logo=ri:RiDatabase2Line&logoColor=f8fafc&label=" alt="" title="RAG Answer Contract" height="28" width="28" loading="lazy" decoding="async" style="vertical-align:text-bottom;margin-right:0.35em;" />
   RAG Answer Contract
 </h4>
 
@@ -3502,7 +3502,7 @@ Sources:
 ---
 
 <h4 id="prompt-injection-scanner">
-  <img src="https://shieldcn.dev/badge/-22D3EE.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=28&radius=7&padX=6&iconSize=16&variant=default&logo=ri:RiShieldKeyholeLine&logoColor=f8fafc&label=" alt="Prompt-Injection Scanner" title="Prompt-Injection Scanner" height="28" loading="lazy" decoding="async" style="vertical-align:text-bottom;margin-right:0.35em;" />
+  <img src="https://shieldcn.dev/badge/-22D3EE.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=28&radius=7&padX=6&iconSize=16&variant=default&logo=ri:RiShieldKeyholeLine&logoColor=f8fafc&label=" alt="" title="Prompt-Injection Scanner" height="28" width="28" loading="lazy" decoding="async" style="vertical-align:text-bottom;margin-right:0.35em;" />
   Prompt-Injection Scanner
 </h4>
 
@@ -3586,7 +3586,7 @@ Sources:
 ---
 
 <h4 id="eval-set-generator">
-  <img src="https://shieldcn.dev/badge/-0E7490.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=28&radius=7&padX=6&iconSize=16&variant=default&logo=ri:RiListOrdered&logoColor=f8fafc&label=" alt="Eval-Set Generator" title="Eval-Set Generator" height="28" loading="lazy" decoding="async" style="vertical-align:text-bottom;margin-right:0.35em;" />
+  <img src="https://shieldcn.dev/badge/-0E7490.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=28&radius=7&padX=6&iconSize=16&variant=default&logo=ri:RiListOrdered&logoColor=f8fafc&label=" alt="" title="Eval-Set Generator" height="28" width="28" loading="lazy" decoding="async" style="vertical-align:text-bottom;margin-right:0.35em;" />
   Eval-Set Generator
 </h4>
 
@@ -3670,7 +3670,7 @@ Sources:
 ---
 
 <h4 id="regression-judge">
-  <img src="https://shieldcn.dev/badge/-155E75.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=28&radius=7&padX=6&iconSize=16&variant=default&logo=ri:RiScales2Line&logoColor=f8fafc&label=" alt="Regression Judge" title="Regression Judge" height="28" loading="lazy" decoding="async" style="vertical-align:text-bottom;margin-right:0.35em;" />
+  <img src="https://shieldcn.dev/badge/-155E75.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=28&radius=7&padX=6&iconSize=16&variant=default&logo=ri:RiScales2Line&logoColor=f8fafc&label=" alt="" title="Regression Judge" height="28" width="28" loading="lazy" decoding="async" style="vertical-align:text-bottom;margin-right:0.35em;" />
   Regression Judge
 </h4>
 
@@ -3758,7 +3758,7 @@ Sources:
 ---
 
 <h4 id="prompt-optimizer">
-  <img src="https://shieldcn.dev/badge/-67E8F9.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=28&radius=7&padX=6&iconSize=16&variant=default&logo=ri:RiLoopRightLine&logoColor=f8fafc&label=" alt="Prompt Optimizer" title="Prompt Optimizer" height="28" loading="lazy" decoding="async" style="vertical-align:text-bottom;margin-right:0.35em;" />
+  <img src="https://shieldcn.dev/badge/-67E8F9.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=28&radius=7&padX=6&iconSize=16&variant=default&logo=ri:RiLoopRightLine&logoColor=f8fafc&label=" alt="" title="Prompt Optimizer" height="28" width="28" loading="lazy" decoding="async" style="vertical-align:text-bottom;margin-right:0.35em;" />
   Prompt Optimizer
 </h4>
 
@@ -3860,7 +3860,7 @@ Sources:
 ---
 
 <h4 id="plan-and-solve">
-  <img src="https://shieldcn.dev/badge/-8B5CF6.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=28&radius=7&padX=6&iconSize=16&variant=default&logo=ri:RiRouteLine&logoColor=f8fafc&label=" alt="Plan-and-Solve" title="Plan-and-Solve" height="28" loading="lazy" decoding="async" style="vertical-align:text-bottom;margin-right:0.35em;" />
+  <img src="https://shieldcn.dev/badge/-8B5CF6.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=28&radius=7&padX=6&iconSize=16&variant=default&logo=ri:RiRouteLine&logoColor=f8fafc&label=" alt="" title="Plan-and-Solve" height="28" width="28" loading="lazy" decoding="async" style="vertical-align:text-bottom;margin-right:0.35em;" />
   Plan-and-Solve
 </h4>
 
@@ -3941,7 +3941,7 @@ Sources:
 ---
 
 <h4 id="step-back-answer">
-  <img src="https://shieldcn.dev/badge/-6D28D9.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=28&radius=7&padX=6&iconSize=16&variant=default&logo=ri:RiArrowLeftUpLine&logoColor=f8fafc&label=" alt="Step-Back Answer" title="Step-Back Answer" height="28" loading="lazy" decoding="async" style="vertical-align:text-bottom;margin-right:0.35em;" />
+  <img src="https://shieldcn.dev/badge/-6D28D9.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=28&radius=7&padX=6&iconSize=16&variant=default&logo=ri:RiArrowLeftUpLine&logoColor=f8fafc&label=" alt="" title="Step-Back Answer" height="28" width="28" loading="lazy" decoding="async" style="vertical-align:text-bottom;margin-right:0.35em;" />
   Step-Back Answer
 </h4>
 
@@ -4022,7 +4022,7 @@ Sources:
 ---
 
 <h4 id="verification-pass">
-  <img src="https://shieldcn.dev/badge/-7C3AED.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=28&radius=7&padX=6&iconSize=16&variant=default&logo=ri:RiCheckboxCircleLine&logoColor=f8fafc&label=" alt="Verification Pass" title="Verification Pass" height="28" loading="lazy" decoding="async" style="vertical-align:text-bottom;margin-right:0.35em;" />
+  <img src="https://shieldcn.dev/badge/-7C3AED.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=28&radius=7&padX=6&iconSize=16&variant=default&logo=ri:RiCheckboxCircleLine&logoColor=f8fafc&label=" alt="" title="Verification Pass" height="28" width="28" loading="lazy" decoding="async" style="vertical-align:text-bottom;margin-right:0.35em;" />
   Verification Pass
 </h4>
 
@@ -4103,7 +4103,7 @@ Sources:
 ---
 
 <h4 id="self-refine-pass">
-  <img src="https://shieldcn.dev/badge/-A78BFA.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=28&radius=7&padX=6&iconSize=16&variant=default&logo=ri:RiRefreshLine&logoColor=f8fafc&label=" alt="Self-Refine Pass" title="Self-Refine Pass" height="28" loading="lazy" decoding="async" style="vertical-align:text-bottom;margin-right:0.35em;" />
+  <img src="https://shieldcn.dev/badge/-A78BFA.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=28&radius=7&padX=6&iconSize=16&variant=default&logo=ri:RiRefreshLine&logoColor=f8fafc&label=" alt="" title="Self-Refine Pass" height="28" width="28" loading="lazy" decoding="async" style="vertical-align:text-bottom;margin-right:0.35em;" />
   Self-Refine Pass
 </h4>
 
@@ -4184,7 +4184,7 @@ Sources:
 ---
 
 <h4 id="panel-review">
-  <img src="https://shieldcn.dev/badge/-9F7AEA.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=28&radius=7&padX=6&iconSize=16&variant=default&logo=ri:RiGroupLine&logoColor=f8fafc&label=" alt="Panel Review" title="Panel Review" height="28" loading="lazy" decoding="async" style="vertical-align:text-bottom;margin-right:0.35em;" />
+  <img src="https://shieldcn.dev/badge/-9F7AEA.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=28&radius=7&padX=6&iconSize=16&variant=default&logo=ri:RiGroupLine&logoColor=f8fafc&label=" alt="" title="Panel Review" height="28" width="28" loading="lazy" decoding="async" style="vertical-align:text-bottom;margin-right:0.35em;" />
   Panel Review
 </h4>
 
@@ -4288,7 +4288,7 @@ Sources:
 ---
 
 <h4 id="tradeoff-matrix">
-  <img src="https://shieldcn.dev/badge/-C4B5FD.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=28&radius=7&padX=6&iconSize=16&variant=default&logo=ri:RiScales3Line&logoColor=f8fafc&label=" alt="Tradeoff Matrix" title="Tradeoff Matrix" height="28" loading="lazy" decoding="async" style="vertical-align:text-bottom;margin-right:0.35em;" />
+  <img src="https://shieldcn.dev/badge/-C4B5FD.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=28&radius=7&padX=6&iconSize=16&variant=default&logo=ri:RiScales3Line&logoColor=f8fafc&label=" alt="" title="Tradeoff Matrix" height="28" width="28" loading="lazy" decoding="async" style="vertical-align:text-bottom;margin-right:0.35em;" />
   Tradeoff Matrix
 </h4>
 

@@ -203,6 +203,18 @@ test("analytics config builds complete PostHog public config", () => {
   assert.equal(config.canonicalPath, "/");
 });
 
+test("analytics config rejects non-PostHog hosts", () => {
+  assert.throws(
+    () =>
+      analyticsConfigForPage(homePage, "https://prompts.example/", {
+        WEB_ANALYTICS_PROVIDER: "posthog",
+        WEB_ANALYTICS_POSTHOG_KEY: "phc_public",
+        WEB_ANALYTICS_POSTHOG_HOST: "https://evil.example.com"
+      }),
+    /posthog\.com/
+  );
+});
+
 test("analytics config rejects incomplete provider setup", () => {
   assert.throws(
     () => analyticsConfigForPage(homePage, "", { WEB_ANALYTICS_PROVIDER: "posthog" }),

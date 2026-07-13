@@ -145,7 +145,14 @@ test("builds structured data graph for the home collection page", () => {
     assert.deepEqual(website.hasPart, [{ "@id": "https://docs.example.com/prompts/#webpage" }]);
     const collection = data["@graph"].find((node) => node["@type"] === "CollectionPage");
     assert.equal(collection.isBasedOn.url, rawRepositoryFileUrl("README.md"));
-    assert.equal(collection.mainEntity["@id"], "https://docs.example.com/prompts/#prompt-recipes");
+    assert.ok(Array.isArray(collection.mainEntity));
+    assert.deepEqual(
+      collection.mainEntity.map((entry) => entry["@id"]),
+      [
+        "https://docs.example.com/prompts/#prompt-recipes",
+        "https://docs.example.com/prompts/#pattern-notes"
+      ]
+    );
     const recipeList = data["@graph"].find(
       (node) => node["@type"] === "ItemList" && node.name === "Prompt recipes"
     );
@@ -154,6 +161,7 @@ test("builds structured data graph for the home collection page", () => {
       (node) => node["@type"] === "ItemList" && node.name === "Pattern notes"
     );
     assert.equal(patternList.numberOfItems, 1);
+    assert.ok(data["@graph"].find((node) => node["@type"] === "Organization")?.logo?.url);
   });
 });
 

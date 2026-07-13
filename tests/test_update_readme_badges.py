@@ -106,7 +106,10 @@ class RenderRecipeHeadingTest(unittest.TestCase):
 
         self.assertIn(f'<h4 id="{badge["slug"]}">', rendered)
         self.assertIn(f'title="{badge["name"]}"', rendered)
-        self.assertIn(f'alt="{badge["name"]}"', rendered)
+        # Decorative icon: empty alt; visible name is adjacent text in the h4.
+        self.assertIn('alt=""', rendered)
+        self.assertIn(f'width="28"', rendered)
+        self.assertIn(f'height="28"', rendered)
         self.assertIn(f'src="{expected_src}"', rendered)
         self.assertIn('loading="lazy"', rendered)
         self.assertIn(badge["name"], rendered)
