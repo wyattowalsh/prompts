@@ -205,13 +205,13 @@ jobs:
           pnpm exec js-yaml .pre-commit-config.yaml >/dev/null
           python3 -m json.tool vercel.json >/dev/null
 
-      - name: Web lint, unit tests, build, and search index
+      - name: Web lint, unit tests, legacy build, and search index
         shell: bash
         run: |
           pnpm run lint
           pnpm run format:check
           pnpm run web:test
-          pnpm run build
+          pnpm run build:legacy
 
       - name: Catalog React app build
         shell: bash

@@ -4,7 +4,8 @@
   "type": "module",
   "packageManager": "pnpm@11.10.0",
   "scripts": {
-    "build": "pnpm run web:clean && pnpm run web:build && pnpm run web:index && pnpm run web:check",
+    "build": "pnpm catalog:site-data && pnpm webapp:build",
+    "build:legacy": "pnpm run web:clean && pnpm run web:build && pnpm run web:index && pnpm run web:check",
     "lint": "eslint web scripts/web_analytics_report.mjs eslint.config.js playwright.config.mjs",
     "format:check": "prettier --check package.json pnpm-workspace.yaml pagefind.yml vercel.json eslint.config.js playwright.config.mjs scripts/web_analytics_report.mjs \"web/**/*.{css,html,js,mjs}\"",
     "catalog:validate": "pnpm --filter @prompts/catalog-core exec node bin/catalog.mjs validate --root ../../catalog --full-counts",
