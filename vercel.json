@@ -8,7 +8,7 @@
   "trailingSlash": true,
   "rewrites": [
     {
-      "source": "/((?!assets/).*)",
+      "source": "/:path*",
       "destination": "/index.html"
     }
   ],
