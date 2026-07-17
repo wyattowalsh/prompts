@@ -1,0 +1,28 @@
+slug: tree-of-thoughts
+title: Tree-of-Thoughts
+section: reasoning-and-search
+order: 80
+definition: |
+  Explore multiple intermediate reasoning branches, evaluate them, and search
+  toward a better final answer instead of a single linear chain.
+best_use: |
+  Planning, multi-step puzzles, and tasks where early commitment is costly.
+avoid_when: |
+  Simple factual lookup, latency-sensitive paths, or when branch evaluation is unreliable.
+template: |
+  Generate K candidate next steps. Score each. Expand the best branches. Return the best path.
+template_omission_reason: null
+model_api_controls: |
+  Higher reasoning effort can help; cap breadth/depth for cost.
+cost_latency: |
+  Multiplies tokens versus single-pass answers; bound K and depth.
+failure_modes: |
+  Shallow scoring, thrashing, or inventing branch quality without checks.
+evidence_tier: primary
+source_type: research paper
+eval_required: true
+caveat: |
+  Branch scores are model-internal unless you add external verifiers.
+sources:
+  - title: Tree of Thoughts
+    url: https://arxiv.org/abs/2305.10601

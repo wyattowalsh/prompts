@@ -1,0 +1,39 @@
+slug: plan-and-solve-prompting
+title: "Plan-and-Solve Prompting"
+section: reasoning-and-search
+order: 20
+definition: |
+  ask for a short plan, then solve according to that plan.
+best_use: "multi-step tasks where missing a step is more likely than arithmetic/tool failure."
+avoid_when: "a plan would be decorative."
+template: |
+  Create a short plan that identifies the required subproblems.
+  Then complete the task.
+  
+  Return only:
+  - final answer
+  - concise rationale
+  - checks
+  
+  Task:
+  <input>
+  {task}
+  </input>
+template_omission_reason: null
+model_api_controls: "use higher reasoning effort for hard planning when supported."
+cost_latency: moderate.
+failure_modes: |
+  bad plans, stale assumptions, plan-following without correction.
+evidence_tier: Moderate
+source_type: "primary research plus survey."
+eval_required: true
+caveat: "a plan is useful only if it changes execution or checks."
+sources:
+  - title: "Plan-and-Solve Prompting"
+    url: https://arxiv.org/abs/2305.04091
+  - title: "The Prompt Report"
+    url: https://arxiv.org/abs/2406.06608
+  - title: "OpenAI reasoning models"
+    url: https://developers.openai.com/api/docs/guides/reasoning
+  - title: "xAI reasoning"
+    url: https://docs.x.ai/developers/model-capabilities/text/reasoning

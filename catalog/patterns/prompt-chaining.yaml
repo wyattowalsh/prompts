@@ -1,0 +1,41 @@
+slug: prompt-chaining
+title: "Prompt Chaining"
+section: core-prompt-construction
+order: 50
+definition: "split a workflow into staged prompts with explicit handoff artifacts."
+best_use: "extract-rank-draft-check workflows and tasks with separable phases."
+avoid_when: "stages are tightly coupled or early errors cannot be detected."
+template: |
+  Workflow goal:
+  {goal}
+  
+  Stage 1 output contract:
+  {facts_to_extract}
+  
+  Stage 2 output contract:
+  {artifact_to_create}
+  
+  Stage 3 validation:
+  {criteria}
+  
+  Rules:
+  - Keep each stage output visible and auditable.
+  - Do not use Stage 2 until Stage 1 satisfies its contract.
+  - Preserve source IDs and uncertainty across stages.
+template_omission_reason: null
+model_api_controls: |
+  use separate calls, schemas, or workflow state when stages need observability.
+cost_latency: moderate.
+failure_modes: |
+  error propagation, hidden state drift, missing provenance.
+evidence_tier: Moderate
+source_type: "primary paper plus eval practice."
+eval_required: true
+caveat: "chains are only safer when stage contracts can catch errors."
+sources:
+  - title: PromptChainer
+    url: https://arxiv.org/abs/2203.06566
+  - title: "OpenAI evaluation best practices"
+    url: https://developers.openai.com/api/docs/guides/evaluation-best-practices
+  - title: "The Prompt Report"
+    url: https://arxiv.org/abs/2406.06608

@@ -1,0 +1,43 @@
+slug: program-of-thoughts
+title: Program-of-Thoughts
+section: reasoning-and-search
+order: 100
+definition: "translate computable subproblems into code or symbolic operations and use checked results."
+best_use: |
+  math, data analysis, algorithms, deterministic computation.
+avoid_when: "code execution is unavailable or unsafe."
+template: |
+  Problem:
+  <input>
+  {problem}
+  </input>
+  
+  Translate only the computable part into code or symbolic operations.
+  Run or inspect the computation in a safe environment.
+  Use the computed result to answer.
+  
+  Return:
+  - final answer
+  - computation summary
+  - validation result
+template_omission_reason: null
+model_api_controls: |
+  sandbox, code execution, filesystem/network limits, test runner.
+cost_latency: "moderate plus tool execution."
+failure_modes: |
+  generated code bugs, unsafe execution, bad problem translation.
+evidence_tier: "**Strong** when code can actually run."
+source_type: "primary research plus tool docs."
+eval_required: true
+caveat: "generating code without executing or checking it is not validation."
+sources:
+  - title: "Program of Thoughts Prompting"
+    url: https://arxiv.org/abs/2211.12588
+  - title: PAL
+    url: https://arxiv.org/abs/2211.10435
+  - title: "OpenAI tools"
+    url: https://developers.openai.com/api/docs/guides/tools
+  - title: "OpenAI Code Interpreter"
+    url: https://developers.openai.com/api/docs/guides/tools-code-interpreter
+  - title: "Google Gemini code execution"
+    url: https://ai.google.dev/gemini-api/docs/code-execution

@@ -1,0 +1,44 @@
+slug: eval-driven-prompt-optimization
+title: "Eval-Driven Prompt Optimization"
+section: core-prompt-construction
+order: 70
+definition: |
+  generate, test, and select prompt variants using a held-out eval set.
+best_use: |
+  production prompts, routers, classifiers, extraction tasks, and prompts with measurable outcomes.
+avoid_when: "there is no stable task definition or eval set."
+template: |
+  Optimization task:
+  {task}
+  
+  Candidate prompt dimensions:
+  - {instruction wording}
+  - {examples}
+  - {output contract}
+  - {reasoning/tool/schema controls}
+  
+  Eval set:
+  <cases>
+  {held_out_cases_with_expected_behavior}
+  </cases>
+  
+  Selection rule:
+  Choose the smallest prompt that improves the target metric without regressing
+  safety, refusal, parser validity, or latency constraints.
+template_omission_reason: null
+model_api_controls: |
+  track model snapshot, decoding, reasoning effort, schema version, and tool definitions.
+cost_latency: "high upfront; lower regression risk later."
+failure_modes: |
+  overfitting, benchmark leakage, optimizing the wrong metric.
+evidence_tier: Moderate
+source_type: "primary papers plus framework research."
+eval_required: true
+caveat: "automatic prompt search is not a substitute for representative evals."
+sources:
+  - title: OPRO
+    url: https://arxiv.org/abs/2309.03409
+  - title: DSPy
+    url: https://arxiv.org/abs/2310.03714
+  - title: "OpenAI Cookbook eval flywheel"
+    url: https://github.com/openai/openai-cookbook/blob/main/examples/evaluation/Building_resilient_prompts_using_an_evaluation_flywheel.md

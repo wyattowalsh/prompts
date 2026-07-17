@@ -1,0 +1,42 @@
+slug: ux-review-checklist
+title: "UX Review Checklist"
+section: task-and-workflow-snippets
+order: 130
+definition: |
+  review an interface against audience, workflow, accessibility, visual consistency, and interaction clarity.
+best_use: |
+  quick design critique, UI copy review, and workflow inspection.
+avoid_when: |
+  screenshots, product context, or constraints are missing.
+template: |
+  Review the UI for {audience} and {workflow}.
+  
+  Context:
+  <context>
+  {screenshot_description, product constraints, user goals}
+  </context>
+  
+  Evaluate:
+  - information hierarchy
+  - interaction clarity
+  - accessibility
+  - visual consistency
+  - color and contrast risks
+  - workflow friction
+  
+  Return prioritized fixes with rationale and validation needed.
+template_omission_reason: null
+model_api_controls: |
+  image input, accessibility checker, design-system references.
+cost_latency: "low to moderate."
+failure_modes: |
+  generic design advice, ignoring actual workflow, weak accessibility checks.
+evidence_tier: Community
+source_type: "workflow pattern plus official-doc support for structured prompting."
+eval_required: true
+caveat: "use actual screenshots and constraints; do not rely on persona."
+sources:
+  - title: "Google Gemini prompting strategies"
+    url: https://ai.google.dev/gemini-api/docs/prompting-strategies
+  - title: "GitHub basic writing and formatting syntax"
+    url: https://docs.github.com/en/get-started/writing-on-github/getting-started-with-writing-and-formatting-on-github/basic-writing-and-formatting-syntax

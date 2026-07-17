@@ -1,0 +1,38 @@
+slug: tree-of-thoughts
+title: Tree-of-Thoughts
+section: reasoning-and-search
+order: 80
+definition: "explore multiple candidate reasoning paths and choose among them."
+best_use: |
+  puzzles, planning, creative problem solving, and branching tasks.
+avoid_when: "direct answering is sufficient or branching cost is too high."
+template: |
+  Problem:
+  <input>
+  {problem}
+  </input>
+  
+  Success criteria:
+  {criteria}
+  
+  Generate 3 candidate solution paths.
+  Evaluate each against the criteria.
+  Select the best path and return:
+  - final answer
+  - why this path won
+  - checks or unresolved uncertainty
+template_omission_reason: null
+model_api_controls: |
+  use sampling, external scoring, or multi-call orchestration for genuine search.
+cost_latency: high.
+failure_modes: |
+  expensive exploration, weak self-evaluation, missed paths.
+evidence_tier: Moderate
+source_type: "primary research plus survey."
+eval_required: true
+caveat: "single-prompt ToT is not the full algorithm."
+sources:
+  - title: "Tree of Thoughts"
+    url: https://arxiv.org/abs/2305.10601
+  - title: "The Prompt Report"
+    url: https://arxiv.org/abs/2406.06608

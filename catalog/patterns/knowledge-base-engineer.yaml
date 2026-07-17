@@ -1,0 +1,39 @@
+slug: knowledge-base-engineer
+title: "Knowledge Base Engineer"
+section: task-and-workflow-snippets
+order: 70
+definition: |
+  produce source-grounded knowledge-base entries with sections, diagrams, update notes, and open questions.
+best_use: "internal documentation and explainer pages from verified sources."
+avoid_when: "the prompt asks for broad resource lists without source constraints."
+template: |
+  Create a knowledge-base entry for {topic}.
+  
+  Use only these sources:
+  <sources>
+  {sources}
+  </sources>
+  
+  Return:
+  - Definition
+  - Related concepts
+  - Procedure or examples
+  - Diagram description or Mermaid if useful
+  - Sources
+  - Open questions
+template_omission_reason: null
+model_api_controls: |
+  source IDs, citation checks, markdown validation.
+cost_latency: moderate.
+failure_modes: |
+  unsourced resource lists, decorative diagrams, overlong notes.
+evidence_tier: Community
+source_type: "workflow pattern plus official-doc support for structure."
+eval_required: true
+caveat: |
+  value comes from structure and sources, not the persona.
+sources:
+  - title: "OpenAI prompt engineering"
+    url: https://developers.openai.com/api/docs/guides/prompt-engineering
+  - title: "GitHub Mermaid diagrams"
+    url: https://docs.github.com/en/get-started/writing-on-github/working-with-advanced-formatting/creating-diagrams

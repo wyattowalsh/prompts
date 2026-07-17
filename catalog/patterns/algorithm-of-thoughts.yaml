@@ -1,0 +1,32 @@
+slug: algorithm-of-thoughts
+title: Algorithm-of-Thoughts
+section: reasoning-and-search
+order: 70
+definition: "guide solving with an explicit algorithmic search strategy."
+best_use: "constrained problem solving where the algorithm is known."
+avoid_when: "no clear algorithm exists or examples are too complex to fit."
+template: |
+  Problem:
+  <input>
+  {problem}
+  </input>
+  
+  Use this strategy:
+  1. Represent the state.
+  2. Generate candidate moves.
+  3. Score candidates against the objective.
+  4. Continue until solved or blocked.
+  
+  Return the final answer, concise search summary, and checks.
+template_omission_reason: null
+model_api_controls: "prefer external solver or executable representation when available."
+cost_latency: moderate.
+failure_modes: |
+  shallow search, state-tracking errors, false confidence.
+evidence_tier: Emerging
+source_type: "primary research."
+eval_required: true
+caveat: "the template is a lightweight approximation of a search procedure."
+sources:
+  - title: "Algorithm of Thoughts"
+    url: https://arxiv.org/abs/2308.10379

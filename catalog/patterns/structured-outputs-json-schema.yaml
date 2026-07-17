@@ -1,0 +1,53 @@
+slug: structured-outputs-json-schema
+title: "Structured Outputs / JSON Schema"
+section: core-prompt-construction
+order: 30
+definition: |
+  use provider-enforced structured output, JSON Schema, or tool schemas so downstream code can parse reliably.
+best_use: |
+  APIs, extraction, routing, scoring, classification, and any workflow with a parser.
+avoid_when: "exploratory writing or open-ended analysis is more useful than a rigid contract."
+template: |
+  Task:
+  {task}
+  
+  Trusted context:
+  <context>
+  {trusted_context}
+  </context>
+  
+  Untrusted input:
+  <input>
+  {input}
+  </input>
+  
+  Schema intent:
+  {describe the JSON Schema or provider structured-output contract}
+  
+  Validation requirements:
+  - All required fields must be present.
+  - Unknown fields are not allowed unless the schema permits them.
+  - If the model refuses or cannot comply, return the provider refusal state and do not fabricate JSON.
+  - Downstream code must validate the parsed object before use.
+template_omission_reason: null
+model_api_controls: |
+  OpenAI Structured Outputs, Gemini structured output, Azure OpenAI structured outputs, Anthropic structured JSON/tool output where available.
+cost_latency: "low to moderate; schema compilation or strict mode can add overhead."
+failure_modes: |
+  unsupported schema features, refusal handling gaps, assuming all providers use the same JSON Schema subset.
+evidence_tier: Strong
+source_type: "official docs."
+eval_required: true
+caveat: |
+  schemas constrain shape, not truth.
+sources:
+  - title: "OpenAI structured outputs"
+    url: https://developers.openai.com/api/docs/guides/structured-outputs
+  - title: "Anthropic Structured Outputs"
+    url: https://platform.claude.com/docs/en/build-with-claude/structured-outputs
+  - title: "Google Gemini structured output"
+    url: https://ai.google.dev/gemini-api/docs/structured-output
+  - title: "xAI structured outputs"
+    url: https://docs.x.ai/developers/model-capabilities/text/structured-outputs
+  - title: "Azure OpenAI structured outputs"
+    url: https://learn.microsoft.com/en-us/azure/foundry/openai/how-to/structured-outputs

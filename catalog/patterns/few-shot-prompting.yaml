@@ -1,0 +1,44 @@
+slug: few-shot-prompting
+title: "Few-Shot Prompting"
+section: core-prompt-construction
+order: 40
+definition: |
+  provide input-output examples so the model can infer style, labels, or edge behavior.
+best_use: |
+  classification labels, house style, tricky edge cases, and formats hard to describe concisely.
+avoid_when: |
+  examples are noisy, biased, outdated, or unlike the target task.
+template: |
+  Learn the pattern from the examples, then complete the final item.
+  
+  Example 1
+  Input: {example_input}
+  Output: {example_output}
+  
+  Example 2
+  Input: {example_input}
+  Output: {example_output}
+  
+  Final item:
+  <input>
+  {input}
+  </input>
+  
+  Output:
+template_omission_reason: null
+model_api_controls: "keep examples in the same modality and schema as the final request."
+cost_latency: |
+  low to moderate, depending on example count.
+failure_modes: |
+  example leakage, order sensitivity, overfitting, encoded bias.
+evidence_tier: Strong
+source_type: "primary paper plus official docs."
+eval_required: true
+caveat: "examples improve behavior only when representative and tested."
+sources:
+  - title: "Language Models are Few-Shot Learners"
+    url: https://arxiv.org/abs/2005.14165
+  - title: "Google Gemini prompting strategies"
+    url: https://ai.google.dev/gemini-api/docs/prompting-strategies
+  - title: "The Prompt Report"
+    url: https://arxiv.org/abs/2406.06608

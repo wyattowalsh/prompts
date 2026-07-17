@@ -1,0 +1,80 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://prompts.w4w.dev/schema/index.schema.json",
+  "title": "Catalog index",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["version", "meta", "lanes", "pattern_sections"],
+  "properties": {
+    "version": { "type": "integer", "const": 1 },
+    "meta": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["title", "description", "repository_url"],
+      "properties": {
+        "title": { "type": "string" },
+        "description": { "type": "string" },
+        "repository_url": { "type": "string" },
+        "web_base_url_default": { "type": "string" }
+      }
+    },
+    "counts": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "recipes": { "type": "integer" },
+        "patterns": { "type": "integer" }
+      }
+    },
+    "lanes": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["key", "title", "order", "recipe_slugs"],
+        "properties": {
+          "key": { "type": "string" },
+          "title": { "type": "string" },
+          "color": { "type": "string" },
+          "order": { "type": "integer" },
+          "recipe_slugs": {
+            "type": "array",
+            "items": { "type": "string" }
+          }
+        }
+      }
+    },
+    "pattern_sections": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["key", "title", "order", "pattern_slugs"],
+        "properties": {
+          "key": { "type": "string" },
+          "title": { "type": "string" },
+          "order": { "type": "integer" },
+          "pattern_slugs": {
+            "type": "array",
+            "items": { "type": "string" }
+          }
+        }
+      }
+    },
+    "pages": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "path", "order"],
+        "properties": {
+          "id": { "type": "string" },
+          "path": { "type": "string" },
+          "heading": { "type": "string" },
+          "order": { "type": "integer" },
+          "include_in_readme": { "type": "boolean" }
+        }
+      }
+    }
+  }
+}

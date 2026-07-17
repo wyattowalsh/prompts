@@ -1,0 +1,814 @@
+{
+  "readme_lines": 6315,
+  "h2_sections": [
+    {
+      "line": 60,
+      "heading": "Start Here"
+    },
+    {
+      "line": 107,
+      "heading": "Table of Contents"
+    },
+    {
+      "line": 259,
+      "heading": "Prompt Library"
+    },
+    {
+      "line": 4371,
+      "heading": "How To Adapt Prompts"
+    },
+    {
+      "line": 4407,
+      "heading": "Provider Controls"
+    },
+    {
+      "line": 4428,
+      "heading": "Safety, Evals, And Trust Boundaries"
+    },
+    {
+      "line": 4481,
+      "heading": "Pattern Selection Matrix"
+    },
+    {
+      "line": 4505,
+      "heading": "Pattern Notes"
+    },
+    {
+      "line": 6143,
+      "heading": "Contributing Prompt Recipes"
+    },
+    {
+      "line": 6180,
+      "heading": "Bibliography"
+    }
+  ],
+  "markers": [
+    {
+      "line": 15,
+      "text": "<!-- BADGES:START -->"
+    },
+    {
+      "line": 41,
+      "text": "<!-- BADGES:END -->"
+    },
+    {
+      "line": 43,
+      "text": "<!-- LANES:START -->"
+    },
+    {
+      "line": 54,
+      "text": "<!-- LANES:END -->"
+    },
+    {
+      "line": 67,
+      "text": "<!-- SHORTCUTS:START -->"
+    },
+    {
+      "line": 76,
+      "text": "<!-- SHORTCUTS:END -->"
+    },
+    {
+      "line": 173,
+      "text": "<!-- JOB-MAP:START -->"
+    },
+    {
+      "line": 228,
+      "text": "<!-- JOB-MAP:END -->"
+    },
+    {
+      "line": 263,
+      "text": "<!-- LANE-CHIPS:research:START -->"
+    },
+    {
+      "line": 270,
+      "text": "<!-- LANE-CHIPS:research:END -->"
+    },
+    {
+      "line": 784,
+      "text": "<!-- LANE-CHIPS:writing:START -->"
+    },
+    {
+      "line": 791,
+      "text": "<!-- LANE-CHIPS:writing:END -->"
+    },
+    {
+      "line": 1283,
+      "text": "<!-- LANE-CHIPS:coding:START -->"
+    },
+    {
+      "line": 1290,
+      "text": "<!-- LANE-CHIPS:coding:END -->"
+    },
+    {
+      "line": 1800,
+      "text": "<!-- LANE-CHIPS:data:START -->"
+    },
+    {
+      "line": 1807,
+      "text": "<!-- LANE-CHIPS:data:END -->"
+    },
+    {
+      "line": 2309,
+      "text": "<!-- LANE-CHIPS:product:START -->"
+    },
+    {
+      "line": 2316,
+      "text": "<!-- LANE-CHIPS:product:END -->"
+    },
+    {
+      "line": 2808,
+      "text": "<!-- LANE-CHIPS:operations:START -->"
+    },
+    {
+      "line": 2815,
+      "text": "<!-- LANE-CHIPS:operations:END -->"
+    },
+    {
+      "line": 3313,
+      "text": "<!-- LANE-CHIPS:agents:START -->"
+    },
+    {
+      "line": 3320,
+      "text": "<!-- LANE-CHIPS:agents:END -->"
+    },
+    {
+      "line": 3851,
+      "text": "<!-- LANE-CHIPS:reasoning:START -->"
+    },
+    {
+      "line": 3858,
+      "text": "<!-- LANE-CHIPS:reasoning:END -->"
+    }
+  ],
+  "recipe_count": 48,
+  "pattern_count": 43,
+  "lanes": {
+    "Research": [
+      "source-grounded-answer",
+      "web-research-brief",
+      "literature-scan",
+      "claim-checker",
+      "citation-matrix",
+      "disagreement-map"
+    ],
+    "Writing": [
+      "executive-brief",
+      "rewrite-with-constraints",
+      "style-transfer-without-examples",
+      "dense-summary",
+      "faq-generator",
+      "newsletter-draft"
+    ],
+    "Coding": [
+      "code-review",
+      "bug-rca",
+      "unit-test-writer",
+      "refactor-planner",
+      "pr-description",
+      "api-contract-explainer"
+    ],
+    "Data": [
+      "json-extractor",
+      "table-normalizer",
+      "classifier",
+      "ner-extractor",
+      "sentiment-triage",
+      "synthetic-edge-cases"
+    ],
+    "Product": [
+      "prd-drafter",
+      "user-story-splitter",
+      "acceptance-criteria-writer",
+      "launch-checklist",
+      "ux-review",
+      "support-macro"
+    ],
+    "Operations": [
+      "incident-summary",
+      "runbook-generator",
+      "log-triage",
+      "risk-register",
+      "decision-memo",
+      "meeting-action-extractor"
+    ],
+    "Agent and Tool Workflows": [
+      "tool-use-planner",
+      "rag-answer-contract",
+      "prompt-injection-scanner",
+      "eval-set-generator",
+      "regression-judge",
+      "prompt-optimizer"
+    ],
+    "Reasoning": [
+      "plan-and-solve",
+      "step-back-answer",
+      "verification-pass",
+      "self-refine-pass",
+      "panel-review",
+      "tradeoff-matrix"
+    ]
+  },
+  "pattern_sections": {
+    "Core Prompt Construction": [
+      "direct-zero-shot",
+      "structured-zero-shot",
+      "structured-outputs-json-schema",
+      "few-shot-prompting",
+      "prompt-chaining",
+      "meta-prompting",
+      "eval-driven-prompt-optimization",
+      "active-prompt",
+      "context-engineering",
+      "rag-citation-grounded-answering",
+      "tool-calling-contract",
+      "prompt-injection-defense"
+    ],
+    "Reasoning and Search": [
+      "zero-shot-chain-of-thought",
+      "plan-and-solve-prompting",
+      "step-back-prompting",
+      "intentional-analysis",
+      "chain-of-draft",
+      "skeleton-of-thought",
+      "algorithm-of-thoughts",
+      "tree-of-thoughts",
+      "graph-of-thoughts",
+      "program-of-thoughts",
+      "multimodal-evidence-reasoning"
+    ],
+    "Verification and Iteration": [
+      "self-consistency",
+      "react",
+      "chain-of-verification",
+      "self-refine",
+      "reflexion",
+      "evaluation-flywheel"
+    ],
+    "Task and Workflow Snippets": [
+      "text-classification",
+      "ner-named-entity-recognition",
+      "sentiment-analysis",
+      "data-augmentation",
+      "research-synthesis",
+      "chain-of-density-summarization",
+      "knowledge-base-engineer",
+      "markmap-generator",
+      "python-unit-test-writer",
+      "quick-enhance",
+      "panelgpt",
+      "expert-panel-discussion",
+      "ux-review-checklist",
+      "emotional-persuasion-prompting"
+    ]
+  },
+  "recipes": [
+    {
+      "title": "Source-Grounded Answer",
+      "slug": "source-grounded-answer",
+      "lane": "Research",
+      "line": 272
+    },
+    {
+      "title": "Web Research Brief",
+      "slug": "web-research-brief",
+      "lane": "Research",
+      "line": 366
+    },
+    {
+      "title": "Literature Scan",
+      "slug": "literature-scan",
+      "lane": "Research",
+      "line": 450
+    },
+    {
+      "title": "Claim Checker",
+      "slug": "claim-checker",
+      "lane": "Research",
+      "line": 534
+    },
+    {
+      "title": "Citation Matrix",
+      "slug": "citation-matrix",
+      "lane": "Research",
+      "line": 618
+    },
+    {
+      "title": "Disagreement Map",
+      "slug": "disagreement-map",
+      "lane": "Research",
+      "line": 700
+    },
+    {
+      "title": "Executive Brief",
+      "slug": "executive-brief",
+      "lane": "Writing",
+      "line": 795
+    },
+    {
+      "title": "Rewrite With Constraints",
+      "slug": "rewrite-with-constraints",
+      "lane": "Writing",
+      "line": 876
+    },
+    {
+      "title": "Style Transfer Without Examples",
+      "slug": "style-transfer-without-examples",
+      "lane": "Writing",
+      "line": 957
+    },
+    {
+      "title": "Dense Summary",
+      "slug": "dense-summary",
+      "lane": "Writing",
+      "line": 1038
+    },
+    {
+      "title": "FAQ Generator",
+      "slug": "faq-generator",
+      "lane": "Writing",
+      "line": 1119
+    },
+    {
+      "title": "Newsletter Draft",
+      "slug": "newsletter-draft",
+      "lane": "Writing",
+      "line": 1200
+    },
+    {
+      "title": "Code Review",
+      "slug": "code-review",
+      "lane": "Coding",
+      "line": 1294
+    },
+    {
+      "title": "Bug RCA",
+      "slug": "bug-rca",
+      "lane": "Coding",
+      "line": 1384
+    },
+    {
+      "title": "Unit Test Writer",
+      "slug": "unit-test-writer",
+      "lane": "Coding",
+      "line": 1466
+    },
+    {
+      "title": "Refactor Planner",
+      "slug": "refactor-planner",
+      "lane": "Coding",
+      "line": 1548
+    },
+    {
+      "title": "PR Description",
+      "slug": "pr-description",
+      "lane": "Coding",
+      "line": 1630
+    },
+    {
+      "title": "API Contract Explainer",
+      "slug": "api-contract-explainer",
+      "lane": "Coding",
+      "line": 1712
+    },
+    {
+      "title": "JSON Extractor",
+      "slug": "json-extractor",
+      "lane": "Data",
+      "line": 1811
+    },
+    {
+      "title": "Table Normalizer",
+      "slug": "table-normalizer",
+      "lane": "Data",
+      "line": 1898
+    },
+    {
+      "title": "Classifier",
+      "slug": "classifier",
+      "lane": "Data",
+      "line": 1979
+    },
+    {
+      "title": "NER Extractor",
+      "slug": "ner-extractor",
+      "lane": "Data",
+      "line": 2062
+    },
+    {
+      "title": "Sentiment Triage",
+      "slug": "sentiment-triage",
+      "lane": "Data",
+      "line": 2145
+    },
+    {
+      "title": "Synthetic Edge Cases",
+      "slug": "synthetic-edge-cases",
+      "lane": "Data",
+      "line": 2226
+    },
+    {
+      "title": "PRD Drafter",
+      "slug": "prd-drafter",
+      "lane": "Product",
+      "line": 2320
+    },
+    {
+      "title": "User Story Splitter",
+      "slug": "user-story-splitter",
+      "lane": "Product",
+      "line": 2401
+    },
+    {
+      "title": "Acceptance Criteria Writer",
+      "slug": "acceptance-criteria-writer",
+      "lane": "Product",
+      "line": 2482
+    },
+    {
+      "title": "Launch Checklist",
+      "slug": "launch-checklist",
+      "lane": "Product",
+      "line": 2563
+    },
+    {
+      "title": "UX Review",
+      "slug": "ux-review",
+      "lane": "Product",
+      "line": 2644
+    },
+    {
+      "title": "Support Macro",
+      "slug": "support-macro",
+      "lane": "Product",
+      "line": 2725
+    },
+    {
+      "title": "Incident Summary",
+      "slug": "incident-summary",
+      "lane": "Operations",
+      "line": 2819
+    },
+    {
+      "title": "Runbook Generator",
+      "slug": "runbook-generator",
+      "lane": "Operations",
+      "line": 2901
+    },
+    {
+      "title": "Log Triage",
+      "slug": "log-triage",
+      "lane": "Operations",
+      "line": 2983
+    },
+    {
+      "title": "Risk Register",
+      "slug": "risk-register",
+      "lane": "Operations",
+      "line": 3065
+    },
+    {
+      "title": "Decision Memo",
+      "slug": "decision-memo",
+      "lane": "Operations",
+      "line": 3147
+    },
+    {
+      "title": "Meeting Action Extractor",
+      "slug": "meeting-action-extractor",
+      "lane": "Operations",
+      "line": 3229
+    },
+    {
+      "title": "Tool-Use Planner",
+      "slug": "tool-use-planner",
+      "lane": "Agent and Tool Workflows",
+      "line": 3324
+    },
+    {
+      "title": "RAG Answer Contract",
+      "slug": "rag-answer-contract",
+      "lane": "Agent and Tool Workflows",
+      "line": 3413
+    },
+    {
+      "title": "Prompt-Injection Scanner",
+      "slug": "prompt-injection-scanner",
+      "lane": "Agent and Tool Workflows",
+      "line": 3504
+    },
+    {
+      "title": "Eval-Set Generator",
+      "slug": "eval-set-generator",
+      "lane": "Agent and Tool Workflows",
+      "line": 3588
+    },
+    {
+      "title": "Regression Judge",
+      "slug": "regression-judge",
+      "lane": "Agent and Tool Workflows",
+      "line": 3672
+    },
+    {
+      "title": "Prompt Optimizer",
+      "slug": "prompt-optimizer",
+      "lane": "Agent and Tool Workflows",
+      "line": 3760
+    },
+    {
+      "title": "Plan-and-Solve",
+      "slug": "plan-and-solve",
+      "lane": "Reasoning",
+      "line": 3862
+    },
+    {
+      "title": "Step-Back Answer",
+      "slug": "step-back-answer",
+      "lane": "Reasoning",
+      "line": 3943
+    },
+    {
+      "title": "Verification Pass",
+      "slug": "verification-pass",
+      "lane": "Reasoning",
+      "line": 4024
+    },
+    {
+      "title": "Self-Refine Pass",
+      "slug": "self-refine-pass",
+      "lane": "Reasoning",
+      "line": 4105
+    },
+    {
+      "title": "Panel Review",
+      "slug": "panel-review",
+      "lane": "Reasoning",
+      "line": 4186
+    },
+    {
+      "title": "Tradeoff Matrix",
+      "slug": "tradeoff-matrix",
+      "lane": "Reasoning",
+      "line": 4290
+    }
+  ],
+  "patterns": [
+    {
+      "title": "Direct Zero-Shot",
+      "slug": "direct-zero-shot",
+      "section": "Core Prompt Construction",
+      "line": 4511
+    },
+    {
+      "title": "Structured Zero-Shot",
+      "slug": "structured-zero-shot",
+      "section": "Core Prompt Construction",
+      "line": 4549
+    },
+    {
+      "title": "Structured Outputs / JSON Schema",
+      "slug": "structured-outputs-json-schema",
+      "section": "Core Prompt Construction",
+      "line": 4592
+    },
+    {
+      "title": "Few-Shot Prompting",
+      "slug": "few-shot-prompting",
+      "section": "Core Prompt Construction",
+      "line": 4636
+    },
+    {
+      "title": "Prompt Chaining",
+      "slug": "prompt-chaining",
+      "section": "Core Prompt Construction",
+      "line": 4675
+    },
+    {
+      "title": "Meta-Prompting",
+      "slug": "meta-prompting",
+      "section": "Core Prompt Construction",
+      "line": 4714
+    },
+    {
+      "title": "Eval-Driven Prompt Optimization",
+      "slug": "eval-driven-prompt-optimization",
+      "section": "Core Prompt Construction",
+      "line": 4756
+    },
+    {
+      "title": "Active-Prompt",
+      "slug": "active-prompt",
+      "section": "Core Prompt Construction",
+      "line": 4796
+    },
+    {
+      "title": "Context Engineering",
+      "slug": "context-engineering",
+      "section": "Core Prompt Construction",
+      "line": 4823
+    },
+    {
+      "title": "RAG / Citation-Grounded Answering",
+      "slug": "rag-citation-grounded-answering",
+      "section": "Core Prompt Construction",
+      "line": 4870
+    },
+    {
+      "title": "Tool Calling Contract",
+      "slug": "tool-calling-contract",
+      "section": "Core Prompt Construction",
+      "line": 4912
+    },
+    {
+      "title": "Prompt Injection Defense",
+      "slug": "prompt-injection-defense",
+      "section": "Core Prompt Construction",
+      "line": 4951
+    },
+    {
+      "title": "Zero-Shot Chain-of-Thought",
+      "slug": "zero-shot-chain-of-thought",
+      "section": "Reasoning and Search",
+      "line": 5001
+    },
+    {
+      "title": "Plan-and-Solve Prompting",
+      "slug": "plan-and-solve-prompting",
+      "section": "Reasoning and Search",
+      "line": 5035
+    },
+    {
+      "title": "Step-Back Prompting",
+      "slug": "step-back-prompting",
+      "section": "Reasoning and Search",
+      "line": 5070
+    },
+    {
+      "title": "Intentional Analysis",
+      "slug": "intentional-analysis",
+      "section": "Reasoning and Search",
+      "line": 5102
+    },
+    {
+      "title": "Chain-of-Draft",
+      "slug": "chain-of-draft",
+      "section": "Reasoning and Search",
+      "line": 5137
+    },
+    {
+      "title": "Skeleton-of-Thought",
+      "slug": "skeleton-of-thought",
+      "section": "Reasoning and Search",
+      "line": 5171
+    },
+    {
+      "title": "Algorithm-of-Thoughts",
+      "slug": "algorithm-of-thoughts",
+      "section": "Reasoning and Search",
+      "line": 5202
+    },
+    {
+      "title": "Tree-of-Thoughts",
+      "slug": "tree-of-thoughts",
+      "section": "Reasoning and Search",
+      "line": 5237
+    },
+    {
+      "title": "Graph-of-Thoughts",
+      "slug": "graph-of-thoughts",
+      "section": "Reasoning and Search",
+      "line": 5274
+    },
+    {
+      "title": "Program-of-Thoughts",
+      "slug": "program-of-thoughts",
+      "section": "Reasoning and Search",
+      "line": 5306
+    },
+    {
+      "title": "Multimodal Evidence Reasoning",
+      "slug": "multimodal-evidence-reasoning",
+      "section": "Reasoning and Search",
+      "line": 5342
+    },
+    {
+      "title": "Self-Consistency",
+      "slug": "self-consistency",
+      "section": "Verification and Iteration",
+      "line": 5386
+    },
+    {
+      "title": "ReAct",
+      "slug": "react",
+      "section": "Verification and Iteration",
+      "line": 5421
+    },
+    {
+      "title": "Chain-of-Verification",
+      "slug": "chain-of-verification",
+      "section": "Verification and Iteration",
+      "line": 5460
+    },
+    {
+      "title": "Self-Refine",
+      "slug": "self-refine",
+      "section": "Verification and Iteration",
+      "line": 5498
+    },
+    {
+      "title": "Reflexion",
+      "slug": "reflexion",
+      "section": "Verification and Iteration",
+      "line": 5534
+    },
+    {
+      "title": "Evaluation Flywheel",
+      "slug": "evaluation-flywheel",
+      "section": "Verification and Iteration",
+      "line": 5562
+    },
+    {
+      "title": "Text Classification",
+      "slug": "text-classification",
+      "section": "Task and Workflow Snippets",
+      "line": 5610
+    },
+    {
+      "title": "NER: Named Entity Recognition",
+      "slug": "ner-named-entity-recognition",
+      "section": "Task and Workflow Snippets",
+      "line": 5648
+    },
+    {
+      "title": "Sentiment Analysis",
+      "slug": "sentiment-analysis",
+      "section": "Task and Workflow Snippets",
+      "line": 5688
+    },
+    {
+      "title": "Data Augmentation",
+      "slug": "data-augmentation",
+      "section": "Task and Workflow Snippets",
+      "line": 5722
+    },
+    {
+      "title": "Research Synthesis",
+      "slug": "research-synthesis",
+      "section": "Task and Workflow Snippets",
+      "line": 5759
+    },
+    {
+      "title": "Chain-of-Density Summarization",
+      "slug": "chain-of-density-summarization",
+      "section": "Task and Workflow Snippets",
+      "line": 5801
+    },
+    {
+      "title": "Knowledge Base Engineer",
+      "slug": "knowledge-base-engineer",
+      "section": "Task and Workflow Snippets",
+      "line": 5835
+    },
+    {
+      "title": "Markmap Generator",
+      "slug": "markmap-generator",
+      "section": "Task and Workflow Snippets",
+      "line": 5872
+    },
+    {
+      "title": "Python Unit Test Writer",
+      "slug": "python-unit-test-writer",
+      "section": "Task and Workflow Snippets",
+      "line": 5903
+    },
+    {
+      "title": "Quick Enhance",
+      "slug": "quick-enhance",
+      "section": "Task and Workflow Snippets",
+      "line": 5942
+    },
+    {
+      "title": "PanelGPT",
+      "slug": "panelgpt",
+      "section": "Task and Workflow Snippets",
+      "line": 5977
+    },
+    {
+      "title": "Expert Panel Discussion",
+      "slug": "expert-panel-discussion",
+      "section": "Task and Workflow Snippets",
+      "line": 6031
+    },
+    {
+      "title": "UX Review Checklist",
+      "slug": "ux-review-checklist",
+      "section": "Task and Workflow Snippets",
+      "line": 6068
+    },
+    {
+      "title": "Emotional Persuasion Prompting",
+      "slug": "emotional-persuasion-prompting",
+      "section": "Task and Workflow Snippets",
+      "line": 6107
+    }
+  ]
+}

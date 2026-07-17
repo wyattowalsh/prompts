@@ -1,0 +1,37 @@
+slug: sentiment-analysis
+title: "Sentiment Analysis"
+section: task-and-workflow-snippets
+order: 30
+definition: |
+  classify text by sentiment, tone, or affective stance.
+best_use: |
+  customer feedback, review summaries, social listening.
+avoid_when: |
+  sarcasm, mixed sentiment, cultural context, or high-stakes decisions dominate.
+template: |
+  Analyze sentiment for the input.
+  
+  Return:
+  - sentiment: positive | neutral | negative | mixed | uncertain
+  - confidence: low | medium | high
+  - evidence: one short quote or phrase from the input
+  
+  Input:
+  <input>
+  {text}
+  </input>
+template_omission_reason: null
+model_api_controls: |
+  structured output, domain examples, uncertainty threshold.
+cost_latency: low.
+failure_modes: |
+  sarcasm, cultural context, overconfident affect inference.
+evidence_tier: Moderate
+source_type: "official docs plus survey."
+eval_required: true
+caveat: "sentiment transfer is brittle across domains and cultures."
+sources:
+  - title: "Microsoft Foundry prompt engineering"
+    url: https://learn.microsoft.com/en-us/azure/foundry/openai/concepts/prompt-engineering
+  - title: "The Prompt Report"
+    url: https://arxiv.org/abs/2406.06608

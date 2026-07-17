@@ -4,19 +4,28 @@
 
 ### Goals
 
-- Preserve `README.md` as the catalog source of truth for recipes and
-  patterns.
-- Render a safe, fast, accessible static site on Vercel for humans,
-  search, and agents.
-- Add progressive web chrome (progress, copy, search) without inventing
-  catalog content.
+- Treat the **`catalog/` package** as the authoring SSOT for recipes,
+  patterns, lanes, and sources (see `docs/adr/0001-catalog-ssot.md`).
+- **Generate** GitHub Flavored Markdown `README.md` from catalog data;
+  keep it committed and drift-checked in CI.
+- Ship a **Vite + React + Tailwind v4 + shadcn/ui** site that consumes
+  generated catalog data (multi-route recipes/patterns, share/copy chrome).
+- Preserve truthful SEO/AEO (canonical host, dual ItemList counts, llms
+  artifacts) without inventing unsupported schema types.
 
 ### Non-goals
 
-- SPA frameworks, multi-page recipe routes that fork from README.
+- Hand-editing recipe bodies in `README.md` after dual-SSOT flip.
 - Invented SEO schema (FAQPage, SearchAction, AggregateRating) without
   matching UI.
 - Default third-party analytics or pre-widened CSP for PostHog/Umami.
+- Hosting LLM proxies or user accounts on the static site.
+
+### Transition note
+
+Until cutover, production may still serve the legacy `web/` markdown-it
+static builder. Tokens below remain the design system baseline for both
+legacy CSS and the React/shadcn theme map.
 
 ## Visual principles
 

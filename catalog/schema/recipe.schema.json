@@ -1,0 +1,115 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://prompts.w4w.dev/schema/recipe.schema.json",
+  "title": "Prompt recipe",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "slug",
+    "title",
+    "lane",
+    "class",
+    "order",
+    "badge",
+    "use_for",
+    "placeholders",
+    "prompt",
+    "after_copy",
+    "sources"
+  ],
+  "properties": {
+    "slug": {
+      "type": "string",
+      "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+    },
+    "title": { "type": "string", "minLength": 1 },
+    "lane": {
+      "type": "string",
+      "enum": [
+        "research",
+        "writing",
+        "coding",
+        "data",
+        "product",
+        "operations",
+        "agents",
+        "reasoning"
+      ]
+    },
+    "class": {
+      "type": "string",
+      "enum": ["research", "editorial", "code", "extract", "product", "ops", "tools", "reasoning"]
+    },
+    "order": { "type": "integer", "minimum": 0 },
+    "badge": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["logo", "color", "chip_label"],
+      "properties": {
+        "logo": { "type": "string", "minLength": 1 },
+        "color": { "type": "string", "pattern": "^[0-9A-Fa-f]{6}$" },
+        "chip_label": { "type": "string", "minLength": 1 }
+      }
+    },
+    "use_for": { "type": "string", "minLength": 1 },
+    "placeholders": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["name", "required", "example", "notes"],
+        "properties": {
+          "name": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9_]*$"
+          },
+          "required": { "type": "boolean" },
+          "example": { "type": "string", "maxLength": 80 },
+          "notes": { "type": "string" },
+          "preview": { "type": "string" }
+        }
+      }
+    },
+    "prompt": { "type": "string", "minLength": 1 },
+    "after_copy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "fill_pointer",
+        "expected_output",
+        "upgrade_when",
+        "safety_eval_checks"
+      ],
+      "properties": {
+        "fill_pointer": {
+          "type": "string",
+          "const": "match_placeholder_table"
+        },
+        "expected_output": { "type": "string", "minLength": 1 },
+        "upgrade_when": { "type": "string", "minLength": 1 },
+        "control_evidence_note": {
+          "type": ["string", "null"]
+        },
+        "safety_eval_checks": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "type": "string", "minLength": 1 }
+        }
+      }
+    },
+    "sources": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["title", "url"],
+        "properties": {
+          "title": { "type": "string", "minLength": 1 },
+          "url": { "type": "string", "format": "uri" }
+        }
+      }
+    }
+  }
+}

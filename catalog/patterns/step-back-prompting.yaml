@@ -1,0 +1,31 @@
+slug: step-back-prompting
+title: "Step-Back Prompting"
+section: reasoning-and-search
+order: 30
+definition: "ask for the governing abstraction or principle before answering the specific case."
+best_use: |
+  conceptual reasoning, transfer tasks, and problems where surface details distract.
+avoid_when: "precise local facts matter more than abstraction."
+template: |
+  Question:
+  <input>
+  {question}
+  </input>
+  
+  Step back:
+  Identify the general principle or abstraction that governs this problem.
+  
+  Then answer the specific question using that principle and the provided facts.
+template_omission_reason: null
+model_api_controls: "pair with retrieval when the domain is factual."
+cost_latency: "low to moderate."
+failure_modes: "abstract answer that ignores constraints or evidence."
+evidence_tier: Moderate
+source_type: "primary research plus survey."
+eval_required: true
+caveat: "abstraction can hide missing facts."
+sources:
+  - title: "Take a Step Back"
+    url: https://arxiv.org/abs/2310.06117
+  - title: "The Prompt Report"
+    url: https://arxiv.org/abs/2406.06608

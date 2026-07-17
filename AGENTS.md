@@ -4,8 +4,18 @@
 
 These instructions apply to the entire repository.
 
-This repository maintains a research-backed prompt engineering catalog. Treat
-`README.md` as the primary product surface and public contract.
+This repository maintains a research-backed prompt engineering catalog.
+
+**Authoring SSOT:** the `catalog/` package (`recipes/*.yaml`, `patterns/*.yaml`,
+`index.yaml`, schemas). See `docs/adr/0001-catalog-ssot.md`.
+
+**Generated surfaces:**
+
+- `README.md` — GitHub product (compile with `pnpm catalog:readme`)
+- `apps/web` — Vite/React catalog site (data via `pnpm catalog:site-data`)
+
+Do not hand-edit recipe or pattern bodies inside `README.md`; edit catalog YAML
+and regenerate.
 
 ## Working Rules
 
@@ -14,8 +24,11 @@ This repository maintains a research-backed prompt engineering catalog. Treat
 - Keep edits focused. Do not reorganize unrelated files or clean unrelated dirty
   work unless the user explicitly asks.
 - Before mutating the repository, check `git status --short --branch`.
-- For non-trivial README maintenance, use the repo-local skill at
-  `.agents/skills/readme-catalog-steward/SKILL.md`.
+- After catalog content changes: `pnpm catalog:validate`, then
+  `pnpm catalog:readme` and `pnpm catalog:site-data`.
+- For non-trivial catalog maintenance, use the repo-local skill at
+  `.agents/skills/readme-catalog-steward/SKILL.md` (YAML authoring) plus
+  `docs/catalog-migration/`.
 - Use live official docs or primary papers for current provider/model claims.
 - Do not invent citations, benchmarks, model names, provider behavior, or badge
   signals.
@@ -31,9 +44,9 @@ This repository maintains a research-backed prompt engineering catalog. Treat
   JSON Schema, tool definitions, retrieval settings, reasoning effort, thinking
   controls, and eval metadata.
 - BadgeCN/ShieldCN-style badges are allowed only when they add truthful scanning
-  value. Generate README badges with `scripts/update_readme_badges.py`; do not
-  hand-edit counts. Do not add license, package, release, coverage, or download
-  badges unless the repo actually supports the claim.
+  value. Generate README badges with `scripts/update_readme_badges.py` after
+  README compile; do not hand-edit counts. Do not add license, package, release,
+  coverage, or download badges unless the repo actually supports the claim.
 
 ## README Recipe And Pattern Contract
 

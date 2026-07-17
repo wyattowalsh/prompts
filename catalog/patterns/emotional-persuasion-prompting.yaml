@@ -1,0 +1,31 @@
+slug: emotional-persuasion-prompting
+title: "Emotional Persuasion Prompting"
+section: task-and-workflow-snippets
+order: 140
+definition: "add emotional framing or stakes to a prompt."
+best_use: "controlled experiments where an eval can measure whether tone helps a specific task."
+avoid_when: |
+  task is safety-sensitive, bias-sensitive, user-facing, or emotional pressure would be manipulative.
+template: |
+  Use a professional, context-appropriate tone.
+  Do not add emotional pressure unless a task-specific evaluation shows it
+  improves this task without increasing manipulation or bias risk.
+  
+  Task:
+  {task}
+template_omission_reason: null
+model_api_controls: "tone/style settings where available."
+cost_latency: low.
+failure_modes: |
+  manipulation, bias amplification, brittle gains.
+evidence_tier: Experimental
+source_type: "primary paper plus caveat studies."
+eval_required: true
+caveat: "prefer clear goals and criteria over emotional pressure."
+sources:
+  - title: EmotionPrompt
+    url: https://arxiv.org/abs/2307.11760
+  - title: "On Second Thought, Let's Not Think Step by Step"
+    url: https://arxiv.org/abs/2212.08061
+  - title: "Prompting Science Report 1"
+    url: https://arxiv.org/abs/2503.04818

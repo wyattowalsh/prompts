@@ -1,0 +1,161 @@
+version: 1
+meta:
+  title: Prompt Library
+  description: >-
+    Research-backed prompt engineering recipes, model/API controls, safety checks, eval patterns,
+    and source-grounded templates for practical AI workflows.
+  repository_url: https://github.com/wyattowalsh/prompts
+  web_base_url_default: https://prompts.w4w.dev
+counts:
+  recipes: 48
+  patterns: 43
+lanes:
+  - key: research
+    title: Research
+    color: 2563EB
+    order: 1
+    recipe_slugs:
+      - source-grounded-answer
+      - web-research-brief
+      - literature-scan
+      - claim-checker
+      - citation-matrix
+      - disagreement-map
+  - key: writing
+    title: Writing
+    color: A855F7
+    order: 2
+    recipe_slugs:
+      - executive-brief
+      - rewrite-with-constraints
+      - style-transfer-without-examples
+      - dense-summary
+      - faq-generator
+      - newsletter-draft
+  - key: coding
+    title: Coding
+    color: 16A34A
+    order: 3
+    recipe_slugs:
+      - code-review
+      - bug-rca
+      - unit-test-writer
+      - refactor-planner
+      - pr-description
+      - api-contract-explainer
+  - key: data
+    title: Data
+    color: EAB308
+    order: 4
+    recipe_slugs:
+      - json-extractor
+      - table-normalizer
+      - classifier
+      - ner-extractor
+      - sentiment-triage
+      - synthetic-edge-cases
+  - key: product
+    title: Product
+    color: EC4899
+    order: 5
+    recipe_slugs:
+      - prd-drafter
+      - user-story-splitter
+      - acceptance-criteria-writer
+      - launch-checklist
+      - ux-review
+      - support-macro
+  - key: operations
+    title: Operations
+    color: F97316
+    order: 6
+    recipe_slugs:
+      - incident-summary
+      - runbook-generator
+      - log-triage
+      - risk-register
+      - decision-memo
+      - meeting-action-extractor
+  - key: agents
+    title: Agent and Tool Workflows
+    color: 06B6D4
+    order: 7
+    recipe_slugs:
+      - tool-use-planner
+      - rag-answer-contract
+      - prompt-injection-scanner
+      - eval-set-generator
+      - regression-judge
+      - prompt-optimizer
+  - key: reasoning
+    title: Reasoning
+    color: 8B5CF6
+    order: 8
+    recipe_slugs:
+      - plan-and-solve
+      - step-back-answer
+      - verification-pass
+      - self-refine-pass
+      - panel-review
+      - tradeoff-matrix
+pattern_sections:
+  - key: core-prompt-construction
+    title: Core Prompt Construction
+    order: 1
+    pattern_slugs:
+      - direct-zero-shot
+      - structured-zero-shot
+      - structured-outputs-json-schema
+      - few-shot-prompting
+      - prompt-chaining
+      - meta-prompting
+      - eval-driven-prompt-optimization
+      - active-prompt
+      - context-engineering
+      - rag-citation-grounded-answering
+      - tool-calling-contract
+      - prompt-injection-defense
+  - key: reasoning-and-search
+    title: Reasoning and Search
+    order: 2
+    pattern_slugs:
+      - zero-shot-chain-of-thought
+      - plan-and-solve-prompting
+      - step-back-prompting
+      - intentional-analysis
+      - chain-of-draft
+      - skeleton-of-thought
+      - algorithm-of-thoughts
+      - tree-of-thoughts
+      - graph-of-thoughts
+      - program-of-thoughts
+      - multimodal-evidence-reasoning
+  - key: verification-and-iteration
+    title: Verification and Iteration
+    order: 3
+    pattern_slugs:
+      - self-consistency
+      - react
+      - chain-of-verification
+      - self-refine
+      - reflexion
+      - evaluation-flywheel
+  - key: task-and-workflow-snippets
+    title: Task and Workflow Snippets
+    order: 4
+    pattern_slugs:
+      - text-classification
+      - ner-named-entity-recognition
+      - sentiment-analysis
+      - data-augmentation
+      - research-synthesis
+      - chain-of-density-summarization
+      - knowledge-base-engineer
+      - markmap-generator
+      - python-unit-test-writer
+      - quick-enhance
+      - panelgpt
+      - expert-panel-discussion
+      - ux-review-checklist
+      - emotional-persuasion-prompting
+pages: []

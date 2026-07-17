@@ -1,0 +1,35 @@
+slug: self-consistency
+title: Self-Consistency
+section: verification-and-iteration
+order: 10
+definition: "sample multiple solution attempts and choose the answer with strongest agreement."
+best_use: "high-value reasoning where independent attempts reduce variance."
+avoid_when: "token cost is constrained or factual claims need external evidence."
+template: |
+  Problem:
+  <input>
+  {problem}
+  </input>
+  
+  Solve the problem three independent ways using private reasoning.
+  Compare final answers.
+  Return:
+  - consensus answer
+  - disagreements
+  - confidence with reason
+  - checks performed
+template_omission_reason: null
+model_api_controls: |
+  sampling parameters where supported, reasoning effort, independent calls.
+cost_latency: high.
+failure_modes: |
+  correlated errors, false consensus, unsupported confidence.
+evidence_tier: "**Strong** for reasoning benchmarks, task-sensitive in production."
+source_type: "primary research plus survey."
+eval_required: true
+caveat: "agreement is not truth; factual claims still need sources."
+sources:
+  - title: "Self-Consistency Improves Chain of Thought"
+    url: https://arxiv.org/abs/2203.11171
+  - title: "The Prompt Report"
+    url: https://arxiv.org/abs/2406.06608

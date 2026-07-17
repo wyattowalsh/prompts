@@ -1,0 +1,31 @@
+slug: graph-of-thoughts
+title: Graph-of-Thoughts
+section: reasoning-and-search
+order: 90
+definition: |
+  model intermediate ideas as graph nodes that can be merged, compared, and revisited.
+best_use: |
+  synthesis, multi-document reasoning, and tasks where independent strands recombine.
+avoid_when: "the task is linear or small."
+template: |
+  Task:
+  <input>
+  {task}
+  </input>
+  
+  Create idea nodes for major claims or solution parts.
+  For each node, list evidence and dependencies.
+  Merge compatible nodes, resolve conflicts, and produce the final answer.
+  Return a concise graph summary, not a hidden reasoning transcript.
+template_omission_reason: null
+model_api_controls: "use structured data or code for graph state when reliability matters."
+cost_latency: high.
+failure_modes: |
+  graph bloat, weak conflict resolution, hidden dependency errors.
+evidence_tier: Emerging
+source_type: "primary research."
+eval_required: true
+caveat: "graph management is more reliable outside a single prompt."
+sources:
+  - title: "Graph of Thoughts"
+    url: https://arxiv.org/abs/2308.09687

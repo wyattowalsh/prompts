@@ -1,0 +1,38 @@
+slug: self-refine
+title: Self-Refine
+section: verification-and-iteration
+order: 40
+definition: |
+  generate an output, critique it against criteria, and revise.
+best_use: |
+  writing, code review, rubric-based improvement, and creative refinement.
+avoid_when: "critique has no objective standard or stopping condition."
+template: |
+  Task:
+  {task}
+  
+  Criteria:
+  {criteria}
+  
+  Produce a first draft.
+  Critique it against the criteria.
+  Revise once.
+  Return:
+  - final version
+  - top fixes made
+  - remaining risks
+template_omission_reason: null
+model_api_controls: |
+  use a rubric, evaluator model, or human feedback for higher-stakes work.
+cost_latency: moderate.
+failure_modes: |
+  circular critique, style drift, over-editing.
+evidence_tier: Moderate
+source_type: "primary research plus eval docs."
+eval_required: true
+caveat: "one or two loops are usually enough without external feedback."
+sources:
+  - title: Self-Refine
+    url: https://arxiv.org/abs/2303.17651
+  - title: "OpenAI evaluation best practices"
+    url: https://developers.openai.com/api/docs/guides/evaluation-best-practices

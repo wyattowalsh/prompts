@@ -1,0 +1,28 @@
+version: 1
+meta:
+  title: Prompt Library (fixtures)
+  description: Minimal catalog package for validate CLI smoke tests.
+  repository_url: https://github.com/wyattowalsh/prompts
+  web_base_url_default: https://prompts.w4w.dev
+counts:
+  recipes: 2
+  patterns: 1
+lanes:
+  - key: research
+    title: Research
+    color: "2563EB"
+    order: 1
+    recipe_slugs:
+      - source-grounded-answer
+  - key: coding
+    title: Coding
+    color: "16A34A"
+    order: 3
+    recipe_slugs:
+      - code-review
+pattern_sections:
+  - key: reasoning-and-search
+    title: Reasoning and Search
+    order: 2
+    pattern_slugs:
+      - tree-of-thoughts

@@ -1,0 +1,41 @@
+slug: python-unit-test-writer
+title: "Python Unit Test Writer"
+section: task-and-workflow-snippets
+order: 90
+definition: "generate or improve focused Python tests from code and behavior requirements."
+best_use: |
+  known behavior, bug repros, edge cases.
+avoid_when: |
+  the model has not seen relevant code, fixtures, or test conventions.
+template: |
+  Write Python unit tests for the behavior below.
+  
+  Code under test:
+  <code>
+  {code_or_file_summary}
+  </code>
+  
+  Behavior:
+  {requirements}
+  
+  Test constraints:
+  - Match the existing test framework.
+  - Include the regression case.
+  - Do not mock behavior that should be exercised directly.
+  - Explain any missing dependency or fixture.
+  - The generated tests must be run before claiming success.
+template_omission_reason: null
+model_api_controls: |
+  repository context, test runner, sandboxed execution.
+cost_latency: moderate.
+failure_modes: |
+  tests that assert implementation details, do not execute, or miss fixtures.
+evidence_tier: Moderate
+source_type: "official docs plus engineering practice."
+eval_required: true
+caveat: "generation alone is not validation."
+sources:
+  - title: "OpenAI prompt engineering"
+    url: https://developers.openai.com/api/docs/guides/prompt-engineering
+  - title: "OpenAI evaluation best practices"
+    url: https://developers.openai.com/api/docs/guides/evaluation-best-practices

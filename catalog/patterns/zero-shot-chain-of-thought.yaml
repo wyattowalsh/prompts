@@ -1,0 +1,39 @@
+slug: zero-shot-chain-of-thought
+title: "Zero-Shot Chain-of-Thought"
+section: reasoning-and-search
+order: 10
+definition: "elicit intermediate reasoning for a reasoning task without examples."
+best_use: |
+  older or non-reasoning models on arithmetic, symbolic, or logic tasks where concise rationale helps debugging.
+avoid_when: |
+  modern reasoning controls, safety-sensitive tasks, or final-answer schemas are better.
+template: |
+  Solve the problem using private reasoning.
+  
+  Return:
+  - answer
+  - concise rationale
+  - checks performed
+  
+  Problem:
+  <input>
+  {problem}
+  </input>
+template_omission_reason: null
+model_api_controls: "use reasoning effort or thinking controls instead of asking for long public CoT when available."
+cost_latency: "moderate to high."
+failure_modes: |
+  unfaithful explanations, higher harmfulness in sensitive settings, extra tokens with marginal gain.
+evidence_tier: Moderate
+source_type: "primary research plus caveat studies."
+eval_required: true
+caveat: "classic visible CoT evidence is task- and model-generation-sensitive."
+sources:
+  - title: "Large Language Models are Zero-Shot Reasoners"
+    url: https://arxiv.org/abs/2205.11916
+  - title: "On Second Thought, Let's Not Think Step by Step"
+    url: https://arxiv.org/abs/2212.08061
+  - title: "Language Models Don't Always Say What They Think"
+    url: https://arxiv.org/abs/2305.04388
+  - title: "Prompting Science Report 2"
+    url: https://arxiv.org/abs/2506.07142

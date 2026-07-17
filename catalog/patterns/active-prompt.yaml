@@ -1,0 +1,30 @@
+slug: active-prompt
+title: Active-Prompt
+section: core-prompt-construction
+order: 80
+definition: |
+  select uncertain examples, annotate them, and use them as task-specific demonstrations.
+best_use: "known reasoning or classification tasks with a candidate pool and annotation budget."
+avoid_when: |
+  there is no example pool, annotation process, or eval set.
+template: |
+  Given candidate cases, identify cases where model outputs disagree most.
+  Prioritize those cases for human annotation.
+  Use the annotated examples as demonstrations for the final task.
+  Return concise rationales only when useful for the evaluator.
+template_omission_reason: null
+model_api_controls: "keep demonstration format aligned with the target model and output contract."
+cost_latency: |
+  high upfront, lower during inference after examples are selected.
+failure_modes: |
+  mislabeled exemplars, selection bias, stale examples.
+evidence_tier: Moderate
+source_type: "primary research plus survey."
+eval_required: true
+caveat: |
+  this is a data/annotation workflow, not a single magic prompt.
+sources:
+  - title: "Active Prompting with Chain-of-Thought"
+    url: https://arxiv.org/abs/2302.12246
+  - title: "The Prompt Report"
+    url: https://arxiv.org/abs/2406.06608

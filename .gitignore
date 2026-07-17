@@ -114,6 +114,8 @@ __pycache__/
 # JavaScript dependencies and generated web artifacts
 node_modules/
 public/
+**/dist/
+apps/web/dist/
 playwright-report/
 test-results/
 .vercel/

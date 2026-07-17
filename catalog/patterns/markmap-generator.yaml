@@ -1,0 +1,33 @@
+slug: markmap-generator
+title: "Markmap Generator"
+section: task-and-workflow-snippets
+order: 80
+definition: "produce a hierarchical Markdown mind map for Markmap or similar visualization tools."
+best_use: |
+  outlines, concept maps, planning artifacts.
+avoid_when: |
+  formal proof, precise citations, or high source fidelity is required.
+template: |
+  Create a Markmap-compatible outline for {topic}.
+  
+  Rules:
+  - Use Markdown headings and nested bullets.
+  - Keep labels short.
+  - Include source IDs for factual claims when sources are provided.
+  - Do not invent related topics absent from the context.
+  - Validate generated syntax before publishing.
+template_omission_reason: null
+model_api_controls: |
+  markdown renderer, syntax check, source IDs.
+cost_latency: low.
+failure_modes: |
+  overbroad maps, unsupported associations, invalid nesting.
+evidence_tier: Community
+source_type: "community workflow plus documentation practice."
+eval_required: true
+caveat: "visual organization is not evidence."
+sources:
+  - title: "GitHub basic writing and formatting syntax"
+    url: https://docs.github.com/en/get-started/writing-on-github/getting-started-with-writing-and-formatting-on-github/basic-writing-and-formatting-syntax
+  - title: "The Prompt Report"
+    url: https://arxiv.org/abs/2406.06608

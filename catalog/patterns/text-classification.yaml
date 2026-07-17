@@ -1,0 +1,39 @@
+slug: text-classification
+title: "Text Classification"
+section: task-and-workflow-snippets
+order: 10
+definition: "map text into predefined labels."
+best_use: |
+  routing, tagging, moderation triage, topic classification.
+avoid_when: "labels overlap or policy judgment is unspecified."
+template: |
+  Classify the input into exactly one label.
+  
+  Labels:
+  - {label_a}: {definition_a}
+  - {label_b}: {definition_b}
+  
+  If no label fits, return "uncertain" and explain why briefly.
+  
+  Input:
+  <input>
+  {text}
+  </input>
+  
+  Output contract:
+  {schema}
+template_omission_reason: null
+model_api_controls: |
+  structured output, confidence calibration, label examples.
+cost_latency: low.
+failure_modes: |
+  label ambiguity, overconfidence, domain drift.
+evidence_tier: Moderate
+source_type: "official docs plus survey."
+eval_required: true
+caveat: "exact prompt performance is corpus-specific."
+sources:
+  - title: "Microsoft Foundry prompt engineering"
+    url: https://learn.microsoft.com/en-us/azure/foundry/openai/concepts/prompt-engineering
+  - title: "The Prompt Report"
+    url: https://arxiv.org/abs/2406.06608

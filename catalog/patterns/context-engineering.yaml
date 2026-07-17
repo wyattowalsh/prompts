@@ -1,0 +1,57 @@
+slug: context-engineering
+title: "Context Engineering"
+section: core-prompt-construction
+order: 90
+definition: |
+  design the full context supplied to the model: durable instructions, retrieved evidence, memory, tools, examples, constraints, and output state.
+best_use: |
+  private corpora, long-running agents, large-context work, RAG, and production workflows.
+avoid_when: "a simple prompt already contains all needed information."
+template: |
+  Durable instructions:
+  {rules}
+  
+  Task:
+  {objective}
+  
+  Trusted context:
+  <context>
+  {curated evidence with source IDs}
+  </context>
+  
+  Untrusted input:
+  <input>
+  {user or external data}
+  </input>
+  
+  Tools:
+  {allowed tools and side-effect limits}
+  
+  Output contract:
+  {schema or sections}
+  
+  Verification:
+  {checks, citations, or tests required}
+template_omission_reason: null
+model_api_controls: |
+  context window, URL context, retrieval query, reranker, compression policy, prompt caching, memory scope, tool mode.
+cost_latency: "variable; can be high with long context or retrieval."
+failure_modes: |
+  irrelevant retrieval, prompt injection, context overflow, stale cached context, stale memory, lost middle facts.
+evidence_tier: Moderate
+source_type: "survey, primary RAG/context work, plus official context controls."
+eval_required: true
+caveat: "context quality often matters more than clever wording."
+sources:
+  - title: "A Survey of Context Engineering for LLMs"
+    url: https://arxiv.org/abs/2507.13334
+  - title: "Retrieval-Augmented Generation"
+    url: https://arxiv.org/abs/2005.11401
+  - title: "Lost in the Middle"
+    url: https://arxiv.org/abs/2307.03172
+  - title: "OpenAI prompt caching"
+    url: https://developers.openai.com/api/docs/guides/prompt-caching
+  - title: "Anthropic context windows"
+    url: https://platform.claude.com/docs/en/build-with-claude/context-windows
+  - title: "Gemini URL Context"
+    url: https://ai.google.dev/gemini-api/docs/url-context

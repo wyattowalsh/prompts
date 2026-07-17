@@ -1,0 +1,49 @@
+slug: research-synthesis
+title: "Research Synthesis"
+section: task-and-workflow-snippets
+order: 50
+definition: "combine multiple sources into a structured synthesis."
+best_use: |
+  literature notes, market scans, RCA reports, multi-document summaries.
+avoid_when: "source reliability is unknown or \"omit nothing\" is more important than relevance."
+template: |
+  Synthesize the provided reports.
+  
+  Rules:
+  - Separate sourced findings from inference.
+  - Preserve disagreements and uncertainty.
+  - Cite source IDs for every factual claim.
+  - Do not include facts absent from the sources.
+  
+  Reports:
+  <sources>
+  {reports}
+  </sources>
+  
+  Output:
+  - Summary
+  - Findings
+  - Disagreements
+  - Evidence gaps
+  - Recommended next checks
+template_omission_reason: null
+model_api_controls: |
+  retrieval, citation checker, source-quality labels.
+cost_latency: "moderate to high."
+failure_modes: |
+  flattening disagreements, blended claims, weak source triage.
+evidence_tier: Moderate
+source_type: "RAG, verification, and context research."
+eval_required: true
+caveat: "source quality and citation validation matter more than persona."
+sources:
+  - title: Chain-of-Verification
+    url: https://arxiv.org/abs/2309.11495
+  - title: "Retrieval-Augmented Generation"
+    url: https://arxiv.org/abs/2005.11401
+  - title: "Lost in the Middle"
+    url: https://arxiv.org/abs/2307.03172
+  - title: "Retrieval Augmented Generation Evaluation"
+    url: https://arxiv.org/abs/2504.14891
+  - title: "OpenAI citation formatting"
+    url: https://developers.openai.com/api/docs/guides/citation-formatting

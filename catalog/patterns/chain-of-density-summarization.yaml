@@ -1,0 +1,32 @@
+slug: chain-of-density-summarization
+title: "Chain-of-Density Summarization"
+section: task-and-workflow-snippets
+order: 60
+definition: "iteratively add missing salient entities to a fixed-length summary."
+best_use: "entity-rich summaries where first drafts are sparse."
+avoid_when: "readability matters more than density."
+template: |
+  Write a concise summary.
+  Then perform two density passes:
+  1. Identify missing salient entities.
+  2. Rewrite the same-length summary to include them.
+  
+  Preserve readability and source fidelity.
+  
+  Source:
+  <source>
+  {source}
+  </source>
+template_omission_reason: null
+model_api_controls: |
+  summary length cap, citation checker, readability rubric.
+cost_latency: moderate.
+failure_modes: |
+  over-dense summaries, entity hallucination.
+evidence_tier: Moderate
+source_type: "primary research."
+eval_required: true
+caveat: "density is not the same as usefulness."
+sources:
+  - title: "Chain of Density"
+    url: https://arxiv.org/abs/2309.04269

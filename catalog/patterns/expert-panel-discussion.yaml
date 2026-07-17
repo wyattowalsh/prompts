@@ -1,0 +1,51 @@
+slug: expert-panel-discussion
+title: "Expert Panel Discussion"
+section: task-and-workflow-snippets
+order: 120
+definition: |
+  a more formal simulated expert-role discussion with independent positions, critique, and synthesis.
+best_use: |
+  decision preparation where opposing views, assumptions, and evidence gaps must be surfaced.
+avoid_when: |
+  the output needs domain-certified advice, stakeholder approval, or a cheap single-pass answer.
+template: |
+  Run a structured simulated panel discussion.
+  
+  Decision:
+  {decision_or_question}
+  
+  Process:
+  1. Select 3-5 simulated expert roles that match the domain, constraints,
+     stakeholders, failure modes, evidence needs, and need for dissent.
+  2. Explain each role's relevance.
+  3. Reject generic or irrelevant roles.
+  4. Each role gives a concise position, evidence basis, missing evidence, and recommendation.
+  5. Each role critiques the strongest opposing position.
+  6. Synthesize supported recommendations only; do not force consensus.
+  7. List facts, assumptions, disagreements, evidence gaps, and real review needs.
+template_omission_reason: null
+model_api_controls: |
+  source requirements, structured evidence fields, review gate, decision log.
+cost_latency: moderate.
+failure_modes: |
+  roleplay verbosity, false authority, unsupported consensus, groupthink.
+evidence_tier: Experimental
+source_type: "primary multi-persona/debate research plus persona and debate caveats."
+eval_required: true
+caveat: |
+  prefer [Self-Refine](#self-refine) or [Chain-of-Verification](#chain-of-verification) when verification is the goal; use this pattern when perspective coverage itself is the deliverable. For lightweight exploratory brainstorming, see [PanelGPT](#panelgpt). Not a replacement for real expertise.
+sources:
+  - title: "Solo Performance Prompting"
+    url: https://arxiv.org/abs/2307.05300
+  - title: "Multiagent Debate"
+    url: https://arxiv.org/abs/2305.14325
+  - title: ChatEval
+    url: https://arxiv.org/abs/2308.07201
+  - title: "More Agents Is All You Need"
+    url: https://arxiv.org/abs/2402.05120
+  - title: "Should we be going MAD?"
+    url: https://arxiv.org/abs/2311.17371
+  - title: "If Multi-Agent Debate is the Answer"
+    url: https://arxiv.org/html/2502.08788v2
+  - title: "Personas in System Prompts Do Not Improve Performance"
+    url: https://aclanthology.org/2024.findings-emnlp.888/

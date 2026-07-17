@@ -1,0 +1,65 @@
+slug: panelgpt
+title: PanelGPT
+section: task-and-workflow-snippets
+order: 110
+definition: |
+  simulate task-relevant reviewer personas to inspect risks, options, evidence gaps, and tradeoffs.
+best_use: "exploratory brainstorming or decision preparation where perspective coverage matters."
+avoid_when: |
+  synthetic consensus would be mistaken for expert review or when a simpler verification pass is enough.
+template: |
+  Analyze the problem with a relevance-gated simulated panel.
+  
+  Question or decision:
+  {question_or_decision}
+  
+  Trusted context:
+  <trusted_context>
+  {trusted_context}
+  </trusted_context>
+  
+  Candidate answer, plan, or options:
+  <artifact>
+  {artifact_or_options}
+  </artifact>
+  
+  Panel selection:
+  1. Select 2-5 simulated reviewer roles that match the domain, risk,
+     stakeholder impact, constraints, evidence needs, and need for dissent.
+  2. For each role, state the relevance criterion and evidence it should inspect.
+  3. Reject at least one tempting but irrelevant role.
+  
+  For each selected perspective, provide:
+  - key concern
+  - strongest support
+  - evidence needed
+  - recommendation
+  
+  Synthesis:
+  - Separate facts, assumptions, disagreements, and evidence gaps.
+  - Do not treat majority vote or persona confidence as evidence.
+  - State whether real domain review is required before acting.
+template_omission_reason: null
+model_api_controls: |
+  retrieval/citations, structured evidence fields, and review gates for factual or high-stakes work.
+cost_latency: moderate.
+failure_modes: |
+  fabricated expertise, irrelevant roles, groupthink, false authority, unsupported consensus.
+evidence_tier: Experimental
+source_type: "community pattern plus primary multi-persona/debate research and caveat papers."
+eval_required: true
+caveat: |
+  simulated reviewers can improve perspective coverage, but they are not independent experts. For formal decision prep with explicit critique, see [Expert Panel Discussion](#expert-panel-discussion).
+sources:
+  - title: "Solo Performance Prompting"
+    url: https://arxiv.org/abs/2307.05300
+  - title: ChatEval
+    url: https://arxiv.org/abs/2308.07201
+  - title: "The Prompt Report"
+    url: https://arxiv.org/abs/2406.06608
+  - title: "Prompting Science Report 1"
+    url: https://arxiv.org/abs/2503.04818
+  - title: "Personas in System Prompts Do Not Improve Performance"
+    url: https://aclanthology.org/2024.findings-emnlp.888/
+  - title: "Playing Pretend"
+    url: https://gail.wharton.upenn.edu/research-and-insights/playing-pretend-expert-personas/

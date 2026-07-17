@@ -24,6 +24,11 @@ on:
       - SECURITY.md
       - CODE_OF_CONDUCT.md
       - web/**
+      - catalog/**
+      - packages/catalog-core/**
+      - apps/web/**
+      - docs/adr/**
+      - docs/catalog-migration/**
       - package.json
       - pnpm-lock.yaml
       - pnpm-workspace.yaml
@@ -57,11 +62,16 @@ on:
       - scripts/check_badge_urls.sh
       - sources.yaml
       - docs/audit/**
+      - docs/adr/**
+      - docs/catalog-migration/**
       - LICENSE
       - CONTRIBUTING.md
       - SECURITY.md
       - CODE_OF_CONDUCT.md
       - web/**
+      - catalog/**
+      - packages/catalog-core/**
+      - apps/web/**
       - package.json
       - pnpm-lock.yaml
       - pnpm-workspace.yaml
@@ -112,6 +122,17 @@ jobs:
       - name: Install JS dependencies
         shell: bash
         run: pnpm install --frozen-lockfile
+
+      - name: Catalog validate and unit tests
+        shell: bash
+        run: |
+          pnpm catalog:validate
+          pnpm catalog:test
+          pnpm catalog:fidelity:patterns
+
+      - name: Catalog README drift check
+        shell: bash
+        run: pnpm catalog:readme:check
 
       - name: Recipe contract check
         shell: bash
@@ -191,6 +212,13 @@ jobs:
           pnpm run format:check
           pnpm run web:test
           pnpm run build
+
+      - name: Catalog React app build
+        shell: bash
+        run: |
+          pnpm catalog:site-data
+          pnpm webapp:typecheck
+          pnpm webapp:build
 
       - name: Install Playwright Chromium
         shell: bash

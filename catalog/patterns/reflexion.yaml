@@ -1,0 +1,30 @@
+slug: reflexion
+title: Reflexion
+section: verification-and-iteration
+order: 50
+definition: "use concrete feedback from previous attempts to improve later attempts."
+best_use: |
+  agent tasks, coding loops, and workflows with observable failures.
+avoid_when: "there is no reliable feedback signal."
+template: |
+  Attempt the task.
+  Record concrete failure evidence from tests, logs, tool output, or user feedback.
+  Create a revised strategy.
+  Retry only the parts affected by the failure.
+  Preserve the prompt/model/tool versions used.
+template_omission_reason: null
+model_api_controls: |
+  memory scope, retry budget, tool logs, versioned prompt state.
+cost_latency: "high for full loops."
+failure_modes: |
+  unsupported introspection, repeating mistakes, stale memory.
+evidence_tier: Moderate
+source_type: "primary research plus survey."
+eval_required: true
+caveat: |
+  reflection must cite observations, not model self-belief.
+sources:
+  - title: Reflexion
+    url: https://arxiv.org/abs/2303.11366
+  - title: "The Prompt Report"
+    url: https://arxiv.org/abs/2406.06608

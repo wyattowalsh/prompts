@@ -1,0 +1,35 @@
+slug: intentional-analysis
+title: "Intentional Analysis"
+section: reasoning-and-search
+order: 40
+definition: |
+  explicitly identify the user's likely goal and deliverable before solving.
+best_use: |
+  ambiguous requests, instruction-following failures, and tasks where surface wording may not match the real need.
+avoid_when: "intent is explicit or analysis would invent hidden motives."
+template: |
+  Request:
+  <input>
+  {request}
+  </input>
+  
+  Determine:
+  - explicit request
+  - likely deliverable
+  - ambiguities
+  - least-risky interpretation
+  
+  Then complete the task. If ambiguity is high-impact, ask a concise question.
+template_omission_reason: null
+model_api_controls: "none by default."
+cost_latency: "low to moderate."
+failure_modes: |
+  over-interpreting, inventing hidden intent, unnecessary delay.
+evidence_tier: Emerging
+source_type: "primary research."
+eval_required: true
+caveat: |
+  intent analysis must trace to the request, not speculation.
+sources:
+  - title: "Improving Language Models with Intentional Analysis"
+    url: https://arxiv.org/abs/2502.04689

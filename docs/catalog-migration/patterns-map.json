@@ -1,0 +1,316 @@
+{
+  "pattern_count": 43,
+  "sections": {
+    "Core Prompt Construction": [
+      "direct-zero-shot",
+      "structured-zero-shot",
+      "structured-outputs-json-schema",
+      "few-shot-prompting",
+      "prompt-chaining",
+      "meta-prompting",
+      "eval-driven-prompt-optimization",
+      "active-prompt",
+      "context-engineering",
+      "rag-citation-grounded-answering",
+      "tool-calling-contract",
+      "prompt-injection-defense"
+    ],
+    "Reasoning and Search": [
+      "zero-shot-chain-of-thought",
+      "plan-and-solve-prompting",
+      "step-back-prompting",
+      "intentional-analysis",
+      "chain-of-draft",
+      "skeleton-of-thought",
+      "algorithm-of-thoughts",
+      "tree-of-thoughts",
+      "graph-of-thoughts",
+      "program-of-thoughts",
+      "multimodal-evidence-reasoning"
+    ],
+    "Verification and Iteration": [
+      "self-consistency",
+      "react",
+      "chain-of-verification",
+      "self-refine",
+      "reflexion",
+      "evaluation-flywheel"
+    ],
+    "Task and Workflow Snippets": [
+      "text-classification",
+      "ner-named-entity-recognition",
+      "sentiment-analysis",
+      "data-augmentation",
+      "research-synthesis",
+      "chain-of-density-summarization",
+      "knowledge-base-engineer",
+      "markmap-generator",
+      "python-unit-test-writer",
+      "quick-enhance",
+      "panelgpt",
+      "expert-panel-discussion",
+      "ux-review-checklist",
+      "emotional-persuasion-prompting"
+    ]
+  },
+  "patterns": [
+    {
+      "title": "Direct Zero-Shot",
+      "slug": "direct-zero-shot",
+      "section": "Core Prompt Construction",
+      "line": 4511
+    },
+    {
+      "title": "Structured Zero-Shot",
+      "slug": "structured-zero-shot",
+      "section": "Core Prompt Construction",
+      "line": 4549
+    },
+    {
+      "title": "Structured Outputs / JSON Schema",
+      "slug": "structured-outputs-json-schema",
+      "section": "Core Prompt Construction",
+      "line": 4592
+    },
+    {
+      "title": "Few-Shot Prompting",
+      "slug": "few-shot-prompting",
+      "section": "Core Prompt Construction",
+      "line": 4636
+    },
+    {
+      "title": "Prompt Chaining",
+      "slug": "prompt-chaining",
+      "section": "Core Prompt Construction",
+      "line": 4675
+    },
+    {
+      "title": "Meta-Prompting",
+      "slug": "meta-prompting",
+      "section": "Core Prompt Construction",
+      "line": 4714
+    },
+    {
+      "title": "Eval-Driven Prompt Optimization",
+      "slug": "eval-driven-prompt-optimization",
+      "section": "Core Prompt Construction",
+      "line": 4756
+    },
+    {
+      "title": "Active-Prompt",
+      "slug": "active-prompt",
+      "section": "Core Prompt Construction",
+      "line": 4796
+    },
+    {
+      "title": "Context Engineering",
+      "slug": "context-engineering",
+      "section": "Core Prompt Construction",
+      "line": 4823
+    },
+    {
+      "title": "RAG / Citation-Grounded Answering",
+      "slug": "rag-citation-grounded-answering",
+      "section": "Core Prompt Construction",
+      "line": 4870
+    },
+    {
+      "title": "Tool Calling Contract",
+      "slug": "tool-calling-contract",
+      "section": "Core Prompt Construction",
+      "line": 4912
+    },
+    {
+      "title": "Prompt Injection Defense",
+      "slug": "prompt-injection-defense",
+      "section": "Core Prompt Construction",
+      "line": 4951
+    },
+    {
+      "title": "Zero-Shot Chain-of-Thought",
+      "slug": "zero-shot-chain-of-thought",
+      "section": "Reasoning and Search",
+      "line": 5001
+    },
+    {
+      "title": "Plan-and-Solve Prompting",
+      "slug": "plan-and-solve-prompting",
+      "section": "Reasoning and Search",
+      "line": 5035
+    },
+    {
+      "title": "Step-Back Prompting",
+      "slug": "step-back-prompting",
+      "section": "Reasoning and Search",
+      "line": 5070
+    },
+    {
+      "title": "Intentional Analysis",
+      "slug": "intentional-analysis",
+      "section": "Reasoning and Search",
+      "line": 5102
+    },
+    {
+      "title": "Chain-of-Draft",
+      "slug": "chain-of-draft",
+      "section": "Reasoning and Search",
+      "line": 5137
+    },
+    {
+      "title": "Skeleton-of-Thought",
+      "slug": "skeleton-of-thought",
+      "section": "Reasoning and Search",
+      "line": 5171
+    },
+    {
+      "title": "Algorithm-of-Thoughts",
+      "slug": "algorithm-of-thoughts",
+      "section": "Reasoning and Search",
+      "line": 5202
+    },
+    {
+      "title": "Tree-of-Thoughts",
+      "slug": "tree-of-thoughts",
+      "section": "Reasoning and Search",
+      "line": 5237
+    },
+    {
+      "title": "Graph-of-Thoughts",
+      "slug": "graph-of-thoughts",
+      "section": "Reasoning and Search",
+      "line": 5274
+    },
+    {
+      "title": "Program-of-Thoughts",
+      "slug": "program-of-thoughts",
+      "section": "Reasoning and Search",
+      "line": 5306
+    },
+    {
+      "title": "Multimodal Evidence Reasoning",
+      "slug": "multimodal-evidence-reasoning",
+      "section": "Reasoning and Search",
+      "line": 5342
+    },
+    {
+      "title": "Self-Consistency",
+      "slug": "self-consistency",
+      "section": "Verification and Iteration",
+      "line": 5386
+    },
+    {
+      "title": "ReAct",
+      "slug": "react",
+      "section": "Verification and Iteration",
+      "line": 5421
+    },
+    {
+      "title": "Chain-of-Verification",
+      "slug": "chain-of-verification",
+      "section": "Verification and Iteration",
+      "line": 5460
+    },
+    {
+      "title": "Self-Refine",
+      "slug": "self-refine",
+      "section": "Verification and Iteration",
+      "line": 5498
+    },
+    {
+      "title": "Reflexion",
+      "slug": "reflexion",
+      "section": "Verification and Iteration",
+      "line": 5534
+    },
+    {
+      "title": "Evaluation Flywheel",
+      "slug": "evaluation-flywheel",
+      "section": "Verification and Iteration",
+      "line": 5562
+    },
+    {
+      "title": "Text Classification",
+      "slug": "text-classification",
+      "section": "Task and Workflow Snippets",
+      "line": 5610
+    },
+    {
+      "title": "NER: Named Entity Recognition",
+      "slug": "ner-named-entity-recognition",
+      "section": "Task and Workflow Snippets",
+      "line": 5648
+    },
+    {
+      "title": "Sentiment Analysis",
+      "slug": "sentiment-analysis",
+      "section": "Task and Workflow Snippets",
+      "line": 5688
+    },
+    {
+      "title": "Data Augmentation",
+      "slug": "data-augmentation",
+      "section": "Task and Workflow Snippets",
+      "line": 5722
+    },
+    {
+      "title": "Research Synthesis",
+      "slug": "research-synthesis",
+      "section": "Task and Workflow Snippets",
+      "line": 5759
+    },
+    {
+      "title": "Chain-of-Density Summarization",
+      "slug": "chain-of-density-summarization",
+      "section": "Task and Workflow Snippets",
+      "line": 5801
+    },
+    {
+      "title": "Knowledge Base Engineer",
+      "slug": "knowledge-base-engineer",
+      "section": "Task and Workflow Snippets",
+      "line": 5835
+    },
+    {
+      "title": "Markmap Generator",
+      "slug": "markmap-generator",
+      "section": "Task and Workflow Snippets",
+      "line": 5872
+    },
+    {
+      "title": "Python Unit Test Writer",
+      "slug": "python-unit-test-writer",
+      "section": "Task and Workflow Snippets",
+      "line": 5903
+    },
+    {
+      "title": "Quick Enhance",
+      "slug": "quick-enhance",
+      "section": "Task and Workflow Snippets",
+      "line": 5942
+    },
+    {
+      "title": "PanelGPT",
+      "slug": "panelgpt",
+      "section": "Task and Workflow Snippets",
+      "line": 5977
+    },
+    {
+      "title": "Expert Panel Discussion",
+      "slug": "expert-panel-discussion",
+      "section": "Task and Workflow Snippets",
+      "line": 6031
+    },
+    {
+      "title": "UX Review Checklist",
+      "slug": "ux-review-checklist",
+      "section": "Task and Workflow Snippets",
+      "line": 6068
+    },
+    {
+      "title": "Emotional Persuasion Prompting",
+      "slug": "emotional-persuasion-prompting",
+      "section": "Task and Workflow Snippets",
+      "line": 6107
+    }
+  ]
+}

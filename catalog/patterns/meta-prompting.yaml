@@ -1,0 +1,44 @@
+slug: meta-prompting
+title: Meta-Prompting
+section: core-prompt-construction
+order: 60
+definition: "ask a model to draft or improve prompt candidates for a target task."
+best_use: |
+  exploring prompt variants, rubrics, and failure hypotheses before eval.
+avoid_when: "generated prompts will be trusted without held-out tests."
+template: |
+  Design three prompt candidates for this task.
+  
+  Task:
+  <task>
+  {task}
+  </task>
+  
+  Audience: {audience}
+  Known failure modes: {failures}
+  Evaluation examples:
+  <examples>
+  {examples}
+  </examples>
+  
+  For each candidate, return:
+  - prompt
+  - expected strength
+  - likely failure mode
+  - eval case that would disprove it
+template_omission_reason: null
+model_api_controls: "pair with an eval set; do not select by plausibility alone."
+cost_latency: moderate.
+failure_modes: |
+  longer prompts with no measurable gain, overfitting to visible examples.
+evidence_tier: Moderate
+source_type: "survey plus prompt optimization research."
+eval_required: true
+caveat: "meta-prompting is ideation; optimization requires measurement."
+sources:
+  - title: "The Prompt Report"
+    url: https://arxiv.org/abs/2406.06608
+  - title: "Large Language Models are Human-Level Prompt Engineers"
+    url: https://arxiv.org/abs/2211.01910
+  - title: "OpenAI evaluation best practices"
+    url: https://developers.openai.com/api/docs/guides/evaluation-best-practices

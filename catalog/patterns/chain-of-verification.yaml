@@ -1,0 +1,44 @@
+slug: chain-of-verification
+title: Chain-of-Verification
+section: verification-and-iteration
+order: 30
+definition: |
+  draft, generate verification questions, check them against sources or tools, then revise.
+best_use: |
+  factual generation, summaries, research notes, and hallucination-prone answers.
+avoid_when: "verification cannot access better evidence than the draft."
+template: |
+  Question:
+  <input>
+  {question}
+  </input>
+  
+  Sources:
+  <sources>
+  {sources}
+  </sources>
+  
+  Process:
+  1. Draft the answer.
+  2. List verification questions that would catch likely factual errors.
+  3. Check each question against the sources or tools.
+  4. Revise the answer and include unresolved uncertainty.
+template_omission_reason: null
+model_api_controls: |
+  source access, retrieval, citation checker, trace grading, eval rubric.
+cost_latency: "moderate to high."
+failure_modes: |
+  self-verification that rubber-stamps errors, weak source checks, ungrounded citation repair.
+evidence_tier: Moderate
+source_type: "primary research plus eval docs."
+eval_required: true
+caveat: "verification should be grounded in independent evidence."
+sources:
+  - title: Chain-of-Verification
+    url: https://arxiv.org/abs/2309.11495
+  - title: "OpenAI citation formatting"
+    url: https://developers.openai.com/api/docs/guides/citation-formatting
+  - title: "OpenAI trace grading"
+    url: https://developers.openai.com/api/docs/guides/trace-grading
+  - title: "OpenAI evaluation best practices"
+    url: https://developers.openai.com/api/docs/guides/evaluation-best-practices

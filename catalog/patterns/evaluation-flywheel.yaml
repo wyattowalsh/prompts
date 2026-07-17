@@ -1,0 +1,49 @@
+slug: evaluation-flywheel
+title: "Evaluation Flywheel"
+section: verification-and-iteration
+order: 60
+definition: |
+  improve prompts through fixed eval cases, measured failures, controlled changes, and regression checks.
+best_use: |
+  production prompts, repeated workflows, high-stakes outputs, and shared prompt libraries.
+avoid_when: "a one-off exploratory prompt does not need maintenance."
+template: |
+  Prompt version: {id}
+  Model/provider: {model_snapshot}
+  Settings: {reasoning_effort, verbosity, temperature, tools, schema}
+  Context source: {retrieval_corpus_or_fixture}
+  
+  Eval cases:
+  <cases>
+  {input, expected_behavior, safety_notes}
+  </cases>
+  
+  Process:
+  1. Run baseline.
+  2. Record failures.
+  3. Change one factor.
+  4. Rerun the same cases.
+  5. Accept only if quality improves without safety, refusal, parser, latency, or cost regressions.
+template_omission_reason: null
+model_api_controls: |
+  provider eval platform, agent evals, custom eval harness, trace grading, scheduled evals, monitoring.
+cost_latency: "upfront cost; lower regression risk later."
+failure_modes: |
+  unrepresentative tests, optimizing the wrong metric, silent model/retrieval/tool drift.
+evidence_tier: Strong
+source_type: "official docs plus engineering practice."
+eval_required: true
+caveat: "eval quality depends on representative cases and stable scoring."
+sources:
+  - title: "OpenAI evaluation best practices"
+    url: https://developers.openai.com/api/docs/guides/evaluation-best-practices
+  - title: "OpenAI agent evals"
+    url: https://developers.openai.com/api/docs/guides/agent-evals
+  - title: "OpenAI trace grading"
+    url: https://developers.openai.com/api/docs/guides/trace-grading
+  - title: "OpenAI Cookbook eval flywheel"
+    url: https://github.com/openai/openai-cookbook/blob/main/examples/evaluation/Building_resilient_prompts_using_an_evaluation_flywheel.md
+  - title: "Microsoft Foundry evaluations"
+    url: https://learn.microsoft.com/en-us/azure/foundry/how-to/evaluate-generative-ai-app
+  - title: "Microsoft Foundry observability"
+    url: https://learn.microsoft.com/en-us/azure/foundry/concepts/observability

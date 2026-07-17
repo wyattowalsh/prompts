@@ -1,0 +1,39 @@
+slug: data-augmentation
+title: "Data Augmentation"
+section: task-and-workflow-snippets
+order: 40
+definition: |
+  generate controlled variants for training, testing, or robustness checks.
+best_use: |
+  paraphrases, edge cases, synthetic tests, class-balanced examples with review.
+avoid_when: "generated data would be treated as ground truth."
+template: |
+  Generate {n} diverse variants of the input.
+  
+  Preserve:
+  - {invariant}
+  
+  Vary:
+  - {dimension}
+  
+  Reject variants that change the label or introduce unsupported facts.
+  
+  Input:
+  <input>
+  {input}
+  </input>
+template_omission_reason: null
+model_api_controls: |
+  sampling settings, deduplication, human review, privacy review.
+cost_latency: moderate.
+failure_modes: |
+  label leakage, semantic drift, low diversity, privacy leakage.
+evidence_tier: Moderate
+source_type: "survey plus official docs."
+eval_required: true
+caveat: "synthetic data must be reviewed and measured."
+sources:
+  - title: "The Prompt Report"
+    url: https://arxiv.org/abs/2406.06608
+  - title: "Microsoft Foundry prompt engineering"
+    url: https://learn.microsoft.com/en-us/azure/foundry/openai/concepts/prompt-engineering

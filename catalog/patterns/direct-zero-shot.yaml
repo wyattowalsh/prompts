@@ -1,0 +1,43 @@
+slug: direct-zero-shot
+title: "Direct Zero-Shot"
+section: core-prompt-construction
+order: 10
+definition: "ask directly for the task without examples."
+best_use: |
+  simple Q&A, rewriting, extraction, summarization, translation, or obvious classification.
+avoid_when: |
+  hidden domain rules, strict output shape, current facts, or ambiguous labels matter.
+template: |
+  Complete the task below.
+  
+  Task: {task}
+  
+  Untrusted input:
+  <input>
+  {input}
+  </input>
+  
+  Output contract:
+  {format}
+  
+  Constraints:
+  - {constraint}
+  - Say "insufficient evidence" when required facts are missing.
+template_omission_reason: null
+model_api_controls: |
+  none by default; use low reasoning effort or low verbosity for cheap transformations when supported.
+cost_latency: lowest.
+failure_modes: |
+  underspecified format, unstated assumptions, fabricated missing data.
+evidence_tier: Strong
+source_type: "survey plus official docs."
+eval_required: true
+caveat: |
+  zero-shot is a baseline, not proof of optimality.
+sources:
+  - title: "The Prompt Report"
+    url: https://arxiv.org/abs/2406.06608
+  - title: "OpenAI prompt engineering"
+    url: https://developers.openai.com/api/docs/guides/prompt-engineering
+  - title: "Microsoft Foundry prompt engineering"
+    url: https://learn.microsoft.com/en-us/azure/foundry/openai/concepts/prompt-engineering

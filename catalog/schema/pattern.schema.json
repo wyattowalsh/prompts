@@ -1,0 +1,66 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://prompts.w4w.dev/schema/pattern.schema.json",
+  "title": "Pattern note",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "slug",
+    "title",
+    "section",
+    "order",
+    "definition",
+    "best_use",
+    "avoid_when",
+    "model_api_controls",
+    "cost_latency",
+    "failure_modes",
+    "evidence_tier",
+    "source_type",
+    "eval_required",
+    "caveat",
+    "sources"
+  ],
+  "properties": {
+    "slug": {
+      "type": "string",
+      "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+    },
+    "title": { "type": "string", "minLength": 1 },
+    "section": {
+      "type": "string",
+      "enum": [
+        "core-prompt-construction",
+        "reasoning-and-search",
+        "verification-and-iteration",
+        "task-and-workflow-snippets"
+      ]
+    },
+    "order": { "type": "integer", "minimum": 0 },
+    "definition": { "type": "string", "minLength": 1 },
+    "best_use": { "type": "string", "minLength": 1 },
+    "avoid_when": { "type": "string", "minLength": 1 },
+    "template": { "type": ["string", "null"] },
+    "template_omission_reason": { "type": ["string", "null"] },
+    "model_api_controls": { "type": "string", "minLength": 1 },
+    "cost_latency": { "type": "string", "minLength": 1 },
+    "failure_modes": { "type": "string", "minLength": 1 },
+    "evidence_tier": { "type": "string", "minLength": 1 },
+    "source_type": { "type": "string", "minLength": 1 },
+    "eval_required": { "type": "boolean" },
+    "caveat": { "type": "string", "minLength": 1 },
+    "sources": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["title", "url"],
+        "properties": {
+          "title": { "type": "string", "minLength": 1 },
+          "url": { "type": "string", "format": "uri" }
+        }
+      }
+    }
+  }
+}

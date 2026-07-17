@@ -1,0 +1,37 @@
+slug: quick-enhance
+title: "Quick Enhance"
+section: task-and-workflow-snippets
+order: 100
+definition: "ask for targeted improvement of an existing artifact."
+best_use: |
+  focused rewrites, refactors, bug fixes, and polishing with explicit criteria.
+avoid_when: |
+  the prompt asks for broad improvement without scope, tests, or constraints.
+template: |
+  Improve the artifact below for {goal}.
+  
+  Constraints:
+  - Keep behavior unchanged unless stated.
+  - Preserve public interfaces.
+  - Make the smallest change that satisfies the goal.
+  - List validation performed.
+  
+  Artifact:
+  <artifact>
+  {artifact}
+  </artifact>
+template_omission_reason: null
+model_api_controls: |
+  diff tools, tests, lints, review checklist.
+cost_latency: "low to moderate."
+failure_modes: |
+  unnecessary rewrites, scope creep, unverified claims.
+evidence_tier: Community
+source_type: "workflow pattern plus official-doc support for structure."
+eval_required: true
+caveat: "scope and validation discipline matter more than the enhancement wording."
+sources:
+  - title: "OpenAI prompt engineering"
+    url: https://developers.openai.com/api/docs/guides/prompt-engineering
+  - title: "OpenAI evaluation best practices"
+    url: https://developers.openai.com/api/docs/guides/evaluation-best-practices

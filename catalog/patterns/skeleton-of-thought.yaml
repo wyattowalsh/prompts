@@ -1,0 +1,31 @@
+slug: skeleton-of-thought
+title: Skeleton-of-Thought
+section: reasoning-and-search
+order: 60
+definition: |
+  generate a compact outline, then expand separable sections.
+best_use: "long-form informational outputs with independent sections and latency pressure."
+avoid_when: "sections require tight cross-references or a single narrative."
+template: |
+  Topic:
+  <input>
+  {topic}
+  </input>
+  
+  Create a 5-point skeleton.
+  Then expand each point into a concise section.
+  Keep sections self-contained and avoid repetition.
+template_omission_reason: null
+model_api_controls: "real wall-clock benefit usually requires parallel calls."
+cost_latency: "lower wall-clock latency with orchestration; possibly higher total tokens."
+failure_modes: |
+  inconsistent sections, repeated context, shallow outline.
+evidence_tier: Moderate
+source_type: "primary research plus survey."
+eval_required: true
+caveat: "a single prompt is not the full orchestration method."
+sources:
+  - title: Skeleton-of-Thought
+    url: https://arxiv.org/abs/2307.15337
+  - title: "The Prompt Report"
+    url: https://arxiv.org/abs/2406.06608
