@@ -39,6 +39,7 @@ test("requiredPlaceholdersFilled checks required fields only", () => {
 test("fillTemplate works on a real catalog recipe prompt", () => {
   const recipe = catalog.recipes.find((r) => r.slug === "code-review");
   assert.ok(recipe, "code-review recipe must exist");
+  if (!recipe) return;
   const values: Record<string, string> = {};
   for (const ph of recipe.placeholders) {
     values[ph.name] = ph.preview || ph.example || `sample-${ph.name}`;
