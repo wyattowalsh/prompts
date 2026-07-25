@@ -5,33 +5,28 @@
 ### Goals
 
 - Treat the **`catalog/` package** as the authoring SSOT for recipes,
-  patterns, lanes, and sources (see `docs/adr/0001-catalog-ssot.md`).
+  patterns, lanes, and sources.
 - **Generate** GitHub Flavored Markdown `README.md` from catalog data;
   keep it committed and drift-checked in CI.
-- Ship a **Vite + React + Tailwind v4 + shadcn/ui** site that consumes
-  generated catalog data (multi-route recipes/patterns, share/copy chrome).
-- Preserve truthful SEO/AEO (canonical host, dual ItemList counts, llms
+- Ship a **Vite + React** site under `web/` that consumes generated
+  `web/src/data/catalog.json` (multi-route recipes/patterns, share/copy chrome).
+- Preserve truthful SEO/AEO (canonical host, sitemap, robots, llms
   artifacts) without inventing unsupported schema types.
 
 ### Non-goals
 
-- Hand-editing recipe bodies in `README.md` after dual-SSOT flip.
+- Hand-editing recipe bodies in `README.md`.
 - Invented SEO schema (FAQPage, SearchAction, AggregateRating) without
   matching UI.
 - Default third-party analytics or pre-widened CSP for PostHog/Umami.
 - Hosting LLM proxies or user accounts on the static site.
-
-### Transition note
-
-Until cutover, production may still serve the legacy `web/` markdown-it
-static builder. Tokens below remain the design system baseline for both
-legacy CSS and the React/shadcn theme map.
+- Pagefind / dual markdown-it static builder (removed).
 
 ## Visual principles
 
-1. **Scan density** — One long catalog; hierarchy and anchors beat decoration.
+1. **Scan density** — Hierarchy and anchors beat decoration.
 2. **Trust** — Quiet chrome; content first; no fake authority UI.
-3. **Clarity** — System fonts, clear focus, predictable sticky header offset.
+3. **Clarity** — Clear focus, predictable sticky header offset.
 4. **Motion restraint** — Prefer reduced-motion; no decorative animation loops.
 
 ## Tokens
@@ -49,8 +44,6 @@ legacy CSS and the React/shadcn theme map.
 | `--color-focus` | `#1f6feb` | `#79c0ff` | Focus rings |
 | `--color-success` | `#1a7f37` | `#3fb950` | Copied state |
 
-CSS also exposes legacy aliases `--site-*` equal to `--color-*`.
-
 ### Spacing
 
 | Token | Value |
@@ -63,17 +56,14 @@ CSS also exposes legacy aliases `--site-*` equal to `--color-*`.
 | --- | --- |
 | `--radius-sm/md/lg` | `0.25 / 0.375 / 0.5rem` |
 | `--z-header` | `10` |
-| `--z-progress` | `20` |
 | `--z-skip` | `100` |
 | `--text-sm/md/lg` | `0.875 / 1 / 1.125rem` |
 | `--header-height` | `4.5rem` (scroll padding) |
-| `--progress-height` | `3px` |
 
 ## Layout
 
-- Sticky header with blur panel.
-- Fixed top **scroll progress** bar above content (`z-progress`).
-- Main content max-width ~1120px, panel background, horizontal rules via border-inline.
+- Sticky header with Catalog / Recipes / Patterns / Sources / GitHub.
+- Main content shell with home vs detail density.
 - Skip link targets `#main-content` with `tabindex="-1"`.
 
 ## Components
@@ -85,24 +75,14 @@ CSS also exposes legacy aliases `--site-*` equal to `--color-*`.
 
 ### Header / nav
 
-- Site title + Catalog / Sources / Source / Search.
-- Nav links `min-height: 44px` for touch targets.
+- Site title + Catalog / Recipes / Patterns / Sources.
+- Nav links sized for touch targets.
 
-### Scroll progress
+### Copy / fill
 
-- `.scroll-progress` with `role="progressbar"`.
-- Width via `transform: scaleX(ratio)`.
-
-### Copy button / code blocks
-
-- Client wraps each `main pre` in `.code-block`.
-- `.copy-btn` absolute top-right; states default / `--copied`.
-- Live region `#copy-status` announces copy results.
-
-### Details / After copy
-
-- Styled disclosure panels.
-- Web enhance rewrites summary labels to include recipe names (a11y).
+- Recipe detail: sticky Copy prompt / Copy link / Markdown actions.
+- `CopyableBlock` for selectable prompt bodies.
+- Fill form with Use examples / clear controls.
 
 ### Tables
 
@@ -110,14 +90,13 @@ CSS also exposes legacy aliases `--site-*` equal to `--color-*`.
 
 ### Search
 
-- Pagefind loaded **lazily** on first interaction with the search trigger.
+- In-app catalog search on the home hero (no Pagefind).
 
 ## Accessibility
 
 - Global `:focus-visible` outline.
-- Progress and copy use ARIA appropriately.
-- Reduced motion disables transitions on progress/skip/copy.
-- Decorative recipe badge images use empty `alt` when title text is adjacent.
+- Copy toasts use polite live regions.
+- Reduced motion disables nonessential transitions.
 
 ## Dark mode
 
@@ -125,23 +104,24 @@ CSS also exposes legacy aliases `--site-*` equal to `--color-*`.
 
 ## SEO / AEO presentation
 
-- Dual JSON-LD ItemLists (48 recipes, 43 patterns); CollectionPage
-  `mainEntity` references both.
-- Organization `logo` points at first-party OG asset.
-- No speculative rich-result types without UI.
-- `llms.txt` / `llms-full.txt` remain discovery surfaces.
+- Home `index.html` carries description, canonical, favicon, and Open Graph /
+  Twitter meta (no per-route OG HTML this pass).
+- Build emits `robots.txt`, `sitemap.xml` (trailing-slash locs), `llms.txt`,
+  and compact `llms-full.txt` via `web/scripts/emit-seo.mjs`.
+- `web/scripts/spa-fallback.mjs` materializes deep-link `index.html` shells
+  from the same route list as SEO (`routes-from-catalog.mjs`).
+- No speculative rich-result ItemList JSON-LD this pass.
 
 ## Asset pipeline
 
-- `site.css`, `analytics.js`, and `site-ui.mjs` are **content-hashed** at
-  build into `public/assets/*.<hash>.*`.
-- `public/assets/manifest.json` maps logical names → hashed paths.
-- Long-cache `immutable` is safe because filenames change with content.
+- Vite builds hashed JS/CSS into `web/dist/assets/`.
+- Static icons and `og-default.png` live in `web/public/` and copy into dist.
+- Long-cache `immutable` applies to Vite hashed assets under `/assets/`.
 
 ## Validation
 
 - `pnpm run web:test`
-- `WEB_BASE_URL=https://prompts.w4w.dev pnpm run build`
-- `pnpm run web:test:browser`
-- Manual: scroll progress, copy a fence, open Search, dual ItemList in
-  view-source.
+- `WEB_BASE_URL=https://example.com pnpm run build`
+- Assert `web/dist/{robots.txt,sitemap.xml,llms.txt,llms-full.txt}` plus a
+  recipe shell such as `web/dist/recipes/source-grounded-answer/index.html`
+- `pnpm run web:test:browser` (static `python3 -m http.server` on `web/dist`)

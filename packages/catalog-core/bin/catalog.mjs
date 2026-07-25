@@ -149,7 +149,7 @@ async function main(argv) {
   }
 
   if (command === "generate" && args[1] === "site-data") {
-    const out = resolve(flagValue(args, "--out") || "apps/web/src/data/catalog.json");
+    const out = resolve(flagValue(args, "--out") || "web/src/data/catalog.json");
     const pkg = await loadCatalogPackage(root);
     const result = validateCatalogPackage(pkg, { expectFullCounts: fullCounts });
     if (!result.ok) {

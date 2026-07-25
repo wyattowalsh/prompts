@@ -36,7 +36,7 @@ repos:
         entry: bash -c 'PYTHONDONTWRITEBYTECODE=1 python3 scripts/check_sources_manifest.py --check'
         language: system
         pass_filenames: false
-        files: ^(README\.md|sources\.yaml|docs/audit/.*\.md|scripts/check_sources_manifest\.py)$
+        files: ^(README\.md|sources\.yaml|source-refresh\.md|scripts/check_sources_manifest\.py)$
 
       - id: readme-unit-tests
         name: README contract unit tests
@@ -90,12 +90,12 @@ repos:
           DESIGN.md
           .agents/skills/readme-catalog-steward/SKILL.md
           .agents/skills/readme-catalog-steward/references/*.md
-          docs/audit/*.md
+          source-refresh.md
           );
           pnpm exec markdownlint-cli2 "${DOCS[@]}"'
         language: system
         pass_filenames: false
-        files: ^(README\.md|AGENTS\.md|DESIGN\.md|\.agents/skills/readme-catalog-steward/.*\.md|docs/audit/.*\.md)$
+        files: ^(README\.md|AGENTS\.md|DESIGN\.md|source-refresh\.md|\.agents/skills/readme-catalog-steward/.*\.md)$
 
       - id: web-generated-site-check
         name: Web generated-site check
@@ -106,7 +106,7 @@ repos:
           && pnpm run build'
         language: system
         pass_filenames: false
-        files: ^(README\.md|CONTRIBUTING\.md|SECURITY\.md|CODE_OF_CONDUCT\.md|web/|package\.json|pnpm-lock\.yaml|pnpm-workspace\.yaml|pagefind\.yml|vercel\.json|eslint\.config\.js|prettier\.config\.cjs|playwright\.config\.mjs)$
+        files: ^(README\.md|CONTRIBUTING\.md|SECURITY\.md|CODE_OF_CONDUCT\.md|web/|package\.json|pnpm-lock\.yaml|pnpm-workspace\.yaml|vercel\.json|eslint\.config\.js|prettier\.config\.cjs|playwright\.config\.mjs|tests/node/)$
 
       - id: staged-whitespace
         name: Staged whitespace check
@@ -115,10 +115,10 @@ repos:
           README.md
           AGENTS.md
           DESIGN.md
+          source-refresh.md
           .pre-commit-config.yaml
           .agents/skills/readme-catalog-steward/SKILL.md
           .agents/skills/readme-catalog-steward/references/*.md
-          docs/audit/*.md
           .agents/skills/readme-catalog-steward/evals/evals.json
           .agents/skills/readme-catalog-steward/evals/adversarial-fixtures.json
           LICENSE
@@ -127,7 +127,6 @@ repos:
           package.json
           pnpm-lock.yaml
           pnpm-workspace.yaml
-          pagefind.yml
           vercel.json
           eslint.config.js
           prettier.config.cjs
@@ -150,12 +149,12 @@ repos:
           DESIGN.md
           .agents/skills/readme-catalog-steward/SKILL.md
           .agents/skills/readme-catalog-steward/references/*.md
-          docs/audit/*.md
+          source-refresh.md
           );
           pnpm exec markdown-link-check "${DOCS[@]}"'
         language: system
         pass_filenames: false
-        files: ^(README\.md|AGENTS\.md|DESIGN\.md|\.agents/skills/readme-catalog-steward/.*\.md|docs/audit/.*\.md)$
+        files: ^(README\.md|AGENTS\.md|DESIGN\.md|source-refresh\.md|\.agents/skills/readme-catalog-steward/.*\.md)$
         stages:
           - pre-push
           - manual
@@ -165,7 +164,7 @@ repos:
         entry: pnpm run web:test:browser
         language: system
         pass_filenames: false
-        files: ^(README\.md|CONTRIBUTING\.md|SECURITY\.md|CODE_OF_CONDUCT\.md|web/|package\.json|pnpm-lock\.yaml|pnpm-workspace\.yaml|pagefind\.yml|vercel\.json|eslint\.config\.js|prettier\.config\.cjs|playwright\.config\.mjs)$
+        files: ^(README\.md|CONTRIBUTING\.md|SECURITY\.md|CODE_OF_CONDUCT\.md|web/|package\.json|pnpm-lock\.yaml|pnpm-workspace\.yaml|vercel\.json|eslint\.config\.js|prettier\.config\.cjs|playwright\.config\.mjs|tests/node/)$
         stages:
           - pre-push
           - manual

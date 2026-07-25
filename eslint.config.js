@@ -3,17 +3,32 @@ import globals from "globals";
 
 export default [
   {
-    ignores: ["public/**", "node_modules/**", "playwright-report/**", "test-results/**"]
+    ignores: [
+      "web/dist/**",
+      "web/src/**",
+      "node_modules/**",
+      "packages/**",
+      "playwright-report/**",
+      "test-results/**",
+      "public/**",
+      "catalog/**"
+    ]
   },
   js.configs.recommended,
   {
-    files: ["web/**/*.mjs", "web/**/*.js", "scripts/**/*.mjs", "*.mjs", "*.js"],
+    files: [
+      "web/scripts/**/*.mjs",
+      "web/site.config.mjs",
+      "web/browser/**/*.mjs",
+      "scripts/**/*.mjs",
+      "*.mjs",
+      "tests/node/**/*.mjs"
+    ],
     languageOptions: {
       ecmaVersion: "latest",
       sourceType: "module",
       globals: {
-        ...globals.node,
-        ...globals.browser
+        ...globals.node
       }
     },
     rules: {

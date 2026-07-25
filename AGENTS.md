@@ -7,12 +7,16 @@ These instructions apply to the entire repository.
 This repository maintains a research-backed prompt engineering catalog.
 
 **Authoring SSOT:** the `catalog/` package (`recipes/*.yaml`, `patterns/*.yaml`,
-`index.yaml`, schemas). See `docs/adr/0001-catalog-ssot.md`.
+`index.yaml`, schemas). Catalog YAML is the only place to edit recipe/pattern
+bodies; generated surfaces must not be hand-edited for content.
 
 **Generated surfaces:**
 
 - `README.md` — GitHub product (compile with `pnpm catalog:readme`)
-- `apps/web` — Vite/React catalog site (data via `pnpm catalog:site-data`)
+- `web/` — Vite/React catalog site (data via `pnpm catalog:site-data`)
+
+Fidelity oracles for pattern migration live under `catalog/oracles/`. Source
+freshness notes live in root `source-refresh.md`.
 
 Do not hand-edit recipe or pattern bodies inside `README.md`; edit catalog YAML
 and regenerate.
@@ -27,8 +31,7 @@ and regenerate.
 - After catalog content changes: `pnpm catalog:validate`, then
   `pnpm catalog:readme` and `pnpm catalog:site-data`.
 - For non-trivial catalog maintenance, use the repo-local skill at
-  `.agents/skills/readme-catalog-steward/SKILL.md` (YAML authoring) plus
-  `docs/catalog-migration/`.
+  `.agents/skills/readme-catalog-steward/SKILL.md` (YAML authoring).
 - Use live official docs or primary papers for current provider/model claims.
 - Do not invent citations, benchmarks, model names, provider behavior, or badge
   signals.
@@ -121,7 +124,7 @@ DOCS=(
   DESIGN.md
   .agents/skills/readme-catalog-steward/SKILL.md
   .agents/skills/readme-catalog-steward/references/*.md
-  docs/audit/*.md
+  source-refresh.md
 )
 pnpm install --frozen-lockfile
 python3 scripts/check_readme_recipes.py --readme README.md --check
@@ -161,7 +164,6 @@ git diff --check -- \
   package.json \
   pnpm-lock.yaml \
   pnpm-workspace.yaml \
-  pagefind.yml \
   vercel.json \
   eslint.config.js \
   prettier.config.cjs \
@@ -175,7 +177,7 @@ git diff --check -- \
   scripts/format_recipe_catalog.py \
   scripts/check_sources_manifest.py \
   sources.yaml \
-  docs/audit/*.md
+  source-refresh.md
 ```
 
 Local pre-commit hooks live in `.pre-commit-config.yaml` and mirror the fast,
@@ -209,18 +211,20 @@ Keep GitHub Actions focused on deterministic README quality:
 - generated badge drift checks
 - whitespace diff checks
 - badge URL checks when badge URLs change
-- generated web build, Pagefind search indexing, and browser smoke checks
+- React web build (`pnpm build` → `web/dist`), SEO emit (robots/sitemap/llms),
+  and Playwright browser smoke against a static `python3 -m http.server` on
+  `web/dist`
 
-The generated web site lives under `web/` source files and builds to ignored
-`public/` output. `README.md` remains the prompt catalog SSOT; only explicitly
-allowlisted Markdown routes in `web/pages.mjs` may become public pages. Vercel
-deployment uses `vercel.json` with `pnpm run build` and `public/` output;
-GitHub Actions remains a quality workflow and does not deploy.
-SEO/AEO artifacts (`sitemap.xml`, `robots.txt`, `llms.txt`, `llms-full.txt`,
-canonical URLs, Open Graph/Twitter tags, and JSON-LD) are generated from
-`web/site.config.mjs`, `web/pages.mjs`, and the allowlisted Markdown sources.
-Set `WEB_BASE_URL` for production builds unless a verified host provides Vercel
-system URL variables. Do not hardcode an unverified live domain as the canonical
-default; the fallback URL is for local previews only.
-`DESIGN.md` documents the static-site architecture and non-goals, but this
+The catalog site lives under `web/` (Vite/React). Root `pnpm build` runs
+`catalog:site-data` then `@prompts/web` build (TypeScript, Vite, spa-fallback
+route shells, emit-seo artifacts). Vercel deployment uses `vercel.json` with
+`pnpm catalog:site-data && pnpm web:build` and `web/dist` output; GitHub Actions
+remains a quality workflow and does not deploy.
+SEO/AEO artifacts (`sitemap.xml`, `robots.txt`, `llms.txt`, `llms-full.txt`) and
+home-page Open Graph tags are emitted from `web/site.config.mjs` plus
+`web/scripts/emit-seo.mjs` / spa-fallback route shells. Set `WEB_BASE_URL` for
+production builds unless a verified host provides Vercel system URL variables.
+Do not hardcode an unverified live domain as the canonical default; the fallback
+URL is for local previews only.
+`DESIGN.md` documents the React site architecture and non-goals, but this
 validation block remains the single source of truth for required checks.

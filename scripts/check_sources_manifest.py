@@ -17,7 +17,7 @@ from pathlib import Path
 from urllib.parse import urlparse
 
 ROOT = Path(__file__).resolve().parents[1]
-SOURCE_REFRESH = ROOT / "docs" / "audit" / "source-refresh.md"
+SOURCE_REFRESH = ROOT / "source-refresh.md"
 DEFAULT_MANIFEST = ROOT / "sources.yaml"
 
 REQUIRED_FIELDS = {
@@ -137,7 +137,7 @@ def manifest_by_id(entries: list[dict[str, str]]) -> dict[str, dict[str, str]]:
 
 
 def validate_source_refresh(source_refresh: Path, entries: list[dict[str, str]]) -> list[str]:
-    """Validate manifest IDs and URLs embedded in docs/audit/source-refresh.md."""
+    """Validate manifest IDs and URLs embedded in source-refresh.md."""
 
     errors: list[str] = []
     if not source_refresh.exists():
@@ -201,7 +201,7 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument(
         "--no-source-refresh",
         action="store_true",
-        help="skip docs/audit/source-refresh.md cross-reference validation",
+        help="skip source-refresh.md cross-reference validation",
     )
     parser.add_argument("--check", action="store_true", help="validate and print a concise result")
     args = parser.parse_args(argv)

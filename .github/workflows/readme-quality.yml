@@ -6,6 +6,7 @@ on:
       - README.md
       - AGENTS.md
       - DESIGN.md
+      - source-refresh.md
       - .agents/skills/readme-catalog-steward/**
       - scripts/check_readme_recipes.py
       - scripts/audit_paste_zone_cells.py
@@ -18,7 +19,6 @@ on:
       - scripts/recipe_heading.py
       - scripts/check_badge_urls.sh
       - sources.yaml
-      - docs/audit/**
       - LICENSE
       - CONTRIBUTING.md
       - SECURITY.md
@@ -26,13 +26,9 @@ on:
       - web/**
       - catalog/**
       - packages/catalog-core/**
-      - apps/web/**
-      - docs/adr/**
-      - docs/catalog-migration/**
       - package.json
       - pnpm-lock.yaml
       - pnpm-workspace.yaml
-      - pagefind.yml
       - vercel.json
       - eslint.config.js
       - prettier.config.cjs
@@ -49,6 +45,7 @@ on:
       - README.md
       - AGENTS.md
       - DESIGN.md
+      - source-refresh.md
       - .agents/skills/readme-catalog-steward/**
       - scripts/check_readme_recipes.py
       - scripts/audit_paste_zone_cells.py
@@ -61,9 +58,6 @@ on:
       - scripts/recipe_heading.py
       - scripts/check_badge_urls.sh
       - sources.yaml
-      - docs/audit/**
-      - docs/adr/**
-      - docs/catalog-migration/**
       - LICENSE
       - CONTRIBUTING.md
       - SECURITY.md
@@ -71,11 +65,9 @@ on:
       - web/**
       - catalog/**
       - packages/catalog-core/**
-      - apps/web/**
       - package.json
       - pnpm-lock.yaml
       - pnpm-workspace.yaml
-      - pagefind.yml
       - vercel.json
       - eslint.config.js
       - prettier.config.cjs
@@ -175,7 +167,7 @@ jobs:
             DESIGN.md
             .agents/skills/readme-catalog-steward/SKILL.md
             .agents/skills/readme-catalog-steward/references/*.md
-            docs/audit/*.md
+            source-refresh.md
           )
           pnpm exec markdownlint-cli2 "${DOCS[@]}"
 
@@ -188,7 +180,7 @@ jobs:
             DESIGN.md
             .agents/skills/readme-catalog-steward/SKILL.md
             .agents/skills/readme-catalog-steward/references/*.md
-            docs/audit/*.md
+            source-refresh.md
           )
           pnpm exec markdown-link-check "${DOCS[@]}"
 
@@ -205,20 +197,13 @@ jobs:
           pnpm exec js-yaml .pre-commit-config.yaml >/dev/null
           python3 -m json.tool vercel.json >/dev/null
 
-      - name: Web lint, unit tests, legacy build, and search index
+      - name: Web lint, unit tests, and build
         shell: bash
         run: |
           pnpm run lint
           pnpm run format:check
           pnpm run web:test
-          pnpm run build:legacy
-
-      - name: Catalog React app build
-        shell: bash
-        run: |
-          pnpm catalog:site-data
-          pnpm webapp:typecheck
-          pnpm webapp:build
+          pnpm run build
 
       - name: Install Playwright Chromium
         shell: bash
@@ -240,7 +225,7 @@ jobs:
             DESIGN.md
             .agents/skills/readme-catalog-steward/SKILL.md
             .agents/skills/readme-catalog-steward/references/*.md
-            docs/audit/*.md
+            source-refresh.md
           )
           PATHS=(
             "${DOCS[@]}"
@@ -252,7 +237,6 @@ jobs:
             package.json
             pnpm-lock.yaml
             pnpm-workspace.yaml
-            pagefind.yml
             vercel.json
             eslint.config.js
             prettier.config.cjs
