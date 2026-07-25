@@ -47,13 +47,22 @@ function emitPlaceholderTable(placeholders) {
   ].join("\n");
 }
 
+/**
+ * Format one paste-preview line as a GFM blockquote.
+ * Empty / whitespace-only lines become bare `>` (MD009: no trailing space).
+ */
+function formatBlockquoteLine(line) {
+  const normalized = String(line).replace(/\r$/, "");
+  return normalized.trim() === "" ? ">" : `> ${normalized}`;
+}
+
 function emitPreviews(placeholders) {
   const blocks = [];
   for (const ph of placeholders) {
     if (!ph.preview) continue;
     const quoted = ph.preview
       .split("\n")
-      .map((line) => `> ${line}`)
+      .map(formatBlockquoteLine)
       .join("\n");
     blocks.push(`**Paste preview** (\`{${ph.name}}\`):\n\n${quoted}`);
   }
@@ -201,6 +210,8 @@ export function emitPatternNotes(pkg) {
         out.push("```text");
         out.push(pattern.template.replace(/\n$/, ""));
         out.push("```");
+        // Blank line after fence so MD031/MD032 pass (fence then list).
+        out.push("");
       } else if (pattern.template_omission_reason) {
         out.push(`- **Copyable template**: ${pattern.template_omission_reason}`);
       }
