@@ -1,0 +1,34 @@
+{
+  "main": {
+    "index-Bny3g5eR.js": 220708
+  },
+  "catalog_chunks": {
+    "catalog-DuYN6LXL.js": 538,
+    "catalog-meta-8dJ6HS5I.js": 152,
+    "catalog-data-C-UIK_uG.js": 206618
+  },
+  "all_js": {
+    "CommandPalette-Ds8X8v5i.js": 3618,
+    "lane-icons-k9UyY1ZF.js": 346,
+    "RecipesIndexPage-BkiSPU1g.js": 1575,
+    "PatternsIndexPage-BDMk4_2I.js": 1613,
+    "PatternPage-SLCL-I48.js": 3305,
+    "RecipeIndexList-B2XK_U4i.js": 1701,
+    "HomePage-Dk-1IuSt.js": 6921,
+    "router-vendor-BPun4boN.js": 50806,
+    "cmdk-vendor-CknAZTS3.js": 51485,
+    "catalog-DuYN6LXL.js": 538,
+    "catalog-meta-8dJ6HS5I.js": 152,
+    "catalog-data-C-UIK_uG.js": 206618,
+    "RecipePage-CbKJ7tHY.js": 10394,
+    "Badge-CRlwPJJ_.js": 1400,
+    "CopyableBlock-CwODDz61.js": 2049,
+    "SourcesPage-C3HTdJBv.js": 1466,
+    "Button-C_e1YlxM.js": 1243,
+    "icons-vendor-BhaiXs6y.js": 16704,
+    "index-Bny3g5eR.js": 220708
+  },
+  "baseline_main": 526153,
+  "main_bytes": 220708,
+  "ratio_main_vs_baseline": 0.4194749436000555
+}

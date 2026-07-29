@@ -1,0 +1,1708 @@
+{
+  "version": 3,
+  "nodes": 118,
+  "edges": 181,
+  "graph": [
+    {
+      "id": "W0-00",
+      "wave": "0",
+      "kind": "V",
+      "lane": "CAP",
+      "title": "git status dirty fence; forbid research-upgrade staging",
+      "deps": [],
+      "rv": [],
+      "lease": null
+    },
+    {
+      "id": "W0-01",
+      "wave": "0",
+      "kind": "R",
+      "lane": "CAP",
+      "title": "Record sizes-before: index.js, CommandPalette.js, css, catalog.json",
+      "deps": [
+        "W0-00"
+      ],
+      "rv": [
+        "CB-001"
+      ],
+      "lease": null
+    },
+    {
+      "id": "W0-02",
+      "wave": "0",
+      "kind": "R",
+      "lane": "CAP",
+      "title": "List App.tsx static feature imports",
+      "deps": [
+        "W0-01"
+      ],
+      "rv": [
+        "CB-002"
+      ],
+      "lease": null
+    },
+    {
+      "id": "W0-03",
+      "wave": "0",
+      "kind": "R",
+      "lane": "CAP",
+      "title": "List all from-catalog import sites (13)",
+      "deps": [
+        "W0-01"
+      ],
+      "rv": [
+        "CB-001"
+      ],
+      "lease": null
+    },
+    {
+      "id": "W0-04",
+      "wave": "0",
+      "kind": "R",
+      "lane": "CAP",
+      "title": "Confirm public/ disk footprint + gitignore status",
+      "deps": [
+        "W0-00"
+      ],
+      "rv": [
+        "CB-004"
+      ],
+      "lease": null
+    },
+    {
+      "id": "W0-05",
+      "wave": "0",
+      "kind": "R",
+      "lane": "CAP",
+      "title": "Confirm eslint ignores web/src + lint script paths",
+      "deps": [
+        "W0-00"
+      ],
+      "rv": [
+        "CB-003"
+      ],
+      "lease": null
+    },
+    {
+      "id": "W0-06",
+      "wave": "0",
+      "kind": "R",
+      "lane": "CAP",
+      "title": "Confirm packageManager pin vs pnpm -v",
+      "deps": [
+        "W0-00"
+      ],
+      "rv": [
+        "CB-006"
+      ],
+      "lease": null
+    },
+    {
+      "id": "W0-07",
+      "wave": "0",
+      "kind": "R",
+      "lane": "CAP",
+      "title": "Confirm RR 7.18.x + Vite 6.4.x versions",
+      "deps": [
+        "W0-00"
+      ],
+      "rv": [],
+      "lease": null
+    },
+    {
+      "id": "W0-08",
+      "wave": "0",
+      "kind": "M",
+      "lane": "CAP",
+      "title": "Freeze: lazy routes, catalog async chunk, eslint src, public retire, no RR framework, size budget 70%/30%",
+      "deps": [
+        "W0-02",
+        "W0-03",
+        "W0-04",
+        "W0-05",
+        "W0-06",
+        "W0-07"
+      ],
+      "rv": [],
+      "lease": null
+    },
+    {
+      "id": "WA-PERF-map-home",
+      "wave": "A",
+      "kind": "R",
+      "lane": "PERF",
+      "title": "Map HomePage import weight + deps",
+      "deps": [
+        "W0-08"
+      ],
+      "rv": [
+        "CB-002"
+      ],
+      "lease": null
+    },
+    {
+      "id": "WA-PERF-map-recipes",
+      "wave": "A",
+      "kind": "R",
+      "lane": "PERF",
+      "title": "Map Recipes* import weight + deps",
+      "deps": [
+        "W0-08"
+      ],
+      "rv": [
+        "CB-002"
+      ],
+      "lease": null
+    },
+    {
+      "id": "WA-PERF-map-patterns",
+      "wave": "A",
+      "kind": "R",
+      "lane": "PERF",
+      "title": "Map Patterns* import weight + deps",
+      "deps": [
+        "W0-08"
+      ],
+      "rv": [
+        "CB-002"
+      ],
+      "lease": null
+    },
+    {
+      "id": "WA-PERF-map-sources",
+      "wave": "A",
+      "kind": "R",
+      "lane": "PERF",
+      "title": "Map SourcesPage import weight + deps",
+      "deps": [
+        "W0-08"
+      ],
+      "rv": [
+        "CB-002"
+      ],
+      "lease": null
+    },
+    {
+      "id": "WA-PERF-map-catalog",
+      "wave": "A",
+      "kind": "R",
+      "lane": "PERF",
+      "title": "Map catalog.ts JSON pull-through graph",
+      "deps": [
+        "W0-08"
+      ],
+      "rv": [
+        "CB-001"
+      ],
+      "lease": null
+    },
+    {
+      "id": "WA-PERF-chunks-draft",
+      "wave": "A",
+      "kind": "R",
+      "lane": "PERF",
+      "title": "Draft manualChunks map react/router/cmdk",
+      "deps": [
+        "W0-08"
+      ],
+      "rv": [
+        "CB-001"
+      ],
+      "lease": null
+    },
+    {
+      "id": "WA-PERF-catalog-draft",
+      "wave": "A",
+      "kind": "R",
+      "lane": "PERF",
+      "title": "Draft catalog-data.mjs/ts split API",
+      "deps": [
+        "W0-08"
+      ],
+      "rv": [
+        "CB-001"
+      ],
+      "lease": null
+    },
+    {
+      "id": "WA-PERF-idle-policy",
+      "wave": "A",
+      "kind": "R",
+      "lane": "PERF",
+      "title": "Draft idle-warm vs intent-only matrix",
+      "deps": [
+        "W0-08"
+      ],
+      "rv": [
+        "CB-008"
+      ],
+      "lease": null
+    },
+    {
+      "id": "WA-PERF-budget",
+      "wave": "A",
+      "kind": "R",
+      "lane": "PERF",
+      "title": "Write size budget formulas into scratch",
+      "deps": [
+        "W0-08"
+      ],
+      "rv": [
+        "CB-001",
+        "CB-002"
+      ],
+      "lease": null
+    },
+    {
+      "id": "WA-LINT-ignore",
+      "wave": "A",
+      "kind": "R",
+      "lane": "LINT",
+      "title": "Quote eslint ignore block + package lint script",
+      "deps": [
+        "W0-08"
+      ],
+      "rv": [
+        "CB-003"
+      ],
+      "lease": null
+    },
+    {
+      "id": "WA-LINT-tseslint-ver",
+      "wave": "A",
+      "kind": "R",
+      "lane": "LINT",
+      "title": "Research typescript-eslint version compatible with eslint 10",
+      "deps": [
+        "W0-08"
+      ],
+      "rv": [
+        "CB-003"
+      ],
+      "lease": null
+    },
+    {
+      "id": "WA-LINT-error-forecast",
+      "wave": "A",
+      "kind": "R",
+      "lane": "LINT",
+      "title": "Dry-run estimate: count no-unused if enabled",
+      "deps": [
+        "W0-08"
+      ],
+      "rv": [
+        "CB-003"
+      ],
+      "lease": null
+    },
+    {
+      "id": "WA-LEG-size",
+      "wave": "A",
+      "kind": "R",
+      "lane": "LEGACY",
+      "title": "Break down public/pagefind vs assets vs html",
+      "deps": [
+        "W0-08"
+      ],
+      "rv": [
+        "CB-004"
+      ],
+      "lease": null
+    },
+    {
+      "id": "WA-LEG-refs",
+      "wave": "A",
+      "kind": "R",
+      "lane": "LEGACY",
+      "title": "Grep pagefind outside public/",
+      "deps": [
+        "W0-08"
+      ],
+      "rv": [
+        "CB-004"
+      ],
+      "lease": null
+    },
+    {
+      "id": "WA-LEG-web-public",
+      "wave": "A",
+      "kind": "R",
+      "lane": "LEGACY",
+      "title": "Inventory web/public required assets",
+      "deps": [
+        "W0-08"
+      ],
+      "rv": [
+        "CB-004"
+      ],
+      "lease": null
+    },
+    {
+      "id": "WA-HYG-alias",
+      "wave": "A",
+      "kind": "R",
+      "lane": "HYGIENE",
+      "title": "Confirm zero @/ imports",
+      "deps": [
+        "W0-08"
+      ],
+      "rv": [
+        "CB-005"
+      ],
+      "lease": null
+    },
+    {
+      "id": "WA-HYG-pnpm",
+      "wave": "A",
+      "kind": "R",
+      "lane": "HYGIENE",
+      "title": "packageManager vs CI setup-node/pnpm",
+      "deps": [
+        "W0-08"
+      ],
+      "rv": [
+        "CB-006"
+      ],
+      "lease": null
+    },
+    {
+      "id": "WA-HYG-catalog-dirt",
+      "wave": "A",
+      "kind": "R",
+      "lane": "HYGIENE",
+      "title": "catalog.json generated_at commit noise",
+      "deps": [
+        "W0-08"
+      ],
+      "rv": [
+        "CB-011"
+      ],
+      "lease": null
+    },
+    {
+      "id": "WA-DOC-dual",
+      "wave": "A",
+      "kind": "R",
+      "lane": "DOCS",
+      "title": "Map Python script vs catalog-core commands",
+      "deps": [
+        "W0-08"
+      ],
+      "rv": [
+        "CB-007"
+      ],
+      "lease": null
+    },
+    {
+      "id": "WA-DOC-agents",
+      "wave": "A",
+      "kind": "R",
+      "lane": "DOCS",
+      "title": "Locate AGENTS validation block insert point",
+      "deps": [
+        "W0-08"
+      ],
+      "rv": [
+        "CB-007"
+      ],
+      "lease": null
+    },
+    {
+      "id": "WA-CI-workflow",
+      "wave": "A",
+      "kind": "R",
+      "lane": "CI",
+      "title": "Read readme-quality.yml for lint/build steps",
+      "deps": [
+        "W0-08"
+      ],
+      "rv": [
+        "CB-003"
+      ],
+      "lease": null
+    },
+    {
+      "id": "WA-TEST-smoke",
+      "wave": "A",
+      "kind": "R",
+      "lane": "TEST",
+      "title": "List Playwright tests needing lazy waitFor",
+      "deps": [
+        "W0-08"
+      ],
+      "rv": [
+        "CB-009"
+      ],
+      "lease": null
+    },
+    {
+      "id": "WA-TEST-axe",
+      "wave": "A",
+      "kind": "R",
+      "lane": "TEST",
+      "title": "Assess axe-playwright cost for CI",
+      "deps": [
+        "W0-08"
+      ],
+      "rv": [
+        "CB-012"
+      ],
+      "lease": null
+    },
+    {
+      "id": "WA-JOIN",
+      "wave": "A",
+      "kind": "M",
+      "lane": "CAP",
+      "title": "Lock 4 decisions: catalog mode, public disposition, alias, idle warm",
+      "deps": [
+        "WA-PERF-map-home",
+        "WA-PERF-map-recipes",
+        "WA-PERF-map-patterns",
+        "WA-PERF-map-sources",
+        "WA-PERF-map-catalog",
+        "WA-PERF-chunks-draft",
+        "WA-PERF-catalog-draft",
+        "WA-PERF-idle-policy",
+        "WA-PERF-budget",
+        "WA-LINT-ignore",
+        "WA-LINT-tseslint-ver",
+        "WA-LINT-error-forecast",
+        "WA-LEG-size",
+        "WA-LEG-refs",
+        "WA-LEG-web-public",
+        "WA-HYG-alias",
+        "WA-HYG-pnpm",
+        "WA-HYG-catalog-dirt",
+        "WA-DOC-dual",
+        "WA-DOC-agents",
+        "WA-CI-workflow",
+        "WA-TEST-smoke",
+        "WA-TEST-axe"
+      ],
+      "rv": [],
+      "lease": null
+    },
+    {
+      "id": "WB-PCHUNK-01",
+      "wave": "B",
+      "kind": "W",
+      "lane": "PERF",
+      "title": "Edit vite manualChunks: react-vendor",
+      "deps": [
+        "WA-JOIN"
+      ],
+      "rv": [
+        "CB-001"
+      ],
+      "lease": "L-VITE"
+    },
+    {
+      "id": "WB-PCHUNK-02",
+      "wave": "B",
+      "kind": "W",
+      "lane": "PERF",
+      "title": "Edit vite manualChunks: router-vendor",
+      "deps": [
+        "WB-PCHUNK-01"
+      ],
+      "rv": [
+        "CB-001"
+      ],
+      "lease": "L-VITE"
+    },
+    {
+      "id": "WB-PCHUNK-03",
+      "wave": "B",
+      "kind": "W",
+      "lane": "PERF",
+      "title": "Edit vite manualChunks: cmdk-vendor optional",
+      "deps": [
+        "WB-PCHUNK-02"
+      ],
+      "rv": [
+        "CB-001"
+      ],
+      "lease": "L-VITE"
+    },
+    {
+      "id": "WB-PCHUNK-04",
+      "wave": "B",
+      "kind": "V",
+      "lane": "PERF",
+      "title": "Build once; list chunk files",
+      "deps": [
+        "WB-PCHUNK-03"
+      ],
+      "rv": [
+        "CB-001"
+      ],
+      "lease": "L-VITE"
+    },
+    {
+      "id": "WB-PCHUNK-DONE",
+      "wave": "B",
+      "kind": "M",
+      "lane": "PERF",
+      "title": "Release L-VITE chunks",
+      "deps": [
+        "WB-PCHUNK-04"
+      ],
+      "rv": [
+        "CB-001"
+      ],
+      "lease": null
+    },
+    {
+      "id": "WB-PCAT-01",
+      "wave": "B",
+      "kind": "W",
+      "lane": "PERF",
+      "title": "Create catalog-data module exporting raw typesafe data",
+      "deps": [
+        "WA-JOIN"
+      ],
+      "rv": [
+        "CB-001"
+      ],
+      "lease": "L-CAT"
+    },
+    {
+      "id": "WB-PCAT-02",
+      "wave": "B",
+      "kind": "W",
+      "lane": "PERF",
+      "title": "Refactor catalog.ts re-export + loadCatalog async",
+      "deps": [
+        "WB-PCAT-01"
+      ],
+      "rv": [
+        "CB-001"
+      ],
+      "lease": "L-CAT"
+    },
+    {
+      "id": "WB-PCAT-03",
+      "wave": "B",
+      "kind": "W",
+      "lane": "PERF",
+      "title": "Keep sync catalog for unit tests",
+      "deps": [
+        "WB-PCAT-02"
+      ],
+      "rv": [
+        "CB-001"
+      ],
+      "lease": "L-CAT"
+    },
+    {
+      "id": "WB-PCAT-04",
+      "wave": "B",
+      "kind": "V",
+      "lane": "PERF",
+      "title": "Unit tests still pass with catalog export",
+      "deps": [
+        "WB-PCAT-03"
+      ],
+      "rv": [
+        "CB-001"
+      ],
+      "lease": "L-CAT"
+    },
+    {
+      "id": "WB-PCAT-DONE",
+      "wave": "B",
+      "kind": "M",
+      "lane": "PERF",
+      "title": "Release L-CAT",
+      "deps": [
+        "WB-PCAT-04"
+      ],
+      "rv": [
+        "CB-001"
+      ],
+      "lease": null
+    },
+    {
+      "id": "WB-PROUTE-01",
+      "wave": "B",
+      "kind": "W",
+      "lane": "PERF",
+      "title": "Lazy HomePage + Suspense",
+      "deps": [
+        "WA-JOIN"
+      ],
+      "rv": [
+        "CB-002"
+      ],
+      "lease": "L-APP"
+    },
+    {
+      "id": "WB-PROUTE-02",
+      "wave": "B",
+      "kind": "W",
+      "lane": "PERF",
+      "title": "Lazy RecipesIndexPage",
+      "deps": [
+        "WB-PROUTE-01"
+      ],
+      "rv": [
+        "CB-002"
+      ],
+      "lease": "L-APP"
+    },
+    {
+      "id": "WB-PROUTE-03",
+      "wave": "B",
+      "kind": "W",
+      "lane": "PERF",
+      "title": "Lazy RecipePage",
+      "deps": [
+        "WB-PROUTE-02"
+      ],
+      "rv": [
+        "CB-002"
+      ],
+      "lease": "L-APP"
+    },
+    {
+      "id": "WB-PROUTE-04",
+      "wave": "B",
+      "kind": "W",
+      "lane": "PERF",
+      "title": "Lazy PatternsIndexPage",
+      "deps": [
+        "WB-PROUTE-03"
+      ],
+      "rv": [
+        "CB-002"
+      ],
+      "lease": "L-APP"
+    },
+    {
+      "id": "WB-PROUTE-05",
+      "wave": "B",
+      "kind": "W",
+      "lane": "PERF",
+      "title": "Lazy PatternPage",
+      "deps": [
+        "WB-PROUTE-04"
+      ],
+      "rv": [
+        "CB-002"
+      ],
+      "lease": "L-APP"
+    },
+    {
+      "id": "WB-PROUTE-06",
+      "wave": "B",
+      "kind": "W",
+      "lane": "PERF",
+      "title": "Lazy SourcesPage",
+      "deps": [
+        "WB-PROUTE-05"
+      ],
+      "rv": [
+        "CB-002"
+      ],
+      "lease": "L-APP"
+    },
+    {
+      "id": "WB-PROUTE-07",
+      "wave": "B",
+      "kind": "W",
+      "lane": "PERF",
+      "title": "Navigate/redirect routes stay eager or thin",
+      "deps": [
+        "WB-PROUTE-06"
+      ],
+      "rv": [
+        "CB-002"
+      ],
+      "lease": "L-APP"
+    },
+    {
+      "id": "WB-PROUTE-08",
+      "wave": "B",
+      "kind": "W",
+      "lane": "PERF",
+      "title": "Accessible loading fallback (sr-only text)",
+      "deps": [
+        "WB-PROUTE-07"
+      ],
+      "rv": [
+        "CB-002"
+      ],
+      "lease": "L-APP"
+    },
+    {
+      "id": "WB-PROUTE-09",
+      "wave": "B",
+      "kind": "W",
+      "lane": "PERF",
+      "title": "Idle warm policy apply (keep or intent-only)",
+      "deps": [
+        "WB-PROUTE-08",
+        "WA-JOIN"
+      ],
+      "rv": [
+        "CB-008"
+      ],
+      "lease": "L-APP"
+    },
+    {
+      "id": "WB-PROUTE-10",
+      "wave": "B",
+      "kind": "V",
+      "lane": "PERF",
+      "title": "typecheck App after lazy",
+      "deps": [
+        "WB-PROUTE-09"
+      ],
+      "rv": [
+        "CB-002"
+      ],
+      "lease": "L-APP"
+    },
+    {
+      "id": "WB-PROUTE-DONE",
+      "wave": "B",
+      "kind": "M",
+      "lane": "PERF",
+      "title": "Release L-APP routes",
+      "deps": [
+        "WB-PROUTE-10"
+      ],
+      "rv": [
+        "CB-002",
+        "CB-008"
+      ],
+      "lease": null
+    },
+    {
+      "id": "WB-PERF-JOIN",
+      "wave": "B",
+      "kind": "M",
+      "lane": "PERF",
+      "title": "Join PERF sublanes; optional loadCatalog page wire",
+      "deps": [
+        "WB-PCHUNK-DONE",
+        "WB-PCAT-DONE",
+        "WB-PROUTE-DONE"
+      ],
+      "rv": [
+        "CB-001",
+        "CB-002"
+      ],
+      "lease": null
+    },
+    {
+      "id": "WB-PERF-WIRE",
+      "wave": "B",
+      "kind": "W",
+      "lane": "PERF",
+      "title": "Wire consumers to loadCatalog only if required",
+      "deps": [
+        "WB-PERF-JOIN"
+      ],
+      "rv": [
+        "CB-001"
+      ],
+      "lease": "L-APP"
+    },
+    {
+      "id": "WB-PERF-SIZE",
+      "wave": "B",
+      "kind": "V",
+      "lane": "PERF",
+      "title": "Build + sizes-after intermediate",
+      "deps": [
+        "WB-PERF-WIRE",
+        "WB-PCHUNK-DONE"
+      ],
+      "rv": [
+        "CB-001"
+      ],
+      "lease": null
+    },
+    {
+      "id": "WB-PERF-DONE",
+      "wave": "B",
+      "kind": "M",
+      "lane": "PERF",
+      "title": "PERF lane complete",
+      "deps": [
+        "WB-PERF-SIZE"
+      ],
+      "rv": [
+        "CB-001",
+        "CB-002",
+        "CB-008"
+      ],
+      "lease": null
+    },
+    {
+      "id": "WB-LINT-01",
+      "wave": "B",
+      "kind": "W",
+      "lane": "LINT",
+      "title": "Add typescript-eslint deps (L-PKG)",
+      "deps": [
+        "WA-JOIN"
+      ],
+      "rv": [
+        "CB-003"
+      ],
+      "lease": "L-PKG"
+    },
+    {
+      "id": "WB-LINT-02",
+      "wave": "B",
+      "kind": "W",
+      "lane": "LINT",
+      "title": "Author flat config for web/tsconfig project",
+      "deps": [
+        "WB-LINT-01"
+      ],
+      "rv": [
+        "CB-003"
+      ],
+      "lease": "L-LINT"
+    },
+    {
+      "id": "WB-LINT-03",
+      "wave": "B",
+      "kind": "W",
+      "lane": "LINT",
+      "title": "Remove web/src from ignores",
+      "deps": [
+        "WB-LINT-02"
+      ],
+      "rv": [
+        "CB-003"
+      ],
+      "lease": "L-LINT"
+    },
+    {
+      "id": "WB-LINT-04",
+      "wave": "B",
+      "kind": "W",
+      "lane": "LINT",
+      "title": "Enable recommended+type-checked baseline",
+      "deps": [
+        "WB-LINT-03"
+      ],
+      "rv": [
+        "CB-003"
+      ],
+      "lease": "L-LINT"
+    },
+    {
+      "id": "WB-LINT-05",
+      "wave": "B",
+      "kind": "W",
+      "lane": "LINT",
+      "title": "Fix lib/*.ts lint",
+      "deps": [
+        "WB-LINT-04"
+      ],
+      "rv": [
+        "CB-003"
+      ],
+      "lease": "L-LINT"
+    },
+    {
+      "id": "WB-LINT-06",
+      "wave": "B",
+      "kind": "W",
+      "lane": "LINT",
+      "title": "Fix app+components lint",
+      "deps": [
+        "WB-LINT-05"
+      ],
+      "rv": [
+        "CB-003"
+      ],
+      "lease": "L-LINT"
+    },
+    {
+      "id": "WB-LINT-07",
+      "wave": "B",
+      "kind": "W",
+      "lane": "LINT",
+      "title": "Fix features lint",
+      "deps": [
+        "WB-LINT-06"
+      ],
+      "rv": [
+        "CB-003"
+      ],
+      "lease": "L-LINT"
+    },
+    {
+      "id": "WB-LINT-08",
+      "wave": "B",
+      "kind": "W",
+      "lane": "LINT",
+      "title": "Update package.json lint script",
+      "deps": [
+        "WB-LINT-07"
+      ],
+      "rv": [
+        "CB-003"
+      ],
+      "lease": "L-LINT"
+    },
+    {
+      "id": "WB-LINT-09",
+      "wave": "B",
+      "kind": "W",
+      "lane": "LINT",
+      "title": "Update CI workflow lint",
+      "deps": [
+        "WB-LINT-08"
+      ],
+      "rv": [
+        "CB-003"
+      ],
+      "lease": "L-CI"
+    },
+    {
+      "id": "WB-LINT-10",
+      "wave": "B",
+      "kind": "V",
+      "lane": "LINT",
+      "title": "pnpm lint exit 0",
+      "deps": [
+        "WB-LINT-09"
+      ],
+      "rv": [
+        "CB-003"
+      ],
+      "lease": null
+    },
+    {
+      "id": "WB-LINT-DONE",
+      "wave": "B",
+      "kind": "M",
+      "lane": "LINT",
+      "title": "LINT complete",
+      "deps": [
+        "WB-LINT-10"
+      ],
+      "rv": [
+        "CB-003"
+      ],
+      "lease": null
+    },
+    {
+      "id": "WB-LEG-01",
+      "wave": "B",
+      "kind": "R",
+      "lane": "LEGACY",
+      "title": "Reconfirm no deploy references to root public/",
+      "deps": [
+        "WA-JOIN"
+      ],
+      "rv": [
+        "CB-004"
+      ],
+      "lease": null
+    },
+    {
+      "id": "WB-LEG-02",
+      "wave": "B",
+      "kind": "W",
+      "lane": "LEGACY",
+      "title": "Apply delete or archive public/",
+      "deps": [
+        "WB-LEG-01"
+      ],
+      "rv": [
+        "CB-004"
+      ],
+      "lease": "L-LEGACY"
+    },
+    {
+      "id": "WB-LEG-03",
+      "wave": "B",
+      "kind": "W",
+      "lane": "LEGACY",
+      "title": "Verify web/public favicons/og intact",
+      "deps": [
+        "WB-LEG-02"
+      ],
+      "rv": [
+        "CB-004"
+      ],
+      "lease": "L-LEGACY"
+    },
+    {
+      "id": "WB-LEG-04",
+      "wave": "B",
+      "kind": "W",
+      "lane": "LEGACY",
+      "title": "Build still emits SEO to web/dist not public/",
+      "deps": [
+        "WB-LEG-03"
+      ],
+      "rv": [
+        "CB-004"
+      ],
+      "lease": null
+    },
+    {
+      "id": "WB-LEG-05",
+      "wave": "B",
+      "kind": "V",
+      "lane": "LEGACY",
+      "title": "Grep pagefind clean",
+      "deps": [
+        "WB-LEG-04"
+      ],
+      "rv": [
+        "CB-004"
+      ],
+      "lease": null
+    },
+    {
+      "id": "WB-LEG-DONE",
+      "wave": "B",
+      "kind": "M",
+      "lane": "LEGACY",
+      "title": "LEGACY complete",
+      "deps": [
+        "WB-LEG-05"
+      ],
+      "rv": [
+        "CB-004"
+      ],
+      "lease": null
+    },
+    {
+      "id": "WB-HYG-01",
+      "wave": "B",
+      "kind": "W",
+      "lane": "HYGIENE",
+      "title": "Remove unused @ alias OR convert 3 files",
+      "deps": [
+        "WA-JOIN"
+      ],
+      "rv": [
+        "CB-005"
+      ],
+      "lease": "L-VITE"
+    },
+    {
+      "id": "WB-HYG-02",
+      "wave": "B",
+      "kind": "W",
+      "lane": "HYGIENE",
+      "title": "Set packageManager to installed pnpm",
+      "deps": [
+        "WA-JOIN"
+      ],
+      "rv": [
+        "CB-006"
+      ],
+      "lease": "L-PKG"
+    },
+    {
+      "id": "WB-HYG-03",
+      "wave": "B",
+      "kind": "W",
+      "lane": "HYGIENE",
+      "title": "Document catalog.json dirt in AGENTS/DESIGN",
+      "deps": [
+        "WB-HYG-02"
+      ],
+      "rv": [
+        "CB-011"
+      ],
+      "lease": "L-DOCS"
+    },
+    {
+      "id": "WB-HYG-04",
+      "wave": "B",
+      "kind": "V",
+      "lane": "HYGIENE",
+      "title": "Verify alias+pin",
+      "deps": [
+        "WB-HYG-01",
+        "WB-HYG-03"
+      ],
+      "rv": [
+        "CB-005",
+        "CB-006"
+      ],
+      "lease": null
+    },
+    {
+      "id": "WB-HYG-DONE",
+      "wave": "B",
+      "kind": "M",
+      "lane": "HYGIENE",
+      "title": "HYGIENE complete",
+      "deps": [
+        "WB-HYG-04"
+      ],
+      "rv": [
+        "CB-005",
+        "CB-006",
+        "CB-011"
+      ],
+      "lease": null
+    },
+    {
+      "id": "WB-DOC-01",
+      "wave": "B",
+      "kind": "W",
+      "lane": "DOCS",
+      "title": "AGENTS dual-toolchain ownership table",
+      "deps": [
+        "WA-JOIN"
+      ],
+      "rv": [
+        "CB-007"
+      ],
+      "lease": "L-DOCS"
+    },
+    {
+      "id": "WB-DOC-02",
+      "wave": "B",
+      "kind": "W",
+      "lane": "DOCS",
+      "title": "DESIGN code-split + lint + no legacy public",
+      "deps": [
+        "WB-PERF-DONE",
+        "WB-LINT-DONE",
+        "WB-LEG-DONE"
+      ],
+      "rv": [
+        "CB-007"
+      ],
+      "lease": "L-DOCS"
+    },
+    {
+      "id": "WB-DOC-03",
+      "wave": "B",
+      "kind": "W",
+      "lane": "DOCS",
+      "title": "Note goals scratch policy",
+      "deps": [
+        "WB-DOC-01"
+      ],
+      "rv": [
+        "CB-010"
+      ],
+      "lease": "L-DOCS"
+    },
+    {
+      "id": "WB-DOC-DONE",
+      "wave": "B",
+      "kind": "M",
+      "lane": "DOCS",
+      "title": "DOCS complete",
+      "deps": [
+        "WB-DOC-02",
+        "WB-DOC-03"
+      ],
+      "rv": [
+        "CB-007",
+        "CB-010"
+      ],
+      "lease": null
+    },
+    {
+      "id": "WB-TEST-01",
+      "wave": "B",
+      "kind": "W",
+      "lane": "TEST",
+      "title": "Adjust Playwright for lazy route settle",
+      "deps": [
+        "WB-PERF-DONE"
+      ],
+      "rv": [
+        "CB-009"
+      ],
+      "lease": "L-SMOKE"
+    },
+    {
+      "id": "WB-TEST-02",
+      "wave": "B",
+      "kind": "W",
+      "lane": "TEST",
+      "title": "Optional axe home (skip if budget)",
+      "deps": [
+        "WB-TEST-01"
+      ],
+      "rv": [
+        "CB-012"
+      ],
+      "lease": "L-SMOKE"
+    },
+    {
+      "id": "WB-TEST-03",
+      "wave": "B",
+      "kind": "V",
+      "lane": "TEST",
+      "title": "Playwright subset green",
+      "deps": [
+        "WB-TEST-02"
+      ],
+      "rv": [
+        "CB-009"
+      ],
+      "lease": null
+    },
+    {
+      "id": "WB-TEST-DONE",
+      "wave": "B",
+      "kind": "M",
+      "lane": "TEST",
+      "title": "TEST complete",
+      "deps": [
+        "WB-TEST-03"
+      ],
+      "rv": [
+        "CB-009",
+        "CB-012"
+      ],
+      "lease": null
+    },
+    {
+      "id": "WB-JOIN",
+      "wave": "B",
+      "kind": "M",
+      "lane": "CAP",
+      "title": "Join all B DONE nodes",
+      "deps": [
+        "WB-PERF-DONE",
+        "WB-LINT-DONE",
+        "WB-LEG-DONE",
+        "WB-HYG-DONE",
+        "WB-DOC-DONE",
+        "WB-TEST-DONE"
+      ],
+      "rv": [],
+      "lease": null
+    },
+    {
+      "id": "WC-TYPE",
+      "wave": "C",
+      "kind": "V",
+      "lane": "QA",
+      "title": "web typecheck",
+      "deps": [
+        "WB-JOIN"
+      ],
+      "rv": [],
+      "lease": null
+    },
+    {
+      "id": "WC-UNIT",
+      "wave": "C",
+      "kind": "V",
+      "lane": "QA",
+      "title": "web unit tests",
+      "deps": [
+        "WB-JOIN"
+      ],
+      "rv": [],
+      "lease": null
+    },
+    {
+      "id": "WC-LINT",
+      "wave": "C",
+      "kind": "V",
+      "lane": "QA",
+      "title": "full lint",
+      "deps": [
+        "WB-JOIN",
+        "WB-LINT-DONE"
+      ],
+      "rv": [
+        "CB-003"
+      ],
+      "lease": null
+    },
+    {
+      "id": "WC-BUILD",
+      "wave": "C",
+      "kind": "V",
+      "lane": "QA",
+      "title": "pnpm build",
+      "deps": [
+        "WB-JOIN"
+      ],
+      "rv": [],
+      "lease": null
+    },
+    {
+      "id": "WC-SIZE-01",
+      "wave": "C",
+      "kind": "V",
+      "lane": "QA",
+      "title": "Compute main entry size ratio vs baseline",
+      "deps": [
+        "WC-BUILD"
+      ],
+      "rv": [
+        "CB-001"
+      ],
+      "lease": null
+    },
+    {
+      "id": "WC-SIZE-02",
+      "wave": "C",
+      "kind": "V",
+      "lane": "QA",
+      "title": "Sum async chunk sizes; check 30% rule",
+      "deps": [
+        "WC-BUILD"
+      ],
+      "rv": [
+        "CB-001",
+        "CB-002"
+      ],
+      "lease": null
+    },
+    {
+      "id": "WC-SIZE-03",
+      "wave": "C",
+      "kind": "V",
+      "lane": "QA",
+      "title": "Fail closed if neither budget met",
+      "deps": [
+        "WC-SIZE-01",
+        "WC-SIZE-02"
+      ],
+      "rv": [
+        "CB-001"
+      ],
+      "lease": null
+    },
+    {
+      "id": "WC-BROWSER",
+      "wave": "C",
+      "kind": "V",
+      "lane": "QA",
+      "title": "Playwright full matrix",
+      "deps": [
+        "WC-BUILD"
+      ],
+      "rv": [
+        "CB-002"
+      ],
+      "lease": null
+    },
+    {
+      "id": "WC-CAT",
+      "wave": "C",
+      "kind": "V",
+      "lane": "QA",
+      "title": "catalog:validate",
+      "deps": [
+        "WB-JOIN"
+      ],
+      "rv": [],
+      "lease": null
+    },
+    {
+      "id": "WC-FMT",
+      "wave": "C",
+      "kind": "V",
+      "lane": "QA",
+      "title": "format:check on touched configs",
+      "deps": [
+        "WB-JOIN"
+      ],
+      "rv": [],
+      "lease": null
+    },
+    {
+      "id": "WC-JOIN",
+      "wave": "C",
+      "kind": "M",
+      "lane": "CAP",
+      "title": "All verify green",
+      "deps": [
+        "WC-TYPE",
+        "WC-UNIT",
+        "WC-LINT",
+        "WC-SIZE-03",
+        "WC-BROWSER",
+        "WC-CAT",
+        "WC-FMT"
+      ],
+      "rv": [],
+      "lease": null
+    },
+    {
+      "id": "WD-CB01",
+      "wave": "D",
+      "kind": "M",
+      "lane": "CAP",
+      "title": "Evidence pack close CB-001",
+      "deps": [
+        "WC-JOIN"
+      ],
+      "rv": [
+        "CB-001"
+      ],
+      "lease": null
+    },
+    {
+      "id": "WD-CB02",
+      "wave": "D",
+      "kind": "M",
+      "lane": "CAP",
+      "title": "Evidence pack close CB-002",
+      "deps": [
+        "WC-JOIN"
+      ],
+      "rv": [
+        "CB-002"
+      ],
+      "lease": null
+    },
+    {
+      "id": "WD-CB03",
+      "wave": "D",
+      "kind": "M",
+      "lane": "CAP",
+      "title": "Evidence pack close CB-003",
+      "deps": [
+        "WC-JOIN"
+      ],
+      "rv": [
+        "CB-003"
+      ],
+      "lease": null
+    },
+    {
+      "id": "WD-CB04",
+      "wave": "D",
+      "kind": "M",
+      "lane": "CAP",
+      "title": "Evidence pack close CB-004",
+      "deps": [
+        "WC-JOIN"
+      ],
+      "rv": [
+        "CB-004"
+      ],
+      "lease": null
+    },
+    {
+      "id": "WD-CB05",
+      "wave": "D",
+      "kind": "M",
+      "lane": "CAP",
+      "title": "Evidence pack close CB-005",
+      "deps": [
+        "WC-JOIN"
+      ],
+      "rv": [
+        "CB-005"
+      ],
+      "lease": null
+    },
+    {
+      "id": "WD-CB06",
+      "wave": "D",
+      "kind": "M",
+      "lane": "CAP",
+      "title": "Evidence pack close CB-006",
+      "deps": [
+        "WC-JOIN"
+      ],
+      "rv": [
+        "CB-006"
+      ],
+      "lease": null
+    },
+    {
+      "id": "WD-CB07",
+      "wave": "D",
+      "kind": "M",
+      "lane": "CAP",
+      "title": "Evidence pack close CB-007",
+      "deps": [
+        "WC-JOIN"
+      ],
+      "rv": [
+        "CB-007"
+      ],
+      "lease": null
+    },
+    {
+      "id": "WD-CB08",
+      "wave": "D",
+      "kind": "M",
+      "lane": "CAP",
+      "title": "Evidence pack close CB-008",
+      "deps": [
+        "WC-JOIN"
+      ],
+      "rv": [
+        "CB-008"
+      ],
+      "lease": null
+    },
+    {
+      "id": "WD-CB09",
+      "wave": "D",
+      "kind": "M",
+      "lane": "CAP",
+      "title": "Evidence pack close CB-009",
+      "deps": [
+        "WC-JOIN"
+      ],
+      "rv": [
+        "CB-009"
+      ],
+      "lease": null
+    },
+    {
+      "id": "WD-CB10",
+      "wave": "D",
+      "kind": "M",
+      "lane": "CAP",
+      "title": "Evidence pack close CB-010",
+      "deps": [
+        "WC-JOIN"
+      ],
+      "rv": [
+        "CB-010"
+      ],
+      "lease": null
+    },
+    {
+      "id": "WD-CB11",
+      "wave": "D",
+      "kind": "M",
+      "lane": "CAP",
+      "title": "Evidence pack close CB-011",
+      "deps": [
+        "WC-JOIN"
+      ],
+      "rv": [
+        "CB-011"
+      ],
+      "lease": null
+    },
+    {
+      "id": "WD-CB12",
+      "wave": "D",
+      "kind": "M",
+      "lane": "CAP",
+      "title": "Evidence pack close CB-012",
+      "deps": [
+        "WC-JOIN"
+      ],
+      "rv": [
+        "CB-012"
+      ],
+      "lease": null
+    },
+    {
+      "id": "WD-SK-01",
+      "wave": "D",
+      "kind": "R",
+      "lane": "CAP",
+      "title": "Skeptic re-measure sizes",
+      "deps": [
+        "WC-JOIN"
+      ],
+      "rv": [
+        "CB-001"
+      ],
+      "lease": null
+    },
+    {
+      "id": "WD-SK-02",
+      "wave": "D",
+      "kind": "R",
+      "lane": "CAP",
+      "title": "Skeptic eslint includes web/src",
+      "deps": [
+        "WC-JOIN"
+      ],
+      "rv": [
+        "CB-003"
+      ],
+      "lease": null
+    },
+    {
+      "id": "WD-SK-03",
+      "wave": "D",
+      "kind": "R",
+      "lane": "CAP",
+      "title": "Skeptic no pagefind",
+      "deps": [
+        "WC-JOIN"
+      ],
+      "rv": [
+        "CB-004"
+      ],
+      "lease": null
+    },
+    {
+      "id": "WD-SK-04",
+      "wave": "D",
+      "kind": "R",
+      "lane": "CAP",
+      "title": "Skeptic dirty fence",
+      "deps": [
+        "WC-JOIN"
+      ],
+      "rv": [
+        "CB-010"
+      ],
+      "lease": null
+    },
+    {
+      "id": "WD-SK-05",
+      "wave": "D",
+      "kind": "R",
+      "lane": "CAP",
+      "title": "Skeptic no eager feature imports remain",
+      "deps": [
+        "WC-JOIN"
+      ],
+      "rv": [
+        "CB-002"
+      ],
+      "lease": null
+    },
+    {
+      "id": "WE-CLOSE",
+      "wave": "D",
+      "kind": "M",
+      "lane": "CAP",
+      "title": "All CB closed",
+      "deps": [
+        "WD-CB01",
+        "WD-CB02",
+        "WD-CB03",
+        "WD-CB04",
+        "WD-CB05",
+        "WD-CB06",
+        "WD-CB07",
+        "WD-CB08",
+        "WD-CB09",
+        "WD-CB10",
+        "WD-CB11",
+        "WD-CB12",
+        "WD-SK-01",
+        "WD-SK-02",
+        "WD-SK-03",
+        "WD-SK-04",
+        "WD-SK-05"
+      ],
+      "rv": [],
+      "lease": null
+    }
+  ]
+}

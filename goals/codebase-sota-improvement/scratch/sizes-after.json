@@ -1,0 +1,30 @@
+{
+  "all_js": {
+    "Badge-DSgFWoN0.js": 1400,
+    "Button-Bs4yj_6r.js": 1243,
+    "CommandPalette-CBHUT4Pt.js": 3548,
+    "CopyableBlock-dkNZB5kF.js": 2049,
+    "HomePage-BeWYmMOb.js": 6851,
+    "PatternPage-DGxzR01i.js": 3240,
+    "PatternsIndexPage-Cmsn2jTf.js": 1543,
+    "RecipeIndexList-BvEhx9No.js": 1701,
+    "RecipePage-D4ghdgBt.js": 10329,
+    "RecipesIndexPage-iHfX9wF3.js": 1510,
+    "SourcesPage-MpUUV0_9.js": 1464,
+    "catalog-data-CgvBX6CF.js": 206674,
+    "cmdk-vendor-CknAZTS3.js": 51485,
+    "icons-vendor-BhaiXs6y.js": 16704,
+    "index-BZqW0jn6.js": 221101,
+    "lane-icons-k9UyY1ZF.js": 346,
+    "router-vendor-BPun4boN.js": 50806
+  },
+  "async_sum": 360893,
+  "baseline_main": 526153,
+  "budget_70pct_ok": true,
+  "budget_async_30pct_ok": true,
+  "main_after": 221101,
+  "main_files": {
+    "index-BZqW0jn6.js": 221101
+  },
+  "ratio_main_vs_baseline": 0.4202
+}

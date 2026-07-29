@@ -1,0 +1,21 @@
+timestamp=2026-07-29T05:36:26Z
+pnpm=11.11.0
+50657 web/dist/assets/CommandPalette-CRa32649.js
+64460 web/dist/assets/index-C72lPDIO.css
+526153 web/dist/assets/index-WxDmH5ud.js
+245045 web/src/data/catalog.json
+--- App static imports ---
+5:import { PatternPage } from "../features/patterns/PatternPage";
+6:import { PatternsIndexPage } from "../features/patterns/PatternsIndexPage";
+7:import { HomePage } from "../features/recipes/HomePage";
+8:import { RecipePage } from "../features/recipes/RecipePage";
+9:import { RecipesIndexPage } from "../features/recipes/RecipesIndexPage";
+10:import { SourcesPage } from "../features/sources/SourcesPage";
+14:const CommandPalette = lazy(() => import("../components/CommandPalette"));
+--- eslint ignore ---
+6:    ignores: [
+8:      "web/src/**",
+--- packageManager ---
+  "packageManager": "pnpm@11.10.0",
+--- public ---
+1.6M	public

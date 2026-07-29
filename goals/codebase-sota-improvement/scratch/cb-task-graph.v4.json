@@ -1,0 +1,1547 @@
+{
+  "version": 4,
+  "title": "Residual SOTA all-findings plan",
+  "nodes": 99,
+  "edges": 162,
+  "waves": {
+    "0": 12,
+    "A": 18,
+    "B": 36,
+    "C": 11,
+    "D": 22
+  },
+  "kinds": {
+    "V": 33,
+    "R": 32,
+    "M": 15,
+    "W": 19
+  },
+  "max_write": 6,
+  "max_read": 14,
+  "leases": [
+    "L-FENCE",
+    "L-CAP",
+    "L-VITE",
+    "L-CAT",
+    "L-APP",
+    "L-LINT",
+    "L-PKG",
+    "L-DOCS",
+    "L-SMOKE"
+  ],
+  "node_list": [
+    {
+      "id": "W0-00",
+      "wave": 0,
+      "kind": "V",
+      "team": "CAP",
+      "lease": "L-FENCE",
+      "desc": "git status dirty fence; forbid research-upgrade staging"
+    },
+    {
+      "id": "W0-01",
+      "wave": 0,
+      "kind": "R",
+      "team": "CAP",
+      "lease": "L-CAP",
+      "desc": "Inventory closed CB-001..012 from cb-closeout.md"
+    },
+    {
+      "id": "W0-02",
+      "wave": 0,
+      "kind": "R",
+      "team": "CAP",
+      "lease": "L-CAP",
+      "desc": "Record residual sizes: main, catalog-data, async_sum, ratio"
+    },
+    {
+      "id": "W0-03",
+      "wave": 0,
+      "kind": "R",
+      "team": "CAP",
+      "lease": "L-CAP",
+      "desc": "List App.tsx catalog field uses (meta/counts only)"
+    },
+    {
+      "id": "W0-04",
+      "wave": 0,
+      "kind": "R",
+      "team": "CAP",
+      "lease": "L-CAP",
+      "desc": "Map all catalog import sites (sync pull-through)"
+    },
+    {
+      "id": "W0-05",
+      "wave": 0,
+      "kind": "R",
+      "team": "CAP",
+      "lease": "L-CAP",
+      "desc": "Measure JSON split ROI: meta-only vs slim vs full"
+    },
+    {
+      "id": "W0-06",
+      "wave": 0,
+      "kind": "R",
+      "team": "CAP",
+      "lease": "L-CAP",
+      "desc": "Inventory uncommitted SOTA file set + atomic commit groups"
+    },
+    {
+      "id": "W0-07",
+      "wave": 0,
+      "kind": "R",
+      "team": "CAP",
+      "lease": "L-CAP",
+      "desc": "Confirm Playwright webServer command rebuilds full monorepo"
+    },
+    {
+      "id": "W0-08",
+      "wave": 0,
+      "kind": "R",
+      "team": "CAP",
+      "lease": "L-CAP",
+      "desc": "Confirm unit tests eslint-ignored; list test files"
+    },
+    {
+      "id": "W0-09",
+      "wave": 0,
+      "kind": "R",
+      "team": "CAP",
+      "lease": "L-CAP",
+      "desc": "Confirm DESIGN.md react-vendor drift"
+    },
+    {
+      "id": "W0-10",
+      "wave": 0,
+      "kind": "R",
+      "team": "CAP",
+      "lease": "L-CAP",
+      "desc": "Confirm research-upgrade dirt paths (forbid)"
+    },
+    {
+      "id": "W0-11",
+      "wave": 0,
+      "kind": "M",
+      "team": "CAP",
+      "lease": "L-CAP",
+      "desc": "Freeze residual scope RF-001..015 + success budgets"
+    },
+    {
+      "id": "WA-PERF-shell-fields",
+      "wave": "A",
+      "kind": "R",
+      "team": "PERF",
+      "lease": "L-APP",
+      "desc": "Document exact shell catalog fields + defaults"
+    },
+    {
+      "id": "WA-PERF-split-designs",
+      "wave": "A",
+      "kind": "R",
+      "team": "PERF",
+      "lease": "L-CAT",
+      "desc": "Compare A: meta shell | B: slim index | C: async full | D: keep"
+    },
+    {
+      "id": "WA-PERF-vite-preload",
+      "wave": "A",
+      "kind": "R",
+      "team": "PERF",
+      "lease": "L-VITE",
+      "desc": "How Vite preloads catalog-data when entry imports JSON"
+    },
+    {
+      "id": "WA-PERF-consumer-map",
+      "wave": "A",
+      "kind": "R",
+      "team": "PERF",
+      "lease": "L-CAT",
+      "desc": "Per-consumer needs: shell vs list vs detail vs palette"
+    },
+    {
+      "id": "WA-PERF-test-compat",
+      "wave": "A",
+      "kind": "R",
+      "team": "PERF",
+      "lease": "L-CAT",
+      "desc": "node:test catalog export contract after split"
+    },
+    {
+      "id": "WA-PERF-budget2",
+      "wave": "A",
+      "kind": "R",
+      "team": "PERF",
+      "lease": "L-VITE",
+      "desc": "Budgets: entry+catalog critical path \u2264 280kB or shell meta \u2264 10k"
+    },
+    {
+      "id": "WA-SHIP-atomic",
+      "wave": "A",
+      "kind": "R",
+      "team": "SHIP",
+      "lease": "L-PKG",
+      "desc": "Propose atomic conventional commits from uncommitted diff"
+    },
+    {
+      "id": "WA-SHIP-fence",
+      "wave": "A",
+      "kind": "R",
+      "team": "SHIP",
+      "lease": "L-FENCE",
+      "desc": "Stage allowlist vs research-upgrade forbid list"
+    },
+    {
+      "id": "WA-DOC-design-drift",
+      "wave": "A",
+      "kind": "R",
+      "team": "DOCS",
+      "lease": "L-DOCS",
+      "desc": "DESIGN lines claiming react-vendor"
+    },
+    {
+      "id": "WA-DOC-agents-policy",
+      "wave": "A",
+      "kind": "R",
+      "team": "DOCS",
+      "lease": "L-DOCS",
+      "desc": "AGENTS catalog dirt + idle warm policy gaps"
+    },
+    {
+      "id": "WA-SMOKE-timeout",
+      "wave": "A",
+      "kind": "R",
+      "team": "QA",
+      "lease": "L-SMOKE",
+      "desc": "Playwright webServer cold path timing + reuse env"
+    },
+    {
+      "id": "WA-SMOKE-lazy",
+      "wave": "A",
+      "kind": "R",
+      "team": "QA",
+      "lease": "L-SMOKE",
+      "desc": "Smoke settle helper coverage completeness"
+    },
+    {
+      "id": "WA-LINT-tests",
+      "wave": "A",
+      "kind": "R",
+      "team": "LINT",
+      "lease": "L-LINT",
+      "desc": "Cost of linting **/*.test.ts with projectService"
+    },
+    {
+      "id": "WA-A11Y-axe",
+      "wave": "A",
+      "kind": "R",
+      "team": "A11Y",
+      "lease": "L-SMOKE",
+      "desc": "axe-playwright install cost; which routes to scan"
+    },
+    {
+      "id": "WA-IDLE-policy",
+      "wave": "A",
+      "kind": "R",
+      "team": "PERF",
+      "lease": "L-APP",
+      "desc": "Idle warm: keep | intent-only | feature-flag"
+    },
+    {
+      "id": "WA-GOAL-package",
+      "wave": "A",
+      "kind": "R",
+      "team": "DOCS",
+      "lease": "L-DOCS",
+      "desc": "Whether to promote scratch \u2192 goal.md package"
+    },
+    {
+      "id": "WA-RISK-react-split",
+      "wave": "A",
+      "kind": "R",
+      "team": "PERF",
+      "lease": "L-VITE",
+      "desc": "Reconfirm: never re-split react/react-dom (proven break)"
+    },
+    {
+      "id": "WA-JOIN",
+      "wave": "A",
+      "kind": "M",
+      "team": "CAP",
+      "lease": "L-CAP",
+      "desc": "Lock decisions: split mode, idle, axe scope, commit groups, PW fix"
+    },
+    {
+      "id": "WB-SHIP-01",
+      "wave": "B",
+      "kind": "W",
+      "team": "SHIP",
+      "lease": "L-PKG",
+      "desc": "Atomic commit group 1: vite + App lazy routes + smoke",
+      "files": [
+        "web/vite.config.ts",
+        "web/src/app/App.tsx",
+        "web/browser/web-smoke.spec.mjs"
+      ]
+    },
+    {
+      "id": "WB-SHIP-02",
+      "wave": "B",
+      "kind": "W",
+      "team": "SHIP",
+      "lease": "L-PKG",
+      "desc": "Atomic commit group 2: eslint + packageManager + CI pin",
+      "files": [
+        "eslint.config.js",
+        "package.json",
+        "pnpm-lock.yaml",
+        ".github/workflows/readme-quality.yml"
+      ]
+    },
+    {
+      "id": "WB-SHIP-03",
+      "wave": "B",
+      "kind": "W",
+      "team": "SHIP",
+      "lease": "L-PKG",
+      "desc": "Atomic commit group 3: docs AGENTS/DESIGN (fix DESIGN drift)",
+      "files": [
+        "AGENTS.md",
+        "DESIGN.md",
+        "web/tsconfig.json"
+      ]
+    },
+    {
+      "id": "WB-SHIP-04",
+      "wave": "B",
+      "kind": "W",
+      "team": "SHIP",
+      "lease": "L-FENCE",
+      "desc": "Exclude catalog.json timestamp-only unless regen intentional",
+      "files": [
+        "web/src/data/catalog.json"
+      ]
+    },
+    {
+      "id": "WB-SHIP-05",
+      "wave": "B",
+      "kind": "W",
+      "team": "SHIP",
+      "lease": "L-FENCE",
+      "desc": "Exclude research-upgrade paths from any stage",
+      "files": [
+        "goals/prompt-catalog-research-upgrade/**"
+      ]
+    },
+    {
+      "id": "WB-SHIP-06",
+      "wave": "B",
+      "kind": "V",
+      "team": "SHIP",
+      "lease": "L-PKG",
+      "desc": "Verify post-commit tree: only intentional residual dirty"
+    },
+    {
+      "id": "WB-SHIP-DONE",
+      "wave": "B",
+      "kind": "M",
+      "team": "SHIP",
+      "lease": "L-PKG",
+      "desc": "Release L-PKG ship lane"
+    },
+    {
+      "id": "WB-PCAT2-01",
+      "wave": "B",
+      "kind": "W",
+      "team": "PERF",
+      "lease": "L-CAT",
+      "desc": "Emit catalog-meta.json (meta+counts+lanes+sections) from site-data or derive",
+      "files": [
+        "packages/catalog-core/**",
+        "web/src/data/"
+      ]
+    },
+    {
+      "id": "WB-PCAT2-02",
+      "wave": "B",
+      "kind": "W",
+      "team": "PERF",
+      "lease": "L-CAT",
+      "desc": "catalog.ts: export catalogMeta sync + loadCatalog/getRecipe async",
+      "files": [
+        "web/src/lib/catalog.ts"
+      ]
+    },
+    {
+      "id": "WB-PCAT2-03",
+      "wave": "B",
+      "kind": "W",
+      "team": "PERF",
+      "lease": "L-APP",
+      "desc": "App shell uses catalogMeta only (title, repo, counts)",
+      "files": [
+        "web/src/app/App.tsx"
+      ]
+    },
+    {
+      "id": "WB-PCAT2-04",
+      "wave": "B",
+      "kind": "W",
+      "team": "PERF",
+      "lease": "L-APP",
+      "desc": "Feature pages/palette await full catalog (lazy data)",
+      "files": [
+        "web/src/features/**",
+        "web/src/components/CommandPalette.tsx"
+      ]
+    },
+    {
+      "id": "WB-PCAT2-05",
+      "wave": "B",
+      "kind": "W",
+      "team": "PERF",
+      "lease": "L-CAT",
+      "desc": "Keep sync `export const catalog` for unit tests OR update tests",
+      "files": [
+        "web/src/lib/*.test.ts",
+        "web/src/lib/catalog.ts"
+      ]
+    },
+    {
+      "id": "WB-PCAT2-06",
+      "wave": "B",
+      "kind": "V",
+      "team": "PERF",
+      "lease": "L-VITE",
+      "desc": "Build; assert catalog-data not preloaded by entry (or size drop)"
+    },
+    {
+      "id": "WB-PCAT2-DONE",
+      "wave": "B",
+      "kind": "M",
+      "team": "PERF",
+      "lease": "L-CAT",
+      "desc": "Release catalog split"
+    },
+    {
+      "id": "WB-IDLE-01",
+      "wave": "B",
+      "kind": "W",
+      "team": "PERF",
+      "lease": "L-APP",
+      "desc": "Implement locked idle policy (keep or intent-only)",
+      "files": [
+        "web/src/app/App.tsx"
+      ]
+    },
+    {
+      "id": "WB-IDLE-02",
+      "wave": "B",
+      "kind": "V",
+      "team": "PERF",
+      "lease": "L-APP",
+      "desc": "Verify palette cold-open still works with hotkeys"
+    },
+    {
+      "id": "WB-IDLE-DONE",
+      "wave": "B",
+      "kind": "M",
+      "team": "PERF",
+      "lease": "L-APP",
+      "desc": "Idle policy closed"
+    },
+    {
+      "id": "WB-SMOKE-01",
+      "wave": "B",
+      "kind": "W",
+      "team": "QA",
+      "lease": "L-SMOKE",
+      "desc": "webServer: prefer web:build after prebuilt dist; raise timeout or split",
+      "files": [
+        "playwright.config.mjs"
+      ]
+    },
+    {
+      "id": "WB-SMOKE-02",
+      "wave": "B",
+      "kind": "W",
+      "team": "QA",
+      "lease": "L-SMOKE",
+      "desc": "Document PLAYWRIGHT_REUSE_SERVER for local; CI full path",
+      "files": [
+        "playwright.config.mjs",
+        "AGENTS.md"
+      ]
+    },
+    {
+      "id": "WB-SMOKE-03",
+      "wave": "B",
+      "kind": "V",
+      "team": "QA",
+      "lease": "L-SMOKE",
+      "desc": "Cold path browser smoke green without manual reuse"
+    },
+    {
+      "id": "WB-SMOKE-DONE",
+      "wave": "B",
+      "kind": "M",
+      "team": "QA",
+      "lease": "L-SMOKE",
+      "desc": "Smoke reliability closed"
+    },
+    {
+      "id": "WB-LINT-T01",
+      "wave": "B",
+      "kind": "W",
+      "team": "LINT",
+      "lease": "L-LINT",
+      "desc": "Include or typecheck-aware lint for unit tests",
+      "files": [
+        "eslint.config.js",
+        "web/tsconfig.json"
+      ]
+    },
+    {
+      "id": "WB-LINT-T02",
+      "wave": "B",
+      "kind": "W",
+      "team": "LINT",
+      "lease": "L-LINT",
+      "desc": "Fix any test lint errors introduced",
+      "files": [
+        "web/src/**/*.test.ts"
+      ]
+    },
+    {
+      "id": "WB-LINT-T03",
+      "wave": "B",
+      "kind": "V",
+      "team": "LINT",
+      "lease": "L-LINT",
+      "desc": "pnpm lint green with tests covered or explicit policy"
+    },
+    {
+      "id": "WB-LINT-TDONE",
+      "wave": "B",
+      "kind": "M",
+      "team": "LINT",
+      "lease": "L-LINT",
+      "desc": "Test lint closed"
+    },
+    {
+      "id": "WB-A11Y-01",
+      "wave": "B",
+      "kind": "W",
+      "team": "A11Y",
+      "lease": "L-SMOKE",
+      "desc": "Add axe-core smoke on / and one deep recipe route (or accept defer doc)",
+      "files": [
+        "web/browser/",
+        "package.json"
+      ]
+    },
+    {
+      "id": "WB-A11Y-02",
+      "wave": "B",
+      "kind": "V",
+      "team": "A11Y",
+      "lease": "L-SMOKE",
+      "desc": "Axe critical/serious zero or documented exceptions"
+    },
+    {
+      "id": "WB-A11Y-DONE",
+      "wave": "B",
+      "kind": "M",
+      "team": "A11Y",
+      "lease": "L-SMOKE",
+      "desc": "A11y gate closed or explicitly deferred"
+    },
+    {
+      "id": "WB-DOC2-01",
+      "wave": "B",
+      "kind": "W",
+      "team": "DOCS",
+      "lease": "L-DOCS",
+      "desc": "Fix DESIGN manualChunks table (no react-vendor; catalog preload note)",
+      "files": [
+        "DESIGN.md"
+      ]
+    },
+    {
+      "id": "WB-DOC2-02",
+      "wave": "B",
+      "kind": "W",
+      "team": "DOCS",
+      "lease": "L-DOCS",
+      "desc": "Document idle warm decision + catalog shell split if done",
+      "files": [
+        "DESIGN.md",
+        "AGENTS.md"
+      ]
+    },
+    {
+      "id": "WB-DOC2-03",
+      "wave": "B",
+      "kind": "W",
+      "team": "DOCS",
+      "lease": "L-DOCS",
+      "desc": "Persist residual closeout under goals/codebase-sota-improvement/",
+      "files": [
+        "goals/codebase-sota-improvement/**"
+      ]
+    },
+    {
+      "id": "WB-DOC2-DONE",
+      "wave": "B",
+      "kind": "M",
+      "team": "DOCS",
+      "lease": "L-DOCS",
+      "desc": "Docs residual closed"
+    },
+    {
+      "id": "WB-PERF2-JOIN",
+      "wave": "B",
+      "kind": "M",
+      "team": "PERF",
+      "lease": "L-CAP",
+      "desc": "Join catalog split + idle"
+    },
+    {
+      "id": "WB-PERF2-SIZE",
+      "wave": "B",
+      "kind": "V",
+      "team": "PERF",
+      "lease": "L-VITE",
+      "desc": "sizes-after-residual.json + budget check"
+    },
+    {
+      "id": "WB-PERF2-DONE",
+      "wave": "B",
+      "kind": "M",
+      "team": "PERF",
+      "lease": "L-CAP",
+      "desc": "PERF residual done"
+    },
+    {
+      "id": "WB-JOIN",
+      "wave": "B",
+      "kind": "M",
+      "team": "CAP",
+      "lease": "L-CAP",
+      "desc": "All B lanes done"
+    },
+    {
+      "id": "WC-TYPE",
+      "wave": "C",
+      "kind": "V",
+      "team": "QA",
+      "lease": "L-CAP",
+      "desc": "pnpm web:typecheck"
+    },
+    {
+      "id": "WC-UNIT",
+      "wave": "C",
+      "kind": "V",
+      "team": "QA",
+      "lease": "L-CAP",
+      "desc": "pnpm web:test"
+    },
+    {
+      "id": "WC-LINT",
+      "wave": "C",
+      "kind": "V",
+      "team": "QA",
+      "lease": "L-CAP",
+      "desc": "pnpm lint"
+    },
+    {
+      "id": "WC-BUILD",
+      "wave": "C",
+      "kind": "V",
+      "team": "QA",
+      "lease": "L-CAP",
+      "desc": "pnpm build"
+    },
+    {
+      "id": "WC-SIZE-01",
+      "wave": "C",
+      "kind": "V",
+      "team": "QA",
+      "lease": "L-CAP",
+      "desc": "main entry size vs residual budget"
+    },
+    {
+      "id": "WC-SIZE-02",
+      "wave": "C",
+      "kind": "V",
+      "team": "QA",
+      "lease": "L-CAP",
+      "desc": "catalog-data not on entry preload path OR critical path \u2264 budget"
+    },
+    {
+      "id": "WC-SIZE-03",
+      "wave": "C",
+      "kind": "V",
+      "team": "QA",
+      "lease": "L-CAP",
+      "desc": "async_sum report"
+    },
+    {
+      "id": "WC-BROWSER",
+      "wave": "C",
+      "kind": "V",
+      "team": "QA",
+      "lease": "L-SMOKE",
+      "desc": "pnpm web:test:browser cold path"
+    },
+    {
+      "id": "WC-CAT",
+      "wave": "C",
+      "kind": "V",
+      "team": "QA",
+      "lease": "L-CAP",
+      "desc": "pnpm catalog:validate if generator touched"
+    },
+    {
+      "id": "WC-FMT",
+      "wave": "C",
+      "kind": "V",
+      "team": "QA",
+      "lease": "L-CAP",
+      "desc": "pnpm format:check on touched files"
+    },
+    {
+      "id": "WC-JOIN",
+      "wave": "C",
+      "kind": "M",
+      "team": "QA",
+      "lease": "L-CAP",
+      "desc": "All verify green"
+    },
+    {
+      "id": "WD-RF01",
+      "wave": "D",
+      "kind": "V",
+      "team": "QA",
+      "lease": "L-CAP",
+      "desc": "Uncommitted SOTA product landed (SHIP)"
+    },
+    {
+      "id": "WD-RF02",
+      "wave": "D",
+      "kind": "V",
+      "team": "QA",
+      "lease": "L-CAP",
+      "desc": "catalog.json dirt handled"
+    },
+    {
+      "id": "WD-RF03",
+      "wave": "D",
+      "kind": "V",
+      "team": "QA",
+      "lease": "L-CAP",
+      "desc": "DESIGN react-vendor drift fixed"
+    },
+    {
+      "id": "WD-RF04",
+      "wave": "D",
+      "kind": "V",
+      "team": "QA",
+      "lease": "L-CAP",
+      "desc": "Goal package/scratch formalized"
+    },
+    {
+      "id": "WD-RF05",
+      "wave": "D",
+      "kind": "V",
+      "team": "QA",
+      "lease": "L-CAP",
+      "desc": "Catalog entry-preload reduced or accepted with evidence"
+    },
+    {
+      "id": "WD-RF06",
+      "wave": "D",
+      "kind": "V",
+      "team": "QA",
+      "lease": "L-CAP",
+      "desc": "Shell meta/counts vs full body split or defer rationale"
+    },
+    {
+      "id": "WD-RF07",
+      "wave": "D",
+      "kind": "V",
+      "team": "QA",
+      "lease": "L-CAP",
+      "desc": "Idle warm policy locked + documented"
+    },
+    {
+      "id": "WD-RF08",
+      "wave": "D",
+      "kind": "V",
+      "team": "QA",
+      "lease": "L-CAP",
+      "desc": "Playwright webServer reliability"
+    },
+    {
+      "id": "WD-RF09",
+      "wave": "D",
+      "kind": "V",
+      "team": "QA",
+      "lease": "L-CAP",
+      "desc": "Unit test lint policy closed"
+    },
+    {
+      "id": "WD-RF10",
+      "wave": "D",
+      "kind": "V",
+      "team": "QA",
+      "lease": "L-CAP",
+      "desc": "Axe gate closed or deferred with rationale"
+    },
+    {
+      "id": "WD-RF11",
+      "wave": "D",
+      "kind": "V",
+      "team": "QA",
+      "lease": "L-CAP",
+      "desc": "Component unit tests deferred policy (optional)"
+    },
+    {
+      "id": "WD-RF12",
+      "wave": "D",
+      "kind": "V",
+      "team": "QA",
+      "lease": "L-CAP",
+      "desc": "Research-upgrade dirt fence held"
+    },
+    {
+      "id": "WD-RF13",
+      "wave": "D",
+      "kind": "V",
+      "team": "QA",
+      "lease": "L-CAP",
+      "desc": "SOTA goals artifacts committed or gitignored policy"
+    },
+    {
+      "id": "WD-RF14",
+      "wave": "D",
+      "kind": "V",
+      "team": "QA",
+      "lease": "L-CAP",
+      "desc": "Docs residual closed"
+    },
+    {
+      "id": "WD-RF15",
+      "wave": "D",
+      "kind": "V",
+      "team": "QA",
+      "lease": "L-CAP",
+      "desc": "No regress on CB-001..007,009,011"
+    },
+    {
+      "id": "WD-SK-01",
+      "wave": "D",
+      "kind": "R",
+      "team": "QA",
+      "lease": "L-CAP",
+      "desc": "Skeptic: catalog still force-preloaded?"
+    },
+    {
+      "id": "WD-SK-02",
+      "wave": "D",
+      "kind": "R",
+      "team": "QA",
+      "lease": "L-CAP",
+      "desc": "Skeptic: react-vendor reintroduced?"
+    },
+    {
+      "id": "WD-SK-03",
+      "wave": "D",
+      "kind": "R",
+      "team": "QA",
+      "lease": "L-CAP",
+      "desc": "Skeptic: research-upgrade staged?"
+    },
+    {
+      "id": "WD-SK-04",
+      "wave": "D",
+      "kind": "R",
+      "team": "QA",
+      "lease": "L-CAP",
+      "desc": "Skeptic: smoke flaky without reuse?"
+    },
+    {
+      "id": "WD-SK-05",
+      "wave": "D",
+      "kind": "R",
+      "team": "QA",
+      "lease": "L-CAP",
+      "desc": "Skeptic: main budget gamed by rename?"
+    },
+    {
+      "id": "WD-SK-JOIN",
+      "wave": "D",
+      "kind": "M",
+      "team": "QA",
+      "lease": "L-CAP",
+      "desc": "Skeptic + RF all green"
+    },
+    {
+      "id": "WE-CLOSE",
+      "wave": "D",
+      "kind": "M",
+      "team": "CAP",
+      "lease": "L-CAP",
+      "desc": "Write residual closeout; update plan checkboxes"
+    }
+  ],
+  "edge_list": [
+    [
+      "W0-00",
+      "W0-11"
+    ],
+    [
+      "W0-01",
+      "W0-11"
+    ],
+    [
+      "W0-02",
+      "W0-11"
+    ],
+    [
+      "W0-03",
+      "W0-11"
+    ],
+    [
+      "W0-04",
+      "W0-11"
+    ],
+    [
+      "W0-05",
+      "W0-11"
+    ],
+    [
+      "W0-06",
+      "W0-11"
+    ],
+    [
+      "W0-07",
+      "W0-11"
+    ],
+    [
+      "W0-08",
+      "W0-11"
+    ],
+    [
+      "W0-09",
+      "W0-11"
+    ],
+    [
+      "W0-10",
+      "W0-11"
+    ],
+    [
+      "W0-11",
+      "WA-JOIN"
+    ],
+    [
+      "W0-11",
+      "WA-PERF-shell-fields"
+    ],
+    [
+      "WA-PERF-shell-fields",
+      "WA-JOIN"
+    ],
+    [
+      "W0-11",
+      "WA-PERF-split-designs"
+    ],
+    [
+      "WA-PERF-split-designs",
+      "WA-JOIN"
+    ],
+    [
+      "W0-11",
+      "WA-PERF-vite-preload"
+    ],
+    [
+      "WA-PERF-vite-preload",
+      "WA-JOIN"
+    ],
+    [
+      "W0-11",
+      "WA-PERF-consumer-map"
+    ],
+    [
+      "WA-PERF-consumer-map",
+      "WA-JOIN"
+    ],
+    [
+      "W0-11",
+      "WA-PERF-test-compat"
+    ],
+    [
+      "WA-PERF-test-compat",
+      "WA-JOIN"
+    ],
+    [
+      "W0-11",
+      "WA-PERF-budget2"
+    ],
+    [
+      "WA-PERF-budget2",
+      "WA-JOIN"
+    ],
+    [
+      "W0-11",
+      "WA-SHIP-atomic"
+    ],
+    [
+      "WA-SHIP-atomic",
+      "WA-JOIN"
+    ],
+    [
+      "W0-11",
+      "WA-SHIP-fence"
+    ],
+    [
+      "WA-SHIP-fence",
+      "WA-JOIN"
+    ],
+    [
+      "W0-11",
+      "WA-DOC-design-drift"
+    ],
+    [
+      "WA-DOC-design-drift",
+      "WA-JOIN"
+    ],
+    [
+      "W0-11",
+      "WA-DOC-agents-policy"
+    ],
+    [
+      "WA-DOC-agents-policy",
+      "WA-JOIN"
+    ],
+    [
+      "W0-11",
+      "WA-SMOKE-timeout"
+    ],
+    [
+      "WA-SMOKE-timeout",
+      "WA-JOIN"
+    ],
+    [
+      "W0-11",
+      "WA-SMOKE-lazy"
+    ],
+    [
+      "WA-SMOKE-lazy",
+      "WA-JOIN"
+    ],
+    [
+      "W0-11",
+      "WA-LINT-tests"
+    ],
+    [
+      "WA-LINT-tests",
+      "WA-JOIN"
+    ],
+    [
+      "W0-11",
+      "WA-A11Y-axe"
+    ],
+    [
+      "WA-A11Y-axe",
+      "WA-JOIN"
+    ],
+    [
+      "W0-11",
+      "WA-IDLE-policy"
+    ],
+    [
+      "WA-IDLE-policy",
+      "WA-JOIN"
+    ],
+    [
+      "W0-11",
+      "WA-GOAL-package"
+    ],
+    [
+      "WA-GOAL-package",
+      "WA-JOIN"
+    ],
+    [
+      "W0-11",
+      "WA-RISK-react-split"
+    ],
+    [
+      "WA-RISK-react-split",
+      "WA-JOIN"
+    ],
+    [
+      "WA-JOIN",
+      "WB-SHIP-01"
+    ],
+    [
+      "WA-JOIN",
+      "WB-SHIP-04"
+    ],
+    [
+      "WA-JOIN",
+      "WB-SHIP-05"
+    ],
+    [
+      "WB-SHIP-01",
+      "WB-SHIP-02"
+    ],
+    [
+      "WB-SHIP-02",
+      "WB-SHIP-03"
+    ],
+    [
+      "WB-SHIP-03",
+      "WB-SHIP-06"
+    ],
+    [
+      "WB-SHIP-04",
+      "WB-SHIP-06"
+    ],
+    [
+      "WB-SHIP-05",
+      "WB-SHIP-06"
+    ],
+    [
+      "WB-SHIP-06",
+      "WB-SHIP-DONE"
+    ],
+    [
+      "WA-JOIN",
+      "WB-PCAT2-01"
+    ],
+    [
+      "WB-SHIP-DONE",
+      "WB-PCAT2-01"
+    ],
+    [
+      "WB-PCAT2-01",
+      "WB-PCAT2-02"
+    ],
+    [
+      "WB-PCAT2-02",
+      "WB-PCAT2-03"
+    ],
+    [
+      "WB-PCAT2-02",
+      "WB-PCAT2-04"
+    ],
+    [
+      "WB-PCAT2-02",
+      "WB-PCAT2-05"
+    ],
+    [
+      "WB-PCAT2-03",
+      "WB-PCAT2-06"
+    ],
+    [
+      "WB-PCAT2-04",
+      "WB-PCAT2-06"
+    ],
+    [
+      "WB-PCAT2-05",
+      "WB-PCAT2-06"
+    ],
+    [
+      "WB-PCAT2-06",
+      "WB-PCAT2-DONE"
+    ],
+    [
+      "WA-JOIN",
+      "WB-IDLE-01"
+    ],
+    [
+      "WB-SHIP-DONE",
+      "WB-IDLE-01"
+    ],
+    [
+      "WB-IDLE-01",
+      "WB-IDLE-02"
+    ],
+    [
+      "WB-IDLE-02",
+      "WB-IDLE-DONE"
+    ],
+    [
+      "WA-JOIN",
+      "WB-SMOKE-01"
+    ],
+    [
+      "WB-SHIP-DONE",
+      "WB-SMOKE-01"
+    ],
+    [
+      "WB-SMOKE-01",
+      "WB-SMOKE-02"
+    ],
+    [
+      "WB-SMOKE-02",
+      "WB-SMOKE-03"
+    ],
+    [
+      "WB-SMOKE-03",
+      "WB-SMOKE-DONE"
+    ],
+    [
+      "WA-JOIN",
+      "WB-LINT-T01"
+    ],
+    [
+      "WB-SHIP-DONE",
+      "WB-LINT-T01"
+    ],
+    [
+      "WB-LINT-T01",
+      "WB-LINT-T02"
+    ],
+    [
+      "WB-LINT-T02",
+      "WB-LINT-T03"
+    ],
+    [
+      "WB-LINT-T03",
+      "WB-LINT-TDONE"
+    ],
+    [
+      "WA-JOIN",
+      "WB-A11Y-01"
+    ],
+    [
+      "WB-SHIP-DONE",
+      "WB-A11Y-01"
+    ],
+    [
+      "WB-SMOKE-DONE",
+      "WB-A11Y-01"
+    ],
+    [
+      "WB-A11Y-01",
+      "WB-A11Y-02"
+    ],
+    [
+      "WB-A11Y-02",
+      "WB-A11Y-DONE"
+    ],
+    [
+      "WA-JOIN",
+      "WB-DOC2-01"
+    ],
+    [
+      "WB-SHIP-DONE",
+      "WB-DOC2-01"
+    ],
+    [
+      "WB-PCAT2-DONE",
+      "WB-DOC2-02"
+    ],
+    [
+      "WB-IDLE-DONE",
+      "WB-DOC2-02"
+    ],
+    [
+      "WB-DOC2-01",
+      "WB-DOC2-03"
+    ],
+    [
+      "WB-DOC2-02",
+      "WB-DOC2-03"
+    ],
+    [
+      "WB-DOC2-03",
+      "WB-DOC2-DONE"
+    ],
+    [
+      "WB-PCAT2-DONE",
+      "WB-PERF2-JOIN"
+    ],
+    [
+      "WB-IDLE-DONE",
+      "WB-PERF2-JOIN"
+    ],
+    [
+      "WB-PERF2-JOIN",
+      "WB-PERF2-SIZE"
+    ],
+    [
+      "WB-PERF2-SIZE",
+      "WB-PERF2-DONE"
+    ],
+    [
+      "WB-SHIP-DONE",
+      "WB-JOIN"
+    ],
+    [
+      "WB-PERF2-DONE",
+      "WB-JOIN"
+    ],
+    [
+      "WB-SMOKE-DONE",
+      "WB-JOIN"
+    ],
+    [
+      "WB-LINT-TDONE",
+      "WB-JOIN"
+    ],
+    [
+      "WB-A11Y-DONE",
+      "WB-JOIN"
+    ],
+    [
+      "WB-DOC2-DONE",
+      "WB-JOIN"
+    ],
+    [
+      "WB-JOIN",
+      "WC-TYPE"
+    ],
+    [
+      "WC-TYPE",
+      "WC-JOIN"
+    ],
+    [
+      "WB-JOIN",
+      "WC-UNIT"
+    ],
+    [
+      "WC-UNIT",
+      "WC-JOIN"
+    ],
+    [
+      "WB-JOIN",
+      "WC-LINT"
+    ],
+    [
+      "WC-LINT",
+      "WC-JOIN"
+    ],
+    [
+      "WB-JOIN",
+      "WC-BUILD"
+    ],
+    [
+      "WC-BUILD",
+      "WC-JOIN"
+    ],
+    [
+      "WB-JOIN",
+      "WC-SIZE-01"
+    ],
+    [
+      "WC-SIZE-01",
+      "WC-JOIN"
+    ],
+    [
+      "WB-JOIN",
+      "WC-SIZE-02"
+    ],
+    [
+      "WC-SIZE-02",
+      "WC-JOIN"
+    ],
+    [
+      "WB-JOIN",
+      "WC-SIZE-03"
+    ],
+    [
+      "WC-SIZE-03",
+      "WC-JOIN"
+    ],
+    [
+      "WB-JOIN",
+      "WC-BROWSER"
+    ],
+    [
+      "WC-BROWSER",
+      "WC-JOIN"
+    ],
+    [
+      "WB-JOIN",
+      "WC-CAT"
+    ],
+    [
+      "WC-CAT",
+      "WC-JOIN"
+    ],
+    [
+      "WB-JOIN",
+      "WC-FMT"
+    ],
+    [
+      "WC-FMT",
+      "WC-JOIN"
+    ],
+    [
+      "WC-JOIN",
+      "WD-RF01"
+    ],
+    [
+      "WD-RF01",
+      "WD-SK-JOIN"
+    ],
+    [
+      "WC-JOIN",
+      "WD-RF02"
+    ],
+    [
+      "WD-RF02",
+      "WD-SK-JOIN"
+    ],
+    [
+      "WC-JOIN",
+      "WD-RF03"
+    ],
+    [
+      "WD-RF03",
+      "WD-SK-JOIN"
+    ],
+    [
+      "WC-JOIN",
+      "WD-RF04"
+    ],
+    [
+      "WD-RF04",
+      "WD-SK-JOIN"
+    ],
+    [
+      "WC-JOIN",
+      "WD-RF05"
+    ],
+    [
+      "WD-RF05",
+      "WD-SK-JOIN"
+    ],
+    [
+      "WC-JOIN",
+      "WD-RF06"
+    ],
+    [
+      "WD-RF06",
+      "WD-SK-JOIN"
+    ],
+    [
+      "WC-JOIN",
+      "WD-RF07"
+    ],
+    [
+      "WD-RF07",
+      "WD-SK-JOIN"
+    ],
+    [
+      "WC-JOIN",
+      "WD-RF08"
+    ],
+    [
+      "WD-RF08",
+      "WD-SK-JOIN"
+    ],
+    [
+      "WC-JOIN",
+      "WD-RF09"
+    ],
+    [
+      "WD-RF09",
+      "WD-SK-JOIN"
+    ],
+    [
+      "WC-JOIN",
+      "WD-RF10"
+    ],
+    [
+      "WD-RF10",
+      "WD-SK-JOIN"
+    ],
+    [
+      "WC-JOIN",
+      "WD-RF11"
+    ],
+    [
+      "WD-RF11",
+      "WD-SK-JOIN"
+    ],
+    [
+      "WC-JOIN",
+      "WD-RF12"
+    ],
+    [
+      "WD-RF12",
+      "WD-SK-JOIN"
+    ],
+    [
+      "WC-JOIN",
+      "WD-RF13"
+    ],
+    [
+      "WD-RF13",
+      "WD-SK-JOIN"
+    ],
+    [
+      "WC-JOIN",
+      "WD-RF14"
+    ],
+    [
+      "WD-RF14",
+      "WD-SK-JOIN"
+    ],
+    [
+      "WC-JOIN",
+      "WD-RF15"
+    ],
+    [
+      "WD-RF15",
+      "WD-SK-JOIN"
+    ],
+    [
+      "WC-JOIN",
+      "WD-SK-01"
+    ],
+    [
+      "WD-SK-01",
+      "WD-SK-JOIN"
+    ],
+    [
+      "WC-JOIN",
+      "WD-SK-02"
+    ],
+    [
+      "WD-SK-02",
+      "WD-SK-JOIN"
+    ],
+    [
+      "WC-JOIN",
+      "WD-SK-03"
+    ],
+    [
+      "WD-SK-03",
+      "WD-SK-JOIN"
+    ],
+    [
+      "WC-JOIN",
+      "WD-SK-04"
+    ],
+    [
+      "WD-SK-04",
+      "WD-SK-JOIN"
+    ],
+    [
+      "WC-JOIN",
+      "WD-SK-05"
+    ],
+    [
+      "WD-SK-05",
+      "WD-SK-JOIN"
+    ],
+    [
+      "WD-SK-JOIN",
+      "WE-CLOSE"
+    ]
+  ]
+}
