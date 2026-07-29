@@ -64,6 +64,10 @@ and not a flashy SaaS marketing page.
 | Command palette | `cmdk` **Command.Dialog** (`CommandPalette.tsx`, lazy from `App`) + `lib/command-index.ts` |
 | Fonts | self-hosted **Fontsource** DM Sans + IBM Plex Mono (no Google CDN) |
 | Radix | `@radix-ui/react-dialog` (cmdk Dialog) + `@radix-ui/react-slot` (Button) |
+| Code split | Route-level `React.lazy` pages; Vite `manualChunks` (`router-vendor`, `cmdk-vendor`, `icons-vendor`, `catalog-data`, `catalog-meta`). **Do not** split `react`/`react-dom` (breaks dynamic import). App shell uses `catalog-meta` only so full `catalog-data` is not entry-preloaded. |
+| Lint | Root ESLint + `typescript-eslint` covers `web/src/**/*.{ts,tsx}`; unit `*.test.ts` intentionally excluded (`projectService` / node:test outside app tsconfig) |
+| Idle warm | Palette chunk: hover/focus + `requestIdleCallback` prefetch; mount only when opened (⌘K still works cold via App hotkeys) |
+| A11y e2e | Functional Playwright smoke is required; axe critical/serious gate is optional residual (see goals scratch) |
 
 ## Tokens
 

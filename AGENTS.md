@@ -21,6 +21,20 @@ freshness notes live in root `source-refresh.md`.
 Do not hand-edit recipe or pattern bodies inside `README.md`; edit catalog YAML
 and regenerate.
 
+### Toolchain ownership
+
+| Surface | Owner | Commands |
+| --- | --- | --- |
+| Catalog YAML SSOT | `catalog/` | author recipes/patterns only here |
+| Generate + validate | `packages/catalog-core` | `pnpm catalog:validate`, `catalog:readme`, `catalog:site-data` |
+| README quality contracts | Python `scripts/*.py` + `tests/` | recipe card/paste-zone/badge/source checks |
+| Web app | `web/` (Vite + React) | `pnpm web:dev`, `web:typecheck`, `web:test`, `web:test:browser` |
+| Deploy artifact | `web/dist` only | Vercel `outputDirectory`; do not revive root `public/` static site |
+
+`web/src/data/catalog.json` and `web/src/data/catalog-meta.json` are **generated** together (`pnpm catalog:site-data`; `generated_at` will churn). Prefer regenerating over hand-editing; avoid committing timestamp-only noise unless shipping a real data change. App chrome imports `catalog-meta` only; full `catalog.json` is for feature pages/palette.
+
+Browser smoke (`pnpm web:test:browser`) serves `web/dist` via Playwright `webServer` (`pnpm web:build` by default). Ensure site-data is fresh before cold runs. Local reuse: `PLAYWRIGHT_REUSE_SERVER=1` against a prebuilt dist. Optional overrides: `PLAYWRIGHT_WEB_SERVER_CMD`, `PLAYWRIGHT_WEB_SERVER_TIMEOUT_MS`.
+
 ## Working Rules
 
 - Preserve the catalog thesis: prompt patterns are testable interfaces, not
