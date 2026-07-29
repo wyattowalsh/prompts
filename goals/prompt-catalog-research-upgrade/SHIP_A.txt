@@ -1,0 +1,11 @@
+catalog/patterns/react.yaml
+catalog/patterns/structured-outputs-json-schema.yaml
+catalog/patterns/tool-calling-contract.yaml
+catalog/recipes/prompt-injection-scanner.yaml
+catalog/recipes/tool-use-planner.yaml
+sources.yaml
+source-refresh.md
+README.md
+web/src/data/catalog.json
+tests/test_catalog_research_upgrade_2026_07_25.py
+.gitignore

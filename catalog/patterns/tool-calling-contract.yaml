@@ -26,15 +26,22 @@ template: |
   {answer schema plus tool trace summary}
 template_omission_reason: null
 model_api_controls: |
-  tool schema, function calling, strict tool mode, tool-context limits, sandbox, permissioning.
+  Provider tool/function-calling APIs with JSON/tool schemas (OpenAI tools/function calling, Anthropic tool use
+  including strict tool use where available, Gemini function calling, xAI function calling). Prefer schema-validated
+  arguments, parallel-tool policy when the host supports it, tool-context limits/compaction, sandboxes, and
+  permissioning/approval gates for high-impact tools. Pair agent runs with eval harnesses or trace grading when
+  the workflow is reused.
 cost_latency: |
-  moderate, plus tool runtime.
+  moderate, plus tool runtime; multi-step tool loops dominate cost more than the planner prompt.
 failure_modes: |
-  wrong arguments, unsafe side effects, stale observations, oversized or mis-scoped tool context, hidden tool failures.
+  wrong arguments, unsafe side effects, stale observations, oversized or mis-scoped tool context, hidden tool failures,
+  treating tool output as instructions (injection), inventing observations when tools were not called.
 evidence_tier: "**Strong** for official tool APIs, **Moderate** for exact prompting."
 source_type: "official docs."
 eval_required: true
-caveat: "tool permissions and side effects determine risk more than the prompt text."
+caveat: |
+  tool permissions, schemas, and side effects determine risk more than the prompt text; a careful plan does not
+  replace allowlists, sandboxes, or approval gates.
 sources:
   - title: "OpenAI tools"
     url: https://developers.openai.com/api/docs/guides/tools

@@ -9,7 +9,7 @@
   url: https://platform.claude.com/docs/en/about-claude/model-deprecations
   source_type: official doc
   status: checked
-  last_checked: 2026-07-11
+  last_checked: 2026-07-25
   claim_scope: External source cited in the catalog (README refs ~1).
   replacement_url: none
   notes: Verify live before latest/current model or API claims. Prefer this over secondary blogs.
@@ -19,7 +19,7 @@
   url: https://platform.claude.com/docs/en/about-claude/models/introducing-claude-fable-5-and-claude-mythos-5
   source_type: official doc
   status: checked
-  last_checked: 2026-07-11
+  last_checked: 2026-07-25
   claim_scope: External source cited in the catalog (README refs ~1).
   replacement_url: none
   notes: Verify live before latest/current model or API claims. Prefer this over secondary blogs.
@@ -29,7 +29,7 @@
   url: https://platform.claude.com/docs/en/about-claude/models/overview
   source_type: official doc
   status: checked
-  last_checked: 2026-07-11
+  last_checked: 2026-07-25
   claim_scope: External source cited in the catalog (README refs ~1).
   replacement_url: none
   notes: Verify live before latest/current model or API claims. Prefer this over secondary blogs.
@@ -39,7 +39,7 @@
   url: https://platform.claude.com/docs/en/agents-and-tools/tool-use/manage-tool-context
   source_type: official doc
   status: checked
-  last_checked: 2026-07-11
+  last_checked: 2026-07-25
   claim_scope: Tool use, function calling, or agent tool boundaries.
   replacement_url: none
   notes: Verify live before latest/current model or API claims. Prefer this over secondary blogs.
@@ -49,7 +49,7 @@
   url: https://platform.claude.com/docs/en/build-with-claude/context-windows
   source_type: official doc
   status: checked
-  last_checked: 2026-07-11
+  last_checked: 2026-07-25
   claim_scope: External source cited in the catalog (README refs ~2).
   replacement_url: none
   notes: Verify live before latest/current model or API claims. Prefer this over secondary blogs.
@@ -59,7 +59,7 @@
   url: https://platform.claude.com/docs/en/build-with-claude/prompt-caching
   source_type: official doc
   status: checked
-  last_checked: 2026-07-11
+  last_checked: 2026-07-25
   claim_scope: Official prompting guidance.
   replacement_url: none
   notes: Verify live before latest/current model or API claims. Prefer this over secondary blogs.
@@ -69,7 +69,7 @@
   url: https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices
   source_type: official doc
   status: checked
-  last_checked: 2026-07-11
+  last_checked: 2026-07-25
   claim_scope: Official prompting guidance.
   replacement_url: none
   notes: Verify live before latest/current model or API claims. Prefer this over secondary blogs.
@@ -79,17 +79,17 @@
   url: https://platform.claude.com/docs/en/test-and-evaluate/strengthen-guardrails/reduce-hallucinations
   source_type: official doc
   status: checked
-  last_checked: 2026-07-12
+  last_checked: 2026-07-25
   claim_scope: Official guidance on reducing hallucinations and strengthening guardrails.
   replacement_url: none
-  notes: Moved from retired prompt-engineering path; verified 200 on 2026-07-12.
+  notes: Moved from retired prompt-engineering path; prefer primary page. Inventory last_checked is not a live re-check of every claim.
 
 - id: anthropic-citations
   owner: Anthropic
   url: https://platform.claude.com/docs/en/build-with-claude/citations
   source_type: official doc
   status: checked
-  last_checked: 2026-07-11
+  last_checked: 2026-07-25
   claim_scope: Citation formatting for grounded answers.
   replacement_url: none
   notes: Verify live before latest/current model or API claims. Prefer this over secondary blogs.
@@ -99,7 +99,7 @@
   url: https://platform.claude.com/docs/en/build-with-claude/extended-thinking
   source_type: official doc
   status: checked
-  last_checked: 2026-07-11
+  last_checked: 2026-07-25
   claim_scope: Provider reasoning or thinking controls.
   replacement_url: none
   notes: Verify live before latest/current model or API claims. Prefer this over secondary blogs.
@@ -109,7 +109,7 @@
   url: https://www.anthropic.com/news/fable-mythos-access
   source_type: official doc
   status: checked
-  last_checked: 2026-07-11
+  last_checked: 2026-07-25
   claim_scope: External source cited in the catalog (README refs ~1).
   replacement_url: none
   notes: Verify live before latest/current model or API claims. Prefer this over secondary blogs.
@@ -119,7 +119,7 @@
   url: https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/overview
   source_type: official doc
   status: checked
-  last_checked: 2026-07-11
+  last_checked: 2026-07-25
   claim_scope: Official prompting guidance.
   replacement_url: none
   notes: Verify live before latest/current model or API claims. Prefer this over secondary blogs.
@@ -129,7 +129,7 @@
   url: https://platform.claude.com/docs/en/build-with-claude/structured-outputs
   source_type: official doc
   status: checked
-  last_checked: 2026-07-11
+  last_checked: 2026-07-25
   claim_scope: Structured or schema-constrained model outputs.
   replacement_url: none
   notes: Verify live before latest/current model or API claims. Prefer this over secondary blogs.
@@ -139,7 +139,7 @@
   url: https://platform.claude.com/docs/en/agents-and-tools/tool-use/overview
   source_type: official doc
   status: checked
-  last_checked: 2026-07-11
+  last_checked: 2026-07-25
   claim_scope: Tool use, function calling, or agent tool boundaries.
   replacement_url: none
   notes: Verify live before latest/current model or API claims. Prefer this over secondary blogs.
@@ -149,7 +149,7 @@
   url: https://docs.github.com/en/get-started/writing-on-github/getting-started-with-writing-and-formatting-on-github/basic-writing-and-formatting-syntax
   source_type: official doc
   status: checked
-  last_checked: 2026-07-11
+  last_checked: 2026-07-25
   claim_scope: External source cited in the catalog (README refs ~3).
   replacement_url: none
   notes: Verify live before latest/current model or API claims. Prefer this over secondary blogs.
@@ -159,7 +159,7 @@
   url: https://docs.github.com/en/get-started/writing-on-github/working-with-advanced-formatting/creating-diagrams
   source_type: official doc
   status: checked
-  last_checked: 2026-07-11
+  last_checked: 2026-07-25
   claim_scope: External source cited in the catalog (README refs ~2).
   replacement_url: none
   notes: Verify live before latest/current model or API claims. Prefer this over secondary blogs.
@@ -169,7 +169,7 @@
   url: https://ai.google.dev/gemini-api/docs/function-calling
   source_type: official doc
   status: checked
-  last_checked: 2026-07-11
+  last_checked: 2026-07-25
   claim_scope: Tool use, function calling, or agent tool boundaries.
   replacement_url: none
   notes: Verify live before latest/current model or API claims. Prefer this over secondary blogs.
@@ -179,7 +179,7 @@
   url: https://ai.google.dev/gemini-api/docs/code-execution
   source_type: official doc
   status: checked
-  last_checked: 2026-07-11
+  last_checked: 2026-07-25
   claim_scope: External source cited in the catalog (README refs ~2).
   replacement_url: none
   notes: Verify live before latest/current model or API claims. Prefer this over secondary blogs.
@@ -189,7 +189,7 @@
   url: https://ai.google.dev/gemini-api/docs/url-context
   source_type: official doc
   status: checked
-  last_checked: 2026-07-11
+  last_checked: 2026-07-25
   claim_scope: Search, grounding, retrieval, or URL-context controls.
   replacement_url: none
   notes: Verify live before latest/current model or API claims. Prefer this over secondary blogs.
@@ -199,7 +199,7 @@
   url: https://ai.google.dev/gemini-api/docs/google-search
   source_type: official doc
   status: checked
-  last_checked: 2026-07-11
+  last_checked: 2026-07-25
   claim_scope: Search, grounding, retrieval, or URL-context controls.
   replacement_url: none
   notes: Verify live before latest/current model or API claims. Prefer this over secondary blogs.
@@ -209,7 +209,7 @@
   url: https://ai.google.dev/gemini-api/docs/prompting-strategies
   source_type: official doc
   status: checked
-  last_checked: 2026-07-11
+  last_checked: 2026-07-25
   claim_scope: Official prompting guidance.
   replacement_url: none
   notes: Verify live before latest/current model or API claims. Prefer this over secondary blogs.
@@ -219,7 +219,7 @@
   url: https://ai.google.dev/responsible
   source_type: official doc
   status: checked
-  last_checked: 2026-07-11
+  last_checked: 2026-07-25
   claim_scope: External source cited in the catalog (README refs ~1).
   replacement_url: none
   notes: Verify live before latest/current model or API claims. Prefer this over secondary blogs.
@@ -229,7 +229,7 @@
   url: https://ai.google.dev/gemini-api/docs/structured-output
   source_type: official doc
   status: checked
-  last_checked: 2026-07-11
+  last_checked: 2026-07-25
   claim_scope: Structured or schema-constrained model outputs.
   replacement_url: none
   notes: Verify live before latest/current model or API claims. Prefer this over secondary blogs.
@@ -239,7 +239,7 @@
   url: https://ai.google.dev/gemini-api/docs/thinking
   source_type: official doc
   status: checked
-  last_checked: 2026-07-11
+  last_checked: 2026-07-25
   claim_scope: Provider reasoning or thinking controls.
   replacement_url: none
   notes: Verify live before latest/current model or API claims. Prefer this over secondary blogs.
@@ -249,7 +249,7 @@
   url: https://learn.microsoft.com/en-us/azure/foundry/concepts/observability
   source_type: official doc
   status: checked
-  last_checked: 2026-07-11
+  last_checked: 2026-07-25
   claim_scope: External source cited in the catalog (README refs ~2).
   replacement_url: none
   notes: Verify live before latest/current model or API claims. Prefer this over secondary blogs.
@@ -259,7 +259,7 @@
   url: https://learn.microsoft.com/en-us/azure/foundry/how-to/evaluate-generative-ai-app
   source_type: official doc
   status: checked
-  last_checked: 2026-07-11
+  last_checked: 2026-07-25
   claim_scope: Evaluation, agent evals, or trace grading guidance.
   replacement_url: none
   notes: Verify live before latest/current model or API claims. Prefer this over secondary blogs.
@@ -269,7 +269,7 @@
   url: https://learn.microsoft.com/en-us/azure/foundry/openai/concepts/prompt-engineering
   source_type: official doc
   status: checked
-  last_checked: 2026-07-11
+  last_checked: 2026-07-25
   claim_scope: Official prompting guidance.
   replacement_url: none
   notes: Verify live before latest/current model or API claims. Prefer this over secondary blogs.
@@ -279,7 +279,7 @@
   url: https://learn.microsoft.com/en-us/azure/foundry/openai/concepts/content-filter-prompt-shields
   source_type: official doc
   status: checked
-  last_checked: 2026-07-11
+  last_checked: 2026-07-25
   claim_scope: Official prompting guidance.
   replacement_url: none
   notes: Verify live before latest/current model or API claims. Prefer this over secondary blogs.
@@ -289,7 +289,7 @@
   url: https://learn.microsoft.com/en-us/azure/foundry/openai/how-to/structured-outputs
   source_type: official doc
   status: checked
-  last_checked: 2026-07-11
+  last_checked: 2026-07-25
   claim_scope: Structured or schema-constrained model outputs.
   replacement_url: none
   notes: Verify live before latest/current model or API claims. Prefer this over secondary blogs.
@@ -299,7 +299,7 @@
   url: https://developers.openai.com/api/docs/guides/agent-evals
   source_type: official doc
   status: checked
-  last_checked: 2026-07-11
+  last_checked: 2026-07-25
   claim_scope: Evaluation, agent evals, or trace grading guidance.
   replacement_url: none
   notes: Verify live before latest/current model or API claims. Prefer this over secondary blogs.
@@ -309,7 +309,7 @@
   url: https://developers.openai.com/api/docs/guides/agents/guardrails-approvals
   source_type: official doc
   status: checked
-  last_checked: 2026-07-11
+  last_checked: 2026-07-25
   claim_scope: External source cited in the catalog (README refs ~2).
   replacement_url: none
   notes: Verify live before latest/current model or API claims. Prefer this over secondary blogs.
@@ -319,7 +319,7 @@
   url: https://developers.openai.com/api/docs/guides/deployment-checklist
   source_type: official doc
   status: checked
-  last_checked: 2026-07-11
+  last_checked: 2026-07-25
   claim_scope: External source cited in the catalog (README refs ~1).
   replacement_url: none
   notes: Verify live before latest/current model or API claims. Prefer this over secondary blogs.
@@ -329,7 +329,7 @@
   url: https://developers.openai.com/api/docs/guides/prompt-caching
   source_type: official doc
   status: checked
-  last_checked: 2026-07-11
+  last_checked: 2026-07-25
   claim_scope: Official prompting guidance.
   replacement_url: none
   notes: Verify live before latest/current model or API claims. Prefer this over secondary blogs.
@@ -339,7 +339,7 @@
   url: https://developers.openai.com/api/docs/guides/prompt-guidance
   source_type: official doc
   status: checked
-  last_checked: 2026-07-11
+  last_checked: 2026-07-25
   claim_scope: Official prompting guidance.
   replacement_url: none
   notes: Verify live before latest/current model or API claims. Prefer this over secondary blogs.
@@ -349,7 +349,7 @@
   url: https://developers.openai.com/api/docs/guides/prompting
   source_type: official doc
   status: checked
-  last_checked: 2026-07-11
+  last_checked: 2026-07-25
   claim_scope: Official prompting guidance.
   replacement_url: none
   notes: Verify live before latest/current model or API claims. Prefer this over secondary blogs.
@@ -359,7 +359,7 @@
   url: https://developers.openai.com/api/docs/guides/text
   source_type: official doc
   status: checked
-  last_checked: 2026-07-11
+  last_checked: 2026-07-25
   claim_scope: External source cited in the catalog (README refs ~1).
   replacement_url: none
   notes: Verify live before latest/current model or API claims. Prefer this over secondary blogs.
@@ -369,7 +369,7 @@
   url: https://developers.openai.com/api/docs/guides/tools-code-interpreter
   source_type: official doc
   status: checked
-  last_checked: 2026-07-11
+  last_checked: 2026-07-25
   claim_scope: Tool use, function calling, or agent tool boundaries.
   replacement_url: none
   notes: Verify live before latest/current model or API claims. Prefer this over secondary blogs.
@@ -379,7 +379,7 @@
   url: https://developers.openai.com/api/docs/guides/tools-web-search
   source_type: official doc
   status: checked
-  last_checked: 2026-07-11
+  last_checked: 2026-07-25
   claim_scope: Tool use, function calling, or agent tool boundaries.
   replacement_url: none
   notes: Verify live before latest/current model or API claims. Prefer this over secondary blogs.
@@ -389,7 +389,7 @@
   url: https://developers.openai.com/api/docs/guides/trace-grading
   source_type: official doc
   status: checked
-  last_checked: 2026-07-11
+  last_checked: 2026-07-25
   claim_scope: Evaluation, agent evals, or trace grading guidance.
   replacement_url: none
   notes: Verify live before latest/current model or API claims. Prefer this over secondary blogs.
@@ -399,7 +399,7 @@
   url: https://developers.openai.com/api/docs/guides/citation-formatting
   source_type: official doc
   status: checked
-  last_checked: 2026-07-11
+  last_checked: 2026-07-25
   claim_scope: Citation formatting for grounded answers.
   replacement_url: none
   notes: Verify live before latest/current model or API claims. Prefer this over secondary blogs.
@@ -409,7 +409,7 @@
   url: https://developers.openai.com/api/docs/guides/evaluation-best-practices
   source_type: official doc
   status: checked
-  last_checked: 2026-07-11
+  last_checked: 2026-07-25
   claim_scope: Evaluation, agent evals, or trace grading guidance.
   replacement_url: none
   notes: Verify live before latest/current model or API claims. Prefer this over secondary blogs.
@@ -419,7 +419,7 @@
   url: https://developers.openai.com/api/docs/guides/function-calling
   source_type: official doc
   status: checked
-  last_checked: 2026-07-11
+  last_checked: 2026-07-25
   claim_scope: Tool use, function calling, or agent tool boundaries.
   replacement_url: none
   notes: Verify live before latest/current model or API claims. Prefer this over secondary blogs.
@@ -429,7 +429,7 @@
   url: https://developers.openai.com/api/docs/guides/latest-model
   source_type: official doc
   status: checked
-  last_checked: 2026-07-11
+  last_checked: 2026-07-25
   claim_scope: External source cited in the catalog (README refs ~1).
   replacement_url: none
   notes: Verify live before latest/current model or API claims. Prefer this over secondary blogs.
@@ -439,7 +439,7 @@
   url: https://developers.openai.com/api/docs/guides/prompt-engineering
   source_type: official doc
   status: checked
-  last_checked: 2026-07-11
+  last_checked: 2026-07-25
   claim_scope: Official prompting guidance.
   replacement_url: none
   notes: Verify live before latest/current model or API claims. Prefer this over secondary blogs.
@@ -449,7 +449,7 @@
   url: https://developers.openai.com/api/docs/guides/reasoning
   source_type: official doc
   status: checked
-  last_checked: 2026-07-11
+  last_checked: 2026-07-25
   claim_scope: Provider reasoning or thinking controls.
   replacement_url: none
   notes: Verify live before latest/current model or API claims. Prefer this over secondary blogs.
@@ -459,7 +459,7 @@
   url: https://developers.openai.com/api/docs/guides/retrieval
   source_type: official doc
   status: checked
-  last_checked: 2026-07-11
+  last_checked: 2026-07-25
   claim_scope: Search, grounding, retrieval, or URL-context controls.
   replacement_url: none
   notes: Verify live before latest/current model or API claims. Prefer this over secondary blogs.
@@ -469,7 +469,7 @@
   url: https://developers.openai.com/api/docs/guides/structured-outputs
   source_type: official doc
   status: checked
-  last_checked: 2026-07-11
+  last_checked: 2026-07-25
   claim_scope: Structured or schema-constrained model outputs.
   replacement_url: none
   notes: Verify live before latest/current model or API claims. Prefer this over secondary blogs.
@@ -479,7 +479,7 @@
   url: https://developers.openai.com/api/docs/guides/tools
   source_type: official doc
   status: checked
-  last_checked: 2026-07-11
+  last_checked: 2026-07-25
   claim_scope: Tool use, function calling, or agent tool boundaries.
   replacement_url: none
   notes: Verify live before latest/current model or API claims. Prefer this over secondary blogs.
@@ -489,7 +489,7 @@
   url: https://docs.perplexity.ai/docs/agent-api/quickstart
   source_type: official doc
   status: checked
-  last_checked: 2026-07-11
+  last_checked: 2026-07-25
   claim_scope: External source cited in the catalog (README refs ~2).
   replacement_url: none
   notes: Verify live before latest/current model or API claims. Prefer this over secondary blogs.
@@ -499,7 +499,7 @@
   url: https://docs.perplexity.ai/docs/getting-started/overview
   source_type: official doc
   status: checked
-  last_checked: 2026-07-11
+  last_checked: 2026-07-25
   claim_scope: External source cited in the catalog (README refs ~2).
   replacement_url: none
   notes: Verify live before latest/current model or API claims. Prefer this over secondary blogs.
@@ -509,7 +509,7 @@
   url: https://docs.perplexity.ai/api-reference/search-post
   source_type: official doc
   status: checked
-  last_checked: 2026-07-11
+  last_checked: 2026-07-25
   claim_scope: Search, grounding, retrieval, or URL-context controls.
   replacement_url: none
   notes: Verify live before latest/current model or API claims. Prefer this over secondary blogs.
@@ -519,7 +519,7 @@
   url: https://docs.perplexity.ai/docs/search/quickstart
   source_type: official doc
   status: checked
-  last_checked: 2026-07-11
+  last_checked: 2026-07-25
   claim_scope: Search, grounding, retrieval, or URL-context controls.
   replacement_url: none
   notes: Verify live before latest/current model or API claims. Prefer this over secondary blogs.
@@ -529,7 +529,7 @@
   url: https://docs.perplexity.ai/docs/agent-api/tools/web-search
   source_type: official doc
   status: checked
-  last_checked: 2026-07-11
+  last_checked: 2026-07-25
   claim_scope: Tool use, function calling, or agent tool boundaries.
   replacement_url: none
   notes: Verify live before latest/current model or API claims. Prefer this over secondary blogs.
@@ -539,7 +539,7 @@
   url: https://docs.x.ai/developers/quickstart
   source_type: official doc
   status: checked
-  last_checked: 2026-07-11
+  last_checked: 2026-07-25
   claim_scope: External source cited in the catalog (README refs ~1).
   replacement_url: none
   notes: Verify live before latest/current model or API claims. Prefer this over secondary blogs.
@@ -549,7 +549,7 @@
   url: https://docs.x.ai/developers/rest-api-reference/inference
   source_type: official doc
   status: checked
-  last_checked: 2026-07-11
+  last_checked: 2026-07-25
   claim_scope: External source cited in the catalog (README refs ~1).
   replacement_url: none
   notes: Verify live before latest/current model or API claims. Prefer this over secondary blogs.
@@ -559,7 +559,7 @@
   url: https://docs.x.ai/developers/tools/overview
   source_type: official doc
   status: checked
-  last_checked: 2026-07-11
+  last_checked: 2026-07-25
   claim_scope: Tool use, function calling, or agent tool boundaries.
   replacement_url: none
   notes: Verify live before latest/current model or API claims. Prefer this over secondary blogs.
@@ -569,7 +569,7 @@
   url: https://docs.x.ai/developers/tools/function-calling
   source_type: official doc
   status: checked
-  last_checked: 2026-07-11
+  last_checked: 2026-07-25
   claim_scope: Tool use, function calling, or agent tool boundaries.
   replacement_url: none
   notes: Verify live before latest/current model or API claims. Prefer this over secondary blogs.
@@ -579,7 +579,7 @@
   url: https://docs.x.ai/overview
   source_type: official doc
   status: checked
-  last_checked: 2026-07-11
+  last_checked: 2026-07-25
   claim_scope: External source cited in the catalog (README refs ~3).
   replacement_url: none
   notes: Verify live before latest/current model or API claims. Prefer this over secondary blogs.
@@ -589,7 +589,7 @@
   url: https://docs.x.ai/developers/model-capabilities/text/reasoning
   source_type: official doc
   status: checked
-  last_checked: 2026-07-11
+  last_checked: 2026-07-25
   claim_scope: Provider reasoning or thinking controls.
   replacement_url: none
   notes: Verify live before latest/current model or API claims. Prefer this over secondary blogs.
@@ -599,7 +599,7 @@
   url: https://docs.x.ai/developers/model-capabilities/text/structured-outputs
   source_type: official doc
   status: checked
-  last_checked: 2026-07-11
+  last_checked: 2026-07-25
   claim_scope: Structured or schema-constrained model outputs.
   replacement_url: none
   notes: Verify live before latest/current model or API claims. Prefer this over secondary blogs.
@@ -609,7 +609,7 @@
   url: https://docs.x.ai/developers/tools/web-search
   source_type: official doc
   status: checked
-  last_checked: 2026-07-11
+  last_checked: 2026-07-25
   claim_scope: Tool use, function calling, or agent tool boundaries.
   replacement_url: none
   notes: Verify live before latest/current model or API claims. Prefer this over secondary blogs.
@@ -619,7 +619,7 @@
   url: https://www.nist.gov/itl/ai-risk-management-framework/ai-rmf-playbook
   source_type: standard
   status: checked
-  last_checked: 2026-07-11
+  last_checked: 2026-07-25
   claim_scope: AI risk management or generative AI governance.
   replacement_url: none
   notes: Safety or governance standard. Prefer primary page over stale mirrors.
@@ -629,7 +629,7 @@
   url: https://www.nist.gov/data-publications/agentdojo-inspect
   source_type: standard
   status: checked
-  last_checked: 2026-07-11
+  last_checked: 2026-07-25
   claim_scope: AI risk management or generative AI governance.
   replacement_url: none
   notes: Safety or governance standard. Prefer primary page over stale mirrors.
@@ -639,7 +639,7 @@
   url: https://www.nist.gov/publications/artificial-intelligence-risk-management-framework-generative-artificial-intelligence
   source_type: standard
   status: checked
-  last_checked: 2026-07-11
+  last_checked: 2026-07-25
   claim_scope: AI risk management or generative AI governance.
   replacement_url: none
   notes: Safety or governance standard. Prefer primary page over stale mirrors.
@@ -649,7 +649,7 @@
   url: https://www.nist.gov/itl/ai-risk-management-framework
   source_type: standard
   status: checked
-  last_checked: 2026-07-11
+  last_checked: 2026-07-25
   claim_scope: AI risk management or generative AI governance.
   replacement_url: none
   notes: Safety or governance standard. Prefer primary page over stale mirrors.
@@ -659,7 +659,7 @@
   url: https://www.nist.gov/publications/artificial-intelligence-risk-management-framework-ai-rmf-10
   source_type: standard
   status: checked
-  last_checked: 2026-07-11
+  last_checked: 2026-07-25
   claim_scope: AI risk management or generative AI governance.
   replacement_url: none
   notes: Safety or governance standard. Prefer primary page over stale mirrors.
@@ -669,7 +669,7 @@
   url: https://cheatsheetseries.owasp.org/cheatsheets/AI_Agent_Security_Cheat_Sheet.html
   source_type: standard
   status: checked
-  last_checked: 2026-07-11
+  last_checked: 2026-07-25
   claim_scope: Safety, injection defense, or adversarial technique reference.
   replacement_url: none
   notes: Safety or governance standard. Prefer primary page over stale mirrors.
@@ -679,7 +679,7 @@
   url: https://genai.owasp.org/llm-top-10/
   source_type: standard
   status: checked
-  last_checked: 2026-07-11
+  last_checked: 2026-07-25
   claim_scope: Safety, injection defense, or adversarial technique reference.
   replacement_url: none
   notes: Safety or governance standard. Prefer primary page over stale mirrors.
@@ -689,7 +689,7 @@
   url: https://owasp.org/www-project-top-10-for-large-language-model-applications/
   source_type: standard
   status: checked
-  last_checked: 2026-07-11
+  last_checked: 2026-07-25
   claim_scope: Safety, injection defense, or adversarial technique reference.
   replacement_url: none
   notes: Safety or governance standard. Prefer primary page over stale mirrors.
@@ -699,7 +699,7 @@
   url: https://cheatsheetseries.owasp.org/cheatsheets/LLM_Prompt_Injection_Prevention_Cheat_Sheet.html
   source_type: standard
   status: checked
-  last_checked: 2026-07-11
+  last_checked: 2026-07-25
   claim_scope: Official prompting guidance.
   replacement_url: none
   notes: Safety or governance standard. Prefer primary page over stale mirrors.
@@ -709,7 +709,7 @@
   url: https://arxiv.org/abs/2507.13334
   source_type: survey
   status: checked
-  last_checked: 2026-07-11
+  last_checked: 2026-07-25
   claim_scope: Primary research paper cited in catalog recipes or pattern notes (README refs ~2).
   replacement_url: none
   notes: Survey taxonomy context. Not current provider behavior.
@@ -719,7 +719,7 @@
   url: https://arxiv.org/abs/2406.06608
   source_type: survey
   status: checked
-  last_checked: 2026-07-11
+  last_checked: 2026-07-25
   claim_scope: Primary research paper cited in catalog recipes or pattern notes (README refs ~19).
   replacement_url: none
   notes: Survey taxonomy context. Not current provider behavior.
@@ -729,7 +729,7 @@
   url: https://aclanthology.org/2024.findings-emnlp.888/
   source_type: primary paper
   status: checked
-  last_checked: 2026-07-11
+  last_checked: 2026-07-25
   claim_scope: External source cited in the catalog (README refs ~3).
   replacement_url: none
   notes: Method or benchmark evidence. Not a provider API contract. Verify version/title via abstract page.
@@ -739,7 +739,7 @@
   url: https://arxiv.org/abs/2406.13352
   source_type: primary paper
   status: checked
-  last_checked: 2026-07-11
+  last_checked: 2026-07-25
   claim_scope: Primary research paper cited in catalog recipes or pattern notes (README refs ~4).
   replacement_url: none
   notes: Method or benchmark evidence. Not a provider API contract. Verify version/title via abstract page.
@@ -749,7 +749,7 @@
   url: https://arxiv.org/abs/2005.11401
   source_type: primary paper
   status: checked
-  last_checked: 2026-07-11
+  last_checked: 2026-07-25
   claim_scope: Primary research paper cited in catalog recipes or pattern notes (README refs ~4).
   replacement_url: none
   notes: Method or benchmark evidence. Not a provider API contract. Verify version/title via abstract page.
@@ -759,7 +759,7 @@
   url: https://arxiv.org/abs/2005.14165
   source_type: primary paper
   status: checked
-  last_checked: 2026-07-11
+  last_checked: 2026-07-25
   claim_scope: Primary research paper cited in catalog recipes or pattern notes (README refs ~2).
   replacement_url: none
   notes: Method or benchmark evidence. Not a provider API contract. Verify version/title via abstract page.
@@ -769,7 +769,7 @@
   url: https://arxiv.org/abs/2203.06566
   source_type: primary paper
   status: checked
-  last_checked: 2026-07-11
+  last_checked: 2026-07-25
   claim_scope: Primary research paper cited in catalog recipes or pattern notes (README refs ~1).
   replacement_url: none
   notes: Method or benchmark evidence. Not a provider API contract. Verify version/title via abstract page.
@@ -779,7 +779,7 @@
   url: https://arxiv.org/abs/2203.11171
   source_type: primary paper
   status: checked
-  last_checked: 2026-07-11
+  last_checked: 2026-07-25
   claim_scope: Primary research paper cited in catalog recipes or pattern notes (README refs ~2).
   replacement_url: none
   notes: Method or benchmark evidence. Not a provider API contract. Verify version/title via abstract page.
@@ -789,7 +789,7 @@
   url: https://arxiv.org/abs/2205.11916
   source_type: primary paper
   status: checked
-  last_checked: 2026-07-11
+  last_checked: 2026-07-25
   claim_scope: Primary research paper cited in catalog recipes or pattern notes (README refs ~2).
   replacement_url: none
   notes: Method or benchmark evidence. Not a provider API contract. Verify version/title via abstract page.
@@ -799,7 +799,7 @@
   url: https://arxiv.org/abs/2210.03629
   source_type: primary paper
   status: checked
-  last_checked: 2026-07-11
+  last_checked: 2026-07-25
   claim_scope: Primary research paper cited in catalog recipes or pattern notes (README refs ~2).
   replacement_url: none
   notes: Method or benchmark evidence. Not a provider API contract. Verify version/title via abstract page.
@@ -809,7 +809,7 @@
   url: https://arxiv.org/abs/2211.01910
   source_type: primary paper
   status: checked
-  last_checked: 2026-07-11
+  last_checked: 2026-07-25
   claim_scope: Primary research paper cited in catalog recipes or pattern notes (README refs ~2).
   replacement_url: none
   notes: Method or benchmark evidence. Not a provider API contract. Verify version/title via abstract page.
@@ -819,7 +819,7 @@
   url: https://arxiv.org/abs/2211.09527
   source_type: primary paper
   status: checked
-  last_checked: 2026-07-11
+  last_checked: 2026-07-25
   claim_scope: Primary research paper cited in catalog recipes or pattern notes (README refs ~2).
   replacement_url: none
   notes: Method or benchmark evidence. Not a provider API contract. Verify version/title via abstract page.
@@ -829,7 +829,7 @@
   url: https://arxiv.org/abs/2211.10435
   source_type: primary paper
   status: checked
-  last_checked: 2026-07-11
+  last_checked: 2026-07-25
   claim_scope: Primary research paper cited in catalog recipes or pattern notes (README refs ~2).
   replacement_url: none
   notes: Method or benchmark evidence. Not a provider API contract. Verify version/title via abstract page.
@@ -839,7 +839,7 @@
   url: https://arxiv.org/abs/2211.12588
   source_type: primary paper
   status: checked
-  last_checked: 2026-07-11
+  last_checked: 2026-07-25
   claim_scope: Primary research paper cited in catalog recipes or pattern notes (README refs ~2).
   replacement_url: none
   notes: Method or benchmark evidence. Not a provider API contract. Verify version/title via abstract page.
@@ -849,7 +849,7 @@
   url: https://arxiv.org/abs/2212.08061
   source_type: primary paper
   status: checked
-  last_checked: 2026-07-11
+  last_checked: 2026-07-25
   claim_scope: Primary research paper cited in catalog recipes or pattern notes (README refs ~3).
   replacement_url: none
   notes: Method or benchmark evidence. Not a provider API contract. Verify version/title via abstract page.
@@ -859,7 +859,7 @@
   url: https://arxiv.org/abs/2302.00923
   source_type: primary paper
   status: checked
-  last_checked: 2026-07-11
+  last_checked: 2026-07-25
   claim_scope: Primary research paper cited in catalog recipes or pattern notes (README refs ~2).
   replacement_url: none
   notes: Method or benchmark evidence. Not a provider API contract. Verify version/title via abstract page.
@@ -869,7 +869,7 @@
   url: https://arxiv.org/abs/2302.05733
   source_type: primary paper
   status: checked
-  last_checked: 2026-07-11
+  last_checked: 2026-07-25
   claim_scope: Primary research paper cited in catalog recipes or pattern notes (README refs ~2).
   replacement_url: none
   notes: Method or benchmark evidence. Not a provider API contract. Verify version/title via abstract page.
@@ -879,7 +879,7 @@
   url: https://arxiv.org/abs/2302.12246
   source_type: primary paper
   status: checked
-  last_checked: 2026-07-11
+  last_checked: 2026-07-25
   claim_scope: Primary research paper cited in catalog recipes or pattern notes (README refs ~2).
   replacement_url: none
   notes: Method or benchmark evidence. Not a provider API contract. Verify version/title via abstract page.
@@ -889,7 +889,7 @@
   url: https://arxiv.org/abs/2303.11366
   source_type: primary paper
   status: checked
-  last_checked: 2026-07-11
+  last_checked: 2026-07-25
   claim_scope: Primary research paper cited in catalog recipes or pattern notes (README refs ~2).
   replacement_url: none
   notes: Method or benchmark evidence. Not a provider API contract. Verify version/title via abstract page.
@@ -899,7 +899,7 @@
   url: https://arxiv.org/abs/2303.17651
   source_type: primary paper
   status: checked
-  last_checked: 2026-07-11
+  last_checked: 2026-07-25
   claim_scope: Primary research paper cited in catalog recipes or pattern notes (README refs ~2).
   replacement_url: none
   notes: Method or benchmark evidence. Not a provider API contract. Verify version/title via abstract page.
@@ -909,7 +909,7 @@
   url: https://arxiv.org/abs/2305.04091
   source_type: primary paper
   status: checked
-  last_checked: 2026-07-11
+  last_checked: 2026-07-25
   claim_scope: Primary research paper cited in catalog recipes or pattern notes (README refs ~2).
   replacement_url: none
   notes: Method or benchmark evidence. Not a provider API contract. Verify version/title via abstract page.
@@ -919,7 +919,7 @@
   url: https://arxiv.org/abs/2305.04388
   source_type: primary paper
   status: checked
-  last_checked: 2026-07-11
+  last_checked: 2026-07-25
   claim_scope: Primary research paper cited in catalog recipes or pattern notes (README refs ~2).
   replacement_url: none
   notes: Method or benchmark evidence. Not a provider API contract. Verify version/title via abstract page.
@@ -929,7 +929,7 @@
   url: https://arxiv.org/abs/2305.10601
   source_type: primary paper
   status: checked
-  last_checked: 2026-07-11
+  last_checked: 2026-07-25
   claim_scope: Primary research paper cited in catalog recipes or pattern notes (README refs ~2).
   replacement_url: none
   notes: Method or benchmark evidence. Not a provider API contract. Verify version/title via abstract page.
@@ -939,7 +939,7 @@
   url: https://arxiv.org/abs/2305.14325
   source_type: primary paper
   status: checked
-  last_checked: 2026-07-11
+  last_checked: 2026-07-25
   claim_scope: Primary research paper cited in catalog recipes or pattern notes (README refs ~2).
   replacement_url: none
   notes: Method or benchmark evidence. Not a provider API contract. Verify version/title via abstract page.
@@ -949,7 +949,7 @@
   url: https://arxiv.org/abs/2307.03172
   source_type: primary paper
   status: checked
-  last_checked: 2026-07-11
+  last_checked: 2026-07-25
   claim_scope: Primary research paper cited in catalog recipes or pattern notes (README refs ~4).
   replacement_url: none
   notes: Method or benchmark evidence. Not a provider API contract. Verify version/title via abstract page.
@@ -959,7 +959,7 @@
   url: https://arxiv.org/abs/2307.05300
   source_type: primary paper
   status: checked
-  last_checked: 2026-07-11
+  last_checked: 2026-07-25
   claim_scope: Primary research paper cited in catalog recipes or pattern notes (README refs ~3).
   replacement_url: none
   notes: Method or benchmark evidence. Not a provider API contract. Verify version/title via abstract page.
@@ -969,7 +969,7 @@
   url: https://arxiv.org/abs/2307.11760
   source_type: primary paper
   status: checked
-  last_checked: 2026-07-11
+  last_checked: 2026-07-25
   claim_scope: Primary research paper cited in catalog recipes or pattern notes (README refs ~2).
   replacement_url: none
   notes: Method or benchmark evidence. Not a provider API contract. Verify version/title via abstract page.
@@ -979,7 +979,7 @@
   url: https://arxiv.org/abs/2307.15337
   source_type: primary paper
   status: checked
-  last_checked: 2026-07-11
+  last_checked: 2026-07-25
   claim_scope: Primary research paper cited in catalog recipes or pattern notes (README refs ~2).
   replacement_url: none
   notes: Method or benchmark evidence. Not a provider API contract. Verify version/title via abstract page.
@@ -989,7 +989,7 @@
   url: https://arxiv.org/abs/2308.07201
   source_type: primary paper
   status: checked
-  last_checked: 2026-07-11
+  last_checked: 2026-07-25
   claim_scope: Primary research paper cited in catalog recipes or pattern notes (README refs ~3).
   replacement_url: none
   notes: Method or benchmark evidence. Not a provider API contract. Verify version/title via abstract page.
@@ -999,7 +999,7 @@
   url: https://arxiv.org/abs/2308.09687
   source_type: primary paper
   status: checked
-  last_checked: 2026-07-11
+  last_checked: 2026-07-25
   claim_scope: Primary research paper cited in catalog recipes or pattern notes (README refs ~2).
   replacement_url: none
   notes: Method or benchmark evidence. Not a provider API contract. Verify version/title via abstract page.
@@ -1009,7 +1009,7 @@
   url: https://arxiv.org/abs/2308.10379
   source_type: primary paper
   status: checked
-  last_checked: 2026-07-11
+  last_checked: 2026-07-25
   claim_scope: Primary research paper cited in catalog recipes or pattern notes (README refs ~2).
   replacement_url: none
   notes: Method or benchmark evidence. Not a provider API contract. Verify version/title via abstract page.
@@ -1019,7 +1019,7 @@
   url: https://arxiv.org/abs/2309.03409
   source_type: primary paper
   status: checked
-  last_checked: 2026-07-11
+  last_checked: 2026-07-25
   claim_scope: Primary research paper cited in catalog recipes or pattern notes (README refs ~2).
   replacement_url: none
   notes: Method or benchmark evidence. Not a provider API contract. Verify version/title via abstract page.
@@ -1029,7 +1029,7 @@
   url: https://arxiv.org/abs/2309.04269
   source_type: primary paper
   status: checked
-  last_checked: 2026-07-11
+  last_checked: 2026-07-25
   claim_scope: Primary research paper cited in catalog recipes or pattern notes (README refs ~2).
   replacement_url: none
   notes: Method or benchmark evidence. Not a provider API contract. Verify version/title via abstract page.
@@ -1039,7 +1039,7 @@
   url: https://arxiv.org/abs/2309.11495
   source_type: primary paper
   status: checked
-  last_checked: 2026-07-11
+  last_checked: 2026-07-25
   claim_scope: Primary research paper cited in catalog recipes or pattern notes (README refs ~3).
   replacement_url: none
   notes: Method or benchmark evidence. Not a provider API contract. Verify version/title via abstract page.
@@ -1049,7 +1049,7 @@
   url: https://arxiv.org/abs/2310.03714
   source_type: primary paper
   status: checked
-  last_checked: 2026-07-11
+  last_checked: 2026-07-25
   claim_scope: Primary research paper cited in catalog recipes or pattern notes (README refs ~2).
   replacement_url: none
   notes: Method or benchmark evidence. Not a provider API contract. Verify version/title via abstract page.
@@ -1059,7 +1059,7 @@
   url: https://arxiv.org/abs/2310.06117
   source_type: primary paper
   status: checked
-  last_checked: 2026-07-11
+  last_checked: 2026-07-25
   claim_scope: Primary research paper cited in catalog recipes or pattern notes (README refs ~2).
   replacement_url: none
   notes: Method or benchmark evidence. Not a provider API contract. Verify version/title via abstract page.
@@ -1069,7 +1069,7 @@
   url: https://arxiv.org/abs/2311.17371
   source_type: primary paper
   status: checked
-  last_checked: 2026-07-11
+  last_checked: 2026-07-25
   claim_scope: Primary research paper cited in catalog recipes or pattern notes (README refs ~2).
   replacement_url: none
   notes: Method or benchmark evidence. Not a provider API contract. Verify version/title via abstract page.
@@ -1079,7 +1079,7 @@
   url: https://arxiv.org/abs/2402.05120
   source_type: primary paper
   status: checked
-  last_checked: 2026-07-11
+  last_checked: 2026-07-25
   claim_scope: Primary research paper cited in catalog recipes or pattern notes (README refs ~1).
   replacement_url: none
   notes: Method or benchmark evidence. Not a provider API contract. Verify version/title via abstract page.
@@ -1089,7 +1089,7 @@
   url: https://arxiv.org/abs/2403.04957
   source_type: primary paper
   status: checked
-  last_checked: 2026-07-11
+  last_checked: 2026-07-25
   claim_scope: Primary research paper cited in catalog recipes or pattern notes (README refs ~2).
   replacement_url: none
   notes: Method or benchmark evidence. Not a provider API contract. Verify version/title via abstract page.
@@ -1099,7 +1099,7 @@
   url: https://arxiv.org/abs/2502.04689
   source_type: primary paper
   status: checked
-  last_checked: 2026-07-11
+  last_checked: 2026-07-25
   claim_scope: Primary research paper cited in catalog recipes or pattern notes (README refs ~2).
   replacement_url: none
   notes: Method or benchmark evidence. Not a provider API contract. Verify version/title via abstract page.
@@ -1109,7 +1109,7 @@
   url: https://arxiv.org/html/2502.08788v2
   source_type: primary paper
   status: checked
-  last_checked: 2026-07-11
+  last_checked: 2026-07-25
   claim_scope: Primary research paper cited in catalog recipes or pattern notes (README refs ~1).
   replacement_url: none
   notes: Method or benchmark evidence. Not a provider API contract. Verify version/title via abstract page.
@@ -1119,7 +1119,7 @@
   url: https://arxiv.org/abs/2502.18600
   source_type: primary paper
   status: checked
-  last_checked: 2026-07-11
+  last_checked: 2026-07-25
   claim_scope: Primary research paper cited in catalog recipes or pattern notes (README refs ~2).
   replacement_url: none
   notes: Method or benchmark evidence. Not a provider API contract. Verify version/title via abstract page.
@@ -1129,7 +1129,7 @@
   url: https://arxiv.org/abs/2503.04818
   source_type: primary paper
   status: checked
-  last_checked: 2026-07-11
+  last_checked: 2026-07-25
   claim_scope: Primary research paper cited in catalog recipes or pattern notes (README refs ~3).
   replacement_url: none
   notes: Method or benchmark evidence. Not a provider API contract. Verify version/title via abstract page.
@@ -1139,7 +1139,7 @@
   url: https://arxiv.org/abs/2504.14891
   source_type: primary paper
   status: checked
-  last_checked: 2026-07-11
+  last_checked: 2026-07-25
   claim_scope: Primary research paper cited in catalog recipes or pattern notes (README refs ~3).
   replacement_url: none
   notes: Method or benchmark evidence. Not a provider API contract. Verify version/title via abstract page.
@@ -1149,7 +1149,7 @@
   url: https://arxiv.org/abs/2506.07142
   source_type: primary paper
   status: checked
-  last_checked: 2026-07-11
+  last_checked: 2026-07-25
   claim_scope: Primary research paper cited in catalog recipes or pattern notes (README refs ~3).
   replacement_url: none
   notes: Method or benchmark evidence. Not a provider API contract. Verify version/title via abstract page.
@@ -1159,7 +1159,7 @@
   url: https://artificialanalysis.ai/
   source_type: practitioner
   status: checked
-  last_checked: 2026-07-11
+  last_checked: 2026-07-25
   claim_scope: External source cited in the catalog (README refs ~3).
   replacement_url: none
   notes: Practitioner resource. Cross-check against primary papers or official docs for production claims.
@@ -1169,7 +1169,7 @@
   url: https://www.promptingguide.ai/
   source_type: practitioner
   status: checked
-  last_checked: 2026-07-11
+  last_checked: 2026-07-25
   claim_scope: External source cited in the catalog (README refs ~1).
   replacement_url: none
   notes: Practitioner resource. Cross-check against primary papers or official docs for production claims.
@@ -1179,7 +1179,7 @@
   url: https://github.com/openai/openai-cookbook/blob/main/examples/evaluation/Building_resilient_prompts_using_an_evaluation_flywheel.md
   source_type: practitioner
   status: checked
-  last_checked: 2026-07-11
+  last_checked: 2026-07-25
   claim_scope: Evaluation, agent evals, or trace grading guidance.
   replacement_url: none
   notes: Practitioner resource. Cross-check against primary papers or official docs for production claims.
@@ -1189,7 +1189,7 @@
   url: https://gail.wharton.upenn.edu/research-and-insights/playing-pretend-expert-personas/
   source_type: practitioner
   status: checked
-  last_checked: 2026-07-11
+  last_checked: 2026-07-25
   claim_scope: Search, grounding, retrieval, or URL-context controls.
   replacement_url: none
   notes: Practitioner resource. Cross-check against primary papers or official docs for production claims.

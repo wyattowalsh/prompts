@@ -31,15 +31,19 @@ template: |
   - Downstream code must validate the parsed object before use.
 template_omission_reason: null
 model_api_controls: |
-  OpenAI Structured Outputs, Gemini structured output, Azure OpenAI structured outputs, Anthropic structured JSON/tool output where available.
+  Prefer host-enforced structured output APIs over "reply in JSON" prose alone: OpenAI Structured Outputs,
+  Google Gemini structured outputs (JSON Schema), Azure OpenAI structured outputs, Anthropic structured outputs /
+  tool-constrained JSON where available, and xAI structured outputs. Use the provider's supported schema subset;
+  validate parsed objects in application code before side effects.
 cost_latency: "low to moderate; schema compilation or strict mode can add overhead."
 failure_modes: |
-  unsupported schema features, refusal handling gaps, assuming all providers use the same JSON Schema subset.
+  unsupported schema features, refusal handling gaps, assuming all providers use the same JSON Schema subset,
+  treating schema-valid JSON as factually correct, missing downstream type validation.
 evidence_tier: Strong
 source_type: "official docs."
 eval_required: true
 caveat: |
-  schemas constrain shape, not truth.
+  schemas constrain shape, not truth; still separate untrusted input and verify claims before acting.
 sources:
   - title: "OpenAI structured outputs"
     url: https://developers.openai.com/api/docs/guides/structured-outputs

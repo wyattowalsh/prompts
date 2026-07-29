@@ -1,0 +1,110 @@
+{
+  "goalSlug": "prompt-catalog-research-upgrade",
+  "facts": [
+    {
+      "id": "fact-scope-a",
+      "text": "Goal expands this repo's research-backed prompt catalog (not /agents:research): refresh sources, strengthen existing recipes/patterns, and add selective new cards only when gaps are clear.",
+      "comment": "",
+      "recommendedAutomatedVerification": false,
+      "automatedVerification": false
+    },
+    {
+      "id": "fact-as-of-date",
+      "text": "Authoritative research and source freshness are evaluated as of 2026-07-25, advancing from the prior source-refresh date of 2026-07-11.",
+      "comment": "",
+      "recommendedAutomatedVerification": true,
+      "automatedVerification": true
+    },
+    {
+      "id": "fact-balanced-pillars",
+      "text": "Research effort is balanced across three pillars: (1) provider API controls and official prompting docs, (2) classic prompt-engineering primary literature, (3) agent/multi-step/context/eval workflows \u2014 so no pillar is starved.",
+      "comment": "",
+      "recommendedAutomatedVerification": false,
+      "automatedVerification": false
+    },
+    {
+      "id": "fact-priority-gap-driven",
+      "text": "Within the balanced pillars, card upgrade order is gap-driven (stale claims, weak evidence, missing jobs). There is no forced must-touch list of specific recipe/pattern IDs.",
+      "comment": "",
+      "recommendedAutomatedVerification": false,
+      "automatedVerification": false
+    },
+    {
+      "id": "fact-rewrite-cascade",
+      "text": "Edits follow a rewrite cascade: always refresh sources/evidence/API-control/safety notes; prefer recipe template and metadata upgrades; allow deeper pattern body rewrites when evidence shifted; full card rewrite only when content is wrong, misleading, or unsafe.",
+      "comment": "",
+      "recommendedAutomatedVerification": false,
+      "automatedVerification": false
+    },
+    {
+      "id": "fact-ssot-catalog-yaml",
+      "text": "Catalog content is authored only in catalog/ YAML (recipes, patterns, index, schemas). README.md and web site data are regenerated, not hand-edited for recipe/pattern bodies.",
+      "comment": "",
+      "recommendedAutomatedVerification": true,
+      "automatedVerification": true
+    },
+    {
+      "id": "fact-authority-set",
+      "text": "Authoritative sources are provider official docs, primary papers (arXiv/ACL/OpenReview), standards (e.g. OWASP LLM Top 10, NIST AI RMF), and solid surveys. Generic blogs, SEO listicles, undated community posts, and invented citations are out of bounds.",
+      "comment": "",
+      "recommendedAutomatedVerification": false,
+      "automatedVerification": false
+    },
+    {
+      "id": "fact-new-card-gate",
+      "text": "A new recipe or pattern is added only if: no existing card covers the job; at least two independent authoritative sources support it; a clear eval or safety check is stated; and the recipe vs pattern field contract is followed.",
+      "comment": "",
+      "recommendedAutomatedVerification": true,
+      "automatedVerification": true
+    },
+    {
+      "id": "fact-sources-manifest",
+      "text": "sources.yaml and source-refresh.md are updated for all new or re-checked external URLs; check_sources_manifest.py --check passes after changes.",
+      "comment": "",
+      "recommendedAutomatedVerification": true,
+      "automatedVerification": true
+    },
+    {
+      "id": "fact-no-invented-claims",
+      "text": "No invented citations, benchmarks, model names, provider behavior claims, or badge signals. Provider/model claims described as current are live-verified in the same pass.",
+      "comment": "",
+      "recommendedAutomatedVerification": false,
+      "automatedVerification": false
+    },
+    {
+      "id": "fact-research-ledger",
+      "text": "Execution writes a goal-folder research ledger under goals/prompt-catalog-research-upgrade/: gap list, source deltas, and card change log.",
+      "comment": "",
+      "recommendedAutomatedVerification": true,
+      "automatedVerification": true
+    },
+    {
+      "id": "fact-validate-regenerate",
+      "text": "After catalog content changes: pnpm catalog:validate, pnpm catalog:readme, and pnpm catalog:site-data succeed; AGENTS.md catalog/docs validation subset relevant to touched surfaces also passes.",
+      "comment": "",
+      "recommendedAutomatedVerification": true,
+      "automatedVerification": true
+    },
+    {
+      "id": "fact-out-of-scope",
+      "text": "Out of scope: upgrading /agents:research skill, inventing sources, unrelated web/UI redesign, and requiring every research gap to be closed forever.",
+      "comment": "",
+      "recommendedAutomatedVerification": false,
+      "automatedVerification": false
+    },
+    {
+      "id": "fact-thesis-preserved",
+      "text": "Catalog thesis is preserved: prompt patterns are testable interfaces (controls, contracts, evals, safety), not incantations or long chain-of-thought theater.",
+      "comment": "",
+      "recommendedAutomatedVerification": false,
+      "automatedVerification": false
+    },
+    {
+      "id": "fact-recipe-pattern-contracts",
+      "text": "Recipes keep the recipe card contract (Use for, paste zones, Copy prompt, Fill these in, Expected output, Upgrade when, safety/eval, Sources). Patterns keep pattern-note fields (Definition, Best use, Avoid when, template, controls, cost/latency, failure modes, evidence tier, sources).",
+      "comment": "",
+      "recommendedAutomatedVerification": true,
+      "automatedVerification": true
+    }
+  ]
+}

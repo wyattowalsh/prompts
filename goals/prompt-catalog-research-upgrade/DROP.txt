@@ -1,0 +1,8 @@
+goals/prompt-catalog-research-upgrade/interview.json
+goals/prompt-catalog-research-upgrade/interview-result.json
+goals/prompt-catalog-research-upgrade/facts-review.json
+goals/prompt-catalog-research-upgrade/facts-result.json
+goals/prompt-catalog-research-upgrade/plan-gate-result.json
+goals/prompt-catalog-research-upgrade/plan-gate-result.raw.json
+goals/prompt-catalog-research-upgrade/plan-gate-stderr.txt
+goals/prompt-catalog-research-upgrade/task-graph.json

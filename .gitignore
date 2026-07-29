@@ -123,3 +123,12 @@ test-results/
 .env.*
 !.env.example
 !.env.*.example
+
+# Goal setup / Plannotator session noise (durable ledgers stay tracked when added)
+goals/**/plan-gate-*.json
+goals/**/plan-gate-*.raw.json
+goals/**/plan-gate-stderr.txt
+goals/**/interview-result.json
+goals/**/facts-result.json
+goals/**/facts-review.json
+goals/**/task-graph.json
