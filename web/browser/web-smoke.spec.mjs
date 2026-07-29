@@ -67,3 +67,43 @@ test("sources page loads", async ({ page }) => {
   expect(response?.ok()).toBeTruthy();
   await expect(page.getByRole("heading", { level: 1 }).first()).toBeVisible({ timeout: 15_000 });
 });
+
+test("theme toggle persists light/dark preference", async ({ page }) => {
+  await gotoHome(page);
+  const themeGroup = page.getByRole("group", { name: "Color theme" });
+  await expect(themeGroup).toBeVisible();
+  await themeGroup.getByRole("button", { name: "Dark theme" }).click();
+  await expect(page.locator("html")).toHaveClass(/dark/);
+  const storedDark = await page.evaluate(() => localStorage.getItem("prompts-theme"));
+  expect(storedDark).toBe("dark");
+  await page.reload({ waitUntil: "domcontentloaded" });
+  await expect(page.locator("html")).toHaveClass(/dark/);
+  await page.getByRole("group", { name: "Color theme" }).getByRole("button", { name: "Light theme" }).click();
+  await expect(page.locator("html")).not.toHaveClass(/dark/);
+  const storedLight = await page.evaluate(() => localStorage.getItem("prompts-theme"));
+  expect(storedLight).toBe("light");
+});
+
+test("command palette opens via Search button and navigates to a recipe", async ({ page }) => {
+  await gotoHome(page);
+  await page.getByRole("button", { name: "Open command palette", exact: true }).click();
+  const dialog = page.getByRole("dialog", { name: "Site command palette" });
+  await expect(dialog).toBeVisible({ timeout: 5_000 });
+  const input = page.getByPlaceholder(/Jump to recipes/i);
+  await expect(input).toBeVisible({ timeout: 5_000 });
+  await input.fill("source-grounded");
+  await page.keyboard.press("Enter");
+  await expect(page).toHaveURL(/\/recipes\/source-grounded-answer\/?/, { timeout: 10_000 });
+});
+
+test("command palette opens with Meta or Control+k (cold hotkey)", async ({ page }) => {
+  await gotoHome(page);
+  // Prefer Control+k for Linux CI; Meta+k also accepted when available.
+  await page.keyboard.press("Control+k");
+  const input = page.getByPlaceholder(/Jump to recipes/i);
+  const visible = await input.isVisible().catch(() => false);
+  if (!visible) {
+    await page.keyboard.press("Meta+k");
+  }
+  await expect(page.getByPlaceholder(/Jump to recipes/i)).toBeVisible({ timeout: 5_000 });
+});
