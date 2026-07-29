@@ -1,17 +1,29 @@
 import { BookOpen, Layers, Library, Link as LinkIcon, Search } from "lucide-react";
-import { lazy, Suspense, useCallback, useEffect, useState } from "react";
+import { lazy, Suspense, useCallback, useEffect, useState, type ReactNode } from "react";
 import { Link, NavLink, Navigate, Route, Routes, useLocation } from "react-router-dom";
 import { ThemeToggle } from "../components/theme-toggle";
-import { PatternPage } from "../features/patterns/PatternPage";
-import { PatternsIndexPage } from "../features/patterns/PatternsIndexPage";
-import { HomePage } from "../features/recipes/HomePage";
-import { RecipePage } from "../features/recipes/RecipePage";
-import { RecipesIndexPage } from "../features/recipes/RecipesIndexPage";
-import { SourcesPage } from "../features/sources/SourcesPage";
-import { catalog } from "../lib/catalog";
+import { catalogMeta } from "../lib/catalog-meta";
 import { cn } from "../lib/utils";
 
 const CommandPalette = lazy(() => import("../components/CommandPalette"));
+const HomePage = lazy(() =>
+  import("../features/recipes/HomePage").then((m) => ({ default: m.HomePage }))
+);
+const RecipesIndexPage = lazy(() =>
+  import("../features/recipes/RecipesIndexPage").then((m) => ({ default: m.RecipesIndexPage }))
+);
+const RecipePage = lazy(() =>
+  import("../features/recipes/RecipePage").then((m) => ({ default: m.RecipePage }))
+);
+const PatternsIndexPage = lazy(() =>
+  import("../features/patterns/PatternsIndexPage").then((m) => ({ default: m.PatternsIndexPage }))
+);
+const PatternPage = lazy(() =>
+  import("../features/patterns/PatternPage").then((m) => ({ default: m.PatternPage }))
+);
+const SourcesPage = lazy(() =>
+  import("../features/sources/SourcesPage").then((m) => ({ default: m.SourcesPage }))
+);
 
 function GitHubMark({ size = 15 }: { size?: number }) {
   return (
@@ -27,6 +39,19 @@ function navClass({ isActive }: { isActive: boolean }) {
 
 function prefetchCommandPalette() {
   void import("../components/CommandPalette");
+}
+
+function RouteFallback() {
+  return (
+    <div className="empty-state" role="status" aria-live="polite">
+      <span className="sr-only">Loading page</span>
+      Loading…
+    </div>
+  );
+}
+
+function LazyRoute({ children }: { children: ReactNode }) {
+  return <Suspense fallback={<RouteFallback />}>{children}</Suspense>;
 }
 
 export function App() {
@@ -110,7 +135,7 @@ export function App() {
             <span className="site-mark" aria-hidden="true">
               <Library size={16} />
             </span>
-            <span className="site-title-text">{catalog.meta.title}</span>
+            <span className="site-title-text">{catalogMeta.meta.title}</span>
           </Link>
           <div className="flex flex-wrap items-center gap-2">
             <nav className="site-nav" aria-label="Site">
@@ -128,7 +153,7 @@ export function App() {
               </NavLink>
               <a
                 className="nav-link nav-github"
-                href={catalog.meta.repository_url}
+                href={catalogMeta.meta.repository_url}
                 target="_blank"
                 rel="noopener noreferrer"
               >
@@ -170,23 +195,79 @@ export function App() {
       </header>
       <main className={`shell${isHome ? " shell-home" : ""}`} id="main-content" tabIndex={-1}>
         <Routes>
-          <Route path="/" element={<HomePage />} />
+          <Route
+            path="/"
+            element={
+              <LazyRoute>
+                <HomePage />
+              </LazyRoute>
+            }
+          />
           <Route path="/recipes" element={<Navigate to="/recipes/" replace />} />
-          <Route path="/recipes/" element={<RecipesIndexPage />} />
-          <Route path="/recipes/:slug" element={<RecipePage />} />
-          <Route path="/recipes/:slug/" element={<RecipePage />} />
+          <Route
+            path="/recipes/"
+            element={
+              <LazyRoute>
+                <RecipesIndexPage />
+              </LazyRoute>
+            }
+          />
+          <Route
+            path="/recipes/:slug"
+            element={
+              <LazyRoute>
+                <RecipePage />
+              </LazyRoute>
+            }
+          />
+          <Route
+            path="/recipes/:slug/"
+            element={
+              <LazyRoute>
+                <RecipePage />
+              </LazyRoute>
+            }
+          />
           <Route path="/patterns" element={<Navigate to="/patterns/" replace />} />
-          <Route path="/patterns/" element={<PatternsIndexPage />} />
-          <Route path="/patterns/:slug" element={<PatternPage />} />
-          <Route path="/patterns/:slug/" element={<PatternPage />} />
+          <Route
+            path="/patterns/"
+            element={
+              <LazyRoute>
+                <PatternsIndexPage />
+              </LazyRoute>
+            }
+          />
+          <Route
+            path="/patterns/:slug"
+            element={
+              <LazyRoute>
+                <PatternPage />
+              </LazyRoute>
+            }
+          />
+          <Route
+            path="/patterns/:slug/"
+            element={
+              <LazyRoute>
+                <PatternPage />
+              </LazyRoute>
+            }
+          />
           <Route path="/sources" element={<Navigate to="/sources/" replace />} />
-          <Route path="/sources/" element={<SourcesPage />} />
+          <Route
+            path="/sources/"
+            element={
+              <LazyRoute>
+                <SourcesPage />
+              </LazyRoute>
+            }
+          />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
         <footer className="footer">
           <span>
-            Generated from the catalog · {catalog.counts.recipes} recipes ·{" "}
-            {catalog.counts.patterns} patterns
+            Generated from the catalog · {catalogMeta.counts.recipes} recipes ·{" "}
+            {catalogMeta.counts.patterns} patterns
           </span>
           <span className="footer-hint">
             Press{" "}

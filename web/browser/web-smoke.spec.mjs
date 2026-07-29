@@ -26,13 +26,21 @@ test("recipes index loads", async ({ page }) => {
   await expect(page.getByRole("heading", { level: 1 }).first()).toBeVisible();
 });
 
+async function gotoPath(page, path, heading) {
+  // Lazy route chunks need a settle window after SPA shell HTML returns.
+  await expect(async () => {
+    const response = await page.goto(path, { waitUntil: "domcontentloaded" });
+    expect(response?.ok()).toBeTruthy();
+    const h = heading
+      ? page.getByRole("heading", { name: heading }).first()
+      : page.getByRole("heading", { level: 1 }).first();
+    await expect(h).toBeVisible({ timeout: 2_000 });
+  }).toPass({ timeout: 20_000 });
+}
+
 test("recipe hard navigation serves deep link shell", async ({ page, context }) => {
   await context.grantPermissions(["clipboard-read", "clipboard-write"]);
-  const response = await page.goto("/recipes/source-grounded-answer/", {
-    waitUntil: "domcontentloaded"
-  });
-  expect(response?.ok()).toBeTruthy();
-  await expect(page.getByRole("heading", { level: 1 }).first()).toBeVisible({ timeout: 15_000 });
+  await gotoPath(page, "/recipes/source-grounded-answer/", /Source-Grounded Answer/i);
   // Scope to sticky actions: CopyableBlock also exposes aria-label "Copy Prompt"
   // (case-insensitive getByRole would otherwise match two buttons).
   const copyPrompt = page
@@ -57,15 +65,11 @@ test("recipe hard navigation serves deep link shell", async ({ page, context }) 
 });
 
 test("patterns index loads", async ({ page }) => {
-  const response = await page.goto("/patterns/", { waitUntil: "domcontentloaded" });
-  expect(response?.ok()).toBeTruthy();
-  await expect(page.getByRole("heading", { level: 1 }).first()).toBeVisible({ timeout: 15_000 });
+  await gotoPath(page, "/patterns/", /Pattern notes/i);
 });
 
 test("sources page loads", async ({ page }) => {
-  const response = await page.goto("/sources/", { waitUntil: "domcontentloaded" });
-  expect(response?.ok()).toBeTruthy();
-  await expect(page.getByRole("heading", { level: 1 }).first()).toBeVisible({ timeout: 15_000 });
+  await gotoPath(page, "/sources/", /^Sources$/);
 });
 
 test("theme toggle persists light/dark preference", async ({ page }) => {
