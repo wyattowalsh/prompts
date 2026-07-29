@@ -8,15 +8,26 @@
     "build": "tsc --noEmit && vite build && node scripts/spa-fallback.mjs && node scripts/emit-seo.mjs",
     "preview": "vite preview",
     "typecheck": "tsc --noEmit --pretty false",
-    "test": "node --experimental-strip-types --test src/lib/recipe-index.test.ts src/lib/clipboard.test.ts src/lib/fill-template.test.ts && node --test scripts/emit-seo.test.mjs"
+    "test": "node --experimental-strip-types --test src/lib/recipe-index.test.ts src/lib/clipboard.test.ts src/lib/fill-template.test.ts src/lib/command-index.test.ts src/lib/theme-preference.test.ts src/styles/globals-css-contract.test.ts && node --test scripts/emit-seo.test.mjs"
   },
   "dependencies": {
+    "@fontsource/dm-sans": "^5.3.0",
+    "@fontsource/ibm-plex-mono": "^5.3.0",
+    "@radix-ui/react-dialog": "^1.1.21",
+    "@radix-ui/react-slot": "^1.3.1",
+    "@tailwindcss/vite": "^4.3.3",
+    "class-variance-authority": "^0.7.1",
+    "clsx": "^2.1.1",
+    "cmdk": "^1.1.1",
     "lucide-react": "^1.24.0",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
-    "react-router-dom": "^7.6.2"
+    "react-router-dom": "^7.6.2",
+    "tailwind-merge": "^3.6.0",
+    "tailwindcss": "^4.3.3"
   },
   "devDependencies": {
+    "@types/node": "^26.1.1",
     "@types/react": "^19.1.8",
     "@types/react-dom": "^19.1.6",
     "@vitejs/plugin-react": "^4.5.2",

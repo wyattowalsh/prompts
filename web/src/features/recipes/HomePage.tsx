@@ -2,6 +2,7 @@ import { Layers, Search, X } from "lucide-react";
 import { useEffect, useMemo, useRef, useState, type CSSProperties } from "react";
 import { Link } from "react-router-dom";
 import { Badge } from "../../components/ui/Badge";
+import { Button } from "../../components/ui/Button";
 import { catalog, searchCatalog } from "../../lib/catalog";
 import { laneIcon } from "../../lib/lane-icons";
 import { buildLandingRecipeIndex, groupRecipesByLane } from "../../lib/recipe-index";
@@ -49,13 +50,13 @@ export function HomePage() {
     <>
       <section className="hero">
         <div className="hero-copy">
-          <p className="hero-kicker">Research-backed prompt catalog</p>
+          <p className="hero-kicker">Ultimate prompt-engineering catalog</p>
           <h1>{catalog.meta.title}</h1>
           <p className="hero-lede">{catalog.meta.description}</p>
           <div className="hero-meta">
             <Badge tone="accent">{catalog.counts.recipes} recipes</Badge>
             <Badge tone="muted">{catalog.counts.patterns} patterns</Badge>
-            <span className="hero-tagline">Copy · adapt · verify</span>
+            <span className="hero-tagline">Copy · adapt · verify · ⌘K to jump</span>
           </div>
         </div>
 
@@ -145,13 +146,9 @@ export function HomePage() {
           {results.recipes.length === 0 && results.patterns.length === 0 ? (
             <div className="empty-state">
               <p>No matches. Try a lane name, “eval”, “RAG”, or clear the query.</p>
-              <button
-                type="button"
-                className="ui-btn ui-btn-outline ui-btn-md"
-                onClick={() => setQuery("")}
-              >
+              <Button type="button" variant="outline" size="md" onClick={() => setQuery("")}>
                 Clear search
-              </button>
+              </Button>
             </div>
           ) : null}
         </section>

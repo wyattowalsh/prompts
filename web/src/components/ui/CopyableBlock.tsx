@@ -2,6 +2,7 @@ import { Check, Copy } from "lucide-react";
 import type { ReactNode } from "react";
 import { useMemo, useState } from "react";
 import { writeClipboardText } from "../../lib/clipboard";
+import { cn } from "../../lib/utils";
 import { Button } from "./Button";
 
 type CopyableBlockProps = {
@@ -50,14 +51,12 @@ export function CopyableBlock({
 
   return (
     <div
-      className={[
+      className={cn(
         "copyable-block",
-        compact ? "copyable-block-compact" : "",
-        emphasis === "primary" ? "copyable-block-primary" : "",
+        compact && "copyable-block-compact",
+        emphasis === "primary" && "copyable-block-primary",
         className
-      ]
-        .filter(Boolean)
-        .join(" ")}
+      )}
       data-copyable-block
     >
       <div className="copyable-block-header">
@@ -75,7 +74,7 @@ export function CopyableBlock({
           type="button"
           variant={emphasis === "primary" ? "primary" : "outline"}
           size="sm"
-          className={`copyable-block-copy${copied ? " is-copied" : ""}`}
+          className={cn("copyable-block-copy", copied && "is-copied")}
           onClick={handleCopy}
           aria-label={`${copyLabel} ${title}`}
           data-copy-state={copied ? "copied" : "idle"}
