@@ -2,10 +2,10 @@
   "name": "prompts",
   "private": true,
   "type": "module",
-  "packageManager": "pnpm@11.10.0",
+  "packageManager": "pnpm@11.11.0",
   "scripts": {
     "build": "pnpm catalog:site-data && pnpm web:build",
-    "lint": "eslint web/scripts eslint.config.js playwright.config.mjs scripts/web_analytics_report.mjs web/site.config.mjs web/browser tests/node",
+    "lint": "eslint .",
     "format:check": "prettier --check package.json pnpm-workspace.yaml vercel.json eslint.config.js prettier.config.cjs playwright.config.mjs scripts/web_analytics_report.mjs \"web/**/*.{ts,tsx,css,html,mjs}\" \"tests/node/**\"",
     "catalog:validate": "pnpm --filter @prompts/catalog-core exec node bin/catalog.mjs validate --root ../../catalog --full-counts",
     "catalog:validate:fixtures": "pnpm --filter @prompts/catalog-core exec node bin/catalog.mjs validate --root ../../catalog/fixtures",
@@ -30,6 +30,8 @@
     "js-yaml": "5.2.1",
     "markdown-link-check": "3.14.2",
     "markdownlint-cli2": "0.22.1",
-    "prettier": "3.9.4"
+    "prettier": "3.9.4",
+    "typescript": "~5.8.3",
+    "typescript-eslint": "^8.65.0"
   }
 }
