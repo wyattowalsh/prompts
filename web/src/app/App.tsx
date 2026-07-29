@@ -1,5 +1,7 @@
-import { BookOpen, Layers, Library, Link as LinkIcon } from "lucide-react";
+import { BookOpen, Layers, Library, Link as LinkIcon, Search } from "lucide-react";
+import { lazy, Suspense, useCallback, useEffect, useState } from "react";
 import { Link, NavLink, Navigate, Route, Routes, useLocation } from "react-router-dom";
+import { ThemeToggle } from "../components/theme-toggle";
 import { PatternPage } from "../features/patterns/PatternPage";
 import { PatternsIndexPage } from "../features/patterns/PatternsIndexPage";
 import { HomePage } from "../features/recipes/HomePage";
@@ -7,6 +9,9 @@ import { RecipePage } from "../features/recipes/RecipePage";
 import { RecipesIndexPage } from "../features/recipes/RecipesIndexPage";
 import { SourcesPage } from "../features/sources/SourcesPage";
 import { catalog } from "../lib/catalog";
+import { cn } from "../lib/utils";
+
+const CommandPalette = lazy(() => import("../components/CommandPalette"));
 
 function GitHubMark({ size = 15 }: { size?: number }) {
   return (
@@ -20,9 +25,79 @@ function navClass({ isActive }: { isActive: boolean }) {
   return isActive ? "nav-link is-active" : "nav-link";
 }
 
+function prefetchCommandPalette() {
+  void import("../components/CommandPalette");
+}
+
 export function App() {
   const location = useLocation();
   const isHome = location.pathname === "/";
+  const [paletteOpen, setPaletteOpen] = useState(false);
+  // Mount lazy palette only after first open (or warm prefetch) so the chunk is not on critical path.
+  const [paletteMounted, setPaletteMounted] = useState(false);
+  const onOpenChange = useCallback((open: boolean) => {
+    if (open) setPaletteMounted(true);
+    setPaletteOpen(open);
+  }, []);
+
+  useEffect(() => {
+    function onKey(event: KeyboardEvent) {
+      const target = event.target as HTMLElement | null;
+      const tag = target?.tagName?.toLowerCase();
+      const editable =
+        tag === "input" || tag === "textarea" || tag === "select" || target?.isContentEditable;
+
+      const isPaletteShortcut =
+        (event.key === "k" || event.key === "K") && (event.metaKey || event.ctrlKey);
+      if (isPaletteShortcut) {
+        event.preventDefault();
+        setPaletteMounted(true);
+        setPaletteOpen((open) => !open);
+        return;
+      }
+
+      if (event.key === "Escape" && paletteOpen) {
+        event.preventDefault();
+        setPaletteOpen(false);
+        return;
+      }
+
+      if (event.key === "/" && !editable && !event.metaKey && !event.ctrlKey && !paletteOpen) {
+        // Home owns / for search focus; elsewhere open palette
+        if (!isHome) {
+          event.preventDefault();
+          setPaletteMounted(true);
+          setPaletteOpen(true);
+        }
+      }
+    }
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [isHome, paletteOpen]);
+
+  // Warm the palette chunk after first paint (non-blocking); keep unmounted until needed.
+  useEffect(() => {
+    const warm = () => {
+      setPaletteMounted(true);
+      prefetchCommandPalette();
+    };
+    const ric = (
+      window as Window & {
+        requestIdleCallback?: (cb: () => void, opts?: { timeout: number }) => number;
+      }
+    ).requestIdleCallback;
+    if (typeof ric === "function") {
+      const id = ric(warm, { timeout: 2_500 });
+      return () => {
+        const cic = (
+          window as Window & { cancelIdleCallback?: (id: number) => void }
+        ).cancelIdleCallback;
+        if (typeof cic === "function") cic(id);
+      };
+    }
+    const t = window.setTimeout(warm, 1_200);
+    return () => window.clearTimeout(t);
+  }, []);
 
   return (
     <>
@@ -37,28 +112,60 @@ export function App() {
             </span>
             <span className="site-title-text">{catalog.meta.title}</span>
           </Link>
-          <nav className="site-nav" aria-label="Site">
-            <NavLink to="/" end className={navClass}>
-              Catalog
-            </NavLink>
-            <NavLink to="/recipes/" className={navClass}>
-              <BookOpen size={15} aria-hidden="true" /> Recipes
-            </NavLink>
-            <NavLink to="/patterns/" className={navClass}>
-              <Layers size={15} aria-hidden="true" /> Patterns
-            </NavLink>
-            <NavLink to="/sources/" className={navClass}>
-              <LinkIcon size={15} aria-hidden="true" /> Sources
-            </NavLink>
-            <a
-              className="nav-link nav-github"
-              href={catalog.meta.repository_url}
-              target="_blank"
-              rel="noopener noreferrer"
+          <div className="flex flex-wrap items-center gap-2">
+            <nav className="site-nav" aria-label="Site">
+              <NavLink to="/" end className={navClass}>
+                Catalog
+              </NavLink>
+              <NavLink to="/recipes/" className={navClass}>
+                <BookOpen size={15} aria-hidden="true" /> Recipes
+              </NavLink>
+              <NavLink to="/patterns/" className={navClass}>
+                <Layers size={15} aria-hidden="true" /> Patterns
+              </NavLink>
+              <NavLink to="/sources/" className={navClass}>
+                <LinkIcon size={15} aria-hidden="true" /> Sources
+              </NavLink>
+              <a
+                className="nav-link nav-github"
+                href={catalog.meta.repository_url}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <GitHubMark /> GitHub
+              </a>
+            </nav>
+            <button
+              type="button"
+              className={cn(
+                "inline-flex items-center gap-1.5 rounded-md border border-border bg-card px-2.5 py-1.5 text-xs font-medium text-muted-foreground shadow-sm transition-colors hover:bg-muted hover:text-foreground"
+              )}
+              onClick={() => {
+                setPaletteMounted(true);
+                setPaletteOpen(true);
+              }}
+              onMouseEnter={() => {
+                setPaletteMounted(true);
+                prefetchCommandPalette();
+              }}
+              onFocus={() => {
+                setPaletteMounted(true);
+                prefetchCommandPalette();
+              }}
+              aria-label="Open command palette"
+              title="Command palette (⌘K / Ctrl+K)"
             >
-              <GitHubMark /> GitHub
-            </a>
-          </nav>
+              <Search size={14} aria-hidden="true" />
+              <span className="hidden md:inline">Search</span>
+              <kbd className="hidden rounded border border-border bg-muted px-1 py-0.5 text-[10px] lg:inline">
+                ⌘K
+              </kbd>
+              <kbd className="hidden rounded border border-border bg-muted px-1 py-0.5 text-[10px] xl:inline">
+                Ctrl+K
+              </kbd>
+            </button>
+            <ThemeToggle />
+          </div>
         </div>
       </header>
       <main className={`shell${isHome ? " shell-home" : ""}`} id="main-content" tabIndex={-1}>
@@ -82,10 +189,19 @@ export function App() {
             {catalog.counts.patterns} patterns
           </span>
           <span className="footer-hint">
-            Press <kbd>/</kbd> to search on the catalog home
+            Press{" "}
+            <kbd className="rounded border border-border bg-muted px-1 text-xs">⌘K</kbd> /{" "}
+            <kbd className="rounded border border-border bg-muted px-1 text-xs">Ctrl+K</kbd> to
+            jump anywhere · <kbd className="rounded border border-border bg-muted px-1 text-xs">/</kbd>{" "}
+            searches on home
           </span>
         </footer>
       </main>
+      {paletteMounted ? (
+        <Suspense fallback={null}>
+          <CommandPalette open={paletteOpen} onOpenChange={onOpenChange} />
+        </Suspense>
+      ) : null}
     </>
   );
 }
