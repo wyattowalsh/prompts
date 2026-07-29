@@ -10,7 +10,7 @@ import {
   extractAllRecipes
 } from "../src/extract.js";
 import { emitPatternYaml, emitRecipeYaml } from "../src/yaml-emit.js";
-import { emitSiteData } from "../src/emit-site.js";
+import { emitSiteData, emitSiteMeta } from "../src/emit-site.js";
 import { emitReadmeFromPackage, loadShellDir } from "../src/emit-readme.js";
 import { runFidelity } from "../src/fidelity.js";
 
@@ -157,8 +157,16 @@ async function main(argv) {
       process.exit(1);
     }
     await mkdir(dirname(out), { recursive: true });
-    await writeFile(out, `${JSON.stringify(emitSiteData(pkg), null, 2)}\n`);
-    console.log(`site-data ok: ${out}`);
+    const site = emitSiteData(pkg);
+    await writeFile(out, `${JSON.stringify(site, null, 2)}\n`);
+    // Shell meta sibling: App chrome only (avoids entry-preloading full catalog JSON)
+    const metaOut = out.replace(/catalog\.json$/i, "catalog-meta.json");
+    if (metaOut !== out) {
+      await writeFile(metaOut, `${JSON.stringify(emitSiteMeta(site), null, 2)}\n`);
+      console.log(`site-data ok: ${out} + ${metaOut}`);
+    } else {
+      console.log(`site-data ok: ${out}`);
+    }
     return;
   }
 
