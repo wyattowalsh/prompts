@@ -1,0 +1,6 @@
+google fonts:
+none
+radix:
+['@radix-ui/react-dialog', '@radix-ui/react-slot']
+fontsource deps:
+['@fontsource/dm-sans', '@fontsource/ibm-plex-mono']

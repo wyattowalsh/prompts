@@ -1,0 +1,2139 @@
+{
+  "version": 6,
+  "nodes": 155,
+  "edges": 279,
+  "kinds": {
+    "V": 20,
+    "R": 51,
+    "M": 20,
+    "W": 64
+  },
+  "waves": {
+    "0": 5,
+    "A": 44,
+    "B": 61,
+    "C": 11,
+    "D": 9,
+    "E": 18,
+    "F": 7
+  },
+  "graph": [
+    {
+      "id": "W0-00",
+      "wave": "0",
+      "kind": "V",
+      "lane": "CAP",
+      "title": "Preflight main + dirty forbid list",
+      "deps": [],
+      "rv": []
+    },
+    {
+      "id": "W0-01",
+      "wave": "0",
+      "kind": "R",
+      "lane": "CAP",
+      "title": "Load RV dossier + DESIGN non-goals",
+      "deps": [
+        "W0-00"
+      ],
+      "rv": []
+    },
+    {
+      "id": "W0-02",
+      "wave": "0",
+      "kind": "R",
+      "lane": "CAP",
+      "title": "Confirm cmdk Dialog types + radix import map",
+      "deps": [
+        "W0-01"
+      ],
+      "rv": []
+    },
+    {
+      "id": "W0-03",
+      "wave": "0",
+      "kind": "R",
+      "lane": "CAP",
+      "title": "Confirm fontsource 5.3.x + family token names",
+      "deps": [
+        "W0-01"
+      ],
+      "rv": []
+    },
+    {
+      "id": "W0-04",
+      "wave": "0",
+      "kind": "M",
+      "lane": "CAP",
+      "title": "Freeze locks: Dialog, radix matrix, hotkey-before-lazy, Sources drop, Fontsource, pure theme, inventory contract",
+      "deps": [
+        "W0-02",
+        "W0-03"
+      ],
+      "rv": []
+    },
+    {
+      "id": "WA-CLS-home",
+      "wave": "A",
+      "kind": "R",
+      "lane": "INV",
+      "title": "Extract product classes: HomePage",
+      "deps": [
+        "W0-04"
+      ],
+      "rv": [
+        "RV-001"
+      ]
+    },
+    {
+      "id": "WA-CLS-ridx",
+      "wave": "A",
+      "kind": "R",
+      "lane": "INV",
+      "title": "Extract product classes: RecipesIndex + RecipeIndexList",
+      "deps": [
+        "W0-04"
+      ],
+      "rv": [
+        "RV-001"
+      ]
+    },
+    {
+      "id": "WA-CLS-rpage",
+      "wave": "A",
+      "kind": "R",
+      "lane": "INV",
+      "title": "Extract product classes: RecipePage + RecipeFillForm",
+      "deps": [
+        "W0-04"
+      ],
+      "rv": [
+        "RV-001"
+      ]
+    },
+    {
+      "id": "WA-CLS-pidx",
+      "wave": "A",
+      "kind": "R",
+      "lane": "INV",
+      "title": "Extract product classes: PatternsIndex",
+      "deps": [
+        "W0-04"
+      ],
+      "rv": [
+        "RV-001"
+      ]
+    },
+    {
+      "id": "WA-CLS-ppage",
+      "wave": "A",
+      "kind": "R",
+      "lane": "INV",
+      "title": "Extract product classes: PatternPage",
+      "deps": [
+        "W0-04"
+      ],
+      "rv": [
+        "RV-001"
+      ]
+    },
+    {
+      "id": "WA-CLS-src",
+      "wave": "A",
+      "kind": "R",
+      "lane": "INV",
+      "title": "Extract product classes: SourcesPage",
+      "deps": [
+        "W0-04"
+      ],
+      "rv": [
+        "RV-001"
+      ]
+    },
+    {
+      "id": "WA-CLS-app",
+      "wave": "A",
+      "kind": "R",
+      "lane": "INV",
+      "title": "Extract product classes: App.tsx",
+      "deps": [
+        "W0-04"
+      ],
+      "rv": [
+        "RV-001"
+      ]
+    },
+    {
+      "id": "WA-CLS-oic",
+      "wave": "A",
+      "kind": "R",
+      "lane": "INV",
+      "title": "Extract product classes: OpenInChat",
+      "deps": [
+        "W0-04"
+      ],
+      "rv": [
+        "RV-001"
+      ]
+    },
+    {
+      "id": "WA-CLS-copy",
+      "wave": "A",
+      "kind": "R",
+      "lane": "INV",
+      "title": "Extract product classes: CopyableBlock",
+      "deps": [
+        "W0-04"
+      ],
+      "rv": [
+        "RV-001"
+      ]
+    },
+    {
+      "id": "WA-CLS-btn",
+      "wave": "A",
+      "kind": "R",
+      "lane": "INV",
+      "title": "Extract product classes: Button + Badge",
+      "deps": [
+        "W0-04"
+      ],
+      "rv": [
+        "RV-001"
+      ]
+    },
+    {
+      "id": "WA-CLS-pal",
+      "wave": "A",
+      "kind": "R",
+      "lane": "INV",
+      "title": "Extract product classes: CommandPalette",
+      "deps": [
+        "W0-04"
+      ],
+      "rv": [
+        "RV-001"
+      ]
+    },
+    {
+      "id": "WA-CLS-thm",
+      "wave": "A",
+      "kind": "R",
+      "lane": "INV",
+      "title": "Extract product classes: theme-toggle",
+      "deps": [
+        "W0-04"
+      ],
+      "rv": [
+        "RV-001"
+      ]
+    },
+    {
+      "id": "WA-CSS-SEL",
+      "wave": "A",
+      "kind": "R",
+      "lane": "INV",
+      "title": "Parse selector set from globals.css",
+      "deps": [
+        "W0-04"
+      ],
+      "rv": [
+        "RV-001"
+      ]
+    },
+    {
+      "id": "WA-MISS",
+      "wave": "A",
+      "kind": "R",
+      "lane": "INV",
+      "title": "Diff used vs css with inventory contract \u2192 missing.json",
+      "deps": [
+        "WA-CLS-home",
+        "WA-CLS-ridx",
+        "WA-CLS-rpage",
+        "WA-CLS-pidx",
+        "WA-CLS-ppage",
+        "WA-CLS-src",
+        "WA-CLS-app",
+        "WA-CLS-oic",
+        "WA-CLS-copy",
+        "WA-CLS-btn",
+        "WA-CLS-pal",
+        "WA-CLS-thm",
+        "WA-CSS-SEL"
+      ],
+      "rv": [
+        "RV-001"
+      ]
+    },
+    {
+      "id": "WA-GIT-APP",
+      "wave": "A",
+      "kind": "R",
+      "lane": "INV",
+      "title": "Load HEAD app.css recovery corpus",
+      "deps": [
+        "WA-MISS"
+      ],
+      "rv": [
+        "RV-001"
+      ]
+    },
+    {
+      "id": "WA-SNIP-inline-code",
+      "wave": "A",
+      "kind": "R",
+      "lane": "INV",
+      "title": "Extract HEAD CSS snippet: inline-code",
+      "deps": [
+        "WA-GIT-APP"
+      ],
+      "rv": [
+        "RV-001"
+      ]
+    },
+    {
+      "id": "WA-SNIP-section-head-tight",
+      "wave": "A",
+      "kind": "R",
+      "lane": "INV",
+      "title": "Extract HEAD CSS snippet: section-head-tight",
+      "deps": [
+        "WA-GIT-APP"
+      ],
+      "rv": [
+        "RV-001"
+      ]
+    },
+    {
+      "id": "WA-SNIP-section-prompt",
+      "wave": "A",
+      "kind": "R",
+      "lane": "INV",
+      "title": "Extract HEAD CSS snippet: section-prompt",
+      "deps": [
+        "WA-GIT-APP"
+      ],
+      "rv": [
+        "RV-001"
+      ]
+    },
+    {
+      "id": "WA-SNIP-open-in-section",
+      "wave": "A",
+      "kind": "R",
+      "lane": "INV",
+      "title": "Extract HEAD CSS snippet: open-in-section",
+      "deps": [
+        "WA-GIT-APP"
+      ],
+      "rv": [
+        "RV-001"
+      ]
+    },
+    {
+      "id": "WA-SNIP-nav-github",
+      "wave": "A",
+      "kind": "R",
+      "lane": "INV",
+      "title": "Extract HEAD CSS snippet: nav-github",
+      "deps": [
+        "WA-GIT-APP"
+      ],
+      "rv": [
+        "RV-001"
+      ]
+    },
+    {
+      "id": "WA-SNIP-copyable-block-icon",
+      "wave": "A",
+      "kind": "R",
+      "lane": "INV",
+      "title": "Extract HEAD CSS snippet: copyable-block-icon",
+      "deps": [
+        "WA-GIT-APP"
+      ],
+      "rv": [
+        "RV-001"
+      ]
+    },
+    {
+      "id": "WA-SNIP-copyable-block-copy",
+      "wave": "A",
+      "kind": "R",
+      "lane": "INV",
+      "title": "Extract HEAD CSS snippet: copyable-block-copy",
+      "deps": [
+        "WA-GIT-APP"
+      ],
+      "rv": [
+        "RV-001"
+      ]
+    },
+    {
+      "id": "WA-SNIP-is-copied-compound",
+      "wave": "A",
+      "kind": "R",
+      "lane": "INV",
+      "title": "Extract HEAD CSS snippet: is-copied-compound",
+      "deps": [
+        "WA-GIT-APP"
+      ],
+      "rv": [
+        "RV-001"
+      ]
+    },
+    {
+      "id": "WA-SNIP-card-compact",
+      "wave": "A",
+      "kind": "R",
+      "lane": "INV",
+      "title": "Extract HEAD CSS snippet: card-compact",
+      "deps": [
+        "WA-GIT-APP"
+      ],
+      "rv": [
+        "RV-001"
+      ]
+    },
+    {
+      "id": "WA-SNIP-footer-hint",
+      "wave": "A",
+      "kind": "R",
+      "lane": "INV",
+      "title": "Extract HEAD CSS snippet: footer-hint",
+      "deps": [
+        "WA-GIT-APP"
+      ],
+      "rv": [
+        "RV-001"
+      ]
+    },
+    {
+      "id": "WA-SYNTH-hero-copy",
+      "wave": "A",
+      "kind": "R",
+      "lane": "INV",
+      "title": "Plan token-native rule for .hero-copy",
+      "deps": [
+        "WA-MISS",
+        "WA-GIT-APP"
+      ],
+      "rv": [
+        "RV-001"
+      ]
+    },
+    {
+      "id": "WA-SYNTH-after-copy",
+      "wave": "A",
+      "kind": "R",
+      "lane": "INV",
+      "title": "Plan token-native rule for .after-copy",
+      "deps": [
+        "WA-MISS",
+        "WA-GIT-APP"
+      ],
+      "rv": [
+        "RV-001"
+      ]
+    },
+    {
+      "id": "WA-SYNTH-fill-field",
+      "wave": "A",
+      "kind": "R",
+      "lane": "INV",
+      "title": "Plan token-native rule for .fill-field",
+      "deps": [
+        "WA-MISS",
+        "WA-GIT-APP"
+      ],
+      "rv": [
+        "RV-001"
+      ]
+    },
+    {
+      "id": "WA-SYNTH-site-title-text",
+      "wave": "A",
+      "kind": "R",
+      "lane": "INV",
+      "title": "Plan token-native rule for .site-title-text",
+      "deps": [
+        "WA-MISS",
+        "WA-GIT-APP"
+      ],
+      "rv": [
+        "RV-001"
+      ]
+    },
+    {
+      "id": "WA-SYNTH-ui-btn-label",
+      "wave": "A",
+      "kind": "R",
+      "lane": "INV",
+      "title": "Plan token-native rule for .ui-btn-label",
+      "deps": [
+        "WA-MISS",
+        "WA-GIT-APP"
+      ],
+      "rv": [
+        "RV-001"
+      ]
+    },
+    {
+      "id": "WA-SYNTH-provider-chip-label",
+      "wave": "A",
+      "kind": "R",
+      "lane": "INV",
+      "title": "Plan token-native rule for .provider-chip-label",
+      "deps": [
+        "WA-MISS",
+        "WA-GIT-APP"
+      ],
+      "rv": [
+        "RV-001"
+      ]
+    },
+    {
+      "id": "WA-SYNTH-recipe-workspace-output",
+      "wave": "A",
+      "kind": "R",
+      "lane": "INV",
+      "title": "Plan token-native rule for .recipe-workspace-output",
+      "deps": [
+        "WA-MISS",
+        "WA-GIT-APP"
+      ],
+      "rv": [
+        "RV-001"
+      ]
+    },
+    {
+      "id": "WA-SEED-validate",
+      "wave": "A",
+      "kind": "R",
+      "lane": "INV",
+      "title": "Validate seed recover+synth vs missing.json; CAP amend",
+      "deps": [
+        "WA-SNIP-inline-code",
+        "WA-SNIP-section-head-tight",
+        "WA-SNIP-section-prompt",
+        "WA-SNIP-open-in-section",
+        "WA-SNIP-nav-github",
+        "WA-SNIP-copyable-block-icon",
+        "WA-SNIP-copyable-block-copy",
+        "WA-SNIP-is-copied-compound",
+        "WA-SNIP-card-compact",
+        "WA-SNIP-footer-hint",
+        "WA-SYNTH-hero-copy",
+        "WA-SYNTH-after-copy",
+        "WA-SYNTH-fill-field",
+        "WA-SYNTH-site-title-text",
+        "WA-SYNTH-ui-btn-label",
+        "WA-SYNTH-provider-chip-label",
+        "WA-SYNTH-recipe-workspace-output",
+        "WA-MISS"
+      ],
+      "rv": [
+        "RV-001"
+      ]
+    },
+    {
+      "id": "WA-AUD-PAL",
+      "wave": "A",
+      "kind": "R",
+      "lane": "PAL",
+      "title": "Audit palette vs Command.Dialog API",
+      "deps": [
+        "W0-04"
+      ],
+      "rv": [
+        "RV-002",
+        "RV-004"
+      ]
+    },
+    {
+      "id": "WA-AUD-IDX",
+      "wave": "A",
+      "kind": "R",
+      "lane": "IDX",
+      "title": "Count Sources group items; Pages sources",
+      "deps": [
+        "W0-04"
+      ],
+      "rv": [
+        "RV-004"
+      ]
+    },
+    {
+      "id": "WA-AUD-THM",
+      "wave": "A",
+      "kind": "R",
+      "lane": "THM",
+      "title": "Map provider logic vs test reimplementation",
+      "deps": [
+        "W0-04"
+      ],
+      "rv": [
+        "RV-005"
+      ]
+    },
+    {
+      "id": "WA-AUD-DEP",
+      "wave": "A",
+      "kind": "R",
+      "lane": "DEP",
+      "title": "Map package.json radix vs imports",
+      "deps": [
+        "W0-04"
+      ],
+      "rv": [
+        "RV-003"
+      ]
+    },
+    {
+      "id": "WA-AUD-FNT",
+      "wave": "A",
+      "kind": "R",
+      "lane": "FNT",
+      "title": "Confirm Google CDN tags + CSS family tokens",
+      "deps": [
+        "W0-04"
+      ],
+      "rv": [
+        "RV-006"
+      ]
+    },
+    {
+      "id": "WA-AUD-SMK",
+      "wave": "A",
+      "kind": "R",
+      "lane": "SMK",
+      "title": "Audit smoke Meta-only + dialog locators",
+      "deps": [
+        "W0-04"
+      ],
+      "rv": [
+        "RV-007"
+      ]
+    },
+    {
+      "id": "WA-AUD-LAZY",
+      "wave": "A",
+      "kind": "R",
+      "lane": "SHL",
+      "title": "Map static CommandPalette import + keydown owners",
+      "deps": [
+        "W0-04"
+      ],
+      "rv": [
+        "RV-008"
+      ]
+    },
+    {
+      "id": "WA-AUD-BND",
+      "wave": "A",
+      "kind": "R",
+      "lane": "QA",
+      "title": "Baseline JS chunk sizes note",
+      "deps": [
+        "W0-04"
+      ],
+      "rv": [
+        "RV-008"
+      ]
+    },
+    {
+      "id": "WA-AUD-A11Y",
+      "wave": "A",
+      "kind": "R",
+      "lane": "PAL",
+      "title": "Focus-visible + dialog role expectations",
+      "deps": [
+        "W0-04"
+      ],
+      "rv": [
+        "RV-002",
+        "RV-004"
+      ]
+    },
+    {
+      "id": "WA-AUD-LEASE",
+      "wave": "A",
+      "kind": "R",
+      "lane": "CAP",
+      "title": "Publish file-lease map + conflict matrix",
+      "deps": [
+        "W0-04"
+      ],
+      "rv": []
+    },
+    {
+      "id": "WA-JOIN",
+      "wave": "A",
+      "kind": "M",
+      "lane": "CAP",
+      "title": "Approve missing.json + freeze dispatch; open 5 write leases",
+      "deps": [
+        "WA-SEED-validate",
+        "WA-AUD-PAL",
+        "WA-AUD-IDX",
+        "WA-AUD-THM",
+        "WA-AUD-DEP",
+        "WA-AUD-FNT",
+        "WA-AUD-SMK",
+        "WA-AUD-LAZY",
+        "WA-AUD-BND",
+        "WA-AUD-A11Y",
+        "WA-AUD-LEASE"
+      ],
+      "rv": []
+    },
+    {
+      "id": "WB-CSS-H-inline-code",
+      "wave": "B",
+      "kind": "W",
+      "lane": "CSS",
+      "title": "Port HEAD rule .inline-code into globals.css",
+      "deps": [
+        "WA-JOIN"
+      ],
+      "rv": [
+        "RV-001"
+      ]
+    },
+    {
+      "id": "WB-CSS-H-section-head-tight",
+      "wave": "B",
+      "kind": "W",
+      "lane": "CSS",
+      "title": "Port HEAD rule .section-head-tight into globals.css",
+      "deps": [
+        "WB-CSS-H-inline-code"
+      ],
+      "rv": [
+        "RV-001"
+      ]
+    },
+    {
+      "id": "WB-CSS-H-section-prompt",
+      "wave": "B",
+      "kind": "W",
+      "lane": "CSS",
+      "title": "Port HEAD rule .section-prompt into globals.css",
+      "deps": [
+        "WB-CSS-H-section-head-tight"
+      ],
+      "rv": [
+        "RV-001"
+      ]
+    },
+    {
+      "id": "WB-CSS-H-open-in-section",
+      "wave": "B",
+      "kind": "W",
+      "lane": "CSS",
+      "title": "Port HEAD rule .open-in-section into globals.css",
+      "deps": [
+        "WB-CSS-H-section-prompt"
+      ],
+      "rv": [
+        "RV-001"
+      ]
+    },
+    {
+      "id": "WB-CSS-H-nav-github",
+      "wave": "B",
+      "kind": "W",
+      "lane": "CSS",
+      "title": "Port HEAD rule .nav-github into globals.css",
+      "deps": [
+        "WB-CSS-H-open-in-section"
+      ],
+      "rv": [
+        "RV-001"
+      ]
+    },
+    {
+      "id": "WB-CSS-H-copyable-block-icon",
+      "wave": "B",
+      "kind": "W",
+      "lane": "CSS",
+      "title": "Port HEAD rule .copyable-block-icon into globals.css",
+      "deps": [
+        "WB-CSS-H-nav-github"
+      ],
+      "rv": [
+        "RV-001"
+      ]
+    },
+    {
+      "id": "WB-CSS-H-copyable-block-copy",
+      "wave": "B",
+      "kind": "W",
+      "lane": "CSS",
+      "title": "Port HEAD rule .copyable-block-copy into globals.css",
+      "deps": [
+        "WB-CSS-H-copyable-block-icon"
+      ],
+      "rv": [
+        "RV-001"
+      ]
+    },
+    {
+      "id": "WB-CSS-H-is-copied-compound",
+      "wave": "B",
+      "kind": "W",
+      "lane": "CSS",
+      "title": "Port HEAD rule .is-copied-compound into globals.css",
+      "deps": [
+        "WB-CSS-H-copyable-block-copy"
+      ],
+      "rv": [
+        "RV-001"
+      ]
+    },
+    {
+      "id": "WB-CSS-S-hero-copy",
+      "wave": "B",
+      "kind": "W",
+      "lane": "CSS",
+      "title": "Synthesize token-native .hero-copy",
+      "deps": [
+        "WB-CSS-H-is-copied-compound"
+      ],
+      "rv": [
+        "RV-001"
+      ]
+    },
+    {
+      "id": "WB-CSS-S-after-copy",
+      "wave": "B",
+      "kind": "W",
+      "lane": "CSS",
+      "title": "Synthesize token-native .after-copy",
+      "deps": [
+        "WB-CSS-S-hero-copy"
+      ],
+      "rv": [
+        "RV-001"
+      ]
+    },
+    {
+      "id": "WB-CSS-S-fill-field",
+      "wave": "B",
+      "kind": "W",
+      "lane": "CSS",
+      "title": "Synthesize token-native .fill-field",
+      "deps": [
+        "WB-CSS-S-after-copy"
+      ],
+      "rv": [
+        "RV-001"
+      ]
+    },
+    {
+      "id": "WB-CSS-S-site-title-text",
+      "wave": "B",
+      "kind": "W",
+      "lane": "CSS",
+      "title": "Synthesize token-native .site-title-text",
+      "deps": [
+        "WB-CSS-S-fill-field"
+      ],
+      "rv": [
+        "RV-001"
+      ]
+    },
+    {
+      "id": "WB-CSS-S-ui-btn-label",
+      "wave": "B",
+      "kind": "W",
+      "lane": "CSS",
+      "title": "Synthesize token-native .ui-btn-label",
+      "deps": [
+        "WB-CSS-S-site-title-text"
+      ],
+      "rv": [
+        "RV-001"
+      ]
+    },
+    {
+      "id": "WB-CSS-S-provider-chip-label",
+      "wave": "B",
+      "kind": "W",
+      "lane": "CSS",
+      "title": "Synthesize token-native .provider-chip-label",
+      "deps": [
+        "WB-CSS-S-ui-btn-label"
+      ],
+      "rv": [
+        "RV-001"
+      ]
+    },
+    {
+      "id": "WB-CSS-S-recipe-workspace-output",
+      "wave": "B",
+      "kind": "W",
+      "lane": "CSS",
+      "title": "Synthesize token-native .recipe-workspace-output",
+      "deps": [
+        "WB-CSS-S-provider-chip-label"
+      ],
+      "rv": [
+        "RV-001"
+      ]
+    },
+    {
+      "id": "WB-CSS-TOKEN",
+      "wave": "B",
+      "kind": "W",
+      "lane": "CSS",
+      "title": "Token remap pass on all new blocks",
+      "deps": [
+        "WB-CSS-S-recipe-workspace-output"
+      ],
+      "rv": [
+        "RV-001"
+      ]
+    },
+    {
+      "id": "WB-CSS-DARK",
+      "wave": "B",
+      "kind": "W",
+      "lane": "CSS",
+      "title": "Dark + reduced-motion sanity on new blocks",
+      "deps": [
+        "WB-CSS-TOKEN"
+      ],
+      "rv": [
+        "RV-001"
+      ]
+    },
+    {
+      "id": "WB-CSS-TEST",
+      "wave": "B",
+      "kind": "W",
+      "lane": "CSS",
+      "title": "Extend contract REQUIRED to recover+synth set",
+      "deps": [
+        "WB-CSS-DARK"
+      ],
+      "rv": [
+        "RV-001"
+      ]
+    },
+    {
+      "id": "WB-CSS-V",
+      "wave": "B",
+      "kind": "V",
+      "lane": "CSS",
+      "title": "Run globals contract unit test",
+      "deps": [
+        "WB-CSS-TEST"
+      ],
+      "rv": [
+        "RV-001"
+      ]
+    },
+    {
+      "id": "WB-CSS-DONE",
+      "wave": "B",
+      "kind": "M",
+      "lane": "CSS",
+      "title": "Release L-CSS",
+      "deps": [
+        "WB-CSS-V"
+      ],
+      "rv": [
+        "RV-001"
+      ]
+    },
+    {
+      "id": "WB-PAL-01",
+      "wave": "B",
+      "kind": "W",
+      "lane": "PAL",
+      "title": "Refactor root to Command.Dialog",
+      "deps": [
+        "WA-JOIN"
+      ],
+      "rv": [
+        "RV-004"
+      ]
+    },
+    {
+      "id": "WB-PAL-02",
+      "wave": "B",
+      "kind": "W",
+      "lane": "PAL",
+      "title": "Wire open/onOpenChange; default closed",
+      "deps": [
+        "WB-PAL-01"
+      ],
+      "rv": [
+        "RV-004"
+      ]
+    },
+    {
+      "id": "WB-PAL-03",
+      "wave": "B",
+      "kind": "W",
+      "lane": "PAL",
+      "title": "Set overlayClassName + contentClassName",
+      "deps": [
+        "WB-PAL-02"
+      ],
+      "rv": [
+        "RV-004"
+      ]
+    },
+    {
+      "id": "WB-PAL-04",
+      "wave": "B",
+      "kind": "W",
+      "lane": "PAL",
+      "title": "Input focus-visible ring",
+      "deps": [
+        "WB-PAL-03"
+      ],
+      "rv": [
+        "RV-002"
+      ]
+    },
+    {
+      "id": "WB-PAL-05",
+      "wave": "B",
+      "kind": "W",
+      "lane": "PAL",
+      "title": "Remove hand-rolled backdrop button",
+      "deps": [
+        "WB-PAL-04"
+      ],
+      "rv": [
+        "RV-004"
+      ]
+    },
+    {
+      "id": "WB-PAL-06",
+      "wave": "B",
+      "kind": "W",
+      "lane": "PAL",
+      "title": "Preserve shouldFilter=false + local filter",
+      "deps": [
+        "WB-PAL-05"
+      ],
+      "rv": [
+        "RV-004"
+      ]
+    },
+    {
+      "id": "WB-PAL-07",
+      "wave": "B",
+      "kind": "W",
+      "lane": "PAL",
+      "title": "Flag/remove window keydown (prepare SHL handoff)",
+      "deps": [
+        "WB-PAL-06"
+      ],
+      "rv": [
+        "RV-007",
+        "RV-008"
+      ]
+    },
+    {
+      "id": "WB-PAL-08",
+      "wave": "B",
+      "kind": "V",
+      "lane": "PAL",
+      "title": "typecheck CommandPalette module",
+      "deps": [
+        "WB-PAL-07"
+      ],
+      "rv": [
+        "RV-002",
+        "RV-004"
+      ]
+    },
+    {
+      "id": "WB-PAL-DONE",
+      "wave": "B",
+      "kind": "M",
+      "lane": "PAL",
+      "title": "Release L-PAL-UI",
+      "deps": [
+        "WB-PAL-08"
+      ],
+      "rv": [
+        "RV-002",
+        "RV-004"
+      ]
+    },
+    {
+      "id": "WB-IDX-01",
+      "wave": "B",
+      "kind": "W",
+      "lane": "IDX",
+      "title": "Remove collectSources implementation",
+      "deps": [
+        "WA-JOIN"
+      ],
+      "rv": [
+        "RV-004"
+      ]
+    },
+    {
+      "id": "WB-IDX-02",
+      "wave": "B",
+      "kind": "W",
+      "lane": "IDX",
+      "title": "Stop emitting Sources group items",
+      "deps": [
+        "WB-IDX-01"
+      ],
+      "rv": [
+        "RV-004"
+      ]
+    },
+    {
+      "id": "WB-IDX-03",
+      "wave": "B",
+      "kind": "W",
+      "lane": "IDX",
+      "title": "Keep Pages Sources entry",
+      "deps": [
+        "WB-IDX-02"
+      ],
+      "rv": [
+        "RV-004"
+      ]
+    },
+    {
+      "id": "WB-IDX-04",
+      "wave": "B",
+      "kind": "W",
+      "lane": "IDX",
+      "title": "Simplify onSelect paths if needed",
+      "deps": [
+        "WB-IDX-03"
+      ],
+      "rv": [
+        "RV-004"
+      ]
+    },
+    {
+      "id": "WB-IDX-05",
+      "wave": "B",
+      "kind": "W",
+      "lane": "IDX",
+      "title": "Unit: Sources group length === 0",
+      "deps": [
+        "WB-IDX-04"
+      ],
+      "rv": [
+        "RV-004"
+      ]
+    },
+    {
+      "id": "WB-IDX-06",
+      "wave": "B",
+      "kind": "W",
+      "lane": "IDX",
+      "title": "Unit: recipe/pattern counts + pages include /sources/",
+      "deps": [
+        "WB-IDX-05"
+      ],
+      "rv": [
+        "RV-004"
+      ]
+    },
+    {
+      "id": "WB-IDX-07",
+      "wave": "B",
+      "kind": "V",
+      "lane": "IDX",
+      "title": "command-index tests green",
+      "deps": [
+        "WB-IDX-06"
+      ],
+      "rv": [
+        "RV-004"
+      ]
+    },
+    {
+      "id": "WB-IDX-DONE",
+      "wave": "B",
+      "kind": "M",
+      "lane": "IDX",
+      "title": "Release L-IDX",
+      "deps": [
+        "WB-IDX-07"
+      ],
+      "rv": [
+        "RV-004"
+      ]
+    },
+    {
+      "id": "WB-THM-01",
+      "wave": "B",
+      "kind": "W",
+      "lane": "THM",
+      "title": "Create web/src/lib/theme.ts skeleton",
+      "deps": [
+        "WA-JOIN"
+      ],
+      "rv": [
+        "RV-005"
+      ]
+    },
+    {
+      "id": "WB-THM-02",
+      "wave": "B",
+      "kind": "W",
+      "lane": "THM",
+      "title": "Export THEME_STORAGE_KEY=prompts-theme",
+      "deps": [
+        "WB-THM-01"
+      ],
+      "rv": [
+        "RV-005"
+      ]
+    },
+    {
+      "id": "WB-THM-03",
+      "wave": "B",
+      "kind": "W",
+      "lane": "THM",
+      "title": "Implement parseThemePreference",
+      "deps": [
+        "WB-THM-02"
+      ],
+      "rv": [
+        "RV-005"
+      ]
+    },
+    {
+      "id": "WB-THM-04",
+      "wave": "B",
+      "kind": "W",
+      "lane": "THM",
+      "title": "Implement resolveTheme",
+      "deps": [
+        "WB-THM-03"
+      ],
+      "rv": [
+        "RV-005"
+      ]
+    },
+    {
+      "id": "WB-THM-05",
+      "wave": "B",
+      "kind": "W",
+      "lane": "THM",
+      "title": "Implement read/write storage helpers",
+      "deps": [
+        "WB-THM-04"
+      ],
+      "rv": [
+        "RV-005"
+      ]
+    },
+    {
+      "id": "WB-THM-06",
+      "wave": "B",
+      "kind": "W",
+      "lane": "THM",
+      "title": "Refactor ThemeProvider to import theme.ts",
+      "deps": [
+        "WB-THM-05"
+      ],
+      "rv": [
+        "RV-005"
+      ]
+    },
+    {
+      "id": "WB-THM-07",
+      "wave": "B",
+      "kind": "W",
+      "lane": "THM",
+      "title": "Rewrite theme-preference tests to import theme.ts",
+      "deps": [
+        "WB-THM-05"
+      ],
+      "rv": [
+        "RV-005"
+      ]
+    },
+    {
+      "id": "WB-THM-08",
+      "wave": "B",
+      "kind": "V",
+      "lane": "THM",
+      "title": "Assert key constant equals prompts-theme",
+      "deps": [
+        "WB-THM-07"
+      ],
+      "rv": [
+        "RV-005"
+      ]
+    },
+    {
+      "id": "WB-THM-09",
+      "wave": "B",
+      "kind": "V",
+      "lane": "THM",
+      "title": "Theme unit tests green",
+      "deps": [
+        "WB-THM-06",
+        "WB-THM-08"
+      ],
+      "rv": [
+        "RV-005"
+      ]
+    },
+    {
+      "id": "WB-THM-DONE",
+      "wave": "B",
+      "kind": "M",
+      "lane": "THM",
+      "title": "Release L-THEME",
+      "deps": [
+        "WB-THM-09"
+      ],
+      "rv": [
+        "RV-005"
+      ]
+    },
+    {
+      "id": "WB-DEP-01",
+      "wave": "B",
+      "kind": "W",
+      "lane": "DEP",
+      "title": "Remove @radix-ui/react-dropdown-menu",
+      "deps": [
+        "WA-JOIN"
+      ],
+      "rv": [
+        "RV-003"
+      ]
+    },
+    {
+      "id": "WB-DEP-02",
+      "wave": "B",
+      "kind": "W",
+      "lane": "DEP",
+      "title": "Remove @radix-ui/react-toggle-group",
+      "deps": [
+        "WB-DEP-01"
+      ],
+      "rv": [
+        "RV-003"
+      ]
+    },
+    {
+      "id": "WB-DEP-03",
+      "wave": "B",
+      "kind": "W",
+      "lane": "DEP",
+      "title": "Remove @radix-ui/react-tooltip",
+      "deps": [
+        "WB-DEP-02"
+      ],
+      "rv": [
+        "RV-003"
+      ]
+    },
+    {
+      "id": "WB-DEP-04",
+      "wave": "B",
+      "kind": "V",
+      "lane": "DEP",
+      "title": "KEEP dialog + slot in package.json",
+      "deps": [
+        "WB-DEP-03"
+      ],
+      "rv": [
+        "RV-003"
+      ]
+    },
+    {
+      "id": "WB-FNT-01",
+      "wave": "B",
+      "kind": "W",
+      "lane": "FNT",
+      "title": "Add @fontsource/dm-sans@^5.3.0",
+      "deps": [
+        "WB-DEP-04"
+      ],
+      "rv": [
+        "RV-006"
+      ]
+    },
+    {
+      "id": "WB-FNT-02",
+      "wave": "B",
+      "kind": "W",
+      "lane": "FNT",
+      "title": "Add @fontsource/ibm-plex-mono@^5.3.0",
+      "deps": [
+        "WB-FNT-01"
+      ],
+      "rv": [
+        "RV-006"
+      ]
+    },
+    {
+      "id": "WB-PKG-01",
+      "wave": "B",
+      "kind": "V",
+      "lane": "DEP",
+      "title": "SINGLE root pnpm install",
+      "deps": [
+        "WB-FNT-02"
+      ],
+      "rv": [
+        "RV-003",
+        "RV-006"
+      ]
+    },
+    {
+      "id": "WB-FNT-03",
+      "wave": "B",
+      "kind": "W",
+      "lane": "FNT",
+      "title": "Import dm-sans weights in main.tsx before CSS",
+      "deps": [
+        "WB-PKG-01"
+      ],
+      "rv": [
+        "RV-006"
+      ]
+    },
+    {
+      "id": "WB-FNT-04",
+      "wave": "B",
+      "kind": "W",
+      "lane": "FNT",
+      "title": "Import ibm-plex-mono weights in main.tsx",
+      "deps": [
+        "WB-FNT-03"
+      ],
+      "rv": [
+        "RV-006"
+      ]
+    },
+    {
+      "id": "WB-FNT-05",
+      "wave": "B",
+      "kind": "W",
+      "lane": "FNT",
+      "title": "Remove Google preconnects from index.html",
+      "deps": [
+        "WB-FNT-04"
+      ],
+      "rv": [
+        "RV-006"
+      ]
+    },
+    {
+      "id": "WB-FNT-06",
+      "wave": "B",
+      "kind": "W",
+      "lane": "FNT",
+      "title": "Remove Google stylesheet from index.html",
+      "deps": [
+        "WB-FNT-05"
+      ],
+      "rv": [
+        "RV-006"
+      ]
+    },
+    {
+      "id": "WB-FNT-07",
+      "wave": "B",
+      "kind": "V",
+      "lane": "FNT",
+      "title": "Grep: no fonts.googleapis/gstatic; families intact",
+      "deps": [
+        "WB-FNT-06"
+      ],
+      "rv": [
+        "RV-006"
+      ]
+    },
+    {
+      "id": "WB-DEP-DONE",
+      "wave": "B",
+      "kind": "M",
+      "lane": "DEP",
+      "title": "Release L-PKG + L-FNT",
+      "deps": [
+        "WB-FNT-07"
+      ],
+      "rv": [
+        "RV-003",
+        "RV-006"
+      ]
+    },
+    {
+      "id": "WB-JOIN",
+      "wave": "B",
+      "kind": "M",
+      "lane": "CAP",
+      "title": "Join B lanes; publish hotkey handoff + lease re-acquire notes",
+      "deps": [
+        "WB-CSS-DONE",
+        "WB-PAL-DONE",
+        "WB-IDX-DONE",
+        "WB-THM-DONE",
+        "WB-DEP-DONE"
+      ],
+      "rv": []
+    },
+    {
+      "id": "WC-01",
+      "wave": "C",
+      "kind": "W",
+      "lane": "SHL",
+      "title": "Hoist meta/ctrl+k + Esc-when-open into App",
+      "deps": [
+        "WB-JOIN"
+      ],
+      "rv": [
+        "RV-007",
+        "RV-008"
+      ]
+    },
+    {
+      "id": "WC-02",
+      "wave": "C",
+      "kind": "W",
+      "lane": "SHL",
+      "title": "Re-acquire L-PAL-UI; strip palette window keydown",
+      "deps": [
+        "WC-01",
+        "WB-PAL-DONE"
+      ],
+      "rv": [
+        "RV-007",
+        "RV-008"
+      ]
+    },
+    {
+      "id": "WC-03",
+      "wave": "C",
+      "kind": "W",
+      "lane": "SHL",
+      "title": "Dual shortcut in button title",
+      "deps": [
+        "WC-01"
+      ],
+      "rv": [
+        "RV-007"
+      ]
+    },
+    {
+      "id": "WC-04",
+      "wave": "C",
+      "kind": "W",
+      "lane": "SHL",
+      "title": "Dual shortcut in visible kbd",
+      "deps": [
+        "WC-03"
+      ],
+      "rv": [
+        "RV-007"
+      ]
+    },
+    {
+      "id": "WC-05",
+      "wave": "C",
+      "kind": "W",
+      "lane": "SHL",
+      "title": "Dual shortcut in footer-hint if present",
+      "deps": [
+        "WC-04"
+      ],
+      "rv": [
+        "RV-007"
+      ]
+    },
+    {
+      "id": "WC-06",
+      "wave": "C",
+      "kind": "W",
+      "lane": "SHL",
+      "title": "Prefetch palette on Search hover/focus",
+      "deps": [
+        "WC-01"
+      ],
+      "rv": [
+        "RV-008"
+      ]
+    },
+    {
+      "id": "WC-07",
+      "wave": "C",
+      "kind": "W",
+      "lane": "SHL",
+      "title": "Optional idle prefetch after first paint",
+      "deps": [
+        "WC-06"
+      ],
+      "rv": [
+        "RV-008"
+      ]
+    },
+    {
+      "id": "WC-08",
+      "wave": "C",
+      "kind": "W",
+      "lane": "SHL",
+      "title": "React.lazy CommandPalette + default export wrapper if needed",
+      "deps": [
+        "WC-01",
+        "WC-02"
+      ],
+      "rv": [
+        "RV-008"
+      ]
+    },
+    {
+      "id": "WC-09",
+      "wave": "C",
+      "kind": "W",
+      "lane": "SHL",
+      "title": "Suspense boundary around palette",
+      "deps": [
+        "WC-08"
+      ],
+      "rv": [
+        "RV-008"
+      ]
+    },
+    {
+      "id": "WC-10",
+      "wave": "C",
+      "kind": "V",
+      "lane": "SHL",
+      "title": "typecheck App + palette",
+      "deps": [
+        "WC-05",
+        "WC-07",
+        "WC-09"
+      ],
+      "rv": [
+        "RV-007",
+        "RV-008"
+      ]
+    },
+    {
+      "id": "WC-DONE",
+      "wave": "C",
+      "kind": "M",
+      "lane": "SHL",
+      "title": "Release L-APP (+ L-PAL-UI if held)",
+      "deps": [
+        "WC-10"
+      ],
+      "rv": []
+    },
+    {
+      "id": "WD-01",
+      "wave": "D",
+      "kind": "W",
+      "lane": "SMK",
+      "title": "Open palette via Search/command-palette button",
+      "deps": [
+        "WC-DONE"
+      ],
+      "rv": [
+        "RV-007",
+        "RV-008"
+      ]
+    },
+    {
+      "id": "WD-02",
+      "wave": "D",
+      "kind": "W",
+      "lane": "SMK",
+      "title": "Assert dialog role or placeholder input visible",
+      "deps": [
+        "WD-01"
+      ],
+      "rv": [
+        "RV-004",
+        "RV-008"
+      ]
+    },
+    {
+      "id": "WD-03",
+      "wave": "D",
+      "kind": "W",
+      "lane": "SMK",
+      "title": "Keyboard path Meta+k OR Control+k",
+      "deps": [
+        "WD-02"
+      ],
+      "rv": [
+        "RV-007"
+      ]
+    },
+    {
+      "id": "WD-04",
+      "wave": "D",
+      "kind": "W",
+      "lane": "SMK",
+      "title": "Cold hotkey: reload then open without button first",
+      "deps": [
+        "WD-03"
+      ],
+      "rv": [
+        "RV-007",
+        "RV-008"
+      ]
+    },
+    {
+      "id": "WD-05",
+      "wave": "D",
+      "kind": "W",
+      "lane": "SMK",
+      "title": "Navigate to recipe via palette query",
+      "deps": [
+        "WD-04"
+      ],
+      "rv": [
+        "RV-004"
+      ]
+    },
+    {
+      "id": "WD-06",
+      "wave": "D",
+      "kind": "W",
+      "lane": "SMK",
+      "title": "Keep theme persist test",
+      "deps": [
+        "WD-05"
+      ],
+      "rv": [
+        "RV-005"
+      ]
+    },
+    {
+      "id": "WD-07",
+      "wave": "D",
+      "kind": "W",
+      "lane": "SMK",
+      "title": "Keep route + copy-prompt tests",
+      "deps": [
+        "WD-06"
+      ],
+      "rv": []
+    },
+    {
+      "id": "WD-08",
+      "wave": "D",
+      "kind": "V",
+      "lane": "SMK",
+      "title": "pnpm web:test:browser",
+      "deps": [
+        "WD-07"
+      ],
+      "rv": []
+    },
+    {
+      "id": "WD-DONE",
+      "wave": "D",
+      "kind": "M",
+      "lane": "SMK",
+      "title": "Release L-SMOKE",
+      "deps": [
+        "WD-08"
+      ],
+      "rv": []
+    },
+    {
+      "id": "WE-TYPE",
+      "wave": "E",
+      "kind": "V",
+      "lane": "QA",
+      "title": "web typecheck",
+      "deps": [
+        "WC-DONE",
+        "WB-THM-DONE",
+        "WB-CSS-DONE",
+        "WB-PAL-DONE",
+        "WB-IDX-DONE"
+      ],
+      "rv": []
+    },
+    {
+      "id": "WE-UNIT",
+      "wave": "E",
+      "kind": "V",
+      "lane": "QA",
+      "title": "web unit tests",
+      "deps": [
+        "WB-CSS-DONE",
+        "WB-PAL-DONE",
+        "WB-IDX-DONE",
+        "WB-THM-DONE"
+      ],
+      "rv": []
+    },
+    {
+      "id": "WE-BUILD",
+      "wave": "E",
+      "kind": "V",
+      "lane": "QA",
+      "title": "pnpm build",
+      "deps": [
+        "WB-DEP-DONE",
+        "WC-DONE",
+        "WB-CSS-DONE"
+      ],
+      "rv": []
+    },
+    {
+      "id": "WE-CSSDIST",
+      "wave": "E",
+      "kind": "V",
+      "lane": "QA",
+      "title": "dist CSS selector audit vs REQUIRED",
+      "deps": [
+        "WE-BUILD"
+      ],
+      "rv": [
+        "RV-001"
+      ]
+    },
+    {
+      "id": "WE-BROWSER",
+      "wave": "E",
+      "kind": "V",
+      "lane": "QA",
+      "title": "Playwright full",
+      "deps": [
+        "WD-DONE",
+        "WE-BUILD"
+      ],
+      "rv": []
+    },
+    {
+      "id": "WE-TRUTH",
+      "wave": "E",
+      "kind": "V",
+      "lane": "QA",
+      "title": "truth-check fonts + radix package set",
+      "deps": [
+        "WE-BUILD"
+      ],
+      "rv": [
+        "RV-003",
+        "RV-006"
+      ]
+    },
+    {
+      "id": "WE-INV",
+      "wave": "E",
+      "kind": "V",
+      "lane": "QA",
+      "title": "re-inventory missing-after=[]",
+      "deps": [
+        "WB-CSS-DONE",
+        "WE-BUILD"
+      ],
+      "rv": [
+        "RV-001"
+      ]
+    },
+    {
+      "id": "WE-BUNDLE",
+      "wave": "E",
+      "kind": "V",
+      "lane": "QA",
+      "title": "record post-lazy JS sizes vs baseline",
+      "deps": [
+        "WE-BUILD"
+      ],
+      "rv": [
+        "RV-008"
+      ]
+    },
+    {
+      "id": "WE-HOTKEY",
+      "wave": "E",
+      "kind": "V",
+      "lane": "QA",
+      "title": "Prove cold Meta|Ctrl+K opens palette",
+      "deps": [
+        "WE-BROWSER"
+      ],
+      "rv": [
+        "RV-007",
+        "RV-008"
+      ]
+    },
+    {
+      "id": "WE-DESIGN",
+      "wave": "E",
+      "kind": "W",
+      "lane": "CAP",
+      "title": "DESIGN.md: Dialog, Fontsource, shortcuts, no Google CDN",
+      "deps": [
+        "WB-FNT-06",
+        "WC-09",
+        "WB-PAL-01"
+      ],
+      "rv": []
+    },
+    {
+      "id": "WE-RV01",
+      "wave": "E",
+      "kind": "M",
+      "lane": "CAP",
+      "title": "Close RV-001 evidence pack",
+      "deps": [
+        "WE-CSSDIST",
+        "WE-INV",
+        "WE-UNIT"
+      ],
+      "rv": [
+        "RV-001"
+      ]
+    },
+    {
+      "id": "WE-RV02",
+      "wave": "E",
+      "kind": "M",
+      "lane": "CAP",
+      "title": "Close RV-002 evidence pack",
+      "deps": [
+        "WE-BROWSER",
+        "WB-PAL-DONE"
+      ],
+      "rv": [
+        "RV-002"
+      ]
+    },
+    {
+      "id": "WE-RV03",
+      "wave": "E",
+      "kind": "M",
+      "lane": "CAP",
+      "title": "Close RV-003 evidence pack",
+      "deps": [
+        "WE-TRUTH"
+      ],
+      "rv": [
+        "RV-003"
+      ]
+    },
+    {
+      "id": "WE-RV04",
+      "wave": "E",
+      "kind": "M",
+      "lane": "CAP",
+      "title": "Close RV-004 evidence pack",
+      "deps": [
+        "WE-UNIT",
+        "WE-BROWSER"
+      ],
+      "rv": [
+        "RV-004"
+      ]
+    },
+    {
+      "id": "WE-RV05",
+      "wave": "E",
+      "kind": "M",
+      "lane": "CAP",
+      "title": "Close RV-005 evidence pack",
+      "deps": [
+        "WE-UNIT",
+        "WE-BROWSER"
+      ],
+      "rv": [
+        "RV-005"
+      ]
+    },
+    {
+      "id": "WE-RV06",
+      "wave": "E",
+      "kind": "M",
+      "lane": "CAP",
+      "title": "Close RV-006 evidence pack",
+      "deps": [
+        "WE-TRUTH"
+      ],
+      "rv": [
+        "RV-006"
+      ]
+    },
+    {
+      "id": "WE-RV07",
+      "wave": "E",
+      "kind": "M",
+      "lane": "CAP",
+      "title": "Close RV-007 evidence pack",
+      "deps": [
+        "WE-BROWSER",
+        "WE-HOTKEY"
+      ],
+      "rv": [
+        "RV-007"
+      ]
+    },
+    {
+      "id": "WE-RV08",
+      "wave": "E",
+      "kind": "M",
+      "lane": "CAP",
+      "title": "Close RV-008 evidence pack",
+      "deps": [
+        "WE-BUILD",
+        "WE-BROWSER",
+        "WE-BUNDLE",
+        "WE-HOTKEY"
+      ],
+      "rv": [
+        "RV-008"
+      ]
+    },
+    {
+      "id": "WF-01",
+      "wave": "F",
+      "kind": "R",
+      "lane": "CAP",
+      "title": "Independent re-inventory under contract",
+      "deps": [
+        "WE-RV01",
+        "WE-RV02",
+        "WE-RV03",
+        "WE-RV04",
+        "WE-RV05",
+        "WE-RV06",
+        "WE-RV07",
+        "WE-RV08"
+      ],
+      "rv": [
+        "RV-001"
+      ]
+    },
+    {
+      "id": "WF-02",
+      "wave": "F",
+      "kind": "R",
+      "lane": "CAP",
+      "title": "Grep residual Google fonts + unused radix",
+      "deps": [
+        "WE-RV01",
+        "WE-RV02",
+        "WE-RV03",
+        "WE-RV04",
+        "WE-RV05",
+        "WE-RV06",
+        "WE-RV07",
+        "WE-RV08"
+      ],
+      "rv": [
+        "RV-003",
+        "RV-006"
+      ]
+    },
+    {
+      "id": "WF-03",
+      "wave": "F",
+      "kind": "R",
+      "lane": "CAP",
+      "title": "Confirm Sources group empty in index",
+      "deps": [
+        "WE-RV01",
+        "WE-RV02",
+        "WE-RV03",
+        "WE-RV04",
+        "WE-RV05",
+        "WE-RV06",
+        "WE-RV07",
+        "WE-RV08"
+      ],
+      "rv": [
+        "RV-004"
+      ]
+    },
+    {
+      "id": "WF-04",
+      "wave": "F",
+      "kind": "R",
+      "lane": "CAP",
+      "title": "Confirm App hotkeys + no static palette import",
+      "deps": [
+        "WE-RV01",
+        "WE-RV02",
+        "WE-RV03",
+        "WE-RV04",
+        "WE-RV05",
+        "WE-RV06",
+        "WE-RV07",
+        "WE-RV08"
+      ],
+      "rv": [
+        "RV-007",
+        "RV-008"
+      ]
+    },
+    {
+      "id": "WF-05",
+      "wave": "F",
+      "kind": "R",
+      "lane": "CAP",
+      "title": "Confirm theme tests import theme.ts",
+      "deps": [
+        "WE-RV01",
+        "WE-RV02",
+        "WE-RV03",
+        "WE-RV04",
+        "WE-RV05",
+        "WE-RV06",
+        "WE-RV07",
+        "WE-RV08"
+      ],
+      "rv": [
+        "RV-005"
+      ]
+    },
+    {
+      "id": "WF-06",
+      "wave": "F",
+      "kind": "M",
+      "lane": "CAP",
+      "title": "Skeptic pass or reopen implicated nodes only",
+      "deps": [
+        "WF-01",
+        "WF-02",
+        "WF-03",
+        "WF-04",
+        "WF-05"
+      ],
+      "rv": []
+    },
+    {
+      "id": "WE-CLOSE",
+      "wave": "F",
+      "kind": "M",
+      "lane": "CAP",
+      "title": "All RVs closed + skeptic green",
+      "deps": [
+        "WF-06",
+        "WE-RV01",
+        "WE-RV02",
+        "WE-RV03",
+        "WE-RV04",
+        "WE-RV05",
+        "WE-RV06",
+        "WE-RV07",
+        "WE-RV08"
+      ],
+      "rv": []
+    }
+  ]
+}

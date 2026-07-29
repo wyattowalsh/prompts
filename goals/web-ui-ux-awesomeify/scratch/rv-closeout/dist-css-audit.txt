@@ -1,0 +1,19 @@
+all seed selectors present in dist CSS
+OK .open-in-chat
+OK .inline-code
+OK .section-head-tight
+OK .section-prompt
+OK .open-in-section
+OK .nav-github
+OK .copyable-block-icon
+OK .copyable-block-copy
+OK .hero-copy
+OK .after-copy
+OK .fill-field
+OK .site-title-text
+OK .ui-btn-label
+OK .provider-chip-label
+OK .recipe-workspace-output
+OK .footer-hint
+OK .recipe-card
+OK .fill-form

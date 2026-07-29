@@ -1,0 +1,75 @@
+# Hyperfine task graph mirror for web-ui-ux-awesomeify
+# See plan.md for full detail. max_write_concurrency: 8
+
+version: 2
+goalSlug: web-ui-ux-awesomeify
+max_write_concurrency: 8
+waves:
+  A:
+    name: audit-baseline
+    parallel: max_readonly
+    tasks: [T-A00, T-A01, T-A02, T-A03, T-A04, T-A05, T-A06, T-A07, T-A08]
+  B:
+    name: synthesis
+    parallel: false
+    tasks: [T-B01, T-B02, T-B03]
+  C:
+    name: tooling
+    parallel: false
+    tasks: [T-TOOL-01, T-TOOL-02, T-TOOL-03, T-TOOL-04, T-TOOL-05, T-TOOL-06, T-TOOL-07]
+  D:
+    name: primitives
+    parallel: false
+    tasks: [T-SYS-01, T-SYS-02, T-SYS-03, T-SYS-04, T-SYS-05]
+  E:
+    name: shell-palette
+    parallel: false
+    tasks: [T-SHELL-01, T-SHELL-02, T-SHELL-03, T-PALETTE-01, T-PALETTE-02, T-SHELL-04]
+  F:
+    name: surfaces
+    parallel: true
+    max_writers: 5
+    tasks: [T-SURF-HOME, T-SURF-RIDX, T-SURF-RECIPE, T-SURF-PATT, T-SURF-SRC, T-SURF-OIC]
+  G:
+    name: harden
+    parallel: true
+    tasks: [T-MOTION-01, T-A11Y-01, T-RESP-01, T-EMPTY-01]
+  H:
+    name: legacy-removal
+    parallel: false
+    tasks: [T-LEG-01, T-LEG-02, T-LEG-03]
+  I:
+    name: proof-quality
+    parallel: true
+    tasks: [T-QA-UNIT, T-QA-TYPE, T-QA-BUILD, T-QA-SMOKE, T-QA-PALETTE, T-QA-THEME, T-QA-SHOTS, T-QA-SCAN, T-QA-SEO, T-QA-GATES]
+  J:
+    name: docs-close
+    parallel: false
+    tasks: [T-DOC-01, T-DOC-02, T-CLOSE]
+
+locks:
+  L-PKG: ["web/package.json", "pnpm-lock.yaml"]
+  L-CFG: ["web/vite.config.ts", "web/tsconfig.json", "web/tsconfig.node.json", "web/components.json"]
+  L-CSS: ["web/src/styles/"]
+  L-UI: ["web/src/components/ui/"]
+  L-APP: ["web/src/app/App.tsx", "web/src/main.tsx"]
+  L-HOME: ["web/src/features/recipes/HomePage.tsx"]
+  L-RIDX: ["web/src/features/recipes/RecipesIndexPage.tsx", "web/src/features/recipes/RecipeIndexList.tsx"]
+  L-RECIPE: ["web/src/features/recipes/RecipePage.tsx", "web/src/features/recipes/RecipeFillForm.tsx"]
+  L-PATT: ["web/src/features/patterns/"]
+  L-SRC: ["web/src/features/sources/SourcesPage.tsx"]
+  L-PAL: ["web/src/components/CommandPalette.tsx"]
+  L-DOC: ["DESIGN.md"]
+
+deps_allowlist:
+  - react
+  - react-dom
+  - react-router-dom
+  - lucide-react
+  - tailwindcss
+  - "@tailwindcss/vite"
+  - class-variance-authority
+  - clsx
+  - tailwind-merge
+  # theme helper (next-themes or equivalent)
+  # shadcn/radix peers installed by CLI

@@ -1,0 +1,237 @@
+{
+  "stage": "interview",
+  "title": "Ultimate catalog UI/UX awesomeify",
+  "goalSlug": "web-ui-ux-awesomeify",
+  "questions": [
+    {
+      "id": "design-thesis",
+      "prompt": "Confirm the design thesis for this goal.",
+      "description": "From grill + /design skill. This is a product/tool catalog surface (not marketing SaaS): premium technical register, balanced density, premium micro-motion, distinctive type + mono prompts. Signature move: command palette + refined recipe workspace that feels like the definitive prompt-engineering handbook.",
+      "answerMode": "single-custom",
+      "recommendedAnswer": "Accept thesis as written (ultimate PE guide/catalog; premium technical; balanced density; palette+browse; shadcn/Tailwind rebuild).",
+      "recommendedOptionIds": [
+        "accept"
+      ],
+      "options": [
+        {
+          "id": "accept",
+          "label": "Accept thesis as written"
+        },
+        {
+          "id": "more-dense",
+          "label": "Same thesis but denser handbook"
+        },
+        {
+          "id": "more-premium",
+          "label": "Same thesis but more premium/expressive"
+        },
+        {
+          "id": "rewrite",
+          "label": "Rewrite thesis (custom)"
+        }
+      ],
+      "required": true
+    },
+    {
+      "id": "scope-stack",
+      "prompt": "Confirm scope and stack decisions from grilling.",
+      "description": "In: full web shell + deep interactions; Tailwind v4 latest + shadcn/ui + helpful React libs; product-surface free (layouts/labels/helpers); theme system+toggle; command palette + page browse; distinctive webfonts; DESIGN.md rewrite; desktop+mobile proof. Out: fake catalog content; invent SEO schema; analytics/auth/backend; README recipe body rewrites; catalog YAML content inventing.",
+      "answerMode": "single-custom",
+      "recommendedAnswer": "Confirm full grilled scope/stack package.",
+      "recommendedOptionIds": [
+        "confirm"
+      ],
+      "options": [
+        {
+          "id": "confirm",
+          "label": "Confirm full grilled package"
+        },
+        {
+          "id": "narrow",
+          "label": "Narrow scope (custom note)"
+        },
+        {
+          "id": "expand",
+          "label": "Expand scope (custom note)"
+        }
+      ],
+      "required": true
+    },
+    {
+      "id": "design-process",
+      "prompt": "How should /design be applied during execution?",
+      "description": "Locks the agents design skill into the goal: multi-agent design waves, design thesis gate, shadcn/Tailwind-v4 references, accessibility/motion lanes, Chrome rendered proof (desktop+mobile), design scanner, no live installs without explicit auth.",
+      "answerMode": "single-custom",
+      "recommendedAnswer": "Full /design process: Parallel Design Team + System + Polish; audit/inventory first; merge captain; rendered proof gate mandatory.",
+      "recommendedOptionIds": [
+        "full"
+      ],
+      "options": [
+        {
+          "id": "full",
+          "label": "Full /design multi-agent + proof gate (Recommended)"
+        },
+        {
+          "id": "solo",
+          "label": "Single-agent design polish with proof only"
+        },
+        {
+          "id": "audit-only-first",
+          "label": "Separate audit goal first, then polish goal"
+        }
+      ],
+      "required": true
+    },
+    {
+      "id": "lib-budget",
+      "prompt": "What is the React library budget beyond Tailwind + shadcn?",
+      "description": "You asked for any helpful libs. Need a guardrail so we do not dependency-sprawl.",
+      "answerMode": "multi-custom",
+      "recommendedAnswer": "shadcn/Radix stack essentials + cmdk command palette + theme persistence helper + motion only if reduced-motion-safe; avoid heavy chart/3D/state frameworks.",
+      "recommendedOptionIds": [
+        "shadcn-radix",
+        "cmdk",
+        "theme-persist",
+        "cva-utils",
+        "motion-optional",
+        "keep-lucide",
+        "no-heavy"
+      ],
+      "options": [
+        {
+          "id": "shadcn-radix",
+          "label": "shadcn/ui + Radix primitives"
+        },
+        {
+          "id": "cmdk",
+          "label": "cmdk (or shadcn Command) for palette"
+        },
+        {
+          "id": "theme-persist",
+          "label": "Theme toggle + localStorage/system (next-themes style)"
+        },
+        {
+          "id": "cva-utils",
+          "label": "class-variance-authority + tailwind-merge + clsx"
+        },
+        {
+          "id": "motion-optional",
+          "label": "Optional motion lib only if reduced-motion safe"
+        },
+        {
+          "id": "keep-lucide",
+          "label": "Keep lucide-react icons"
+        },
+        {
+          "id": "no-heavy",
+          "label": "No charts/3D/global state frameworks"
+        },
+        {
+          "id": "open",
+          "label": "Open-ended \u2014 use whatever helps"
+        }
+      ],
+      "required": true
+    },
+    {
+      "id": "accent-identity",
+      "prompt": "Primary brand accent for the ultimate catalog identity?",
+      "description": "Lane colors can remain multi-hue. Choose the primary accent for links, focus, CTAs, hero energy.",
+      "answerMode": "single-custom",
+      "recommendedAnswer": "Deep electric blue research accent (evolve current #0a56f0) with refined neutrals \u2014 authoritative engineering, not neon SaaS.",
+      "recommendedOptionIds": [
+        "electric-blue"
+      ],
+      "options": [
+        {
+          "id": "electric-blue",
+          "label": "Electric research blue (evolve current) (Recommended)"
+        },
+        {
+          "id": "ink-violet",
+          "label": "Ink + violet (more distinctive product)"
+        },
+        {
+          "id": "neutral-mono",
+          "label": "Near-mono ink; accent only on CTAs"
+        },
+        {
+          "id": "custom",
+          "label": "Custom palette direction"
+        }
+      ],
+      "required": true
+    },
+    {
+      "id": "success-proof",
+      "prompt": "Confirm done / proof bar.",
+      "description": "Grill chose C: visual + interaction excellence + showcase/eval + DESIGN.md SSOT. /design requires desktop+mobile Chrome proof, a11y snapshot, reduced-motion, build/tests.",
+      "answerMode": "single-custom",
+      "recommendedAnswer": "Require: all routes polished; primary loops excellent; DESIGN.md rewritten; desktop+mobile screenshots; a11y keyboard/focus; reduced-motion; design scanner clean enough; web tests/build/browser smoke green.",
+      "recommendedOptionIds": [
+        "full-proof"
+      ],
+      "options": [
+        {
+          "id": "full-proof",
+          "label": "Full proof bar (Recommended)"
+        },
+        {
+          "id": "lighter",
+          "label": "Lighter \u2014 visual polish + build only"
+        },
+        {
+          "id": "heavier",
+          "label": "Heavier \u2014 add lighthouse/perf budgets"
+        }
+      ],
+      "required": true
+    },
+    {
+      "id": "hard-outs",
+      "prompt": "Confirm hard non-goals.",
+      "description": "Protect research-catalog integrity while allowing aggressive UI rebuild.",
+      "answerMode": "multi-custom",
+      "recommendedAnswer": "No fake catalog content/claims; no invented SEO schema; no analytics/auth/backend; no README recipe body rewrites; preserve catalog/ SSOT; a11y not optional; reduced-motion respected.",
+      "recommendedOptionIds": [
+        "no-fake-content",
+        "no-fake-seo",
+        "no-analytics-auth",
+        "no-readme-bodies",
+        "catalog-ssot",
+        "a11y-rm"
+      ],
+      "options": [
+        {
+          "id": "no-fake-content",
+          "label": "No invented recipes/patterns/sources"
+        },
+        {
+          "id": "no-fake-seo",
+          "label": "No invented SEO schema/types"
+        },
+        {
+          "id": "no-analytics-auth",
+          "label": "No analytics/auth/backend on static site"
+        },
+        {
+          "id": "no-readme-bodies",
+          "label": "No README recipe body rewrites in this goal"
+        },
+        {
+          "id": "catalog-ssot",
+          "label": "catalog/ remains content SSOT"
+        },
+        {
+          "id": "a11y-rm",
+          "label": "A11y + reduced-motion non-negotiable"
+        },
+        {
+          "id": "allow-readme-visual",
+          "label": "Also restyle README badges/chrome if needed"
+        }
+      ],
+      "required": true
+    }
+  ]
+}
