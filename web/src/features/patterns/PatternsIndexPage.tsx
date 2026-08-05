@@ -1,16 +1,21 @@
 import { Layers } from "lucide-react";
 import { Link } from "react-router-dom";
 import { Badge } from "../../components/ui/Badge";
+import { useDocumentMeta } from "../../hooks/useDocumentMeta";
 import { catalog } from "../../lib/catalog";
 
 export function PatternsIndexPage() {
+  useDocumentMeta(
+    "Pattern notes",
+    "Research-backed prompt engineering techniques and templates."
+  );
   return (
     <section className="section">
       <div className="section-head">
         <div>
           <h1>Pattern notes</h1>
           <p className="muted section-sub">
-            Research-backed techniques — copy templates where available.
+            Research-backed techniques — open a note, copy templates where available.
           </p>
         </div>
         <p className="muted count-pill">{catalog.counts.patterns}</p>

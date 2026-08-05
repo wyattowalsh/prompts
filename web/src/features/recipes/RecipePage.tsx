@@ -5,7 +5,9 @@ import { OpenInChat } from "../../components/OpenInChat";
 import { Badge } from "../../components/ui/Badge";
 import { Button } from "../../components/ui/Button";
 import { CopyableBlock } from "../../components/ui/CopyableBlock";
+import { RelatedHub } from "../related/RelatedHub";
 import { useClipboard } from "../../hooks/useClipboard";
+import { useDocumentMeta } from "../../hooks/useDocumentMeta";
 import { getRecipe } from "../../lib/catalog";
 import {
   fillTemplate,
@@ -36,11 +38,19 @@ export function RecipePage() {
     setValues(emptyValues(recipe.placeholders.map((ph) => ph.name)));
   }, [recipe]);
 
+  useDocumentMeta(
+    recipe ? recipe.title : "Recipe not found",
+    recipe?.use_for
+  );
+
   if (!recipe) {
     return (
-      <section className="section">
+      <section className="section empty-state-panel">
         <h1>Recipe not found</h1>
-        <Link to="/recipes/">Back to recipes</Link>
+        <p className="muted">That recipe slug is not in the catalog. Check the URL or browse the index.</p>
+        <Link className="nav-link is-active" to="/recipes/">
+          Back to recipes
+        </Link>
       </section>
     );
   }
@@ -50,6 +60,8 @@ export function RecipePage() {
   const remaining = remainingPlaceholderCount(filledPrompt, placeholderNames);
   const filledRequired = requiredPlaceholdersFilled(current.placeholders, values);
   const isFilled = remaining < placeholderNames.length;
+  const totalPh = placeholderNames.length;
+  const filledCount = totalPh - remaining;
 
   const recipeUrl =
     typeof window !== "undefined"
@@ -109,27 +121,61 @@ export function RecipePage() {
           >
             Copy prompt
           </Button>
-          <Button
-            variant="outline"
-            icon={<Link2 size={16} aria-hidden="true" />}
-            onClick={() => copy(recipeUrl, "Link copied")}
-          >
-            Copy link
-          </Button>
-          <Button
-            variant="outline"
-            icon={<FileText size={16} aria-hidden="true" />}
-            onClick={() => copy(markdownBundle, "Markdown copied")}
-          >
-            Markdown
-          </Button>
-          <Button
-            variant="ghost"
-            icon={<Printer size={16} aria-hidden="true" />}
-            onClick={() => window.print()}
-          >
-            Print
-          </Button>
+          {totalPh > 0 ? (
+            <span className="fill-progress" aria-live="polite">
+              {filledCount}/{totalPh} filled
+            </span>
+          ) : null}
+          {/* Desktop: secondary actions inline. Mobile: details “More” (RV-D-003). */}
+          <div className="sticky-actions-secondary sticky-actions-secondary-wide">
+            <Button
+              variant="outline"
+              icon={<Link2 size={16} aria-hidden="true" />}
+              onClick={() => copy(recipeUrl, "Link copied")}
+            >
+              Copy link
+            </Button>
+            <Button
+              variant="outline"
+              icon={<FileText size={16} aria-hidden="true" />}
+              onClick={() => copy(markdownBundle, "Markdown copied")}
+            >
+              Markdown
+            </Button>
+            <Button
+              variant="ghost"
+              icon={<Printer size={16} aria-hidden="true" />}
+              onClick={() => window.print()}
+            >
+              Print
+            </Button>
+          </div>
+          <details className="sticky-actions-more">
+            <summary className="sticky-actions-more-summary">More actions</summary>
+            <div className="sticky-actions-more-panel">
+              <Button
+                variant="outline"
+                icon={<Link2 size={16} aria-hidden="true" />}
+                onClick={() => copy(recipeUrl, "Link copied")}
+              >
+                Copy link
+              </Button>
+              <Button
+                variant="outline"
+                icon={<FileText size={16} aria-hidden="true" />}
+                onClick={() => copy(markdownBundle, "Markdown copied")}
+              >
+                Markdown
+              </Button>
+              <Button
+                variant="ghost"
+                icon={<Printer size={16} aria-hidden="true" />}
+                onClick={() => window.print()}
+              >
+                Print
+              </Button>
+            </div>
+          </details>
           {status ? (
             <span className="copy-toast sticky-toast" role="status" aria-live="polite">
               {status}
@@ -179,6 +225,9 @@ export function RecipePage() {
           </section>
         </div>
       </div>
+
+      {/* Related set is secondary IA — after paste path workspace (RV-D-001). */}
+      <RelatedHub kind="recipe" slug={current.slug} />
 
       <section className="section after-copy">
         <h2 className="section-title">

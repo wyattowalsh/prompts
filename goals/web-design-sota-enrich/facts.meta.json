@@ -1,0 +1,149 @@
+[
+  {
+    "id": "fact-thesis",
+    "text": "The site still presents as the definitive PE catalog: premium technical, content-first trust\u2014not a flashy marketing SPA or bare GitHub clone.",
+    "comment": null,
+    "recommendedAutomatedVerification": false,
+    "automatedVerification": false
+  },
+  {
+    "id": "fact-ambition",
+    "text": "This is a soft redesign of web/: major layouts may change when they clearly win (home, indexes, recipe/pattern workspace), without re-litigating the Tailwind v4 + shadcn-style stack baseline.",
+    "comment": null,
+    "recommendedAutomatedVerification": false,
+    "automatedVerification": false
+  },
+  {
+    "id": "fact-priority",
+    "text": "Primary investment is interaction and workspace excellence: browse \u2192 open \u2192 fill \u2192 copy \u2192 open-in-chat feels fast, clear, and trustworthy.",
+    "comment": null,
+    "recommendedAutomatedVerification": true,
+    "automatedVerification": true
+  },
+  {
+    "id": "fact-surfaces",
+    "text": "Surface depth: deep recipe detail; strong pattern detail; solid home + recipes index; light sources and shared chrome refinements.",
+    "comment": null,
+    "recommendedAutomatedVerification": false,
+    "automatedVerification": false
+  },
+  {
+    "id": "fact-recipe-workspace",
+    "text": "Recipe detail workspace is redesigned for the paste path: fill placeholders, copy prompt, sticky actions, open-in-chat, empty/error states, and keyboard reachability.",
+    "comment": null,
+    "recommendedAutomatedVerification": true,
+    "automatedVerification": true
+  },
+  {
+    "id": "fact-related-hub",
+    "text": "Related paradigms/applications can be used from a single hub UI without merging catalog YAML: pilot is the panel cluster (Panel Review + PanelGPT + Expert Panel Discussion) with group/compare/pick affordances.",
+    "comment": null,
+    "recommendedAutomatedVerification": true,
+    "automatedVerification": true
+  },
+  {
+    "id": "fact-related-general",
+    "text": "The related-hub pattern is designed so other related recipe/pattern clusters can reuse it later without one-off hardcoding only for panels.",
+    "comment": null,
+    "recommendedAutomatedVerification": false,
+    "automatedVerification": false
+  },
+  {
+    "id": "fact-visual",
+    "text": "Visual richness is rich but subtly quiet: selective depth, cards, and atmosphere only where the scan path stays clear\u2014no loud showcase chrome.",
+    "comment": null,
+    "recommendedAutomatedVerification": false,
+    "automatedVerification": false
+  },
+  {
+    "id": "fact-theme-baseline",
+    "text": "Uncommitted theme menu work is absorbed as baseline: single Theme control \u2192 menu with Light/Dark/System, keyboard Menu Button behavior, and smoke coverage.",
+    "comment": null,
+    "recommendedAutomatedVerification": true,
+    "automatedVerification": true
+  },
+  {
+    "id": "fact-palette",
+    "text": "Command palette remains a first-class discovery path (\u2318K/Ctrl+K and /) and stays polished with the soft redesign chrome.",
+    "comment": null,
+    "recommendedAutomatedVerification": true,
+    "automatedVerification": true
+  },
+  {
+    "id": "fact-seo",
+    "text": "SEO/AEO is baseline polish only: per-route titles/descriptions/OG where SPA shells allow; sitemap/robots/llms stay truthful; no invented JSON-LD types without matching UI.",
+    "comment": null,
+    "recommendedAutomatedVerification": true,
+    "automatedVerification": true
+  },
+  {
+    "id": "fact-stack",
+    "text": "New dependencies may be added when they clearly improve workspace UX/UI; charts, 3D, heavy global state frameworks, analytics, auth, and backend services stay out.",
+    "comment": null,
+    "recommendedAutomatedVerification": false,
+    "automatedVerification": false
+  },
+  {
+    "id": "fact-a11y",
+    "text": "Accessibility does not regress: visible focus, labels, landmarks, and strong keyboard paths on primary loops; full axe CI is not required for done.",
+    "comment": null,
+    "recommendedAutomatedVerification": true,
+    "automatedVerification": true
+  },
+  {
+    "id": "fact-catalog-truth",
+    "text": "Catalog content remains SSOT from catalog/; this goal does not invent recipes, patterns, sources, or claims.",
+    "comment": null,
+    "recommendedAutomatedVerification": false,
+    "automatedVerification": false
+  },
+  {
+    "id": "fact-readme-out",
+    "text": "README recipe bodies are out of scope (except incidental docs required by the web design change, e.g. DESIGN.md).",
+    "comment": null,
+    "recommendedAutomatedVerification": false,
+    "automatedVerification": false
+  },
+  {
+    "id": "fact-research-fence",
+    "text": "goals/prompt-catalog-research-upgrade/** stays fenced and is not staged or mixed into this design goal.",
+    "comment": null,
+    "recommendedAutomatedVerification": false,
+    "automatedVerification": false
+  },
+  {
+    "id": "fact-routes",
+    "text": "Public routes keep working with trailing-slash behavior: /, /recipes/, /recipes/:slug/, /patterns/, /patterns/:slug/, /sources/.",
+    "comment": null,
+    "recommendedAutomatedVerification": true,
+    "automatedVerification": true
+  },
+  {
+    "id": "fact-design-md",
+    "text": "DESIGN.md is updated as the visual/interaction SSOT for the soft redesign, related-hub pattern, tokens, and proof expectations.",
+    "comment": null,
+    "recommendedAutomatedVerification": false,
+    "automatedVerification": false
+  },
+  {
+    "id": "fact-gates",
+    "text": "pnpm web typecheck, lint, unit tests, build, and Playwright browser smoke stay green after the enrich pass.",
+    "comment": null,
+    "recommendedAutomatedVerification": true,
+    "automatedVerification": true
+  },
+  {
+    "id": "fact-proof",
+    "text": "Done includes a showcase proof pack under goals/web-design-sota-enrich/proof/: desktop+mobile, light+dark, palette open, and recipe workspace primary states.",
+    "comment": null,
+    "recommendedAutomatedVerification": false,
+    "automatedVerification": false
+  },
+  {
+    "id": "fact-process",
+    "text": "Execution applies /agents:design: inventory/audit, system/polish waves, file leases on shared tokens/primitives, and rendered proof before closeout.",
+    "comment": null,
+    "recommendedAutomatedVerification": false,
+    "automatedVerification": false
+  }
+]

@@ -3,6 +3,7 @@ import { useEffect, useMemo, useRef, useState, type CSSProperties } from "react"
 import { Link } from "react-router-dom";
 import { Badge } from "../../components/ui/Badge";
 import { Button } from "../../components/ui/Button";
+import { useDocumentMeta } from "../../hooks/useDocumentMeta";
 import { catalog, searchCatalog } from "../../lib/catalog";
 import { laneIcon } from "../../lib/lane-icons";
 import { buildLandingRecipeIndex, groupRecipesByLane } from "../../lib/recipe-index";
@@ -13,6 +14,11 @@ export function HomePage() {
   const [laneFilter, setLaneFilter] = useState<string | null>(null);
   const searchRef = useRef<HTMLInputElement>(null);
   const results = useMemo(() => searchCatalog(query), [query]);
+  useDocumentMeta(
+    "Prompt Library",
+    catalog.meta.description ||
+      "Research-backed prompt recipes and patterns — fill, copy, verify."
+  );
 
   const landingEntries = useMemo(
     () => buildLandingRecipeIndex(catalog.recipes, { lane: laneFilter }),

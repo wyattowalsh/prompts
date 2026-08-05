@@ -10,16 +10,27 @@ import {
 import { Link, useParams } from "react-router-dom";
 import { Badge } from "../../components/ui/Badge";
 import { CopyableBlock } from "../../components/ui/CopyableBlock";
+import { RelatedHub } from "../related/RelatedHub";
+import { useDocumentMeta } from "../../hooks/useDocumentMeta";
 import { getPattern } from "../../lib/catalog";
 
 export function PatternPage() {
   const { slug = "" } = useParams();
   const pattern = getPattern(slug);
+
+  useDocumentMeta(
+    pattern ? pattern.title : "Pattern not found",
+    pattern?.definition
+  );
+
   if (!pattern) {
     return (
-      <section className="section">
+      <section className="section empty-state-panel">
         <h1>Pattern not found</h1>
-        <Link to="/patterns/">Back to patterns</Link>
+        <p className="muted">That pattern slug is not in the catalog.</p>
+        <Link className="nav-link is-active" to="/patterns/">
+          Back to patterns
+        </Link>
       </section>
     );
   }
@@ -78,6 +89,9 @@ export function PatternPage() {
           />
         </section>
       ) : null}
+
+      {/* Related set is secondary IA — after primary pattern content (RV-D-001). */}
+      <RelatedHub kind="pattern" slug={pattern.slug} />
 
       <section className="section">
         <div className="after-copy-grid">

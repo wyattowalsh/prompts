@@ -76,6 +76,7 @@
   --shadow-soft: 0 1px 2px rgb(12 18 34 / 4%), 0 8px 24px rgb(12 18 34 / 6%);
   --shadow-lift: 0 2px 4px rgb(12 18 34 / 5%), 0 16px 40px rgb(12 18 34 / 10%);
   --shadow-xs: 0 1px 2px rgb(12 18 34 / 5%);
+  --surface-wash: color-mix(in srgb, var(--primary) 5%, var(--background));
   --lane-research: #2563eb;
   --lane-writing: #9333ea;
   --lane-coding: #15803d;
@@ -115,6 +116,7 @@
   --shadow-soft: 0 1px 2px rgb(0 0 0 / 30%), 0 8px 24px rgb(0 0 0 / 35%);
   --shadow-lift: 0 2px 4px rgb(0 0 0 / 35%), 0 16px 40px rgb(0 0 0 / 45%);
   --shadow-xs: 0 1px 2px rgb(0 0 0 / 25%);
+  --surface-wash: color-mix(in srgb, var(--primary) 8%, var(--background));
 }
 
 @layer base {
@@ -231,7 +233,7 @@
   }
 
   .hero {
-    @apply mb-8 grid gap-6 lg:grid-cols-[1.2fr_0.8fr] lg:items-end;
+    @apply mb-8 grid gap-6 rounded-2xl border border-border bg-[var(--surface-wash)] p-5 shadow-[var(--shadow-soft)] sm:p-6 lg:grid-cols-[1.2fr_0.8fr] lg:items-end;
   }
 
   .hero-kicker {
@@ -463,6 +465,97 @@
 
   .sticky-actions-inner {
     @apply flex flex-wrap items-center gap-2;
+  }
+
+  .sticky-actions-secondary {
+    @apply flex flex-wrap items-center gap-2;
+  }
+
+  /* Mobile: hide inline secondary; show details “More actions”. Desktop: reverse. */
+  .sticky-actions-secondary-wide {
+    @apply hidden sm:flex;
+  }
+
+  .sticky-actions-more {
+    @apply relative sm:hidden;
+  }
+
+  .sticky-actions-more-summary {
+    @apply cursor-pointer list-none rounded-md border border-border bg-card px-3 py-2 text-sm font-medium text-foreground shadow-[var(--shadow-xs)] outline-none focus-visible:ring-2 focus-visible:ring-ring;
+  }
+
+  .sticky-actions-more-summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .sticky-actions-more-panel {
+    @apply absolute left-0 top-[calc(100%+0.35rem)] z-20 flex min-w-[11rem] flex-col gap-2 rounded-lg border border-border bg-card p-2 shadow-[var(--shadow-soft)];
+  }
+
+  .fill-progress {
+    @apply rounded-full border border-border bg-card px-2.5 py-1 text-xs font-semibold tabular-nums text-muted-foreground;
+  }
+
+  .empty-state-panel {
+    @apply rounded-xl border border-dashed border-border bg-card p-8 shadow-[var(--shadow-soft)];
+  }
+
+  .related-hub {
+    @apply mb-6 rounded-xl border border-border bg-[var(--surface-wash)] p-4 shadow-[var(--shadow-soft)];
+  }
+
+  .related-hub-desc {
+    @apply m-0 max-w-[var(--measure)] text-sm;
+  }
+
+  .related-hub-list {
+    margin: 0.75rem 0 0;
+    padding: 0;
+    list-style: none;
+    display: grid;
+    gap: 0.65rem;
+  }
+
+  @media (min-width: 720px) {
+    .related-hub-list {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+
+  .related-hub-card {
+    @apply flex h-full flex-col gap-1 rounded-lg border border-border bg-card p-3 shadow-[var(--shadow-xs)] transition-[border-color,box-shadow,transform] duration-200;
+  }
+
+  .related-hub-card-link {
+    @apply text-inherit no-underline outline-none hover:border-primary/40 hover:shadow-[var(--shadow-soft)] hover:no-underline focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background;
+  }
+
+  .related-hub-card-active {
+    @apply border-primary/45 ring-1 ring-primary/25;
+  }
+
+  .related-hub-card-top {
+    @apply mb-1 flex items-center justify-between gap-2;
+  }
+
+  .related-hub-you {
+    @apply text-[0.65rem] font-semibold uppercase tracking-wide text-primary;
+  }
+
+  .related-hub-title {
+    @apply m-0 text-sm font-semibold tracking-tight text-foreground;
+  }
+
+  .related-hub-role {
+    @apply m-0 text-xs leading-snug;
+  }
+
+  .related-hub-open {
+    @apply mt-auto pt-2 text-xs font-semibold text-primary;
+  }
+
+  .related-hub-go {
+    @apply text-muted-foreground;
   }
 
   .recipe-workspace {

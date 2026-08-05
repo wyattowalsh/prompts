@@ -2,6 +2,8 @@ import { defineConfig, devices } from "@playwright/test";
 
 export default defineConfig({
   testDir: "web/browser",
+  // Ignore one-shot maintainer scripts if any remain under testDir.
+  testIgnore: ["**/capture-proof.mjs"],
   timeout: 30_000,
   workers: 1,
   webServer: {

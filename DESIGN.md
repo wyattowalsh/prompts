@@ -31,15 +31,26 @@
 
 This is a **product/tool catalog** for practitioners who land, search/browse,
 open a recipe or pattern, fill placeholders, copy, and leave with high trust.
-It should feel like the **definitive PE reference**—not a quiet GitHub clone
-and not a flashy SaaS marketing page.
+It should feel like the **definitive PE workspace**—not a quiet GitHub clone
+and not a flashy SaaS marketing page. Visual richness is **rich but subtly
+quiet**: selective depth and surface wash only where the scan path stays clear.
+
+**Soft redesign (web-design-sota-enrich)** prioritizes the paste path
+(browse → open → fill → copy → open-in-chat) over marketing atmosphere.
 
 **Signature moves**
 
 - App-wide **command palette** (⌘K / Ctrl+K; `/` opens palette off-home)
-- **Theme**: system default + explicit Light / Dark / System (persisted)
+- **Theme menu**: single control → Light / Dark / System (Menu Button keyboard;
+  persisted via `prompts-theme`)
+- **Related-paradigm hub** (UI config only): groups related recipe/pattern
+  slugs without merging catalog YAML (pilot: panel-review + panelgpt +
+  expert-panel-discussion). Secondary to the paste path — renders **after**
+  the recipe workspace (or pattern primary content), not between CTAs and fill.
+  See `web/src/lib/related-clusters.ts`.
 - Distinctive type: **DM Sans** + **IBM Plex Mono** for prompts (Fontsource self-host)
 - Electric research blue primary with multi-lane accents
+- Client **document titles** via `useDocumentMeta` (SPA baseline; static emit stays truthful)
 
 ## Visual principles
 
@@ -60,7 +71,9 @@ and not a flashy SaaS marketing page.
 | shadcn config | `web/components.json` (`rsc: false`, new-york, lucide) |
 | `cn` helper | `web/src/lib/utils.ts` (clsx + tailwind-merge) |
 | Primitives | `web/src/components/ui/*` (Button, Badge, CopyableBlock via cva) |
-| Theme | `web/src/lib/theme.ts` (pure) + `theme-provider.tsx` + `theme-toggle.tsx` |
+| Theme | `web/src/lib/theme.ts` (pure) + `theme-provider.tsx` + `theme-toggle.tsx` (single-button menu) |
+| Related hub | `web/src/lib/related-clusters.ts` + `features/related/RelatedHub.tsx` (no catalog merge) |
+| Document meta | `web/src/hooks/useDocumentMeta.ts` |
 | Command palette | `cmdk` **Command.Dialog** (`CommandPalette.tsx`, lazy from `App`) + `lib/command-index.ts` |
 | Fonts | self-hosted **Fontsource** DM Sans + IBM Plex Mono (no Google CDN) |
 | Radix | `@radix-ui/react-dialog` (cmdk Dialog) + `@radix-ui/react-slot` (Button) |
@@ -113,7 +126,7 @@ Semantic colors are CSS variables on `:root` / `.dark`, exposed to Tailwind via
 
 - Storage key: `prompts-theme` (`light` \| `dark` \| `system`)
 - Early FOUC script in `web/index.html` applies `.dark` before paint
-- Header control: Light / Dark / System segmented toggle
+- Header control: single theme button → menu (Light / Dark / System)
 - System mode tracks `prefers-color-scheme` live
 
 ## Layout

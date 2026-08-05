@@ -1,4 +1,5 @@
 import { useSearchParams, Link } from "react-router-dom";
+import { useDocumentMeta } from "../../hooks/useDocumentMeta";
 import { catalog } from "../../lib/catalog";
 import { laneIcon } from "../../lib/lane-icons";
 import { buildLandingRecipeIndex } from "../../lib/recipe-index";
@@ -10,13 +11,19 @@ export function RecipesIndexPage() {
   const lane = params.get("lane");
   const entries = buildLandingRecipeIndex(catalog.recipes, { lane });
   const laneTitle = catalog.lanes.find((entry) => entry.key === lane)?.title;
+  useDocumentMeta(
+    laneTitle ? `Recipes · ${laneTitle}` : "Recipes",
+    "Browse pasteable prompt recipes by lane."
+  );
 
   return (
     <section className="section">
       <div className="section-head">
         <div>
           <h1>Recipes{laneTitle ? ` · ${laneTitle}` : ""}</h1>
-          <p className="muted section-sub">Full catalog index — same cards as the home page.</p>
+          <p className="muted section-sub">
+            Full catalog index — open a card, fill placeholders, copy, leave.
+          </p>
         </div>
         <p className="muted count-pill">
           {entries.length}

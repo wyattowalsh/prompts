@@ -1,0 +1,132 @@
+{
+  "stage": "interview",
+  "title": "Web design SOTA enrich",
+  "goalSlug": "web-design-sota-enrich",
+  "questions": [
+    {
+      "id": "package-ratify",
+      "prompt": "Ratify the grill package for this goal?",
+      "description": "Soft redesign · interaction/workspace-first · recipe surface deep · rich-but-subtly-quiet · SEO baseline polish · stack may expand for awesome/useful deps · showcase proof pack · absorb uncommitted theme menu WIP · fence research-upgrade. See goals/web-design-sota-enrich/grill-notes.md.",
+      "answerMode": "single-custom",
+      "recommendedAnswer": "Accept package as grilled (recommended).",
+      "recommendedOptionIds": ["accept"],
+      "options": [
+        {
+          "id": "accept",
+          "label": "Accept grilled package"
+        },
+        {
+          "id": "accept-tweak",
+          "label": "Accept with notes (describe tweaks)"
+        }
+      ],
+      "required": true
+    },
+    {
+      "id": "hard-out",
+      "prompt": "Confirm hard out-of-scope (must not ship under this goal)?",
+      "description": "Catalog YAML recipe/pattern bodies stay SSOT; no inventing content. No analytics/auth/backend. No charts/3D/heavy global state. No invented SEO schema without matching UI. README recipe cards out of scope.",
+      "answerMode": "multi-custom",
+      "recommendedAnswer": "All hard outs listed.",
+      "recommendedOptionIds": [
+        "catalog-truth",
+        "no-analytics-auth",
+        "no-charts-3d",
+        "no-fake-schema",
+        "no-readme-bodies"
+      ],
+      "options": [
+        {
+          "id": "catalog-truth",
+          "label": "No invented catalog content"
+        },
+        {
+          "id": "no-analytics-auth",
+          "label": "No analytics / auth / backend"
+        },
+        {
+          "id": "no-charts-3d",
+          "label": "No charts / 3D / heavy global state"
+        },
+        {
+          "id": "no-fake-schema",
+          "label": "No unsupported SEO schema"
+        },
+        {
+          "id": "no-readme-bodies",
+          "label": "README recipe bodies out of scope"
+        }
+      ],
+      "required": true
+    },
+    {
+      "id": "panel-ia",
+      "prompt": "Panel cluster IA (Panel Review recipe + PanelGPT + Expert Panel Discussion patterns) — include cleanup in this goal?",
+      "description": "Earlier session noted three related cards can confuse users. Not required for workspace excellence.",
+      "answerMode": "single-custom",
+      "recommendedAnswer": "Out of scope — separate product/catalog IA decision (recommended).",
+      "recommendedOptionIds": ["out"],
+      "options": [
+        {
+          "id": "out",
+          "label": "Out of scope (separate decision)"
+        },
+        {
+          "id": "ui-only",
+          "label": "UI-only grouping/labels if cheap (no catalog merge)"
+        },
+        {
+          "id": "full-ia",
+          "label": "In scope — propose merge/rename path"
+        }
+      ],
+      "required": true
+    },
+    {
+      "id": "success-feel",
+      "prompt": "What should 'done' feel like for a practitioner?",
+      "description": "One sentence success vibe for design/plan alignment.",
+      "answerMode": "single-custom",
+      "recommendedAnswer": "Land on a recipe, fill, copy, and leave trusting this is the definitive PE workspace—not a pretty brochure.",
+      "recommendedOptionIds": ["definitive-workspace"],
+      "options": [
+        {
+          "id": "definitive-workspace",
+          "label": "Definitive PE workspace: fill → copy → leave with trust"
+        },
+        {
+          "id": "showcase-first",
+          "label": "Wowed by first screen, then deep work"
+        },
+        {
+          "id": "speed-first",
+          "label": "Fastest path to a pasteable prompt"
+        }
+      ],
+      "required": true
+    },
+    {
+      "id": "a11y-bar",
+      "prompt": "Accessibility bar for this enrich pass?",
+      "description": "Theme menu already raised interactive chrome bar.",
+      "answerMode": "single-custom",
+      "recommendedAnswer": "No regression + keyboard excellence on primary loops; axe critical/serious optional not required (recommended).",
+      "recommendedOptionIds": ["no-regress-keyboard"],
+      "options": [
+        {
+          "id": "no-regress-keyboard",
+          "label": "No a11y regression + strong keyboard on primary loops"
+        },
+        {
+          "id": "axe-ci",
+          "label": "Also ship axe critical/serious CI on 2 routes"
+        },
+        {
+          "id": "wcag-strict",
+          "label": "Treat WCAG AA as explicit fail-closed goal"
+        }
+      ],
+      "required": true
+    }
+  ]
+}

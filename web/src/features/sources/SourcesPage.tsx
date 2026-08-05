@@ -1,7 +1,9 @@
 import { ExternalLink } from "lucide-react";
+import { useDocumentMeta } from "../../hooks/useDocumentMeta";
 import { catalog } from "../../lib/catalog";
 
 export function SourcesPage() {
+  useDocumentMeta("Sources", "Unique source URLs referenced from recipes and patterns.");
   const map = new Map<string, { title: string; url: string; used_by: string[] }>();
   for (const recipe of catalog.recipes) {
     for (const source of recipe.sources) {

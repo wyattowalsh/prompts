@@ -42,11 +42,36 @@ const REQUIRED = [
   ".ui-btn-label",
   ".provider-chip-label",
   ".recipe-workspace-output",
-  ".footer-hint"
+  ".footer-hint",
+  // soft redesign / related hub
+  ".related-hub",
+  ".related-hub-list",
+  ".related-hub-card",
+  ".related-hub-card-link",
+  ".fill-progress",
+  ".sticky-actions",
+  ".sticky-actions-more",
+  ".sticky-actions-secondary-wide"
 ];
 
 test("globals.css ships product surface rules for recipe workspace chrome", () => {
   for (const sel of REQUIRED) {
     assert.ok(css.includes(sel), `missing selector ${sel} in globals.css`);
   }
+});
+
+test("related hub links keep keyboard focus-visible ring (RV-D-002)", () => {
+  assert.ok(
+    css.includes(".related-hub-card-link"),
+    "missing .related-hub-card-link"
+  );
+  assert.ok(
+    css.includes("focus-visible:ring-2") && css.includes("related-hub-card-link"),
+    "hub link focus ring utilities expected near related-hub-card-link"
+  );
+  const linkBlock = css.slice(css.indexOf(".related-hub-card-link"));
+  assert.ok(
+    linkBlock.includes("focus-visible:ring-2"),
+    "focus-visible:ring-2 missing on related-hub-card-link block"
+  );
 });
