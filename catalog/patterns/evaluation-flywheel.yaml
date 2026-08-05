@@ -5,7 +5,7 @@ order: 60
 definition: |
   improve prompts through fixed eval cases, measured failures, controlled changes, and regression checks.
 best_use: |
-  production prompts, repeated workflows, high-stakes outputs, and shared prompt libraries.
+  production prompts, repeated workflows, high-stakes outputs, and shared prompt libraries; prefer official eval platforms when available (e.g. OpenAI evals).
 avoid_when: "a one-off exploratory prompt does not need maintenance."
 template: |
   Prompt version: {id}
@@ -26,7 +26,7 @@ template: |
   5. Accept only if quality improves without safety, refusal, parser, latency, or cost regressions.
 template_omission_reason: null
 model_api_controls: |
-  provider eval platform, agent evals, custom eval harness, trace grading, scheduled evals, monitoring.
+  provider eval platform, agent evals, custom eval harness, trace grading, scheduled evals, monitoring, datasets/graders (see OpenAI evals).
 cost_latency: "upfront cost; lower regression risk later."
 failure_modes: |
   unrepresentative tests, optimizing the wrong metric, silent model/retrieval/tool drift.
@@ -47,3 +47,5 @@ sources:
     url: https://learn.microsoft.com/en-us/azure/foundry/how-to/evaluate-generative-ai-app
   - title: "Microsoft Foundry observability"
     url: https://learn.microsoft.com/en-us/azure/foundry/concepts/observability
+  - title: "NIST AI RMF"
+    url: https://www.nist.gov/itl/ai-risk-management-framework

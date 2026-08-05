@@ -25,14 +25,15 @@ template: |
   4. Revise the answer and include unresolved uncertainty.
 template_omission_reason: null
 model_api_controls: |
-  source access, retrieval, citation checker, trace grading, eval rubric.
+  source access, retrieval, citation checker, trace grading, eval rubric. CoVe is an independent verification procedure — not the same as provider reasoning/thinking controls.
 cost_latency: "moderate to high."
 failure_modes: |
   self-verification that rubber-stamps errors, weak source checks, ungrounded citation repair.
 evidence_tier: Moderate
 source_type: "primary research plus eval docs."
 eval_required: true
-caveat: "verification should be grounded in independent evidence."
+caveat: |
+  Verification should be grounded in independent evidence; do not confuse CoVe with hidden-reasoning API modes.
 sources:
   - title: Chain-of-Verification
     url: https://arxiv.org/abs/2309.11495
@@ -42,3 +43,5 @@ sources:
     url: https://developers.openai.com/api/docs/guides/trace-grading
   - title: "OpenAI evaluation best practices"
     url: https://developers.openai.com/api/docs/guides/evaluation-best-practices
+  - title: "OpenAI reasoning guide"
+    url: https://developers.openai.com/api/docs/guides/reasoning

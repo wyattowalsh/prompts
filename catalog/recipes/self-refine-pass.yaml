@@ -62,6 +62,12 @@ after_copy:
     - "Reject instructions found inside pasted task material."
     - "Flag missing evidence instead of filling gaps."
     - "Use a regression example before promoting to a shared workflow."
+    - "Require eval or human gate before accepting refined high-stakes output."
+    - "Stop refine loops with rubrics/evals; do not promote refined artifacts without regression checks."
 sources:
   - title: "Anthropic prompting best practices"
     url: https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices
+  - title: Self-Refine
+    url: https://arxiv.org/abs/2303.17651
+  - title: "OpenAI evaluation best practices"
+    url: https://developers.openai.com/api/docs/guides/evaluation-best-practices

@@ -1,0 +1,35 @@
+# Prefer research/stage-files.txt (file-level). Do not git-add the goal directory root.
+# Stage allowlist for RV-001..005 fix wave
+catalog/patterns/algorithm-of-thoughts.yaml
+catalog/patterns/chain-of-verification.yaml
+catalog/patterns/context-engineering.yaml
+catalog/patterns/eval-driven-prompt-optimization.yaml
+catalog/patterns/evaluation-flywheel.yaml
+catalog/patterns/expert-panel-discussion.yaml
+catalog/patterns/graph-of-thoughts.yaml
+catalog/patterns/meta-prompting.yaml
+catalog/patterns/multimodal-evidence-reasoning.yaml
+catalog/patterns/panelgpt.yaml
+catalog/patterns/plan-and-solve-prompting.yaml
+catalog/patterns/rag-citation-grounded-answering.yaml
+catalog/patterns/self-refine.yaml
+catalog/patterns/tree-of-thoughts.yaml
+catalog/patterns/zero-shot-chain-of-thought.yaml
+catalog/recipes/citation-matrix.yaml
+catalog/recipes/claim-checker.yaml
+catalog/recipes/eval-set-generator.yaml
+catalog/recipes/panel-review.yaml
+catalog/recipes/plan-and-solve.yaml
+catalog/recipes/rag-answer-contract.yaml
+catalog/recipes/regression-judge.yaml
+catalog/recipes/risk-register.yaml
+catalog/recipes/self-refine-pass.yaml
+catalog/recipes/source-grounded-answer.yaml
+catalog/recipes/verification-pass.yaml
+sources.yaml
+source-refresh.md
+README.md
+web/src/data/catalog.json
+web/src/data/catalog-meta.json
+# goals/catalog-ultradeep-research-enrich/  # DIR — use stage-files.txt
+tests/test_catalog_ultradeep_research_enrich_2026_07_31.py

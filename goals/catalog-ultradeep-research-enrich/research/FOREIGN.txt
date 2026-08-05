@@ -1,0 +1,21 @@
+# FOREIGN — leave dirty/unstaged with this ship
+web/**  (except web/src/data/catalog.json and catalog-meta.json)
+DESIGN.md
+playwright.config.mjs
+goals/codebase-sota-improvement/**
+goals/prompt-catalog-research-upgrade/**
+goals/prompt-catalog-research-deepen/**
+goals/web-design-sota-enrich/**
+# Other workstream catalog (dirty, not this ship)
+catalog/patterns/active-prompt.yaml
+catalog/patterns/chain-of-draft.yaml
+catalog/patterns/direct-zero-shot.yaml
+catalog/patterns/few-shot-prompting.yaml
+catalog/patterns/prompt-chaining.yaml
+catalog/patterns/prompt-injection-defense.yaml
+catalog/patterns/reflexion.yaml
+catalog/patterns/self-consistency.yaml
+catalog/patterns/skeleton-of-thought.yaml
+catalog/patterns/structured-zero-shot.yaml
+catalog/recipes/prompt-optimizer.yaml
+catalog/recipes/step-back-answer.yaml

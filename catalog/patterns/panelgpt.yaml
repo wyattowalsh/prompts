@@ -42,6 +42,7 @@ template: |
 template_omission_reason: null
 model_api_controls: |
   retrieval/citations, structured evidence fields, and review gates for factual or high-stakes work.
+   Label outputs as simulated panel critique; production multi-agent work needs official agent/tool/eval controls.
 cost_latency: moderate.
 failure_modes: |
   fabricated expertise, irrelevant roles, groupthink, false authority, unsupported consensus.
@@ -63,3 +64,5 @@ sources:
     url: https://aclanthology.org/2024.findings-emnlp.888/
   - title: "Playing Pretend"
     url: https://gail.wharton.upenn.edu/research-and-insights/playing-pretend-expert-personas/
+  - title: "OpenAI agents guardrails and approvals"
+    url: https://developers.openai.com/api/docs/guides/agents/guardrails-approvals

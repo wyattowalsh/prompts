@@ -1,0 +1,117 @@
+{
+  "goalSlug": "catalog-ultradeep-research-enrich",
+  "facts": [
+    {
+      "id": "fact-successor-hybrid",
+      "text": "This goal is a successor ultradeep wave after prompt-catalog-research-upgrade: build a structured research pack under goals/catalog-ultradeep-research-enrich/, then cascade only material findings into catalog YAML (no forced rewrite of all 91 cards).",
+      "comment": null,
+      "recommendedAutomatedVerification": false,
+      "automatedVerification": false
+    },
+    {
+      "id": "fact-residual-seed",
+      "text": "Research is residual-seeded from the prior wave\u2019s open gaps (reasoning/search re-audit, survey refresh, multi-agent vs official docs, agents-lane eval metadata) and fans out in parallel across required landscape tracks before merge and impact-ordered cascade.",
+      "comment": null,
+      "recommendedAutomatedVerification": false,
+      "automatedVerification": false
+    },
+    {
+      "id": "fact-required-tracks",
+      "text": "Before done, every required track has a completed pack section (notes + claim\u2192card map entries, or explicit no-material): API controls; classic PE + 2024\u20132026 follow-ons; agents/multi-step/eval/context; multimodal; RAG/citation; reasoning-model controls; provider agent frameworks; safety/injection; with prior residuals folded into these tracks.",
+      "comment": null,
+      "recommendedAutomatedVerification": true,
+      "automatedVerification": true
+    },
+    {
+      "id": "fact-content-deep",
+      "text": "Every source used in a research finding or card change is content-deep verified: live fetch plus claim extract recorded in the research pack (not HTTP status alone), with takeaway notes.",
+      "comment": null,
+      "recommendedAutomatedVerification": true,
+      "automatedVerification": true
+    },
+    {
+      "id": "fact-authority",
+      "text": "Authoritative sources only: provider official docs, primary papers (arXiv/ACL/OpenReview), standards (e.g. OWASP LLM Top 10, NIST AI RMF), and solid surveys. Generic blogs, SEO listicles, undated community posts, and invented citations are out of bounds.",
+      "comment": null,
+      "recommendedAutomatedVerification": false,
+      "automatedVerification": false
+    },
+    {
+      "id": "fact-ssot-yaml",
+      "text": "Catalog content is authored only in catalog/ YAML (recipes, patterns, index, schemas). README.md and web site data are regenerated via pnpm catalog:readme and pnpm catalog:site-data, not hand-edited for recipe/pattern bodies.",
+      "comment": null,
+      "recommendedAutomatedVerification": true,
+      "automatedVerification": true
+    },
+    {
+      "id": "fact-method-deep-cascade",
+      "text": "When a finding is material, upgrades are method-deep: refresh sources/evidence/API-control/safety and upgrade method-facing fields (pattern Definition/Best use/Avoid when/failure modes; recipe Expected output/Upgrade when/control notes). Full body rewrite only if content is wrong, misleading, or unsafe.",
+      "comment": null,
+      "recommendedAutomatedVerification": false,
+      "automatedVerification": false
+    },
+    {
+      "id": "fact-new-card-gate",
+      "text": "A new recipe or pattern is added only if: no existing card covers the job; at least two independent authoritative sources support it; a clear eval or safety check is stated; and the recipe vs pattern field contract is followed.",
+      "comment": null,
+      "recommendedAutomatedVerification": true,
+      "automatedVerification": true
+    },
+    {
+      "id": "fact-sources-freshness",
+      "text": "sources.yaml and source-refresh.md are updated for new or re-checked external URLs for this wave\u2019s freshness date 2026-07-31; content-deep extracts back used sources; check_sources_manifest.py --check passes after changes.",
+      "comment": null,
+      "recommendedAutomatedVerification": true,
+      "automatedVerification": true
+    },
+    {
+      "id": "fact-no-invent",
+      "text": "No invented citations, benchmarks, model names, provider behavior claims, or badge signals. Claims described as current or latest are live-verified in the same pass. Prefer provider reasoning/thinking controls over visible long chain-of-thought as default recipe guidance.",
+      "comment": null,
+      "recommendedAutomatedVerification": false,
+      "automatedVerification": false
+    },
+    {
+      "id": "fact-research-pack-ship",
+      "text": "Durable research pack under goals/catalog-ultradeep-research-enrich/ includes per-track notes, claim\u2192card maps, residual gaps, and summary ledgers, and is intended to ship. Bulk raw HTML/PDF dumps and large intermediate extract blobs are gitignored; plannotator session/gate JSON and optional huge task-graph are DROP.",
+      "comment": null,
+      "recommendedAutomatedVerification": true,
+      "automatedVerification": true
+    },
+    {
+      "id": "fact-validate-done",
+      "text": "Done requires: research pack complete for all required tracks; all material mapped findings applied to catalog YAML or explicitly residual-documented; then pnpm catalog:validate, pnpm catalog:readme, pnpm catalog:site-data, and sources/recipe checks relevant to touched surfaces succeed.",
+      "comment": null,
+      "recommendedAutomatedVerification": true,
+      "automatedVerification": true
+    },
+    {
+      "id": "fact-out-of-scope",
+      "text": "Out of scope: upgrading /agents:research skill; inventing sources; unrelated web/UI redesign or DESIGN.md chrome; forced all-card rewrite; reusable Grok workflow script this wave; requiring every residual closed forever; staging foreign dirty-tree web files with this goal\u2019s ship set.",
+      "comment": null,
+      "recommendedAutomatedVerification": false,
+      "automatedVerification": false
+    },
+    {
+      "id": "fact-thesis",
+      "text": "Catalog thesis is preserved: prompt patterns are testable interfaces (controls, contracts, evals, safety), not incantations or long chain-of-thought theater.",
+      "comment": null,
+      "recommendedAutomatedVerification": false,
+      "automatedVerification": false
+    },
+    {
+      "id": "fact-contracts",
+      "text": "Recipes keep the recipe card contract (Use for, paste zones, Copy prompt, Fill these in, Expected output, Upgrade when, safety/eval, Sources). Patterns keep pattern-note fields (Definition, Best use, Avoid when, template, controls, cost/latency, failure modes, evidence tier, sources).",
+      "comment": null,
+      "recommendedAutomatedVerification": true,
+      "automatedVerification": true
+    },
+    {
+      "id": "fact-goal-package-only",
+      "text": "Deliverable is a goal package for /goal goals/catalog-ultradeep-research-enrich/goal.md only; no reusable Grok workflow script is required this wave.",
+      "comment": null,
+      "recommendedAutomatedVerification": true,
+      "automatedVerification": true
+    }
+  ]
+}

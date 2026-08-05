@@ -94,6 +94,7 @@ after_copy:
     - "Do not treat majority vote or persona confidence as evidence."
     - "Preserve unresolved disagreements."
     - "do not force consensus."
+    - "Do not claim persona consensus is product agent orchestration or sign-off."
 sources:
   - title: "Solo Performance Prompting"
     url: https://arxiv.org/abs/2307.05300
@@ -105,3 +106,7 @@ sources:
     url: https://arxiv.org/abs/2311.17371
   - title: "Personas in System Prompts Do Not Improve Performance"
     url: https://aclanthology.org/2024.findings-emnlp.888/
+  - title: "OpenAI agents guardrails and approvals"
+    url: https://developers.openai.com/api/docs/guides/agents/guardrails-approvals
+  - title: "OpenAI evaluation best practices"
+    url: https://developers.openai.com/api/docs/guides/evaluation-best-practices

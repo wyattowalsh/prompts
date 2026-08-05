@@ -1,0 +1,187 @@
+{
+  "stage": "interview",
+  "title": "Catalog ultradeep research enrich (successor wave)",
+  "goalSlug": "catalog-ultradeep-research-enrich",
+  "questions": [
+    {
+      "id": "scope-confirm",
+      "prompt": "Confirm the goal scope for this successor wave",
+      "description": "Prior goal (prompt-catalog-research-upgrade) shipped a light upgrade pass (5 cards, inventory freshness 2026-07-25, residual gaps explicit). This wave is ultradeep hybrid research + material cascade.",
+      "answerMode": "multi-custom",
+      "recommendedAnswer": "All recommended options: hybrid research pack + material method-deep catalog cascade; successor residual-seeded; full modern PE landscape tracks; strict new-card gate; content-deep extracts for used sources; goal package only (no reusable workflow script).",
+      "recommendedOptionIds": [
+        "hybrid-pack-cascade",
+        "successor-residual-seed",
+        "landscape-tracks",
+        "strict-new-card",
+        "content-deep-verify",
+        "goal-package-only"
+      ],
+      "options": [
+        {
+          "id": "hybrid-pack-cascade",
+          "label": "Hybrid: structured research pack + cascade only material findings into catalog YAML"
+        },
+        {
+          "id": "successor-residual-seed",
+          "label": "Successor: seed from prior residual gaps (not a re-setup of the whole prior graph)"
+        },
+        {
+          "id": "landscape-tracks",
+          "label": "Full modern PE landscape tracks (API/classic PE/agents + multimodal, RAG, reasoning controls, provider agent frameworks)"
+        },
+        {
+          "id": "strict-new-card",
+          "label": "Strict new-card gate (≥2 independent authority sources, uncovered job, eval/safety, correct contract)"
+        },
+        {
+          "id": "content-deep-verify",
+          "label": "Content-deep: fetch + claim extract for every source used in findings or card changes"
+        },
+        {
+          "id": "goal-package-only",
+          "label": "Deliver goal package for /goal only (no reusable Grok workflow script this wave)"
+        },
+        {
+          "id": "force-all-cards",
+          "label": "Instead: force review/upgrade of all 91 cards"
+        },
+        {
+          "id": "research-only",
+          "label": "Instead: research pack only, no catalog YAML cascade this wave"
+        }
+      ],
+      "required": true
+    },
+    {
+      "id": "required-tracks",
+      "prompt": "Which research tracks must have a completed pack section before done?",
+      "description": "Each track needs notes + extracts for sources used + claim→card map entries (or explicit empty/no-material).",
+      "answerMode": "multi-custom",
+      "recommendedAnswer": "All landscape tracks required; residual seeds folded into the relevant tracks rather than a separate optional track.",
+      "recommendedOptionIds": [
+        "api-controls",
+        "classic-pe",
+        "agents-eval-context",
+        "multimodal",
+        "rag-citation",
+        "reasoning-controls",
+        "provider-agent-frameworks",
+        "safety-injection",
+        "residual-fold-in"
+      ],
+      "options": [
+        { "id": "api-controls", "label": "Provider API controls & official prompting docs" },
+        { "id": "classic-pe", "label": "Classic PE primary literature + 2024–2026 follow-ons" },
+        { "id": "agents-eval-context", "label": "Agents / multi-step / eval / context engineering" },
+        { "id": "multimodal", "label": "Multimodal prompting & evidence" },
+        { "id": "rag-citation", "label": "RAG / citation-grounded answering" },
+        { "id": "reasoning-controls", "label": "Reasoning-model / thinking controls (vs visible CoT recipes)" },
+        { "id": "provider-agent-frameworks", "label": "Provider agent frameworks & multi-agent product docs" },
+        { "id": "safety-injection", "label": "Safety / prompt injection / tool-abuse standards" },
+        { "id": "residual-fold-in", "label": "Fold prior residual gaps into the tracks above (required, not optional)" }
+      ],
+      "required": true
+    },
+    {
+      "id": "out-of-scope",
+      "prompt": "What is explicitly out of scope?",
+      "description": "Select all that apply. Recommended set mirrors prior goal discipline plus this wave’s choices.",
+      "answerMode": "multi-custom",
+      "recommendedAnswer": "Recommended out-of-scope set selected; add any extra exclusions in custom text.",
+      "recommendedOptionIds": [
+        "no-agents-research-skill",
+        "no-invented-citations",
+        "no-web-redesign",
+        "no-forced-full-rewrite",
+        "no-workflow-script",
+        "no-close-all-gaps-forever",
+        "no-blog-authority",
+        "no-foreign-web-stage"
+      ],
+      "options": [
+        { "id": "no-agents-research-skill", "label": "Upgrading /agents:research skill (wrong repo concern)" },
+        { "id": "no-invented-citations", "label": "Invented citations, benchmarks, model names, or provider claims" },
+        { "id": "no-web-redesign", "label": "Unrelated web/UI redesign or DESIGN.md product chrome work" },
+        { "id": "no-forced-full-rewrite", "label": "Forced rewrite of all 91 cards for coverage theater" },
+        { "id": "no-workflow-script", "label": "Building a reusable Grok workflow/script this wave" },
+        { "id": "no-close-all-gaps-forever", "label": "Requiring every research residual to be closed forever" },
+        { "id": "no-blog-authority", "label": "Generic blogs/SEO listicles as sole authority for Strong/Moderate evidence" },
+        { "id": "no-foreign-web-stage", "label": "Staging foreign dirty-tree web files with this goal’s catalog ship set" }
+      ],
+      "required": true
+    },
+    {
+      "id": "cascade-and-artifacts",
+      "prompt": "Confirm cascade depth and what ships in git",
+      "description": "Method-deep cascade upgrades method-facing fields when findings are material. Durable pack ships; raw dumps do not.",
+      "answerMode": "multi-custom",
+      "recommendedAnswer": "Method-deep cascade; ship product YAML + durable research pack; gitignore bulk raw dumps and plannotator session noise.",
+      "recommendedOptionIds": [
+        "method-deep-cascade",
+        "ship-product-yaml",
+        "ship-durable-pack",
+        "gitignore-raw-dumps",
+        "gitignore-session-noise",
+        "regenerate-validate"
+      ],
+      "options": [
+        {
+          "id": "method-deep-cascade",
+          "label": "Method-deep: upgrade definition/use/avoid/failure modes/expected/upgrade/controls when material"
+        },
+        {
+          "id": "ship-product-yaml",
+          "label": "Ship: catalog YAML, sources.yaml, source-refresh.md, regenerated README + catalog.json"
+        },
+        {
+          "id": "ship-durable-pack",
+          "label": "Ship: goal.md/facts/plan + per-track notes + claim→card maps + residual gaps + summary ledgers"
+        },
+        {
+          "id": "gitignore-raw-dumps",
+          "label": "Gitignore: bulk raw HTML/PDF dumps and large intermediate extract blobs"
+        },
+        {
+          "id": "gitignore-session-noise",
+          "label": "Gitignore/DROP: plannotator interview/facts/plan-gate JSON, optional huge task-graph"
+        },
+        {
+          "id": "regenerate-validate",
+          "label": "Done requires: catalog:validate + readme + site-data + sources manifest checks green"
+        },
+        {
+          "id": "metadata-only-cascade",
+          "label": "Instead: sources/control notes only (no method-facing field upgrades)"
+        },
+        {
+          "id": "ship-everything",
+          "label": "Instead: commit all raw extracts under the goal folder"
+        }
+      ],
+      "required": true
+    },
+    {
+      "id": "freshness-date",
+      "prompt": "What freshness / evaluation date should this wave use?",
+      "description": "Used in source-refresh notes, ledgers, and done condition. Live claims described as current must be verified in-pass.",
+      "answerMode": "single-custom",
+      "recommendedAnswer": "2026-07-31 (today / setup session date), advancing from prior wave’s 2026-07-25.",
+      "recommendedOptionIds": ["2026-07-31"],
+      "options": [
+        { "id": "2026-07-31", "label": "2026-07-31 (recommended — this session)" },
+        { "id": "2026-07-25", "label": "2026-07-25 (keep prior wave date)" },
+        { "id": "execution-day", "label": "Use the calendar day when execution actually runs (not setup day)" }
+      ],
+      "required": true
+    },
+    {
+      "id": "success-notes",
+      "prompt": "Any extra success criteria, constraints, or corrections?",
+      "description": "Optional free text. Leave blank if grill defaults are enough. Mention anything about volume targets, providers to emphasize, or forbidden claims.",
+      "answerMode": "text",
+      "recommendedAnswer": "No extra quotas: success is pack completeness for required tracks + material cascade (or residual-documented) + validation green. Preserve catalog thesis. No invented citations. Prefer provider controls over visible long CoT as default pattern guidance.",
+      "required": false
+    }
+  ]
+}

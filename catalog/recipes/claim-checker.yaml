@@ -73,3 +73,7 @@ sources:
     url: https://genai.owasp.org/llm-top-10/
   - title: "NIST AI RMF Generative AI Profile"
     url: https://www.nist.gov/publications/artificial-intelligence-risk-management-framework-generative-artificial-intelligence
+  - title: Chain-of-Verification
+    url: https://arxiv.org/abs/2309.11495
+  - title: "OpenAI reasoning guide"
+    url: https://developers.openai.com/api/docs/guides/reasoning

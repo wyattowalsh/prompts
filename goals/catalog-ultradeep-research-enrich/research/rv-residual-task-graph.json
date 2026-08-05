@@ -1,0 +1,2998 @@
+{
+  "goalSlug": "rv-residual-001-005",
+  "version": 9,
+  "as_of": "2026-08-04",
+  "stats": {
+    "nodes": 144,
+    "edges": 336
+  },
+  "parallelism_rules": {
+    "max_claim_workers": 11,
+    "max_assemblers": 10,
+    "max_catalog_micro": 3,
+    "max_inventory": 1,
+    "max_gates": 10,
+    "max_optional_net": 6,
+    "peak_concurrent": 28
+  },
+  "nodes": [
+    {
+      "id": "W0.0",
+      "kind": "bootstrap",
+      "phase": "W0",
+      "lease": "Lead",
+      "parallel_group": "W0.serial",
+      "verify": "findings frozen",
+      "finding": ""
+    },
+    {
+      "id": "W0.1",
+      "kind": "emit_graph",
+      "phase": "W0",
+      "lease": "Lead",
+      "parallel_group": "W0.serial",
+      "verify": "json exists nodes>=200",
+      "finding": ""
+    },
+    {
+      "id": "W0.2",
+      "kind": "emit_tsv",
+      "phase": "W0",
+      "lease": "Lead",
+      "parallel_group": "W0.serial",
+      "verify": "edges>=400",
+      "finding": ""
+    },
+    {
+      "id": "W0.3",
+      "kind": "scan",
+      "phase": "W0",
+      "lease": "Lead",
+      "parallel_group": "W0.scan",
+      "verify": "semicolon baseline",
+      "finding": ""
+    },
+    {
+      "id": "W0.4",
+      "kind": "scan",
+      "phase": "W0",
+      "lease": "Lead",
+      "parallel_group": "W0.scan",
+      "verify": "smartquote baseline",
+      "finding": ""
+    },
+    {
+      "id": "W0.5",
+      "kind": "scan",
+      "phase": "W0",
+      "lease": "Lead",
+      "parallel_group": "W0.scan",
+      "verify": "boilerplate baseline",
+      "finding": ""
+    },
+    {
+      "id": "W0.6",
+      "kind": "scan",
+      "phase": "W0",
+      "lease": "Lead",
+      "parallel_group": "W0.scan",
+      "verify": "platform-agents baseline",
+      "finding": ""
+    },
+    {
+      "id": "W0.7",
+      "kind": "ssot",
+      "phase": "W0",
+      "lease": "Lead",
+      "parallel_group": "W0.serial",
+      "verify": "META-SSOT.md written",
+      "finding": ""
+    },
+    {
+      "id": "W0.8",
+      "kind": "fs",
+      "phase": "W0",
+      "lease": "Lead",
+      "parallel_group": "W0.serial",
+      "verify": "snippet dir exists",
+      "finding": ""
+    },
+    {
+      "id": "W0.9",
+      "kind": "scan",
+      "phase": "W0",
+      "lease": "Lead",
+      "parallel_group": "W0.scan",
+      "verify": "foreign dirty inventory",
+      "finding": ""
+    },
+    {
+      "id": "W0.10",
+      "kind": "scan",
+      "phase": "W0",
+      "lease": "Lead",
+      "parallel_group": "W0.scan",
+      "verify": "stage-allowlist dir-entry hazard",
+      "finding": ""
+    },
+    {
+      "id": "J0",
+      "kind": "join",
+      "phase": "W0",
+      "lease": "",
+      "parallel_group": "",
+      "verify": "bootstrap complete",
+      "finding": ""
+    },
+    {
+      "id": "W1.I.0",
+      "kind": "inventory_patch",
+      "phase": "W1",
+      "lease": "Inventory",
+      "parallel_group": "W1.I.serial",
+      "verify": "inventory key flywheel_best_use clean",
+      "finding": "RV-001"
+    },
+    {
+      "id": "W1.I.1",
+      "kind": "inventory_patch",
+      "phase": "W1",
+      "lease": "Inventory",
+      "parallel_group": "W1.I.serial",
+      "verify": "inventory key zs_cot_quotes clean",
+      "finding": "RV-005"
+    },
+    {
+      "id": "W1.I.2",
+      "kind": "inventory_patch",
+      "phase": "W1",
+      "lease": "Inventory",
+      "parallel_group": "W1.I.serial",
+      "verify": "inventory key rag_quotes clean",
+      "finding": "RV-005"
+    },
+    {
+      "id": "W1.C.0",
+      "kind": "catalog_patch",
+      "phase": "W1",
+      "lease": "P.evaluation-flywheel",
+      "parallel_group": "W1.C",
+      "verify": "evaluation-flywheel field matches inventory",
+      "finding": "RV-001"
+    },
+    {
+      "id": "W1.C.1",
+      "kind": "catalog_patch",
+      "phase": "W1",
+      "lease": "P.zs-cot",
+      "parallel_group": "W1.C",
+      "verify": "zero-shot-chain-of-thought field matches inventory",
+      "finding": "RV-005"
+    },
+    {
+      "id": "W1.C.2",
+      "kind": "catalog_patch",
+      "phase": "W1",
+      "lease": "P.rag",
+      "parallel_group": "W1.C",
+      "verify": "rag-citation-grounded-answering field matches inventory",
+      "finding": "RV-005"
+    },
+    {
+      "id": "W1.J.0",
+      "kind": "judge",
+      "phase": "W1",
+      "lease": "",
+      "parallel_group": "W1.J",
+      "verify": "no semicolon after newline",
+      "finding": "RV-001"
+    },
+    {
+      "id": "W1.J.1",
+      "kind": "judge",
+      "phase": "W1",
+      "lease": "",
+      "parallel_group": "W1.J",
+      "verify": "no curly quotes ship-set",
+      "finding": "RV-005"
+    },
+    {
+      "id": "J1",
+      "kind": "join",
+      "phase": "W1",
+      "lease": "",
+      "parallel_group": "",
+      "verify": "product micro pass",
+      "finding": ""
+    },
+    {
+      "id": "W2.S.openai-agents-guardrails.0",
+      "kind": "claim_snippet",
+      "phase": "W2",
+      "lease": "E.openai-agents-guardrails.k0",
+      "parallel_group": "W2.S.A-meta",
+      "verify": "support non-boilerplate; claim<=evidence",
+      "finding": "RV-004"
+    },
+    {
+      "id": "W2.S.openai-agents-guardrails.1",
+      "kind": "claim_snippet",
+      "phase": "W2",
+      "lease": "E.openai-agents-guardrails.k1",
+      "parallel_group": "W2.S.A-meta",
+      "verify": "support non-boilerplate; claim<=evidence",
+      "finding": "RV-004"
+    },
+    {
+      "id": "W2.S.openai-agent-evals.0",
+      "kind": "claim_snippet",
+      "phase": "W2",
+      "lease": "E.openai-agent-evals.k0",
+      "parallel_group": "W2.S.A-meta",
+      "verify": "support non-boilerplate; claim<=evidence",
+      "finding": "RV-004"
+    },
+    {
+      "id": "W2.S.openai-citation-formatting.0",
+      "kind": "claim_snippet",
+      "phase": "W2",
+      "lease": "E.openai-citation-formatting.k0",
+      "parallel_group": "W2.S.A-meta",
+      "verify": "support non-boilerplate; claim<=evidence",
+      "finding": "RV-004"
+    },
+    {
+      "id": "W2.S.openai-eval-best-practices.0",
+      "kind": "claim_snippet",
+      "phase": "W2",
+      "lease": "E.openai-eval-best-practices.k0",
+      "parallel_group": "W2.S.A-meta",
+      "verify": "support non-boilerplate; claim<=evidence",
+      "finding": "RV-004"
+    },
+    {
+      "id": "W2.S.openai-retrieval.0",
+      "kind": "claim_snippet",
+      "phase": "W2",
+      "lease": "E.openai-retrieval.k0",
+      "parallel_group": "W2.S.A-meta",
+      "verify": "support non-boilerplate; claim<=evidence",
+      "finding": "RV-004"
+    },
+    {
+      "id": "W2.S.anthropic-citations.0",
+      "kind": "claim_snippet",
+      "phase": "W2",
+      "lease": "E.anthropic-citations.k0",
+      "parallel_group": "W2.S.B4",
+      "verify": "support non-boilerplate; claim<=evidence",
+      "finding": "RV-004"
+    },
+    {
+      "id": "W2.S.anthropic-tool-use-refresh.0",
+      "kind": "claim_snippet",
+      "phase": "W2",
+      "lease": "E.anthropic-tool-use-refresh.k0",
+      "parallel_group": "W2.S.B3",
+      "verify": "support non-boilerplate; claim<=evidence",
+      "finding": "RV-004"
+    },
+    {
+      "id": "W2.S.gemini-grounding.0",
+      "kind": "claim_snippet",
+      "phase": "W2",
+      "lease": "E.gemini-grounding.k0",
+      "parallel_group": "W2.S.B1",
+      "verify": "support non-boilerplate; claim<=evidence",
+      "finding": "RV-004"
+    },
+    {
+      "id": "W2.S.gemini-prompting-mm.0",
+      "kind": "claim_snippet",
+      "phase": "W2",
+      "lease": "E.gemini-prompting-mm.k0",
+      "parallel_group": "W2.S.B2",
+      "verify": "support non-boilerplate; claim<=evidence",
+      "finding": "RV-004"
+    },
+    {
+      "id": "W2.S.owasp-agent-security.0",
+      "kind": "claim_snippet",
+      "phase": "W2",
+      "lease": "E.owasp-agent-security.k0",
+      "parallel_group": "W2.S.B1",
+      "verify": "support non-boilerplate; claim<=evidence",
+      "finding": "RV-004"
+    },
+    {
+      "id": "W2.A.openai-agents-guardrails",
+      "kind": "extract_assemble",
+      "phase": "W2",
+      "lease": "E.openai-agents-guardrails",
+      "parallel_group": "W2.A",
+      "verify": "file has all claims; no boilerplate",
+      "finding": "RV-004"
+    },
+    {
+      "id": "W2.A.openai-agent-evals",
+      "kind": "extract_assemble",
+      "phase": "W2",
+      "lease": "E.openai-agent-evals",
+      "parallel_group": "W2.A",
+      "verify": "file has all claims; no boilerplate",
+      "finding": "RV-004"
+    },
+    {
+      "id": "W2.A.openai-citation-formatting",
+      "kind": "extract_assemble",
+      "phase": "W2",
+      "lease": "E.openai-citation-formatting",
+      "parallel_group": "W2.A",
+      "verify": "file has all claims; no boilerplate",
+      "finding": "RV-004"
+    },
+    {
+      "id": "W2.A.openai-eval-best-practices",
+      "kind": "extract_assemble",
+      "phase": "W2",
+      "lease": "E.openai-eval-best-practices",
+      "parallel_group": "W2.A",
+      "verify": "file has all claims; no boilerplate",
+      "finding": "RV-004"
+    },
+    {
+      "id": "W2.A.openai-retrieval",
+      "kind": "extract_assemble",
+      "phase": "W2",
+      "lease": "E.openai-retrieval",
+      "parallel_group": "W2.A",
+      "verify": "file has all claims; no boilerplate",
+      "finding": "RV-004"
+    },
+    {
+      "id": "W2.A.anthropic-citations",
+      "kind": "extract_assemble",
+      "phase": "W2",
+      "lease": "E.anthropic-citations",
+      "parallel_group": "W2.A",
+      "verify": "file has all claims; no boilerplate",
+      "finding": "RV-004"
+    },
+    {
+      "id": "W2.A.anthropic-tool-use-refresh",
+      "kind": "extract_assemble",
+      "phase": "W2",
+      "lease": "E.anthropic-tool-use-refresh",
+      "parallel_group": "W2.A",
+      "verify": "file has all claims; no boilerplate",
+      "finding": "RV-004"
+    },
+    {
+      "id": "W2.A.gemini-grounding",
+      "kind": "extract_assemble",
+      "phase": "W2",
+      "lease": "E.gemini-grounding",
+      "parallel_group": "W2.A",
+      "verify": "file has all claims; no boilerplate",
+      "finding": "RV-004"
+    },
+    {
+      "id": "W2.A.gemini-prompting-mm",
+      "kind": "extract_assemble",
+      "phase": "W2",
+      "lease": "E.gemini-prompting-mm",
+      "parallel_group": "W2.A",
+      "verify": "file has all claims; no boilerplate",
+      "finding": "RV-004"
+    },
+    {
+      "id": "W2.A.owasp-agent-security",
+      "kind": "extract_assemble",
+      "phase": "W2",
+      "lease": "E.owasp-agent-security",
+      "parallel_group": "W2.A",
+      "verify": "file has all claims; no boilerplate",
+      "finding": "RV-004"
+    },
+    {
+      "id": "W2.M.B1",
+      "kind": "micro_judge",
+      "phase": "W2",
+      "lease": "",
+      "parallel_group": "W2.M",
+      "verify": "batch quote provenance",
+      "finding": "RV-004"
+    },
+    {
+      "id": "W2.M.B2",
+      "kind": "micro_judge",
+      "phase": "W2",
+      "lease": "",
+      "parallel_group": "W2.M",
+      "verify": "batch quote provenance",
+      "finding": "RV-004"
+    },
+    {
+      "id": "W2.M.B3B4",
+      "kind": "micro_judge",
+      "phase": "W2",
+      "lease": "",
+      "parallel_group": "W2.M",
+      "verify": "batch quote provenance",
+      "finding": "RV-004"
+    },
+    {
+      "id": "W2.M.A",
+      "kind": "micro_judge",
+      "phase": "W2",
+      "lease": "",
+      "parallel_group": "W2.M",
+      "verify": "batch quote provenance",
+      "finding": "RV-004"
+    },
+    {
+      "id": "W2.N.llms-index",
+      "kind": "net_enrich_optional",
+      "phase": "W2",
+      "lease": "",
+      "parallel_group": "W2.N",
+      "verify": "optional; may skip",
+      "finding": "RV-004"
+    },
+    {
+      "id": "W2.N.openai-agents-guardrails",
+      "kind": "net_enrich_optional",
+      "phase": "W2",
+      "lease": "",
+      "parallel_group": "W2.N",
+      "verify": "optional; may skip",
+      "finding": "RV-004"
+    },
+    {
+      "id": "W2.N.openai-agent-evals",
+      "kind": "net_enrich_optional",
+      "phase": "W2",
+      "lease": "",
+      "parallel_group": "W2.N",
+      "verify": "optional; may skip",
+      "finding": "RV-004"
+    },
+    {
+      "id": "W2.N.openai-eval-best",
+      "kind": "net_enrich_optional",
+      "phase": "W2",
+      "lease": "",
+      "parallel_group": "W2.N",
+      "verify": "optional; may skip",
+      "finding": "RV-004"
+    },
+    {
+      "id": "W2.N.openai-retrieval",
+      "kind": "net_enrich_optional",
+      "phase": "W2",
+      "lease": "",
+      "parallel_group": "W2.N",
+      "verify": "optional; may skip",
+      "finding": "RV-004"
+    },
+    {
+      "id": "W2.N.openai-citations",
+      "kind": "net_enrich_optional",
+      "phase": "W2",
+      "lease": "",
+      "parallel_group": "W2.N",
+      "verify": "optional; may skip",
+      "finding": "RV-004"
+    },
+    {
+      "id": "W2.G.boilerplate_zero",
+      "kind": "global_judge",
+      "phase": "W2",
+      "lease": "",
+      "parallel_group": "W2.G",
+      "verify": "rg empty",
+      "finding": "RV-004"
+    },
+    {
+      "id": "W2.G.quote_provenance",
+      "kind": "global_judge",
+      "phase": "W2",
+      "lease": "",
+      "parallel_group": "W2.G",
+      "verify": "support in raw/META",
+      "finding": "RV-004"
+    },
+    {
+      "id": "W2.G.claim_le_evidence",
+      "kind": "global_judge",
+      "phase": "W2",
+      "lease": "",
+      "parallel_group": "W2.G",
+      "verify": "no overclaim",
+      "finding": "RV-004"
+    },
+    {
+      "id": "W2.G.invent_scan",
+      "kind": "global_judge",
+      "phase": "W2",
+      "lease": "",
+      "parallel_group": "W2.G",
+      "verify": "rubrics clean",
+      "finding": "RV-004"
+    },
+    {
+      "id": "W2.G.support_tier_tagged",
+      "kind": "global_judge",
+      "phase": "W2",
+      "lease": "",
+      "parallel_group": "W2.G",
+      "verify": "meta|body|sibling present",
+      "finding": "RV-004"
+    },
+    {
+      "id": "J2",
+      "kind": "join",
+      "phase": "W2",
+      "lease": "",
+      "parallel_group": "",
+      "verify": "extract PASS offline",
+      "finding": ""
+    },
+    {
+      "id": "W3.0",
+      "kind": "track_patch",
+      "phase": "W3",
+      "lease": "Track",
+      "parallel_group": "W3",
+      "verify": "developers URL in track",
+      "finding": "RV-003"
+    },
+    {
+      "id": "W3.1",
+      "kind": "track_patch",
+      "phase": "W3",
+      "lease": "Track",
+      "parallel_group": "W3",
+      "verify": "claim-map updated",
+      "finding": "RV-003"
+    },
+    {
+      "id": "W3.2",
+      "kind": "track_patch",
+      "phase": "W3",
+      "lease": "Track",
+      "parallel_group": "W3",
+      "verify": "extract-coverage lists RV ids",
+      "finding": "RV-003"
+    },
+    {
+      "id": "W3.3",
+      "kind": "scan",
+      "phase": "W3",
+      "lease": "Lead",
+      "parallel_group": "W3",
+      "verify": "platform agents only retired",
+      "finding": "RV-003"
+    },
+    {
+      "id": "W3.4",
+      "kind": "scan",
+      "phase": "W3",
+      "lease": "Lead",
+      "parallel_group": "W3",
+      "verify": "INDEX.md extract links ok",
+      "finding": "RV-003"
+    },
+    {
+      "id": "J3",
+      "kind": "join",
+      "phase": "W3",
+      "lease": "",
+      "parallel_group": "",
+      "verify": "P-003",
+      "finding": ""
+    },
+    {
+      "id": "W4.0",
+      "kind": "hygiene",
+      "phase": "W4",
+      "lease": "Hygiene",
+      "parallel_group": "W4",
+      "verify": "stage-files file-only KEEP",
+      "finding": "RV-002"
+    },
+    {
+      "id": "W4.1",
+      "kind": "hygiene",
+      "phase": "W4",
+      "lease": "Hygiene",
+      "parallel_group": "W4",
+      "verify": "DROP includes raw-rvfix",
+      "finding": "RV-002"
+    },
+    {
+      "id": "W4.2",
+      "kind": "hygiene",
+      "phase": "W4",
+      "lease": "Hygiene",
+      "parallel_group": "W4",
+      "verify": "FOREIGN lists web/DESIGN/other goals",
+      "finding": "RV-002"
+    },
+    {
+      "id": "W4.3",
+      "kind": "hygiene",
+      "phase": "W4",
+      "lease": "Hygiene",
+      "parallel_group": "W4",
+      "verify": "path-sets.json",
+      "finding": "RV-002"
+    },
+    {
+      "id": "W4.4",
+      "kind": "hygiene",
+      "phase": "W4",
+      "lease": "Hygiene",
+      "parallel_group": "W4",
+      "verify": "hygiene-report ship\u2229foreign=\u2205",
+      "finding": "RV-002"
+    },
+    {
+      "id": "W4.5",
+      "kind": "hygiene",
+      "phase": "W4",
+      "lease": "Hygiene",
+      "parallel_group": "W4",
+      "verify": "stage-allowlist no bare dir stage",
+      "finding": "RV-002"
+    },
+    {
+      "id": "W4.6",
+      "kind": "hygiene",
+      "phase": "W4",
+      "lease": "Hygiene",
+      "parallel_group": "W4",
+      "verify": "ARTIFACT_POLICY updated",
+      "finding": "RV-002"
+    },
+    {
+      "id": "W4.7",
+      "kind": "hygiene",
+      "phase": "W4",
+      "lease": "Hygiene",
+      "parallel_group": "W4",
+      "verify": "would-stage list non-empty product core",
+      "finding": "RV-002"
+    },
+    {
+      "id": "J4",
+      "kind": "join",
+      "phase": "W4",
+      "lease": "",
+      "parallel_group": "",
+      "verify": "P-002 dry-run",
+      "finding": ""
+    },
+    {
+      "id": "JM",
+      "kind": "join",
+      "phase": "MID",
+      "lease": "",
+      "parallel_group": "",
+      "verify": "all fans complete",
+      "finding": ""
+    },
+    {
+      "id": "W5.0",
+      "kind": "validate",
+      "phase": "W5",
+      "lease": "Lead",
+      "parallel_group": "W5.serial",
+      "verify": "catalog:validate",
+      "finding": ""
+    },
+    {
+      "id": "W5.1",
+      "kind": "readme",
+      "phase": "W5",
+      "lease": "Lead",
+      "parallel_group": "W5.serial",
+      "verify": "catalog:readme",
+      "finding": ""
+    },
+    {
+      "id": "W5.2",
+      "kind": "site_data",
+      "phase": "W5",
+      "lease": "Lead",
+      "parallel_group": "W5.serial",
+      "verify": "catalog:site-data",
+      "finding": ""
+    },
+    {
+      "id": "W5.3",
+      "kind": "assert",
+      "phase": "W5",
+      "lease": "Lead",
+      "parallel_group": "W5.serial",
+      "verify": "README no orphan semicolon line",
+      "finding": ""
+    },
+    {
+      "id": "W5.4",
+      "kind": "assert",
+      "phase": "W5",
+      "lease": "Lead",
+      "parallel_group": "W5.serial",
+      "verify": "flywheel best_use coherent",
+      "finding": ""
+    },
+    {
+      "id": "W5.5",
+      "kind": "assert",
+      "phase": "W5",
+      "lease": "Lead",
+      "parallel_group": "W5.serial",
+      "verify": "inventory==catalog fields",
+      "finding": ""
+    },
+    {
+      "id": "W5.5a",
+      "kind": "gate",
+      "phase": "W5.5",
+      "lease": "",
+      "parallel_group": "W5.5",
+      "verify": "check_readme_recipes",
+      "finding": ""
+    },
+    {
+      "id": "W5.5b",
+      "kind": "gate",
+      "phase": "W5.5",
+      "lease": "",
+      "parallel_group": "W5.5",
+      "verify": "check_sources_manifest",
+      "finding": ""
+    },
+    {
+      "id": "W5.5c",
+      "kind": "gate",
+      "phase": "W5.5",
+      "lease": "",
+      "parallel_group": "W5.5",
+      "verify": "badges_check",
+      "finding": ""
+    },
+    {
+      "id": "W5.5d",
+      "kind": "gate",
+      "phase": "W5.5",
+      "lease": "",
+      "parallel_group": "W5.5",
+      "verify": "pack_unittest",
+      "finding": ""
+    },
+    {
+      "id": "W5.5e",
+      "kind": "gate",
+      "phase": "W5.5",
+      "lease": "",
+      "parallel_group": "W5.5",
+      "verify": "platform_agents_catalog_empty",
+      "finding": ""
+    },
+    {
+      "id": "W5.5f",
+      "kind": "gate",
+      "phase": "W5.5",
+      "lease": "",
+      "parallel_group": "W5.5",
+      "verify": "smartquote_ship_empty",
+      "finding": ""
+    },
+    {
+      "id": "W5.5g",
+      "kind": "gate",
+      "phase": "W5.5",
+      "lease": "",
+      "parallel_group": "W5.5",
+      "verify": "semicolon_scan",
+      "finding": ""
+    },
+    {
+      "id": "W5.5h",
+      "kind": "gate",
+      "phase": "W5.5",
+      "lease": "",
+      "parallel_group": "W5.5",
+      "verify": "boilerplate_empty",
+      "finding": ""
+    },
+    {
+      "id": "W5.5i",
+      "kind": "gate",
+      "phase": "W5.5",
+      "lease": "",
+      "parallel_group": "W5.5",
+      "verify": "dump_churn_scanner",
+      "finding": ""
+    },
+    {
+      "id": "W5.5j",
+      "kind": "gate",
+      "phase": "W5.5",
+      "lease": "",
+      "parallel_group": "W5.5",
+      "verify": "control_note_allowlist_spotcheck",
+      "finding": ""
+    },
+    {
+      "id": "J5",
+      "kind": "join",
+      "phase": "W5.5",
+      "lease": "",
+      "parallel_group": "",
+      "verify": "P-G",
+      "finding": ""
+    },
+    {
+      "id": "W6.0",
+      "kind": "purity",
+      "phase": "W6",
+      "lease": "",
+      "parallel_group": "W6",
+      "verify": "stage purity",
+      "finding": ""
+    },
+    {
+      "id": "W6.1",
+      "kind": "docs",
+      "phase": "W6",
+      "lease": "",
+      "parallel_group": "W6",
+      "verify": "residual-gaps",
+      "finding": ""
+    },
+    {
+      "id": "W6.2",
+      "kind": "docs",
+      "phase": "W6",
+      "lease": "",
+      "parallel_group": "W6",
+      "verify": "summary",
+      "finding": ""
+    },
+    {
+      "id": "W6.3",
+      "kind": "docs",
+      "phase": "W6",
+      "lease": "",
+      "parallel_group": "W6",
+      "verify": "ledger",
+      "finding": ""
+    },
+    {
+      "id": "W6.4",
+      "kind": "docs",
+      "phase": "W6",
+      "lease": "",
+      "parallel_group": "W6",
+      "verify": "changelog touch",
+      "finding": ""
+    },
+    {
+      "id": "W6.5",
+      "kind": "verdict_draft",
+      "phase": "W6",
+      "lease": "",
+      "parallel_group": "W6",
+      "verify": "RV-RESIDUAL-VERDICT draft",
+      "finding": ""
+    },
+    {
+      "id": "W6.6",
+      "kind": "scan",
+      "phase": "W6",
+      "lease": "",
+      "parallel_group": "W6",
+      "verify": "final all predicates",
+      "finding": ""
+    },
+    {
+      "id": "W7.0",
+      "kind": "verdict",
+      "phase": "W7",
+      "lease": "Lead",
+      "parallel_group": "",
+      "verify": "PASS|FAIL",
+      "finding": ""
+    },
+    {
+      "id": "W1.CANARY.readme_preview",
+      "kind": "canary",
+      "phase": "W1",
+      "lease": "",
+      "parallel_group": "",
+      "verify": "emitPatternYaml flywheel best_use renders without orphan",
+      "finding": ""
+    },
+    {
+      "id": "W1.V.evaluation-flywheel",
+      "kind": "verify_load",
+      "phase": "W1",
+      "lease": "",
+      "parallel_group": "W1.V",
+      "verify": "yaml loads; Pattern.parse ok",
+      "finding": ""
+    },
+    {
+      "id": "W1.V.zero-shot-chain-of-thought",
+      "kind": "verify_load",
+      "phase": "W1",
+      "lease": "",
+      "parallel_group": "W1.V",
+      "verify": "yaml loads; Pattern.parse ok",
+      "finding": ""
+    },
+    {
+      "id": "W1.V.rag-citation-grounded-answering",
+      "kind": "verify_load",
+      "phase": "W1",
+      "lease": "",
+      "parallel_group": "W1.V",
+      "verify": "yaml loads; Pattern.parse ok",
+      "finding": ""
+    },
+    {
+      "id": "W2.V.W2.A.openai-agents-guardrails",
+      "kind": "verify_extract_schema",
+      "phase": "W2",
+      "lease": "",
+      "parallel_group": "W2.V",
+      "verify": "url+claims+support fields",
+      "finding": "RV-004"
+    },
+    {
+      "id": "W2.V.W2.A.openai-agent-evals",
+      "kind": "verify_extract_schema",
+      "phase": "W2",
+      "lease": "",
+      "parallel_group": "W2.V",
+      "verify": "url+claims+support fields",
+      "finding": "RV-004"
+    },
+    {
+      "id": "W2.V.W2.A.openai-citation-formatting",
+      "kind": "verify_extract_schema",
+      "phase": "W2",
+      "lease": "",
+      "parallel_group": "W2.V",
+      "verify": "url+claims+support fields",
+      "finding": "RV-004"
+    },
+    {
+      "id": "W2.V.W2.A.openai-eval-best-practices",
+      "kind": "verify_extract_schema",
+      "phase": "W2",
+      "lease": "",
+      "parallel_group": "W2.V",
+      "verify": "url+claims+support fields",
+      "finding": "RV-004"
+    },
+    {
+      "id": "W2.V.W2.A.openai-retrieval",
+      "kind": "verify_extract_schema",
+      "phase": "W2",
+      "lease": "",
+      "parallel_group": "W2.V",
+      "verify": "url+claims+support fields",
+      "finding": "RV-004"
+    },
+    {
+      "id": "W2.V.W2.A.anthropic-citations",
+      "kind": "verify_extract_schema",
+      "phase": "W2",
+      "lease": "",
+      "parallel_group": "W2.V",
+      "verify": "url+claims+support fields",
+      "finding": "RV-004"
+    },
+    {
+      "id": "W2.V.W2.A.anthropic-tool-use-refresh",
+      "kind": "verify_extract_schema",
+      "phase": "W2",
+      "lease": "",
+      "parallel_group": "W2.V",
+      "verify": "url+claims+support fields",
+      "finding": "RV-004"
+    },
+    {
+      "id": "W2.V.W2.A.gemini-grounding",
+      "kind": "verify_extract_schema",
+      "phase": "W2",
+      "lease": "",
+      "parallel_group": "W2.V",
+      "verify": "url+claims+support fields",
+      "finding": "RV-004"
+    },
+    {
+      "id": "W2.V.W2.A.gemini-prompting-mm",
+      "kind": "verify_extract_schema",
+      "phase": "W2",
+      "lease": "",
+      "parallel_group": "W2.V",
+      "verify": "url+claims+support fields",
+      "finding": "RV-004"
+    },
+    {
+      "id": "W2.V.W2.A.owasp-agent-security",
+      "kind": "verify_extract_schema",
+      "phase": "W2",
+      "lease": "",
+      "parallel_group": "W2.V",
+      "verify": "url+claims+support fields",
+      "finding": "RV-004"
+    },
+    {
+      "id": "W2.SV.openai-agents-guardrails.0",
+      "kind": "verify_snippet",
+      "phase": "W2",
+      "lease": "",
+      "parallel_group": "W2.SV",
+      "finding": "RV-004",
+      "verify": "snippet has claim+support>=40"
+    },
+    {
+      "id": "W2.SV.openai-agents-guardrails.1",
+      "kind": "verify_snippet",
+      "phase": "W2",
+      "lease": "",
+      "parallel_group": "W2.SV",
+      "finding": "RV-004",
+      "verify": "snippet has claim+support>=40"
+    },
+    {
+      "id": "W2.SV.openai-agent-evals.0",
+      "kind": "verify_snippet",
+      "phase": "W2",
+      "lease": "",
+      "parallel_group": "W2.SV",
+      "finding": "RV-004",
+      "verify": "snippet has claim+support>=40"
+    },
+    {
+      "id": "W2.SV.openai-citation-formatting.0",
+      "kind": "verify_snippet",
+      "phase": "W2",
+      "lease": "",
+      "parallel_group": "W2.SV",
+      "finding": "RV-004",
+      "verify": "snippet has claim+support>=40"
+    },
+    {
+      "id": "W2.SV.openai-eval-best-practices.0",
+      "kind": "verify_snippet",
+      "phase": "W2",
+      "lease": "",
+      "parallel_group": "W2.SV",
+      "finding": "RV-004",
+      "verify": "snippet has claim+support>=40"
+    },
+    {
+      "id": "W2.SV.openai-retrieval.0",
+      "kind": "verify_snippet",
+      "phase": "W2",
+      "lease": "",
+      "parallel_group": "W2.SV",
+      "finding": "RV-004",
+      "verify": "snippet has claim+support>=40"
+    },
+    {
+      "id": "W2.SV.anthropic-citations.0",
+      "kind": "verify_snippet",
+      "phase": "W2",
+      "lease": "",
+      "parallel_group": "W2.SV",
+      "finding": "RV-004",
+      "verify": "snippet has claim+support>=40"
+    },
+    {
+      "id": "W2.SV.anthropic-tool-use-refresh.0",
+      "kind": "verify_snippet",
+      "phase": "W2",
+      "lease": "",
+      "parallel_group": "W2.SV",
+      "finding": "RV-004",
+      "verify": "snippet has claim+support>=40"
+    },
+    {
+      "id": "W2.SV.gemini-grounding.0",
+      "kind": "verify_snippet",
+      "phase": "W2",
+      "lease": "",
+      "parallel_group": "W2.SV",
+      "finding": "RV-004",
+      "verify": "snippet has claim+support>=40"
+    },
+    {
+      "id": "W2.SV.gemini-prompting-mm.0",
+      "kind": "verify_snippet",
+      "phase": "W2",
+      "lease": "",
+      "parallel_group": "W2.SV",
+      "finding": "RV-004",
+      "verify": "snippet has claim+support>=40"
+    },
+    {
+      "id": "W2.SV.owasp-agent-security.0",
+      "kind": "verify_snippet",
+      "phase": "W2",
+      "lease": "",
+      "parallel_group": "W2.SV",
+      "finding": "RV-004",
+      "verify": "snippet has claim+support>=40"
+    },
+    {
+      "id": "W4.V.0",
+      "kind": "hygiene_verify",
+      "phase": "W4",
+      "lease": "Hygiene",
+      "parallel_group": "W4.V",
+      "finding": "RV-002",
+      "verify": "no directory entries in stage-files"
+    },
+    {
+      "id": "W4.V.1",
+      "kind": "hygiene_verify",
+      "phase": "W4",
+      "lease": "Hygiene",
+      "parallel_group": "W4.V",
+      "finding": "RV-002",
+      "verify": "every stage-files path exists"
+    },
+    {
+      "id": "W4.V.2",
+      "kind": "hygiene_verify",
+      "phase": "W4",
+      "lease": "Hygiene",
+      "parallel_group": "W4.V",
+      "finding": "RV-002",
+      "verify": "catalog 3 micro files in stage-files"
+    },
+    {
+      "id": "W4.V.3",
+      "kind": "hygiene_verify",
+      "phase": "W4",
+      "lease": "Hygiene",
+      "parallel_group": "W4.V",
+      "finding": "RV-002",
+      "verify": "README sources site-data in stage-files"
+    },
+    {
+      "id": "W4.V.4",
+      "kind": "hygiene_verify",
+      "phase": "W4",
+      "lease": "Hygiene",
+      "parallel_group": "W4.V",
+      "finding": "RV-002",
+      "verify": "raw-rvfix not in stage-files"
+    },
+    {
+      "id": "W4.V.5",
+      "kind": "hygiene_verify",
+      "phase": "W4",
+      "lease": "Hygiene",
+      "parallel_group": "W4.V",
+      "finding": "RV-002",
+      "verify": "FOREIGN includes DESIGN.md"
+    },
+    {
+      "id": "W5.F.0",
+      "kind": "freeze",
+      "phase": "W5",
+      "lease": "Lead",
+      "parallel_group": "W5.serial",
+      "finding": "",
+      "verify": "content freeze hash recorded"
+    },
+    {
+      "id": "W6.7",
+      "kind": "docs",
+      "phase": "W6",
+      "lease": "Lead",
+      "parallel_group": "W6",
+      "finding": "",
+      "verify": "residual matrix table written"
+    },
+    {
+      "id": "W0.11",
+      "kind": "scan",
+      "phase": "W0",
+      "lease": "Lead",
+      "parallel_group": "W0.scan",
+      "finding": "",
+      "verify": "lease collision dry-run empty"
+    },
+    {
+      "id": "W2.P.openai-agents-guardrails.0",
+      "kind": "prompt_materialize",
+      "phase": "W2",
+      "lease": "",
+      "parallel_group": "W2.P",
+      "finding": "RV-004",
+      "verify": "prompt stub path exists"
+    },
+    {
+      "id": "W2.P.openai-agents-guardrails.1",
+      "kind": "prompt_materialize",
+      "phase": "W2",
+      "lease": "",
+      "parallel_group": "W2.P",
+      "finding": "RV-004",
+      "verify": "prompt stub path exists"
+    },
+    {
+      "id": "W2.P.openai-agent-evals.0",
+      "kind": "prompt_materialize",
+      "phase": "W2",
+      "lease": "",
+      "parallel_group": "W2.P",
+      "finding": "RV-004",
+      "verify": "prompt stub path exists"
+    },
+    {
+      "id": "W2.P.openai-citation-formatting.0",
+      "kind": "prompt_materialize",
+      "phase": "W2",
+      "lease": "",
+      "parallel_group": "W2.P",
+      "finding": "RV-004",
+      "verify": "prompt stub path exists"
+    },
+    {
+      "id": "W2.P.openai-eval-best-practices.0",
+      "kind": "prompt_materialize",
+      "phase": "W2",
+      "lease": "",
+      "parallel_group": "W2.P",
+      "finding": "RV-004",
+      "verify": "prompt stub path exists"
+    },
+    {
+      "id": "W2.P.openai-retrieval.0",
+      "kind": "prompt_materialize",
+      "phase": "W2",
+      "lease": "",
+      "parallel_group": "W2.P",
+      "finding": "RV-004",
+      "verify": "prompt stub path exists"
+    },
+    {
+      "id": "W2.P.anthropic-citations.0",
+      "kind": "prompt_materialize",
+      "phase": "W2",
+      "lease": "",
+      "parallel_group": "W2.P",
+      "finding": "RV-004",
+      "verify": "prompt stub path exists"
+    },
+    {
+      "id": "W2.P.anthropic-tool-use-refresh.0",
+      "kind": "prompt_materialize",
+      "phase": "W2",
+      "lease": "",
+      "parallel_group": "W2.P",
+      "finding": "RV-004",
+      "verify": "prompt stub path exists"
+    },
+    {
+      "id": "W2.P.gemini-grounding.0",
+      "kind": "prompt_materialize",
+      "phase": "W2",
+      "lease": "",
+      "parallel_group": "W2.P",
+      "finding": "RV-004",
+      "verify": "prompt stub path exists"
+    },
+    {
+      "id": "W2.P.gemini-prompting-mm.0",
+      "kind": "prompt_materialize",
+      "phase": "W2",
+      "lease": "",
+      "parallel_group": "W2.P",
+      "finding": "RV-004",
+      "verify": "prompt stub path exists"
+    },
+    {
+      "id": "W2.P.owasp-agent-security.0",
+      "kind": "prompt_materialize",
+      "phase": "W2",
+      "lease": "",
+      "parallel_group": "W2.P",
+      "finding": "RV-004",
+      "verify": "prompt stub path exists"
+    }
+  ],
+  "edges": [
+    {
+      "from": "W0.0",
+      "to": "W0.1",
+      "kind": "dep"
+    },
+    {
+      "from": "W0.0",
+      "to": "W0.7",
+      "kind": "dep"
+    },
+    {
+      "from": "W0.0",
+      "to": "W0.8",
+      "kind": "dep"
+    },
+    {
+      "from": "W0.0",
+      "to": "W0.3",
+      "kind": "dep"
+    },
+    {
+      "from": "W0.0",
+      "to": "W0.4",
+      "kind": "dep"
+    },
+    {
+      "from": "W0.0",
+      "to": "W0.5",
+      "kind": "dep"
+    },
+    {
+      "from": "W0.0",
+      "to": "W0.6",
+      "kind": "dep"
+    },
+    {
+      "from": "W0.0",
+      "to": "W0.9",
+      "kind": "dep"
+    },
+    {
+      "from": "W0.0",
+      "to": "W0.10",
+      "kind": "dep"
+    },
+    {
+      "from": "W0.1",
+      "to": "W0.2",
+      "kind": "dep"
+    },
+    {
+      "from": "W0.7",
+      "to": "J0",
+      "kind": "dep"
+    },
+    {
+      "from": "W0.8",
+      "to": "J0",
+      "kind": "dep"
+    },
+    {
+      "from": "W0.2",
+      "to": "J0",
+      "kind": "dep"
+    },
+    {
+      "from": "W0.3",
+      "to": "J0",
+      "kind": "dep"
+    },
+    {
+      "from": "W0.4",
+      "to": "J0",
+      "kind": "dep"
+    },
+    {
+      "from": "W0.5",
+      "to": "J0",
+      "kind": "dep"
+    },
+    {
+      "from": "W0.6",
+      "to": "J0",
+      "kind": "dep"
+    },
+    {
+      "from": "W0.9",
+      "to": "J0",
+      "kind": "dep"
+    },
+    {
+      "from": "W0.10",
+      "to": "J0",
+      "kind": "dep"
+    },
+    {
+      "from": "J0",
+      "to": "W1.I.0",
+      "kind": "dep"
+    },
+    {
+      "from": "W1.I.0",
+      "to": "W1.I.1",
+      "kind": "dep"
+    },
+    {
+      "from": "W1.I.1",
+      "to": "W1.I.2",
+      "kind": "dep"
+    },
+    {
+      "from": "W1.I.0",
+      "to": "W1.C.0",
+      "kind": "dep"
+    },
+    {
+      "from": "W1.I.1",
+      "to": "W1.C.1",
+      "kind": "dep"
+    },
+    {
+      "from": "W1.I.2",
+      "to": "W1.C.2",
+      "kind": "dep"
+    },
+    {
+      "from": "W1.C.0",
+      "to": "W1.J.0",
+      "kind": "dep"
+    },
+    {
+      "from": "W1.C.1",
+      "to": "W1.J.1",
+      "kind": "dep"
+    },
+    {
+      "from": "W1.C.2",
+      "to": "W1.J.1",
+      "kind": "dep"
+    },
+    {
+      "from": "W1.J.0",
+      "to": "J1",
+      "kind": "dep"
+    },
+    {
+      "from": "W1.J.1",
+      "to": "J1",
+      "kind": "dep"
+    },
+    {
+      "from": "J0",
+      "to": "W2.S.openai-agents-guardrails.0",
+      "kind": "dep"
+    },
+    {
+      "from": "W0.7",
+      "to": "W2.S.openai-agents-guardrails.0",
+      "kind": "dep"
+    },
+    {
+      "from": "J0",
+      "to": "W2.S.openai-agents-guardrails.1",
+      "kind": "dep"
+    },
+    {
+      "from": "W0.7",
+      "to": "W2.S.openai-agents-guardrails.1",
+      "kind": "dep"
+    },
+    {
+      "from": "J0",
+      "to": "W2.S.openai-agent-evals.0",
+      "kind": "dep"
+    },
+    {
+      "from": "W0.7",
+      "to": "W2.S.openai-agent-evals.0",
+      "kind": "dep"
+    },
+    {
+      "from": "J0",
+      "to": "W2.S.openai-citation-formatting.0",
+      "kind": "dep"
+    },
+    {
+      "from": "W0.7",
+      "to": "W2.S.openai-citation-formatting.0",
+      "kind": "dep"
+    },
+    {
+      "from": "J0",
+      "to": "W2.S.openai-eval-best-practices.0",
+      "kind": "dep"
+    },
+    {
+      "from": "W0.7",
+      "to": "W2.S.openai-eval-best-practices.0",
+      "kind": "dep"
+    },
+    {
+      "from": "J0",
+      "to": "W2.S.openai-retrieval.0",
+      "kind": "dep"
+    },
+    {
+      "from": "W0.7",
+      "to": "W2.S.openai-retrieval.0",
+      "kind": "dep"
+    },
+    {
+      "from": "J0",
+      "to": "W2.S.anthropic-citations.0",
+      "kind": "dep"
+    },
+    {
+      "from": "W0.7",
+      "to": "W2.S.anthropic-citations.0",
+      "kind": "dep"
+    },
+    {
+      "from": "J0",
+      "to": "W2.S.anthropic-tool-use-refresh.0",
+      "kind": "dep"
+    },
+    {
+      "from": "W0.7",
+      "to": "W2.S.anthropic-tool-use-refresh.0",
+      "kind": "dep"
+    },
+    {
+      "from": "J0",
+      "to": "W2.S.gemini-grounding.0",
+      "kind": "dep"
+    },
+    {
+      "from": "W0.7",
+      "to": "W2.S.gemini-grounding.0",
+      "kind": "dep"
+    },
+    {
+      "from": "J0",
+      "to": "W2.S.gemini-prompting-mm.0",
+      "kind": "dep"
+    },
+    {
+      "from": "W0.7",
+      "to": "W2.S.gemini-prompting-mm.0",
+      "kind": "dep"
+    },
+    {
+      "from": "J0",
+      "to": "W2.S.owasp-agent-security.0",
+      "kind": "dep"
+    },
+    {
+      "from": "W0.7",
+      "to": "W2.S.owasp-agent-security.0",
+      "kind": "dep"
+    },
+    {
+      "from": "W2.S.openai-agents-guardrails.0",
+      "to": "W2.A.openai-agents-guardrails",
+      "kind": "dep"
+    },
+    {
+      "from": "W2.S.openai-agents-guardrails.1",
+      "to": "W2.A.openai-agents-guardrails",
+      "kind": "dep"
+    },
+    {
+      "from": "W2.S.openai-agent-evals.0",
+      "to": "W2.A.openai-agent-evals",
+      "kind": "dep"
+    },
+    {
+      "from": "W2.S.openai-citation-formatting.0",
+      "to": "W2.A.openai-citation-formatting",
+      "kind": "dep"
+    },
+    {
+      "from": "W2.S.openai-eval-best-practices.0",
+      "to": "W2.A.openai-eval-best-practices",
+      "kind": "dep"
+    },
+    {
+      "from": "W2.S.openai-retrieval.0",
+      "to": "W2.A.openai-retrieval",
+      "kind": "dep"
+    },
+    {
+      "from": "W2.S.anthropic-citations.0",
+      "to": "W2.A.anthropic-citations",
+      "kind": "dep"
+    },
+    {
+      "from": "W2.S.anthropic-tool-use-refresh.0",
+      "to": "W2.A.anthropic-tool-use-refresh",
+      "kind": "dep"
+    },
+    {
+      "from": "W2.S.gemini-grounding.0",
+      "to": "W2.A.gemini-grounding",
+      "kind": "dep"
+    },
+    {
+      "from": "W2.S.gemini-prompting-mm.0",
+      "to": "W2.A.gemini-prompting-mm",
+      "kind": "dep"
+    },
+    {
+      "from": "W2.S.owasp-agent-security.0",
+      "to": "W2.A.owasp-agent-security",
+      "kind": "dep"
+    },
+    {
+      "from": "W2.A.gemini-grounding",
+      "to": "W2.M.B1",
+      "kind": "dep"
+    },
+    {
+      "from": "W2.A.owasp-agent-security",
+      "to": "W2.M.B1",
+      "kind": "dep"
+    },
+    {
+      "from": "W2.A.gemini-prompting-mm",
+      "to": "W2.M.B2",
+      "kind": "dep"
+    },
+    {
+      "from": "W2.A.anthropic-citations",
+      "to": "W2.M.B3B4",
+      "kind": "dep"
+    },
+    {
+      "from": "W2.A.anthropic-tool-use-refresh",
+      "to": "W2.M.B3B4",
+      "kind": "dep"
+    },
+    {
+      "from": "W2.A.openai-agents-guardrails",
+      "to": "W2.M.A",
+      "kind": "dep"
+    },
+    {
+      "from": "W2.A.openai-agent-evals",
+      "to": "W2.M.A",
+      "kind": "dep"
+    },
+    {
+      "from": "W2.A.openai-citation-formatting",
+      "to": "W2.M.A",
+      "kind": "dep"
+    },
+    {
+      "from": "W2.A.openai-eval-best-practices",
+      "to": "W2.M.A",
+      "kind": "dep"
+    },
+    {
+      "from": "W2.A.openai-retrieval",
+      "to": "W2.M.A",
+      "kind": "dep"
+    },
+    {
+      "from": "J0",
+      "to": "W2.N.llms-index",
+      "kind": "dep"
+    },
+    {
+      "from": "J0",
+      "to": "W2.N.openai-agents-guardrails",
+      "kind": "dep"
+    },
+    {
+      "from": "J0",
+      "to": "W2.N.openai-agent-evals",
+      "kind": "dep"
+    },
+    {
+      "from": "J0",
+      "to": "W2.N.openai-eval-best",
+      "kind": "dep"
+    },
+    {
+      "from": "J0",
+      "to": "W2.N.openai-retrieval",
+      "kind": "dep"
+    },
+    {
+      "from": "J0",
+      "to": "W2.N.openai-citations",
+      "kind": "dep"
+    },
+    {
+      "from": "W2.A.openai-agents-guardrails",
+      "to": "W2.G.boilerplate_zero",
+      "kind": "dep"
+    },
+    {
+      "from": "W2.A.openai-agent-evals",
+      "to": "W2.G.boilerplate_zero",
+      "kind": "dep"
+    },
+    {
+      "from": "W2.A.openai-citation-formatting",
+      "to": "W2.G.boilerplate_zero",
+      "kind": "dep"
+    },
+    {
+      "from": "W2.A.openai-eval-best-practices",
+      "to": "W2.G.boilerplate_zero",
+      "kind": "dep"
+    },
+    {
+      "from": "W2.A.openai-retrieval",
+      "to": "W2.G.boilerplate_zero",
+      "kind": "dep"
+    },
+    {
+      "from": "W2.A.anthropic-citations",
+      "to": "W2.G.boilerplate_zero",
+      "kind": "dep"
+    },
+    {
+      "from": "W2.A.anthropic-tool-use-refresh",
+      "to": "W2.G.boilerplate_zero",
+      "kind": "dep"
+    },
+    {
+      "from": "W2.A.gemini-grounding",
+      "to": "W2.G.boilerplate_zero",
+      "kind": "dep"
+    },
+    {
+      "from": "W2.A.gemini-prompting-mm",
+      "to": "W2.G.boilerplate_zero",
+      "kind": "dep"
+    },
+    {
+      "from": "W2.A.owasp-agent-security",
+      "to": "W2.G.boilerplate_zero",
+      "kind": "dep"
+    },
+    {
+      "from": "W2.M.B1",
+      "to": "W2.G.boilerplate_zero",
+      "kind": "dep"
+    },
+    {
+      "from": "W2.M.B2",
+      "to": "W2.G.boilerplate_zero",
+      "kind": "dep"
+    },
+    {
+      "from": "W2.M.B3B4",
+      "to": "W2.G.boilerplate_zero",
+      "kind": "dep"
+    },
+    {
+      "from": "W2.M.A",
+      "to": "W2.G.boilerplate_zero",
+      "kind": "dep"
+    },
+    {
+      "from": "W2.A.openai-agents-guardrails",
+      "to": "W2.G.quote_provenance",
+      "kind": "dep"
+    },
+    {
+      "from": "W2.A.openai-agent-evals",
+      "to": "W2.G.quote_provenance",
+      "kind": "dep"
+    },
+    {
+      "from": "W2.A.openai-citation-formatting",
+      "to": "W2.G.quote_provenance",
+      "kind": "dep"
+    },
+    {
+      "from": "W2.A.openai-eval-best-practices",
+      "to": "W2.G.quote_provenance",
+      "kind": "dep"
+    },
+    {
+      "from": "W2.A.openai-retrieval",
+      "to": "W2.G.quote_provenance",
+      "kind": "dep"
+    },
+    {
+      "from": "W2.A.anthropic-citations",
+      "to": "W2.G.quote_provenance",
+      "kind": "dep"
+    },
+    {
+      "from": "W2.A.anthropic-tool-use-refresh",
+      "to": "W2.G.quote_provenance",
+      "kind": "dep"
+    },
+    {
+      "from": "W2.A.gemini-grounding",
+      "to": "W2.G.quote_provenance",
+      "kind": "dep"
+    },
+    {
+      "from": "W2.A.gemini-prompting-mm",
+      "to": "W2.G.quote_provenance",
+      "kind": "dep"
+    },
+    {
+      "from": "W2.A.owasp-agent-security",
+      "to": "W2.G.quote_provenance",
+      "kind": "dep"
+    },
+    {
+      "from": "W2.M.B1",
+      "to": "W2.G.quote_provenance",
+      "kind": "dep"
+    },
+    {
+      "from": "W2.M.B2",
+      "to": "W2.G.quote_provenance",
+      "kind": "dep"
+    },
+    {
+      "from": "W2.M.B3B4",
+      "to": "W2.G.quote_provenance",
+      "kind": "dep"
+    },
+    {
+      "from": "W2.M.A",
+      "to": "W2.G.quote_provenance",
+      "kind": "dep"
+    },
+    {
+      "from": "W2.A.openai-agents-guardrails",
+      "to": "W2.G.claim_le_evidence",
+      "kind": "dep"
+    },
+    {
+      "from": "W2.A.openai-agent-evals",
+      "to": "W2.G.claim_le_evidence",
+      "kind": "dep"
+    },
+    {
+      "from": "W2.A.openai-citation-formatting",
+      "to": "W2.G.claim_le_evidence",
+      "kind": "dep"
+    },
+    {
+      "from": "W2.A.openai-eval-best-practices",
+      "to": "W2.G.claim_le_evidence",
+      "kind": "dep"
+    },
+    {
+      "from": "W2.A.openai-retrieval",
+      "to": "W2.G.claim_le_evidence",
+      "kind": "dep"
+    },
+    {
+      "from": "W2.A.anthropic-citations",
+      "to": "W2.G.claim_le_evidence",
+      "kind": "dep"
+    },
+    {
+      "from": "W2.A.anthropic-tool-use-refresh",
+      "to": "W2.G.claim_le_evidence",
+      "kind": "dep"
+    },
+    {
+      "from": "W2.A.gemini-grounding",
+      "to": "W2.G.claim_le_evidence",
+      "kind": "dep"
+    },
+    {
+      "from": "W2.A.gemini-prompting-mm",
+      "to": "W2.G.claim_le_evidence",
+      "kind": "dep"
+    },
+    {
+      "from": "W2.A.owasp-agent-security",
+      "to": "W2.G.claim_le_evidence",
+      "kind": "dep"
+    },
+    {
+      "from": "W2.M.B1",
+      "to": "W2.G.claim_le_evidence",
+      "kind": "dep"
+    },
+    {
+      "from": "W2.M.B2",
+      "to": "W2.G.claim_le_evidence",
+      "kind": "dep"
+    },
+    {
+      "from": "W2.M.B3B4",
+      "to": "W2.G.claim_le_evidence",
+      "kind": "dep"
+    },
+    {
+      "from": "W2.M.A",
+      "to": "W2.G.claim_le_evidence",
+      "kind": "dep"
+    },
+    {
+      "from": "W2.A.openai-agents-guardrails",
+      "to": "W2.G.invent_scan",
+      "kind": "dep"
+    },
+    {
+      "from": "W2.A.openai-agent-evals",
+      "to": "W2.G.invent_scan",
+      "kind": "dep"
+    },
+    {
+      "from": "W2.A.openai-citation-formatting",
+      "to": "W2.G.invent_scan",
+      "kind": "dep"
+    },
+    {
+      "from": "W2.A.openai-eval-best-practices",
+      "to": "W2.G.invent_scan",
+      "kind": "dep"
+    },
+    {
+      "from": "W2.A.openai-retrieval",
+      "to": "W2.G.invent_scan",
+      "kind": "dep"
+    },
+    {
+      "from": "W2.A.anthropic-citations",
+      "to": "W2.G.invent_scan",
+      "kind": "dep"
+    },
+    {
+      "from": "W2.A.anthropic-tool-use-refresh",
+      "to": "W2.G.invent_scan",
+      "kind": "dep"
+    },
+    {
+      "from": "W2.A.gemini-grounding",
+      "to": "W2.G.invent_scan",
+      "kind": "dep"
+    },
+    {
+      "from": "W2.A.gemini-prompting-mm",
+      "to": "W2.G.invent_scan",
+      "kind": "dep"
+    },
+    {
+      "from": "W2.A.owasp-agent-security",
+      "to": "W2.G.invent_scan",
+      "kind": "dep"
+    },
+    {
+      "from": "W2.M.B1",
+      "to": "W2.G.invent_scan",
+      "kind": "dep"
+    },
+    {
+      "from": "W2.M.B2",
+      "to": "W2.G.invent_scan",
+      "kind": "dep"
+    },
+    {
+      "from": "W2.M.B3B4",
+      "to": "W2.G.invent_scan",
+      "kind": "dep"
+    },
+    {
+      "from": "W2.M.A",
+      "to": "W2.G.invent_scan",
+      "kind": "dep"
+    },
+    {
+      "from": "W2.A.openai-agents-guardrails",
+      "to": "W2.G.support_tier_tagged",
+      "kind": "dep"
+    },
+    {
+      "from": "W2.A.openai-agent-evals",
+      "to": "W2.G.support_tier_tagged",
+      "kind": "dep"
+    },
+    {
+      "from": "W2.A.openai-citation-formatting",
+      "to": "W2.G.support_tier_tagged",
+      "kind": "dep"
+    },
+    {
+      "from": "W2.A.openai-eval-best-practices",
+      "to": "W2.G.support_tier_tagged",
+      "kind": "dep"
+    },
+    {
+      "from": "W2.A.openai-retrieval",
+      "to": "W2.G.support_tier_tagged",
+      "kind": "dep"
+    },
+    {
+      "from": "W2.A.anthropic-citations",
+      "to": "W2.G.support_tier_tagged",
+      "kind": "dep"
+    },
+    {
+      "from": "W2.A.anthropic-tool-use-refresh",
+      "to": "W2.G.support_tier_tagged",
+      "kind": "dep"
+    },
+    {
+      "from": "W2.A.gemini-grounding",
+      "to": "W2.G.support_tier_tagged",
+      "kind": "dep"
+    },
+    {
+      "from": "W2.A.gemini-prompting-mm",
+      "to": "W2.G.support_tier_tagged",
+      "kind": "dep"
+    },
+    {
+      "from": "W2.A.owasp-agent-security",
+      "to": "W2.G.support_tier_tagged",
+      "kind": "dep"
+    },
+    {
+      "from": "W2.M.B1",
+      "to": "W2.G.support_tier_tagged",
+      "kind": "dep"
+    },
+    {
+      "from": "W2.M.B2",
+      "to": "W2.G.support_tier_tagged",
+      "kind": "dep"
+    },
+    {
+      "from": "W2.M.B3B4",
+      "to": "W2.G.support_tier_tagged",
+      "kind": "dep"
+    },
+    {
+      "from": "W2.M.A",
+      "to": "W2.G.support_tier_tagged",
+      "kind": "dep"
+    },
+    {
+      "from": "W2.G.boilerplate_zero",
+      "to": "J2",
+      "kind": "dep"
+    },
+    {
+      "from": "W2.G.quote_provenance",
+      "to": "J2",
+      "kind": "dep"
+    },
+    {
+      "from": "W2.G.claim_le_evidence",
+      "to": "J2",
+      "kind": "dep"
+    },
+    {
+      "from": "W2.G.invent_scan",
+      "to": "J2",
+      "kind": "dep"
+    },
+    {
+      "from": "W2.G.support_tier_tagged",
+      "to": "J2",
+      "kind": "dep"
+    },
+    {
+      "from": "W2.A.openai-agents-guardrails",
+      "to": "W3.0",
+      "kind": "dep"
+    },
+    {
+      "from": "J2",
+      "to": "W3.1",
+      "kind": "dep"
+    },
+    {
+      "from": "W3.0",
+      "to": "W3.1",
+      "kind": "dep"
+    },
+    {
+      "from": "J2",
+      "to": "W3.2",
+      "kind": "dep"
+    },
+    {
+      "from": "W3.0",
+      "to": "W3.3",
+      "kind": "dep"
+    },
+    {
+      "from": "J2",
+      "to": "W3.4",
+      "kind": "dep"
+    },
+    {
+      "from": "W3.0",
+      "to": "J3",
+      "kind": "dep"
+    },
+    {
+      "from": "W3.1",
+      "to": "J3",
+      "kind": "dep"
+    },
+    {
+      "from": "W3.2",
+      "to": "J3",
+      "kind": "dep"
+    },
+    {
+      "from": "W3.3",
+      "to": "J3",
+      "kind": "dep"
+    },
+    {
+      "from": "W3.4",
+      "to": "J3",
+      "kind": "dep"
+    },
+    {
+      "from": "J0",
+      "to": "W4.0",
+      "kind": "dep"
+    },
+    {
+      "from": "J0",
+      "to": "W4.1",
+      "kind": "dep"
+    },
+    {
+      "from": "J0",
+      "to": "W4.2",
+      "kind": "dep"
+    },
+    {
+      "from": "J0",
+      "to": "W4.3",
+      "kind": "dep"
+    },
+    {
+      "from": "J0",
+      "to": "W4.4",
+      "kind": "dep"
+    },
+    {
+      "from": "J0",
+      "to": "W4.5",
+      "kind": "dep"
+    },
+    {
+      "from": "J0",
+      "to": "W4.6",
+      "kind": "dep"
+    },
+    {
+      "from": "J0",
+      "to": "W4.7",
+      "kind": "dep"
+    },
+    {
+      "from": "W4.0",
+      "to": "J4",
+      "kind": "dep"
+    },
+    {
+      "from": "W4.1",
+      "to": "J4",
+      "kind": "dep"
+    },
+    {
+      "from": "W4.2",
+      "to": "J4",
+      "kind": "dep"
+    },
+    {
+      "from": "W4.3",
+      "to": "J4",
+      "kind": "dep"
+    },
+    {
+      "from": "W4.4",
+      "to": "J4",
+      "kind": "dep"
+    },
+    {
+      "from": "W4.5",
+      "to": "J4",
+      "kind": "dep"
+    },
+    {
+      "from": "W4.6",
+      "to": "J4",
+      "kind": "dep"
+    },
+    {
+      "from": "W4.7",
+      "to": "J4",
+      "kind": "dep"
+    },
+    {
+      "from": "J1",
+      "to": "JM",
+      "kind": "dep"
+    },
+    {
+      "from": "J2",
+      "to": "JM",
+      "kind": "dep"
+    },
+    {
+      "from": "J3",
+      "to": "JM",
+      "kind": "dep"
+    },
+    {
+      "from": "J4",
+      "to": "JM",
+      "kind": "dep"
+    },
+    {
+      "from": "W5.0",
+      "to": "W5.1",
+      "kind": "dep"
+    },
+    {
+      "from": "W5.1",
+      "to": "W5.2",
+      "kind": "dep"
+    },
+    {
+      "from": "W5.1",
+      "to": "W5.3",
+      "kind": "dep"
+    },
+    {
+      "from": "W5.1",
+      "to": "W5.4",
+      "kind": "dep"
+    },
+    {
+      "from": "W5.0",
+      "to": "W5.5",
+      "kind": "dep"
+    },
+    {
+      "from": "J1",
+      "to": "W5.5",
+      "kind": "dep"
+    },
+    {
+      "from": "W5.2",
+      "to": "W5.5a",
+      "kind": "dep"
+    },
+    {
+      "from": "W5.3",
+      "to": "W5.5a",
+      "kind": "dep"
+    },
+    {
+      "from": "W5.4",
+      "to": "W5.5a",
+      "kind": "dep"
+    },
+    {
+      "from": "W5.2",
+      "to": "W5.5b",
+      "kind": "dep"
+    },
+    {
+      "from": "W5.3",
+      "to": "W5.5b",
+      "kind": "dep"
+    },
+    {
+      "from": "W5.4",
+      "to": "W5.5b",
+      "kind": "dep"
+    },
+    {
+      "from": "W5.2",
+      "to": "W5.5c",
+      "kind": "dep"
+    },
+    {
+      "from": "W5.3",
+      "to": "W5.5c",
+      "kind": "dep"
+    },
+    {
+      "from": "W5.4",
+      "to": "W5.5c",
+      "kind": "dep"
+    },
+    {
+      "from": "W5.2",
+      "to": "W5.5d",
+      "kind": "dep"
+    },
+    {
+      "from": "W5.3",
+      "to": "W5.5d",
+      "kind": "dep"
+    },
+    {
+      "from": "W5.4",
+      "to": "W5.5d",
+      "kind": "dep"
+    },
+    {
+      "from": "W5.2",
+      "to": "W5.5e",
+      "kind": "dep"
+    },
+    {
+      "from": "W5.3",
+      "to": "W5.5e",
+      "kind": "dep"
+    },
+    {
+      "from": "W5.4",
+      "to": "W5.5e",
+      "kind": "dep"
+    },
+    {
+      "from": "W5.2",
+      "to": "W5.5f",
+      "kind": "dep"
+    },
+    {
+      "from": "W5.3",
+      "to": "W5.5f",
+      "kind": "dep"
+    },
+    {
+      "from": "W5.4",
+      "to": "W5.5f",
+      "kind": "dep"
+    },
+    {
+      "from": "W5.2",
+      "to": "W5.5g",
+      "kind": "dep"
+    },
+    {
+      "from": "W5.3",
+      "to": "W5.5g",
+      "kind": "dep"
+    },
+    {
+      "from": "W5.4",
+      "to": "W5.5g",
+      "kind": "dep"
+    },
+    {
+      "from": "W5.2",
+      "to": "W5.5h",
+      "kind": "dep"
+    },
+    {
+      "from": "W5.3",
+      "to": "W5.5h",
+      "kind": "dep"
+    },
+    {
+      "from": "W5.4",
+      "to": "W5.5h",
+      "kind": "dep"
+    },
+    {
+      "from": "W5.2",
+      "to": "W5.5i",
+      "kind": "dep"
+    },
+    {
+      "from": "W5.3",
+      "to": "W5.5i",
+      "kind": "dep"
+    },
+    {
+      "from": "W5.4",
+      "to": "W5.5i",
+      "kind": "dep"
+    },
+    {
+      "from": "W5.2",
+      "to": "W5.5j",
+      "kind": "dep"
+    },
+    {
+      "from": "W5.3",
+      "to": "W5.5j",
+      "kind": "dep"
+    },
+    {
+      "from": "W5.4",
+      "to": "W5.5j",
+      "kind": "dep"
+    },
+    {
+      "from": "W5.5a",
+      "to": "J5",
+      "kind": "dep"
+    },
+    {
+      "from": "W5.5b",
+      "to": "J5",
+      "kind": "dep"
+    },
+    {
+      "from": "W5.5c",
+      "to": "J5",
+      "kind": "dep"
+    },
+    {
+      "from": "W5.5d",
+      "to": "J5",
+      "kind": "dep"
+    },
+    {
+      "from": "W5.5e",
+      "to": "J5",
+      "kind": "dep"
+    },
+    {
+      "from": "W5.5f",
+      "to": "J5",
+      "kind": "dep"
+    },
+    {
+      "from": "W5.5g",
+      "to": "J5",
+      "kind": "dep"
+    },
+    {
+      "from": "W5.5h",
+      "to": "J5",
+      "kind": "dep"
+    },
+    {
+      "from": "W5.5i",
+      "to": "J5",
+      "kind": "dep"
+    },
+    {
+      "from": "W5.5j",
+      "to": "J5",
+      "kind": "dep"
+    },
+    {
+      "from": "J5",
+      "to": "W6.0",
+      "kind": "dep"
+    },
+    {
+      "from": "J4",
+      "to": "W6.0",
+      "kind": "dep"
+    },
+    {
+      "from": "J5",
+      "to": "W6.1",
+      "kind": "dep"
+    },
+    {
+      "from": "J5",
+      "to": "W6.2",
+      "kind": "dep"
+    },
+    {
+      "from": "J5",
+      "to": "W6.3",
+      "kind": "dep"
+    },
+    {
+      "from": "J5",
+      "to": "W6.4",
+      "kind": "dep"
+    },
+    {
+      "from": "J5",
+      "to": "W6.5",
+      "kind": "dep"
+    },
+    {
+      "from": "J5",
+      "to": "W6.6",
+      "kind": "dep"
+    },
+    {
+      "from": "W6.0",
+      "to": "W7.0",
+      "kind": "dep"
+    },
+    {
+      "from": "W6.1",
+      "to": "W7.0",
+      "kind": "dep"
+    },
+    {
+      "from": "W6.2",
+      "to": "W7.0",
+      "kind": "dep"
+    },
+    {
+      "from": "W6.3",
+      "to": "W7.0",
+      "kind": "dep"
+    },
+    {
+      "from": "W6.4",
+      "to": "W7.0",
+      "kind": "dep"
+    },
+    {
+      "from": "W6.5",
+      "to": "W7.0",
+      "kind": "dep"
+    },
+    {
+      "from": "W6.6",
+      "to": "W7.0",
+      "kind": "dep"
+    },
+    {
+      "from": "W1.C.0",
+      "to": "W1.CANARY.readme_preview",
+      "kind": "dep"
+    },
+    {
+      "from": "W1.CANARY.readme_preview",
+      "to": "J1",
+      "kind": "dep"
+    },
+    {
+      "from": "W1.C.0",
+      "to": "W1.V.evaluation-flywheel",
+      "kind": "dep"
+    },
+    {
+      "from": "W1.V.evaluation-flywheel",
+      "to": "J1",
+      "kind": "dep"
+    },
+    {
+      "from": "W1.C.1",
+      "to": "W1.V.zero-shot-chain-of-thought",
+      "kind": "dep"
+    },
+    {
+      "from": "W1.V.zero-shot-chain-of-thought",
+      "to": "J1",
+      "kind": "dep"
+    },
+    {
+      "from": "W1.C.2",
+      "to": "W1.V.rag-citation-grounded-answering",
+      "kind": "dep"
+    },
+    {
+      "from": "W1.V.rag-citation-grounded-answering",
+      "to": "J1",
+      "kind": "dep"
+    },
+    {
+      "from": "W2.A.W2.A.openai-agents-guardrails",
+      "to": "W2.V.W2.A.openai-agents-guardrails",
+      "kind": "dep"
+    },
+    {
+      "from": "W2.V.W2.A.openai-agents-guardrails",
+      "to": "J2",
+      "kind": "dep"
+    },
+    {
+      "from": "W2.A.W2.A.openai-agent-evals",
+      "to": "W2.V.W2.A.openai-agent-evals",
+      "kind": "dep"
+    },
+    {
+      "from": "W2.V.W2.A.openai-agent-evals",
+      "to": "J2",
+      "kind": "dep"
+    },
+    {
+      "from": "W2.A.W2.A.openai-citation-formatting",
+      "to": "W2.V.W2.A.openai-citation-formatting",
+      "kind": "dep"
+    },
+    {
+      "from": "W2.V.W2.A.openai-citation-formatting",
+      "to": "J2",
+      "kind": "dep"
+    },
+    {
+      "from": "W2.A.W2.A.openai-eval-best-practices",
+      "to": "W2.V.W2.A.openai-eval-best-practices",
+      "kind": "dep"
+    },
+    {
+      "from": "W2.V.W2.A.openai-eval-best-practices",
+      "to": "J2",
+      "kind": "dep"
+    },
+    {
+      "from": "W2.A.W2.A.openai-retrieval",
+      "to": "W2.V.W2.A.openai-retrieval",
+      "kind": "dep"
+    },
+    {
+      "from": "W2.V.W2.A.openai-retrieval",
+      "to": "J2",
+      "kind": "dep"
+    },
+    {
+      "from": "W2.A.W2.A.anthropic-citations",
+      "to": "W2.V.W2.A.anthropic-citations",
+      "kind": "dep"
+    },
+    {
+      "from": "W2.V.W2.A.anthropic-citations",
+      "to": "J2",
+      "kind": "dep"
+    },
+    {
+      "from": "W2.A.W2.A.anthropic-tool-use-refresh",
+      "to": "W2.V.W2.A.anthropic-tool-use-refresh",
+      "kind": "dep"
+    },
+    {
+      "from": "W2.V.W2.A.anthropic-tool-use-refresh",
+      "to": "J2",
+      "kind": "dep"
+    },
+    {
+      "from": "W2.A.W2.A.gemini-grounding",
+      "to": "W2.V.W2.A.gemini-grounding",
+      "kind": "dep"
+    },
+    {
+      "from": "W2.V.W2.A.gemini-grounding",
+      "to": "J2",
+      "kind": "dep"
+    },
+    {
+      "from": "W2.A.W2.A.gemini-prompting-mm",
+      "to": "W2.V.W2.A.gemini-prompting-mm",
+      "kind": "dep"
+    },
+    {
+      "from": "W2.V.W2.A.gemini-prompting-mm",
+      "to": "J2",
+      "kind": "dep"
+    },
+    {
+      "from": "W2.A.W2.A.owasp-agent-security",
+      "to": "W2.V.W2.A.owasp-agent-security",
+      "kind": "dep"
+    },
+    {
+      "from": "W2.V.W2.A.owasp-agent-security",
+      "to": "J2",
+      "kind": "dep"
+    },
+    {
+      "from": "W2.S.openai-agents-guardrails.0",
+      "to": "W2.SV.openai-agents-guardrails.0",
+      "kind": "dep"
+    },
+    {
+      "from": "W2.SV.openai-agents-guardrails.0",
+      "to": "W2.A.openai-agents-guardrails",
+      "kind": "dep"
+    },
+    {
+      "from": "W2.S.openai-agents-guardrails.1",
+      "to": "W2.SV.openai-agents-guardrails.1",
+      "kind": "dep"
+    },
+    {
+      "from": "W2.SV.openai-agents-guardrails.1",
+      "to": "W2.A.openai-agents-guardrails",
+      "kind": "dep"
+    },
+    {
+      "from": "W2.S.openai-agent-evals.0",
+      "to": "W2.SV.openai-agent-evals.0",
+      "kind": "dep"
+    },
+    {
+      "from": "W2.SV.openai-agent-evals.0",
+      "to": "W2.A.openai-agent-evals",
+      "kind": "dep"
+    },
+    {
+      "from": "W2.S.openai-citation-formatting.0",
+      "to": "W2.SV.openai-citation-formatting.0",
+      "kind": "dep"
+    },
+    {
+      "from": "W2.SV.openai-citation-formatting.0",
+      "to": "W2.A.openai-citation-formatting",
+      "kind": "dep"
+    },
+    {
+      "from": "W2.S.openai-eval-best-practices.0",
+      "to": "W2.SV.openai-eval-best-practices.0",
+      "kind": "dep"
+    },
+    {
+      "from": "W2.SV.openai-eval-best-practices.0",
+      "to": "W2.A.openai-eval-best-practices",
+      "kind": "dep"
+    },
+    {
+      "from": "W2.S.openai-retrieval.0",
+      "to": "W2.SV.openai-retrieval.0",
+      "kind": "dep"
+    },
+    {
+      "from": "W2.SV.openai-retrieval.0",
+      "to": "W2.A.openai-retrieval",
+      "kind": "dep"
+    },
+    {
+      "from": "W2.S.anthropic-citations.0",
+      "to": "W2.SV.anthropic-citations.0",
+      "kind": "dep"
+    },
+    {
+      "from": "W2.SV.anthropic-citations.0",
+      "to": "W2.A.anthropic-citations",
+      "kind": "dep"
+    },
+    {
+      "from": "W2.S.anthropic-tool-use-refresh.0",
+      "to": "W2.SV.anthropic-tool-use-refresh.0",
+      "kind": "dep"
+    },
+    {
+      "from": "W2.SV.anthropic-tool-use-refresh.0",
+      "to": "W2.A.anthropic-tool-use-refresh",
+      "kind": "dep"
+    },
+    {
+      "from": "W2.S.gemini-grounding.0",
+      "to": "W2.SV.gemini-grounding.0",
+      "kind": "dep"
+    },
+    {
+      "from": "W2.SV.gemini-grounding.0",
+      "to": "W2.A.gemini-grounding",
+      "kind": "dep"
+    },
+    {
+      "from": "W2.S.gemini-prompting-mm.0",
+      "to": "W2.SV.gemini-prompting-mm.0",
+      "kind": "dep"
+    },
+    {
+      "from": "W2.SV.gemini-prompting-mm.0",
+      "to": "W2.A.gemini-prompting-mm",
+      "kind": "dep"
+    },
+    {
+      "from": "W2.S.owasp-agent-security.0",
+      "to": "W2.SV.owasp-agent-security.0",
+      "kind": "dep"
+    },
+    {
+      "from": "W2.SV.owasp-agent-security.0",
+      "to": "W2.A.owasp-agent-security",
+      "kind": "dep"
+    },
+    {
+      "from": "W4.0",
+      "to": "W4.V.0",
+      "kind": "dep"
+    },
+    {
+      "from": "W4.V.0",
+      "to": "J4",
+      "kind": "dep"
+    },
+    {
+      "from": "W4.0",
+      "to": "W4.V.1",
+      "kind": "dep"
+    },
+    {
+      "from": "W4.V.1",
+      "to": "J4",
+      "kind": "dep"
+    },
+    {
+      "from": "W4.0",
+      "to": "W4.V.2",
+      "kind": "dep"
+    },
+    {
+      "from": "W4.V.2",
+      "to": "J4",
+      "kind": "dep"
+    },
+    {
+      "from": "W4.0",
+      "to": "W4.V.3",
+      "kind": "dep"
+    },
+    {
+      "from": "W4.V.3",
+      "to": "J4",
+      "kind": "dep"
+    },
+    {
+      "from": "W4.0",
+      "to": "W4.V.4",
+      "kind": "dep"
+    },
+    {
+      "from": "W4.V.4",
+      "to": "J4",
+      "kind": "dep"
+    },
+    {
+      "from": "W4.0",
+      "to": "W4.V.5",
+      "kind": "dep"
+    },
+    {
+      "from": "W4.V.5",
+      "to": "J4",
+      "kind": "dep"
+    },
+    {
+      "from": "JM",
+      "to": "W5.F.0",
+      "kind": "dep"
+    },
+    {
+      "from": "W5.F.0",
+      "to": "W5.0",
+      "kind": "dep"
+    },
+    {
+      "from": "J5",
+      "to": "W6.7",
+      "kind": "dep"
+    },
+    {
+      "from": "W6.7",
+      "to": "W7.0",
+      "kind": "dep"
+    },
+    {
+      "from": "W0.0",
+      "to": "W0.11",
+      "kind": "dep"
+    },
+    {
+      "from": "W0.11",
+      "to": "J0",
+      "kind": "dep"
+    },
+    {
+      "from": "W0.7",
+      "to": "W2.P.openai-agents-guardrails.0",
+      "kind": "dep"
+    },
+    {
+      "from": "W2.P.openai-agents-guardrails.0",
+      "to": "W2.S.openai-agents-guardrails.0",
+      "kind": "dep"
+    },
+    {
+      "from": "W0.7",
+      "to": "W2.P.openai-agents-guardrails.1",
+      "kind": "dep"
+    },
+    {
+      "from": "W2.P.openai-agents-guardrails.1",
+      "to": "W2.S.openai-agents-guardrails.1",
+      "kind": "dep"
+    },
+    {
+      "from": "W0.7",
+      "to": "W2.P.openai-agent-evals.0",
+      "kind": "dep"
+    },
+    {
+      "from": "W2.P.openai-agent-evals.0",
+      "to": "W2.S.openai-agent-evals.0",
+      "kind": "dep"
+    },
+    {
+      "from": "W0.7",
+      "to": "W2.P.openai-citation-formatting.0",
+      "kind": "dep"
+    },
+    {
+      "from": "W2.P.openai-citation-formatting.0",
+      "to": "W2.S.openai-citation-formatting.0",
+      "kind": "dep"
+    },
+    {
+      "from": "W0.7",
+      "to": "W2.P.openai-eval-best-practices.0",
+      "kind": "dep"
+    },
+    {
+      "from": "W2.P.openai-eval-best-practices.0",
+      "to": "W2.S.openai-eval-best-practices.0",
+      "kind": "dep"
+    },
+    {
+      "from": "W0.7",
+      "to": "W2.P.openai-retrieval.0",
+      "kind": "dep"
+    },
+    {
+      "from": "W2.P.openai-retrieval.0",
+      "to": "W2.S.openai-retrieval.0",
+      "kind": "dep"
+    },
+    {
+      "from": "W0.7",
+      "to": "W2.P.anthropic-citations.0",
+      "kind": "dep"
+    },
+    {
+      "from": "W2.P.anthropic-citations.0",
+      "to": "W2.S.anthropic-citations.0",
+      "kind": "dep"
+    },
+    {
+      "from": "W0.7",
+      "to": "W2.P.anthropic-tool-use-refresh.0",
+      "kind": "dep"
+    },
+    {
+      "from": "W2.P.anthropic-tool-use-refresh.0",
+      "to": "W2.S.anthropic-tool-use-refresh.0",
+      "kind": "dep"
+    },
+    {
+      "from": "W0.7",
+      "to": "W2.P.gemini-grounding.0",
+      "kind": "dep"
+    },
+    {
+      "from": "W2.P.gemini-grounding.0",
+      "to": "W2.S.gemini-grounding.0",
+      "kind": "dep"
+    },
+    {
+      "from": "W0.7",
+      "to": "W2.P.gemini-prompting-mm.0",
+      "kind": "dep"
+    },
+    {
+      "from": "W2.P.gemini-prompting-mm.0",
+      "to": "W2.S.gemini-prompting-mm.0",
+      "kind": "dep"
+    },
+    {
+      "from": "W0.7",
+      "to": "W2.P.owasp-agent-security.0",
+      "kind": "dep"
+    },
+    {
+      "from": "W2.P.owasp-agent-security.0",
+      "to": "W2.S.owasp-agent-security.0",
+      "kind": "dep"
+    }
+  ]
+}

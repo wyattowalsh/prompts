@@ -27,7 +27,8 @@ template: |
   - likely failure mode
   - eval case that would disprove it
 template_omission_reason: null
-model_api_controls: "pair with an eval set; do not select by plausibility alone."
+model_api_controls: |
+  pair with an eval set; do not select by plausibility alone; survey-tier PE literature (e.g. Prompt Report arXiv:2406.06608) is ideation context, not a license to ship unmeasured prompts.
 cost_latency: moderate.
 failure_modes: |
   longer prompts with no measurable gain, overfitting to visible examples.

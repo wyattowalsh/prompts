@@ -1,0 +1,6 @@
+# DROP — never stage
+goals/catalog-ultradeep-research-enrich/research/raw/
+goals/catalog-ultradeep-research-enrich/research/raw-rvfix/
+goals/**/plan-gate-*
+goals/**/*-result.json
+goals/catalog-ultradeep-research-enrich/task-graph.json

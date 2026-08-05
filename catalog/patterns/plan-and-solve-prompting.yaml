@@ -20,7 +20,8 @@ template: |
   {task}
   </input>
 template_omission_reason: null
-model_api_controls: "use higher reasoning effort for hard planning when supported."
+model_api_controls: |
+  use higher reasoning effort for hard planning when supported. When available, prefer provider reasoning controls for planning-heavy tasks rather than forcing long public plans.
 cost_latency: moderate.
 failure_modes: |
   bad plans, stale assumptions, plan-following without correction.

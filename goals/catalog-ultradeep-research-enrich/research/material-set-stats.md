@@ -1,0 +1,6 @@
+# Material set stats
+
+- extracts: 25
+- claims: 27
+- unique material cards: 28
+- cards: zero-shot-chain-of-thought, tree-of-thoughts, graph-of-thoughts, algorithm-of-thoughts, self-refine, self-refine-pass, chain-of-verification, verification-pass, eval-set-generator, evaluation-flywheel, eval-driven-prompt-optimization, regression-judge, expert-panel-discussion, panelgpt, panel-review, context-engineering, multimodal-evidence-reasoning, rag-citation-grounded-answering, rag-answer-contract, source-grounded-answer, citation-matrix, plan-and-solve, plan-and-solve-prompting, claim-checker, risk-register, meta-prompting, react, tool-calling-contract

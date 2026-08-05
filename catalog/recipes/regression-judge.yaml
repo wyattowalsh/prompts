@@ -67,6 +67,7 @@ after_copy:
     - "mark ambiguous cases for human review."
     - "Flag missing evidence instead of filling gaps."
     - "Use a regression example before promoting to a shared workflow."
+    - "Record grader criteria and holdout cases for agent/tool changes."
 sources:
   - title: "OpenAI evaluation best practices"
     url: https://developers.openai.com/api/docs/guides/evaluation-best-practices

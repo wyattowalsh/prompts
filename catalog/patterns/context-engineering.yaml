@@ -34,7 +34,7 @@ template: |
   {checks, citations, or tests required}
 template_omission_reason: null
 model_api_controls: |
-  context window, URL context, retrieval query, reranker, compression policy, prompt caching, memory scope, tool mode.
+  context window, URL context, retrieval query, reranker, compression policy, prompt caching, memory scope, tool mode, provider reasoning/thinking budgets when long-context reasoning is the bottleneck.
 cost_latency: "variable; can be high with long context or retrieval."
 failure_modes: |
   irrelevant retrieval, prompt injection, context overflow, stale cached context, stale memory, lost middle facts.
@@ -55,3 +55,7 @@ sources:
     url: https://platform.claude.com/docs/en/build-with-claude/context-windows
   - title: "Gemini URL Context"
     url: https://ai.google.dev/gemini-api/docs/url-context
+  - title: "Gemini thinking"
+    url: https://ai.google.dev/gemini-api/docs/thinking
+  - title: "OpenAI reasoning guide"
+    url: https://developers.openai.com/api/docs/guides/reasoning

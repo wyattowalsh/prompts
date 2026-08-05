@@ -82,3 +82,5 @@ sources:
     url: https://developers.openai.com/api/docs/guides/citation-formatting
   - title: "Anthropic citations"
     url: https://platform.claude.com/docs/en/build-with-claude/citations
+  - title: "OpenAI evaluation best practices"
+    url: https://developers.openai.com/api/docs/guides/evaluation-best-practices

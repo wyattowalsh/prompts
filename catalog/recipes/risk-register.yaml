@@ -65,8 +65,13 @@ after_copy:
     - "do not invent timeline facts not present in the incident materials."
     - "Flag missing evidence instead of filling gaps."
     - "Use a regression example before promoting to a shared workflow."
+    - "For AI system risk framing, NIST AI RMF govern/map/measure/manage is a useful structure; pair with evals for residual risk tracking."
 sources:
   - title: "NIST AI RMF GenAI Profile"
     url: https://www.nist.gov/publications/artificial-intelligence-risk-management-framework-generative-artificial-intelligence
   - title: "OpenAI prompt engineering"
     url: https://developers.openai.com/api/docs/guides/prompt-engineering
+  - title: "NIST AI RMF"
+    url: https://www.nist.gov/itl/ai-risk-management-framework
+  - title: "OpenAI evaluation best practices"
+    url: https://developers.openai.com/api/docs/guides/evaluation-best-practices

@@ -18,10 +18,12 @@ template: |
   Merge compatible nodes, resolve conflicts, and produce the final answer.
   Return a concise graph summary, not a hidden reasoning transcript.
 template_omission_reason: null
-model_api_controls: "use structured data or code for graph state when reliability matters."
+model_api_controls: |
+  use structured data or code for graph state when reliability matters. Prefer provider reasoning/thinking controls for single-path jobs; reserve graph search for multi-path synthesis with evals.
 cost_latency: high.
 failure_modes: |
   graph bloat, weak conflict resolution, hidden dependency errors.
+   Overusing graph search when API reasoning controls would suffice.
 evidence_tier: Emerging
 source_type: "primary research."
 eval_required: true
@@ -29,3 +31,5 @@ caveat: "graph management is more reliable outside a single prompt."
 sources:
   - title: "Graph of Thoughts"
     url: https://arxiv.org/abs/2308.09687
+  - title: "OpenAI reasoning guide"
+    url: https://developers.openai.com/api/docs/guides/reasoning

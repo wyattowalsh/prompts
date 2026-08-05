@@ -19,7 +19,8 @@ template: |
   
   Return the final answer, concise search summary, and checks.
 template_omission_reason: null
-model_api_controls: "prefer external solver or executable representation when available."
+model_api_controls: |
+  prefer external solver or executable representation when available. Distinct from provider thinking budgets; algorithm-style decomposition still needs evals and may be replaceable by reasoning APIs on simple tasks.
 cost_latency: moderate.
 failure_modes: |
   shallow search, state-tracking errors, false confidence.
@@ -30,3 +31,5 @@ caveat: "the template is a lightweight approximation of a search procedure."
 sources:
   - title: "Algorithm of Thoughts"
     url: https://arxiv.org/abs/2308.10379
+  - title: "OpenAI reasoning guide"
+    url: https://developers.openai.com/api/docs/guides/reasoning

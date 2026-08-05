@@ -5,6 +5,7 @@ order: 110
 definition: "combine visual and textual evidence for a source-grounded answer."
 best_use: |
   screenshots, charts, tables, diagrams, and image-question answering.
+   Prefer evidence-summary contracts over public long CoT for visual claims.
 avoid_when: "the model lacks vision support or the image evidence is not needed."
 template: |
   Question:
@@ -21,7 +22,7 @@ template: |
   - Return the answer with a short evidence summary.
 template_omission_reason: null
 model_api_controls: |
-  image detail setting, multimodal model, OCR/tool support.
+  image detail setting, multimodal model, OCR/tool support; follow official multimodal prompting strategies (e.g. Gemini prompting strategies) for input framing.
 cost_latency: "moderate to high."
 failure_modes: |
   hallucinated visual details, weak spatial reasoning, missing crop context.

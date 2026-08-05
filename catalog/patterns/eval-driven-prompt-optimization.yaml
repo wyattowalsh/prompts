@@ -28,6 +28,7 @@ template: |
 template_omission_reason: null
 model_api_controls: |
   track model snapshot, decoding, reasoning effort, schema version, and tool definitions.
+   Prefer provider eval platforms and fixed regression sets; never select prompt variants by vibe alone.
 cost_latency: "high upfront; lower regression risk later."
 failure_modes: |
   overfitting, benchmark leakage, optimizing the wrong metric.
@@ -42,3 +43,5 @@ sources:
     url: https://arxiv.org/abs/2310.03714
   - title: "OpenAI Cookbook eval flywheel"
     url: https://github.com/openai/openai-cookbook/blob/main/examples/evaluation/Building_resilient_prompts_using_an_evaluation_flywheel.md
+  - title: "OpenAI evaluation best practices"
+    url: https://developers.openai.com/api/docs/guides/evaluation-best-practices

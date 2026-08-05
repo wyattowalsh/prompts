@@ -23,10 +23,10 @@ template: |
   - remaining risks
 template_omission_reason: null
 model_api_controls: |
-  use a rubric, evaluator model, or human feedback for higher-stakes work.
+  Use a rubric, evaluator model, provider evals platform, or human feedback for higher-stakes work. Do not accept refine loops on plausibility alone — pair with eval gates before promotion.
 cost_latency: moderate.
 failure_modes: |
-  circular critique, style drift, over-editing.
+  circular critique, style drift, over-editing, shipping refined text without regression/eval checks.
 evidence_tier: Moderate
 source_type: "primary research plus eval docs."
 eval_required: true
