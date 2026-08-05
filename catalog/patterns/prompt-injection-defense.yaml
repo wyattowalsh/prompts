@@ -28,15 +28,20 @@ template: |
   - uncertainty or review needed
 template_omission_reason: null
 model_api_controls: |
-  retrieval isolation, prompt/document shields, allowlisted tools, output validation, adversarial evals, human review, logging.
+  Retrieval isolation; prompt/document shields (e.g. Azure Prompt Shields); allowlisted tools with
+  approval before side effects; output validation; adversarial evals; human review; logging.
+  Follow OWASP LLM Top 10 and the Prompt Injection Prevention Cheat Sheet for layered controls—
+  treat retrieved pages, tool output, and user uploads as untrusted data, not instructions.
 cost_latency: "low to moderate."
 failure_modes: |
-  direct or indirect injection, data exfiltration, unsafe tool calls, overtrusting retrieved text, benchmark overfitting.
+  direct or indirect injection, data exfiltration, unsafe tool calls, overtrusting retrieved text,
+  benchmark overfitting, prompt-only “ignore attacks” claims without tool isolation.
 evidence_tier: "**Strong** for the risk, **Moderate** for any prompt-only mitigation."
 source_type: "standards plus primary security papers."
 eval_required: true
 caveat: |
-  prompt wording cannot replace sandboxing, permissions, scanning, adversarial evals, and review.
+  Prompt wording cannot replace sandboxing, permissions, scanning, adversarial evals, and review.
+  A defense template is an interface layer, not a complete security product.
 sources:
   - title: "OWASP GenAI LLM Top 10"
     url: https://genai.owasp.org/llm-top-10/

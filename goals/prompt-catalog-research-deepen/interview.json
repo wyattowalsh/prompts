@@ -1,0 +1,160 @@
+{
+  "stage": "interview",
+  "title": "Deepen prompt catalog research",
+  "goalSlug": "prompt-catalog-research-deepen",
+  "questions": [
+    {
+      "id": "confirm-scope",
+      "prompt": "What should this deepen pass include?",
+      "description": "Builds on the shipped prompt-catalog-research-upgrade baseline. Pick all that apply.",
+      "answerMode": "multi-custom",
+      "recommendedAnswer": "Expand live re-checks; deepen residual high-value cards (eval/context/reasoning/safety/agents); optional new cards only under strict gate; keep honesty inventory vs live; regenerate and validate.",
+      "recommendedOptionIds": [
+        "expand-live",
+        "deepen-residual-cards",
+        "strict-new-cards",
+        "keep-honesty",
+        "regenerate-validate"
+      ],
+      "options": [
+        {
+          "id": "expand-live",
+          "label": "Expand LIVE HTTP re-checks beyond prior 18/22 ids"
+        },
+        {
+          "id": "deepen-residual-cards",
+          "label": "Deepen residual cards: eval, context, reasoning, safety, agents lanes"
+        },
+        {
+          "id": "strict-new-cards",
+          "label": "Selective new cards only if strict gap + ≥2 authoritative sources"
+        },
+        {
+          "id": "keep-honesty",
+          "label": "Keep inventory vs live Status honesty (do not bulk-fake live)"
+        },
+        {
+          "id": "regenerate-validate",
+          "label": "Regenerate README/site-data and pass catalog gates"
+        },
+        {
+          "id": "live-all-119",
+          "label": "Attempt live re-check of all 119 sources (heavy)"
+        }
+      ],
+      "required": true
+    },
+    {
+      "id": "priority-lanes",
+      "prompt": "Where should deepen effort concentrate first?",
+      "description": "Still balanced overall; this sets the first wave.",
+      "answerMode": "multi-custom",
+      "recommendedAnswer": "Agents/tools + evals + reasoning patterns first (highest residual from prior ledger).",
+      "recommendedOptionIds": ["agents-tools", "evals", "reasoning"],
+      "options": [
+        { "id": "agents-tools", "label": "Agents / tool contracts / planners" },
+        { "id": "evals", "label": "Eval flywheels / regression judges / agent evals" },
+        { "id": "reasoning", "label": "Reasoning/search patterns (CoT family, verify, step-back, etc.)" },
+        { "id": "safety", "label": "Safety / injection / shields" },
+        { "id": "context-rag", "label": "Context engineering / RAG / citations" },
+        { "id": "even-spread", "label": "Even spread across all pillars" }
+      ],
+      "required": true
+    },
+    {
+      "id": "depth-mode",
+      "prompt": "How deep should card upgrades go?",
+      "description": "Same cascade as prior goal.",
+      "answerMode": "single-custom",
+      "recommendedAnswer": "Cascade: always sources/controls/safety; templates when paste surface matters; pattern bodies when evidence shifted; full rewrite only if wrong/unsafe.",
+      "recommendedOptionIds": ["cascade"],
+      "options": [
+        {
+          "id": "cascade",
+          "label": "Rewrite cascade (recommended)"
+        },
+        {
+          "id": "sources-only",
+          "label": "Sources/evidence notes only (minimal)"
+        },
+        {
+          "id": "aggressive-rewrite",
+          "label": "Aggressive body rewrites on many cards"
+        }
+      ],
+      "required": true
+    },
+    {
+      "id": "done-bar",
+      "prompt": "What is done for this deepen goal?",
+      "description": "Execution success bar for goal.md.",
+      "answerMode": "multi-custom",
+      "recommendedAnswer": "Expanded live set documented; ≥N residual cards deepened with live sources; ledger updated; no invented claims; validate+regenerate green; new cards only if gate passes.",
+      "recommendedOptionIds": [
+        "live-expanded",
+        "cards-deepened",
+        "ledger",
+        "no-invent",
+        "gates"
+      ],
+      "options": [
+        {
+          "id": "live-expanded",
+          "label": "LIVE re-check set expanded and honesty Status updated"
+        },
+        {
+          "id": "cards-deepened",
+          "label": "Multiple residual high-value cards upgraded (more than prior 5)"
+        },
+        {
+          "id": "ledger",
+          "label": "Goal ledger: gaps, source deltas, card changelog"
+        },
+        {
+          "id": "no-invent",
+          "label": "No invented citations/models/benchmarks"
+        },
+        {
+          "id": "gates",
+          "label": "catalog validate + readme + site-data + recipe/sources checks"
+        },
+        {
+          "id": "must-add-card",
+          "label": "Must add at least one new recipe or pattern (stretch)"
+        }
+      ],
+      "required": true
+    },
+    {
+      "id": "out-of-scope",
+      "prompt": "Confirm hard out-of-scope for this pass.",
+      "answerMode": "multi-custom",
+      "recommendedAnswer": "No agents:research skill work; no inventing sources; no unrelated web redesign; not required to close every residual forever.",
+      "recommendedOptionIds": [
+        "no-agents-research-skill",
+        "no-invent",
+        "no-web-redesign",
+        "no-zero-gap"
+      ],
+      "options": [
+        {
+          "id": "no-agents-research-skill",
+          "label": "Do not upgrade /agents:research skill"
+        },
+        {
+          "id": "no-invent",
+          "label": "Do not invent citations or provider claims"
+        },
+        {
+          "id": "no-web-redesign",
+          "label": "No unrelated web/UI redesign"
+        },
+        {
+          "id": "no-zero-gap",
+          "label": "Not required to eliminate every research gap"
+        }
+      ],
+      "required": true
+    }
+  ]
+}

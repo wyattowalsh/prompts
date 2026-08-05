@@ -46,42 +46,47 @@ class CatalogResearchUpgrade20260725Test(unittest.TestCase):
         self.assertGreaterEqual(len(result["entries"]), 100)
 
     def test_inventory_last_checked_date_on_all_entries(self) -> None:
-        """All last_checked equal AS_OF means inventory refresh, not live re-check."""
+        """Uniform last_checked is inventory-refresh; must be at least upgrade AS_OF.
+
+        Successor waves may advance the shared inventory date; they must keep a
+        single date across all 119 entries (no mixed partial bumps).
+        """
         entries = check_sources_manifest.parse_manifest(SOURCE_MANIFEST)
         self.assertGreaterEqual(len(entries), 100)
-        stale = [e["id"] for e in entries if e.get("last_checked") != AS_OF]
-        self.assertEqual(stale, [], msg=f"stale last_checked: {stale[:10]}")
+        dates = {e.get("last_checked") for e in entries}
+        self.assertEqual(len(dates), 1, msg=f"mixed last_checked dates: {dates}")
+        only = next(iter(dates))
+        self.assertGreaterEqual(only, AS_OF, msg=f"last_checked {only} older than upgrade AS_OF")
 
     def test_source_refresh_distinguishes_inventory_vs_live(self) -> None:
         text = SOURCE_REFRESH.read_text(encoding="utf-8")
-        self.assertIn(f"Freshness date: {AS_OF}.", text)
+        # Historical upgrade method + honesty grammar must remain documented.
+        self.assertIn("prompt-catalog-research-upgrade", text)
+        self.assertIn("2026-07-25", text)
         lowered = text.lower()
         self.assertTrue(
             "inventory-refresh" in lowered or "inventory refresh" in lowered,
             msg="expected inventory-refresh language in source-refresh.md",
         )
-        self.assertIn("inventory 2026-07-25", text)
-        self.assertIn("live 200 · 2026-07-25", text)
-        self.assertIn("prompt-catalog-research-upgrade", text)
+        # Current table still uses inventory vs live Status grammar (any pass date).
+        self.assertRegex(text, r"inventory \d{4}-\d{2}-\d{2}")
+        self.assertRegex(text, r"live 200 · \d{4}-\d{2}-\d{2}")
         # Legacy Status grammar must be gone.
         self.assertNotRegex(text, r"\|\s*checked 2026-07-25\s*\|")
 
     def test_live_status_count_matches_live_ids_file(self) -> None:
+        """Upgrade LIVE_IDS.txt remains the historical 18-id set; table may advance.
+
+        Current source-refresh Status marks reflect the latest research pass.
+        The upgrade pack's LIVE_IDS.txt is frozen provenance for that wave.
+        """
         text = SOURCE_REFRESH.read_text(encoding="utf-8")
-        # Count Status cells in table rows only (not method prose).
-        live_marks = 0
-        for line in text.splitlines():
-            if not line.startswith("|") or "`" not in line:
-                continue
-            if "Manifest id" in line or re.match(r"^\|\s*---", line):
-                continue
-            if "live 200 · 2026-07-25" in line:
-                live_marks += 1
         ids = live_ids()
         self.assertEqual(len(ids), 18)
-        self.assertEqual(live_marks, 18)
         for mid in ids:
             self.assertIn(f"`{mid}`", text)
+        # Method prose still documents the upgrade 18-id live set.
+        self.assertIn("2026-07-25 live HTTP 200 re-check set (18 ids)", text)
 
     def test_upgraded_recipes_exist_with_sources_and_control_notes(self) -> None:
         for slug, path in UPGRADED_RECIPES.items():

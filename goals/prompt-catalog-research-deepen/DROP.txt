@@ -1,0 +1,5 @@
+goals/prompt-catalog-research-deepen/interview.json
+goals/prompt-catalog-research-deepen/interview-result.json
+goals/prompt-catalog-research-deepen/facts-review.json
+goals/prompt-catalog-research-deepen/facts-result.json
+goals/prompt-catalog-research-deepen/plan-gate-result.json

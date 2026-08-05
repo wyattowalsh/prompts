@@ -26,18 +26,31 @@ template: |
   
   Output:
 template_omission_reason: null
-model_api_controls: "keep examples in the same modality and schema as the final request."
+model_api_controls: |
+  Keep examples in the same modality and schema as the final request. Prefer host-enforced
+  structured outputs when the label or field set is machine-consumed. Pair exemplar sets with
+  regression cases (official eval practice) rather than vibes; use prompt caching only when the
+  shared prefix is stable and privacy-safe.
 cost_latency: |
   low to moderate, depending on example count.
 failure_modes: |
-  example leakage, order sensitivity, overfitting, encoded bias.
+  example leakage, order sensitivity, overfitting, encoded bias, demos that contradict the
+  durable safety or output contract, untested label sets.
 evidence_tier: Strong
 source_type: "primary paper plus official docs."
 eval_required: true
-caveat: "examples improve behavior only when representative and tested."
+caveat: |
+  Examples improve behavior only when representative, current, and measured against held-out
+  cases. Few-shot is not a substitute for schema validation or retrieval when facts change.
 sources:
   - title: "Language Models are Few-Shot Learners"
     url: https://arxiv.org/abs/2005.14165
+  - title: "OpenAI prompt engineering"
+    url: https://developers.openai.com/api/docs/guides/prompt-engineering
+  - title: "OpenAI prompting guide"
+    url: https://developers.openai.com/api/docs/guides/prompting
+  - title: "Anthropic Claude prompting best practices"
+    url: https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices
   - title: "Google Gemini prompting strategies"
     url: https://ai.google.dev/gemini-api/docs/prompting-strategies
   - title: "The Prompt Report"

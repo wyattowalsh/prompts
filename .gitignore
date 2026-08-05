@@ -132,3 +132,25 @@ goals/**/interview-result.json
 goals/**/facts-result.json
 goals/**/facts-review.json
 goals/**/task-graph.json
+goals/**/*-task-graph.json
+goals/**/rv-*-task-graph.json
+
+# Research raw HTTP dumps (regenerable; keep extracts/ ledgers tracked)
+goals/**/research/raw/
+goals/**/research/raw-*/
+goals/**/research/**/*.body.txt
+goals/**/research/**/*.body.txt.head
+goals/**/research/**/*.err
+goals/**/research/**/*.meta.txt
+
+# Goal scratch logs and local build noise
+goals/**/scratch/*.log
+goals/**/*.log
+*.pyc
+.Python
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.turbo/
+coverage/
+*.tsbuildinfo

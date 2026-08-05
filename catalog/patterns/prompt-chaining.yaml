@@ -24,18 +24,28 @@ template: |
   - Preserve source IDs and uncertainty across stages.
 template_omission_reason: null
 model_api_controls: |
-  use separate calls, schemas, or workflow state when stages need observability.
+  Use separate calls with host-enforced schemas (structured outputs / tool args) per stage when
+  outputs feed software. Persist stage artifacts and provenance in workflow state; do not rely on
+  a single long context alone. Pair stage gates with eval cases (official evaluation practice)
+  and reject advancement when Stage N fails its contract.
 cost_latency: moderate.
 failure_modes: |
-  error propagation, hidden state drift, missing provenance.
+  error propagation, hidden state drift, missing provenance, silent stage failure, treating
+  intermediate model prose as trusted observations.
 evidence_tier: Moderate
 source_type: "primary paper plus eval practice."
 eval_required: true
-caveat: "chains are only safer when stage contracts can catch errors."
+caveat: |
+  Chains are only safer when each stage has an enforceable contract and a check that can stop
+  the pipeline. Prompt text alone does not create isolation between stages.
 sources:
   - title: PromptChainer
     url: https://arxiv.org/abs/2203.06566
+  - title: "OpenAI structured outputs"
+    url: https://developers.openai.com/api/docs/guides/structured-outputs
   - title: "OpenAI evaluation best practices"
     url: https://developers.openai.com/api/docs/guides/evaluation-best-practices
+  - title: "Anthropic prompt engineering overview"
+    url: https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/overview
   - title: "The Prompt Report"
     url: https://arxiv.org/abs/2406.06608

@@ -18,16 +18,27 @@ template: |
   {problem}
   </input>
 template_omission_reason: null
-model_api_controls: "combine with low/medium reasoning effort and concise verbosity where supported."
+model_api_controls: |
+  Prefer concise private draft notes plus low/medium provider reasoning effort and low verbosity
+  where supported (OpenAI reasoning, Anthropic extended thinking budget, Gemini thinking). Do not
+  paste long public CoT by default. Keep final answer + short checks in a structured schema when
+  outputs are scored.
 cost_latency: "lower than verbose CoT."
 failure_modes: |
-  omitted audit detail, shallow checks.
+  omitted audit detail, shallow checks, conflating draft notes with faithful explanations,
+  using visible long CoT when provider reasoning controls already exist.
 evidence_tier: Emerging
 source_type: "recent primary research plus caveat study."
 eval_required: true
-caveat: "compare against direct prompting and provider reasoning controls."
+caveat: |
+  Compare against direct prompting and provider reasoning controls on the same eval set before
+  adopting CoD as a default.
 sources:
   - title: "Chain of Draft"
     url: https://arxiv.org/abs/2502.18600
   - title: "Prompting Science Report 2"
     url: https://arxiv.org/abs/2506.07142
+  - title: "OpenAI reasoning guide"
+    url: https://developers.openai.com/api/docs/guides/reasoning
+  - title: "Anthropic extended thinking"
+    url: https://platform.claude.com/docs/en/build-with-claude/extended-thinking
