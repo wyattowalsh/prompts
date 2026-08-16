@@ -1,8 +1,8 @@
 version: 1
 meta:
-  title: Prompt Library
+  title: prompts
   description: >-
-    Research-backed prompt engineering recipes, model/API controls, safety checks, eval patterns,
+    Research-backed engineering recipes, model/API controls, safety checks, eval patterns,
     and source-grounded templates for practical AI workflows.
   repository_url: https://github.com/wyattowalsh/prompts
   web_base_url_default: https://prompts.w4w.dev
@@ -13,6 +13,10 @@ lanes:
   - key: research
     title: Research
     color: 2563EB
+    badge:
+      label: Research
+      logo: ri:RiMicroscopeLine
+      background: "172554"
     order: 1
     recipe_slugs:
       - source-grounded-answer
@@ -21,9 +25,18 @@ lanes:
       - claim-checker
       - citation-matrix
       - disagreement-map
+    featured_recipe_slugs:
+      - source-grounded-answer
+      - web-research-brief
+      - claim-checker
+      - citation-matrix
   - key: writing
     title: Writing
     color: A855F7
+    badge:
+      label: Writing
+      logo: ri:RiQuillPenLine
+      background: "3B0764"
     order: 2
     recipe_slugs:
       - executive-brief
@@ -32,9 +45,18 @@ lanes:
       - dense-summary
       - faq-generator
       - newsletter-draft
+    featured_recipe_slugs:
+      - executive-brief
+      - rewrite-with-constraints
+      - dense-summary
+      - newsletter-draft
   - key: coding
     title: Coding
     color: 16A34A
+    badge:
+      label: Coding
+      logo: ri:RiCodeBoxLine
+      background: "14532D"
     order: 3
     recipe_slugs:
       - code-review
@@ -43,9 +65,18 @@ lanes:
       - refactor-planner
       - pr-description
       - api-contract-explainer
+    featured_recipe_slugs:
+      - code-review
+      - bug-rca
+      - unit-test-writer
+      - api-contract-explainer
   - key: data
     title: Data
     color: EAB308
+    badge:
+      label: Data
+      logo: ri:RiDatabaseLine
+      background: "713F12"
     order: 4
     recipe_slugs:
       - json-extractor
@@ -54,9 +85,18 @@ lanes:
       - ner-extractor
       - sentiment-triage
       - synthetic-edge-cases
+    featured_recipe_slugs:
+      - json-extractor
+      - table-normalizer
+      - classifier
+      - ner-extractor
   - key: product
     title: Product
     color: EC4899
+    badge:
+      label: Product
+      logo: ri:RiLayoutGridLine
+      background: "500724"
     order: 5
     recipe_slugs:
       - prd-drafter
@@ -65,9 +105,18 @@ lanes:
       - launch-checklist
       - ux-review
       - support-macro
+    featured_recipe_slugs:
+      - prd-drafter
+      - user-story-splitter
+      - launch-checklist
+      - ux-review
   - key: operations
     title: Operations
     color: F97316
+    badge:
+      label: Ops
+      logo: ri:RiPulseLine
+      background: "431407"
     order: 6
     recipe_slugs:
       - incident-summary
@@ -76,9 +125,18 @@ lanes:
       - risk-register
       - decision-memo
       - meeting-action-extractor
+    featured_recipe_slugs:
+      - incident-summary
+      - runbook-generator
+      - log-triage
+      - decision-memo
   - key: agents
     title: Agent and Tool Workflows
     color: 06B6D4
+    badge:
+      label: Agents
+      logo: ri:RiRobot2Line
+      background: "164E63"
     order: 7
     recipe_slugs:
       - tool-use-planner
@@ -87,9 +145,18 @@ lanes:
       - eval-set-generator
       - regression-judge
       - prompt-optimizer
+    featured_recipe_slugs:
+      - tool-use-planner
+      - rag-answer-contract
+      - prompt-injection-scanner
+      - prompt-optimizer
   - key: reasoning
     title: Reasoning
     color: 8B5CF6
+    badge:
+      label: Reasoning
+      logo: ri:RiBrainLine
+      background: "2E1065"
     order: 8
     recipe_slugs:
       - plan-and-solve
@@ -97,6 +164,11 @@ lanes:
       - verification-pass
       - self-refine-pass
       - panel-review
+      - tradeoff-matrix
+    featured_recipe_slugs:
+      - plan-and-solve
+      - verification-pass
+      - self-refine-pass
       - tradeoff-matrix
 pattern_sections:
   - key: core-prompt-construction
@@ -158,4 +230,18 @@ pattern_sections:
       - expert-panel-discussion
       - ux-review-checklist
       - emotional-persuasion-prompting
+readme:
+  shortcuts:
+    - recipe_slug: source-grounded-answer
+      label: Sources
+    - recipe_slug: code-review
+      label: Code Review
+    - recipe_slug: json-extractor
+      label: JSON
+    - recipe_slug: rag-answer-contract
+      label: RAG
+    - recipe_slug: panel-review
+      label: Panel
+    - recipe_slug: prompt-optimizer
+      label: Optimize
 pages: []

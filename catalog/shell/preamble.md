@@ -1,15 +1,21 @@
 <!-- markdownlint-disable MD013 MD033 MD041 -->
 
+<a id="top"></a>
+
 <div align="center">
 
-<p align="center">
-  <sub aria-hidden="true">◆ ─── ◆ ─── ◆</sub>
-</p>
-
-<h1>Prompt Library</h1>
+<!-- Takumi README chrome: hero + path, light/dark via prefers-color-scheme. -->
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="catalog/shell/chrome/dist/hero-dark.png">
+  <img src="catalog/shell/chrome/dist/hero-light.png" alt="Prompt Library: research-backed recipes you copy, adapt, and verify." width="1280" height="360">
+</picture>
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="catalog/shell/chrome/dist/path-dark.png">
+  <img src="catalog/shell/chrome/dist/path-light.png" alt="Fill the placeholder table, copy the text template, then verify safety and sources." width="1280" height="360">
+</picture>
 
 <p>
-  <sub>Research-backed recipes · <span style="color:#34d399">copy</span> · <span style="color:#60a5fa">adapt</span> · <span style="color:#f472b6">verify</span></sub>
+  <sub>Research-backed recipes · copy · adapt · verify</sub>
 </p>
 
 <!-- BADGES:START -->
@@ -60,7 +66,7 @@
 ## Start Here
 
 > [!TIP]
-> Pick a [control lane](#control-lanes) and [recipe shortcut](#recipe-shortcuts). Open [How To Adapt Prompts](#how-to-adapt-prompts) when you need schema, tools, or evals.
+> Pick a [recipe shortcut](#recipe-shortcuts). Fill the placeholder table — paste `none` for optional zones you omit — then copy the `text` fence. Read the visible [Safety CAUTION](#safety-evals-and-trust-boundaries) before reuse.
 
 ### Recipe shortcuts
 
@@ -99,20 +105,15 @@
 
 <p align="right">
   <a href="#table-of-contents"><img alt="Table of contents" src="https://shieldcn.dev/badge/TOC-6366F1.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiListCheck&logoColor=f8fafc"></a>
-  <a href="#prompt-library"><img alt="Back to top" src="https://shieldcn.dev/badge/Top-10B981.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiArrowUpLine&logoColor=f8fafc"></a>
+  <a href="#top"><img alt="Back to top" src="https://shieldcn.dev/badge/Top-10B981.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiArrowUpLine&logoColor=f8fafc"></a>
 </p>
 
 ---
 
 ## Table of Contents
 
-### Jump Shortcuts
-
-| Need | Go |
-| --- | --- |
-| Copy now | [<kbd>Recipe shortcuts</kbd>](#recipe-shortcuts) [<kbd>Common jobs</kbd>](#common-jobs) [<kbd>Prompt Index</kbd>](#prompt-index) [<kbd>All Recipes</kbd>](#prompt-library) |
-| Browse by lane | [<kbd>Research</kbd>](#research) [<kbd>Writing</kbd>](#writing) [<kbd>Coding</kbd>](#coding) [<kbd>Data</kbd>](#data) [<kbd>Product</kbd>](#product) [<kbd>Operations</kbd>](#operations) [<kbd>Agents</kbd>](#agent-and-tool-workflows) [<kbd>Reasoning</kbd>](#reasoning) |
-| Adapt or audit | [<kbd>Provider Controls</kbd>](#provider-controls) [<kbd>Safety/Evals</kbd>](#safety-evals-and-trust-boundaries) [<kbd>Pattern Matrix</kbd>](#pattern-selection-matrix) [<kbd>Pattern Notes</kbd>](#pattern-notes) [<kbd>Bibliography</kbd>](#bibliography) |
+<details>
+<summary>Prompt Index (48) and Section Map (21)</summary>
 
 ### Prompt Index
 
@@ -166,6 +167,8 @@
   - [Task and Workflow Snippets](#task-and-workflow-snippets)
 - [Contributing Prompt Recipes](#contributing-prompt-recipes)
 - [Bibliography](#bibliography)
+
+</details>
 
 <details>
 <summary><strong>Browse all 48 recipes by job</strong></summary>
@@ -229,15 +232,15 @@
 
 </details>
 
-Recipe format:
+<details>
+<summary>Recipe format</summary>
 
 > [!TIP]
-> **Before you copy:** use the placeholder table; paste `none` for optional zones you omit. Long copy prompts may scroll horizontally on GitHub — keep the full template copyable as one block.
+> Fill the placeholder table first; paste `none` for optional zones you omit. Long copy prompts may scroll horizontally on GitHub — keep the full template copyable as one block.
 
 | Recipe field | Purpose |
 | --- | --- |
 | Use for | Confirms the job before copying. |
-| Before you copy TIP | Points to placeholder table; use `none` for unused optional zones. |
 | Placeholder table | Canonical placeholders, required/optional, examples, notes. |
 | Paste preview | Visible sample when Example value is `see preview below`. |
 | Copy prompt | Zero-shot template; examples optional. |
@@ -249,10 +252,11 @@ Recipe format:
 | Sources | Docs, research, or pattern notes. |
 | After copy details | Collapsed fill, output, upgrade, safety, and sources metadata. |
 
+</details>
+
 <p align="right">
   <a href="#table-of-contents"><img alt="Table of contents" src="https://shieldcn.dev/badge/TOC-6366F1.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiListCheck&logoColor=f8fafc"></a>
-  <a href="#prompt-library"><img alt="Back to top" src="https://shieldcn.dev/badge/Top-10B981.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiArrowUpLine&logoColor=f8fafc"></a>
+  <a href="#top"><img alt="Back to top" src="https://shieldcn.dev/badge/Top-10B981.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiArrowUpLine&logoColor=f8fafc"></a>
 </p>
 
 ---
-

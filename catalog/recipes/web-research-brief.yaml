@@ -6,7 +6,7 @@ order: 20
 badge:
   logo: ri:RiGlobalLine
   color: "3B82F6"
-  chip_label: "Web Research Brief"
+  chip_label: "Web brief"
 use_for: "turn live research notes into a decision-ready brief"
 placeholders:
   - name: question
@@ -57,7 +57,7 @@ after_copy:
   fill_pointer: match_placeholder_table
   expected_output: "Summary; What changed recently; Source table; Risks; Recommended next checks."
   upgrade_when: |
-    Add examples when style, labels, or edge cases are hard to infer.; Add retrieval when freshness, private context, or source grounding drives correctness.; Add evals when the prompt will be reused or automated.
+    Add retrieval traces, citation checks, and a disagreement pass when claims leave the supplied sources.
   control_evidence_note: |
     For volatile research, use dated source metadata and freshness checks before making a recommendation.
   safety_eval_checks:

@@ -6,7 +6,7 @@ order: 60
 badge:
   logo: ri:RiLoopRightLine
   color: "67E8F9"
-  chip_label: "Prompt Optimizer"
+  chip_label: Optimize
 use_for: |
   revise a prompt using failures, not vibes
 placeholders:
@@ -61,7 +61,7 @@ after_copy:
   fill_pointer: match_placeholder_table
   expected_output: "Revised prompt; Change log; Failure mapping; New evals; Risks."
   upgrade_when: |
-    Add examples when style, labels, or edge cases are hard to infer.; Add retrieval when freshness, private context, or source grounding drives correctness.; Add evals when the prompt will be reused or automated.
+    Add tool-allowlist, approval gates, and an eval set when the agent can act outside the contract.
   control_evidence_note: |
     Compare revisions against held-out eval cases from [OpenAI evaluation best practices](https://developers.openai.com/api/docs/guides/evaluation-best-practices), not vibes, and keep safety gates out of the optimizable surface.
   safety_eval_checks:
@@ -70,9 +70,12 @@ after_copy:
     - "Flag missing evidence instead of filling gaps."
     - "Use a regression example before promoting to a shared workflow."
     - "Record prompt version and eval delta before replacing a production prompt."
+    - "As verified on 2026-08-16, keep the evaluation-best-practices method; the hosted Evals dashboard/API is shutting down (read-only 2026-10-31, gone 2026-11-30)."
 sources:
   - title: "OpenAI evaluation best practices"
     url: https://developers.openai.com/api/docs/guides/evaluation-best-practices
+  - title: "OpenAI API deprecations"
+    url: https://developers.openai.com/api/docs/deprecations
   - title: "OpenAI prompt engineering"
     url: https://developers.openai.com/api/docs/guides/prompt-engineering
   - title: "OpenAI prompting guide"

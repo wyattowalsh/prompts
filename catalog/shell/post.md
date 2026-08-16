@@ -30,7 +30,7 @@ Validation: run the block in [AGENTS.md § Validation](AGENTS.md#validation).
 
 <p align="right">
   <a href="#table-of-contents"><img alt="Table of contents" src="https://shieldcn.dev/badge/TOC-6366F1.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiListCheck&logoColor=f8fafc"></a>
-  <a href="#prompt-library"><img alt="Back to top" src="https://shieldcn.dev/badge/Top-10B981.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiArrowUpLine&logoColor=f8fafc"></a>
+  <a href="#top"><img alt="Back to top" src="https://shieldcn.dev/badge/Top-10B981.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiArrowUpLine&logoColor=f8fafc"></a>
 </p>
 
 ---
@@ -39,7 +39,7 @@ Validation: run the block in [AGENTS.md § Validation](AGENTS.md#validation).
 
 ### Official Provider Guidance
 
-- [OpenAI latest model guide](https://developers.openai.com/api/docs/guides/latest-model)
+- [OpenAI current-model guide](https://developers.openai.com/api/docs/guides/latest-model)
 - [OpenAI reasoning models](https://developers.openai.com/api/docs/guides/reasoning)
 - [OpenAI deployment checklist](https://developers.openai.com/api/docs/guides/deployment-checklist)
 - [OpenAI prompting](https://developers.openai.com/api/docs/guides/prompting)
@@ -55,16 +55,18 @@ Validation: run the block in [AGENTS.md § Validation](AGENTS.md#validation).
 - [OpenAI citation formatting](https://developers.openai.com/api/docs/guides/citation-formatting)
 - [OpenAI prompt caching](https://developers.openai.com/api/docs/guides/prompt-caching)
 - [OpenAI evaluation best practices](https://developers.openai.com/api/docs/guides/evaluation-best-practices)
+- [OpenAI Evals platform deprecations](https://developers.openai.com/api/docs/deprecations) (hosted dashboard/API read-only 2026-10-31, shutdown 2026-11-30, as verified on 2026-08-16)
 - [OpenAI agent evals](https://developers.openai.com/api/docs/guides/agent-evals)
 - [OpenAI trace grading](https://developers.openai.com/api/docs/guides/trace-grading)
 - [OpenAI Cookbook Evaluation Flywheel](https://github.com/openai/openai-cookbook/blob/main/examples/evaluation/Building_resilient_prompts_using_an_evaluation_flywheel.md)
 - [Anthropic models overview](https://platform.claude.com/docs/en/about-claude/models/overview)
 - [Anthropic Claude Fable 5 and Mythos 5 docs](https://platform.claude.com/docs/en/about-claude/models/introducing-claude-fable-5-and-claude-mythos-5)
-- [Anthropic Fable/Mythos access update](https://www.anthropic.com/news/fable-mythos-access)
+- [Anthropic Fable/Mythos access update](https://www.anthropic.com/news/fable-mythos-access) (historical Jun 12, 2026 suspension)
+- [Anthropic Redeploying Fable 5](https://www.anthropic.com/news/redeploying-fable-5) (Jul 1, 2026 restore, as verified on 2026-08-16)
 - [Anthropic prompt engineering overview](https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/overview)
 - [Anthropic prompting best practices](https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices)
 - [Anthropic reduce hallucinations](https://platform.claude.com/docs/en/test-and-evaluate/strengthen-guardrails/reduce-hallucinations)
-- [Anthropic Extended Thinking](https://platform.claude.com/docs/en/build-with-claude/extended-thinking)
+- [Anthropic thinking](https://platform.claude.com/docs/en/build-with-claude/thinking) (adaptive; current as verified on 2026-08-16) — [extended thinking](https://platform.claude.com/docs/en/build-with-claude/extended-thinking) is legacy (`type: "enabled"` + `budget_tokens` deprecated on 4.6; 400 on 4.7+)
 - [Anthropic Structured Outputs](https://platform.claude.com/docs/en/build-with-claude/structured-outputs)
 - [Anthropic citations](https://platform.claude.com/docs/en/build-with-claude/citations)
 - [Anthropic context windows](https://platform.claude.com/docs/en/build-with-claude/context-windows)
@@ -169,5 +171,5 @@ Validation: run the block in [AGENTS.md § Validation](AGENTS.md#validation).
 
 <p align="right">
   <a href="#table-of-contents"><img alt="Table of contents" src="https://shieldcn.dev/badge/TOC-6366F1.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiListCheck&logoColor=f8fafc"></a>
-  <a href="#prompt-library"><img alt="Back to top" src="https://shieldcn.dev/badge/Top-10B981.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiArrowUpLine&logoColor=f8fafc"></a>
+  <a href="#top"><img alt="Back to top" src="https://shieldcn.dev/badge/Top-10B981.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiArrowUpLine&logoColor=f8fafc"></a>
 </p>

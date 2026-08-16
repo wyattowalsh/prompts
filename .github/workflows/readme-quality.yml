@@ -8,16 +8,34 @@ on:
       - DESIGN.md
       - source-refresh.md
       - .agents/skills/readme-catalog-steward/**
+      - .markdown-link-check.json
       - scripts/check_readme_recipes.py
       - scripts/audit_paste_zone_cells.py
       - scripts/hoist_paste_preview.py
       - scripts/format_recipe_catalog.py
       - scripts/update_readme_badges.py
       - scripts/check_sources_manifest.py
-      - scripts/web_analytics_report.mjs
+      - scripts/check_catalog_readme.mjs
+      - scripts/check_catalog_readme.test.mjs
+      - scripts/catalog_badge_data.mjs
+      - scripts/catalog_readme.mjs
+      - scripts/render_readme_chrome.mjs
+      - scripts/check_ci_action_pins.mjs
+      - scripts/check_ci_action_pins.test.mjs
+      - scripts/check_dependency_policy.test.mjs
+      - scripts/check_markdown_links.mjs
+      - scripts/check_markdown_links.test.mjs
+      - scripts/check_toolchain.mjs
+      - scripts/check_toolchain.test.mjs
+      - scripts/list_validation_files.mjs
+      - scripts/list_validation_files.test.mjs
+      - scripts/run_playwright.mjs
+      - scripts/serve_dist.mjs
+      - scripts/serve_dist.test.mjs
       - scripts/catalog_constants.py
       - scripts/recipe_heading.py
       - scripts/check_badge_urls.sh
+      - scripts/check_badge_urls.test.mjs
       - sources.yaml
       - LICENSE
       - CONTRIBUTING.md
@@ -25,6 +43,8 @@ on:
       - CODE_OF_CONDUCT.md
       - web/**
       - catalog/**
+      - goals/**
+      - openspec/**
       - packages/catalog-core/**
       - package.json
       - pnpm-lock.yaml
@@ -37,7 +57,8 @@ on:
       - tests/**
       - .pre-commit-config.yaml
       - .gitignore
-      - .github/workflows/readme-quality.yml
+      - .node-version
+      - .github/**
   push:
     branches:
       - main
@@ -47,16 +68,34 @@ on:
       - DESIGN.md
       - source-refresh.md
       - .agents/skills/readme-catalog-steward/**
+      - .markdown-link-check.json
       - scripts/check_readme_recipes.py
       - scripts/audit_paste_zone_cells.py
       - scripts/hoist_paste_preview.py
       - scripts/format_recipe_catalog.py
       - scripts/update_readme_badges.py
       - scripts/check_sources_manifest.py
-      - scripts/web_analytics_report.mjs
+      - scripts/check_catalog_readme.mjs
+      - scripts/check_catalog_readme.test.mjs
+      - scripts/catalog_badge_data.mjs
+      - scripts/catalog_readme.mjs
+      - scripts/render_readme_chrome.mjs
+      - scripts/check_ci_action_pins.mjs
+      - scripts/check_ci_action_pins.test.mjs
+      - scripts/check_dependency_policy.test.mjs
+      - scripts/check_markdown_links.mjs
+      - scripts/check_markdown_links.test.mjs
+      - scripts/check_toolchain.mjs
+      - scripts/check_toolchain.test.mjs
+      - scripts/list_validation_files.mjs
+      - scripts/list_validation_files.test.mjs
+      - scripts/run_playwright.mjs
+      - scripts/serve_dist.mjs
+      - scripts/serve_dist.test.mjs
       - scripts/catalog_constants.py
       - scripts/recipe_heading.py
       - scripts/check_badge_urls.sh
+      - scripts/check_badge_urls.test.mjs
       - sources.yaml
       - LICENSE
       - CONTRIBUTING.md
@@ -64,6 +103,8 @@ on:
       - CODE_OF_CONDUCT.md
       - web/**
       - catalog/**
+      - goals/**
+      - openspec/**
       - packages/catalog-core/**
       - package.json
       - pnpm-lock.yaml
@@ -76,7 +117,8 @@ on:
       - tests/**
       - .pre-commit-config.yaml
       - .gitignore
-      - .github/workflows/readme-quality.yml
+      - .node-version
+      - .github/**
   workflow_dispatch:
 
 permissions:
@@ -86,30 +128,35 @@ jobs:
   readme-quality:
     name: Markdown, links, badges, sources, and web
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 30
 
     steps:
       - name: Check out repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           fetch-depth: 0
+          persist-credentials: false
 
       - name: Set up pnpm
-        uses: pnpm/action-setup@v4
+        uses: pnpm/action-setup@0977fd99725f1db4007ccb2928dbb4e90d06cc86 # v6.0.10
         with:
-          version: 11.11.0
+          version: 11.21.0
           run_install: false
 
       - name: Set up Python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
         with:
           python-version: "3.13"
 
       - name: Set up Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
         with:
-          node-version: 22
+          node-version: 24
           cache: pnpm
+
+      - name: Verify toolchain versions
+        shell: bash
+        run: pnpm run toolchain:check
 
       - name: Install JS dependencies
         shell: bash
@@ -119,12 +166,16 @@ jobs:
         shell: bash
         run: |
           pnpm catalog:validate
+          pnpm catalog:site-data:check
           pnpm catalog:test
-          pnpm catalog:fidelity:patterns
 
       - name: Catalog README drift check
         shell: bash
         run: pnpm catalog:readme:check
+
+      - name: Catalog README chrome hash check
+        shell: bash
+        run: pnpm catalog:readme-chrome:check
 
       - name: Recipe contract check
         shell: bash
@@ -168,34 +219,61 @@ jobs:
             .agents/skills/readme-catalog-steward/SKILL.md
             .agents/skills/readme-catalog-steward/references/*.md
             source-refresh.md
+            goals/codebase-sota-improvement/scratch/a11y-defer.md
+            goals/codebase-sota-improvement/scratch/cb-closeout-residual.md
+            goals/codebase-sota-improvement/scratch/residual-register.md
+            goals/prompt-catalog-research-upgrade/hygiene-report.md
+            goals/web-design-sota-enrich/goal.md
+          )
+          while IFS= read -r file; do DOCS+=("$file"); done < <(
+            git ls-files --cached --others --exclude-standard -- \
+              CONTRIBUTING.md SECURITY.md CODE_OF_CONDUCT.md
+          )
+          while IFS= read -r file; do DOCS+=("$file"); done < <(
+            git ls-files --cached --others --exclude-standard -- \
+              'openspec/changes/**/*.md' ':(exclude)openspec/changes/archive/**'
           )
           pnpm exec markdownlint-cli2 "${DOCS[@]}"
 
       - name: Link check
         shell: bash
-        run: |
-          DOCS=(
-            README.md
-            AGENTS.md
-            DESIGN.md
-            .agents/skills/readme-catalog-steward/SKILL.md
-            .agents/skills/readme-catalog-steward/references/*.md
-            source-refresh.md
-          )
-          pnpm exec markdown-link-check "${DOCS[@]}"
+        run: pnpm run docs:links
 
       - name: Skill eval JSON syntax
         shell: bash
         run: |
           python3 -m json.tool .agents/skills/readme-catalog-steward/evals/evals.json >/dev/null
           python3 -m json.tool .agents/skills/readme-catalog-steward/evals/adversarial-fixtures.json >/dev/null
+          python3 -m json.tool .markdown-link-check.json >/dev/null
 
       - name: Workflow and config syntax
         shell: bash
         run: |
+          pnpm run ci:action-pins
+          pnpm run ci:dependency-policy
+          pnpm run validation-files:test
           pnpm exec js-yaml .github/workflows/readme-quality.yml >/dev/null
+          pnpm exec js-yaml .github/workflows/dependency-audit.yml >/dev/null
+          pnpm exec js-yaml .github/dependabot.yml >/dev/null
           pnpm exec js-yaml .pre-commit-config.yaml >/dev/null
+          python3 -m json.tool .markdown-link-check.json >/dev/null
           python3 -m json.tool vercel.json >/dev/null
+
+      - name: Validate OpenSpec contracts
+        shell: bash
+        run: pnpm exec openspec validate --all --strict --no-interactive --json
+
+      - name: Set up Go for actionlint
+        uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7.0.0
+        with:
+          go-version: "1.26.1"
+          cache: false
+
+      - name: Validate GitHub Actions semantics
+        shell: bash
+        run: |
+          go install github.com/rhysd/actionlint/cmd/actionlint@v1.7.12
+          actionlint
 
       - name: Web lint, unit tests, and build
         shell: bash
@@ -203,7 +281,7 @@ jobs:
           pnpm run lint
           pnpm run format:check
           pnpm run web:test
-          pnpm run build
+          pnpm run web:build
 
       - name: Install Playwright Chromium
         shell: bash
@@ -223,6 +301,9 @@ jobs:
             README.md
             AGENTS.md
             DESIGN.md
+            CONTRIBUTING.md
+            SECURITY.md
+            CODE_OF_CONDUCT.md
             .agents/skills/readme-catalog-steward/SKILL.md
             .agents/skills/readme-catalog-steward/references/*.md
             source-refresh.md
@@ -231,10 +312,16 @@ jobs:
             "${DOCS[@]}"
             .agents/skills/readme-catalog-steward/evals/evals.json
             .agents/skills/readme-catalog-steward/evals/adversarial-fixtures.json
+            .markdown-link-check.json
             .pre-commit-config.yaml
             .gitignore
-            .github/workflows/readme-quality.yml
+            .node-version
+            .github
+            catalog
+            goals
+            openspec
             package.json
+            packages/catalog-core
             pnpm-lock.yaml
             pnpm-workspace.yaml
             vercel.json
@@ -260,4 +347,4 @@ jobs:
 
       - name: Badge URL smoke check
         shell: bash
-        run: bash scripts/check_badge_urls.sh
+        run: pnpm run badges:urls

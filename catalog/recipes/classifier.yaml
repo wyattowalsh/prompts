@@ -6,7 +6,7 @@ order: 30
 badge:
   logo: ri:RiPriceTag3Line
   color: "CA8A04"
-  chip_label: Classifier
+  chip_label: Classify
 use_for: "assign labels with rationales and abstentions"
 placeholders:
   - name: items_to_classify
@@ -56,7 +56,7 @@ after_copy:
   fill_pointer: match_placeholder_table
   expected_output: "Item; label; confidence; short rationale; abstain reason if any."
   upgrade_when: |
-    Add examples when style, labels, or edge cases are hard to infer.; Add retrieval when freshness, private context, or source grounding drives correctness.; Add evals when the prompt will be reused or automated.
+    Add a schema fixture and parser round-trip when free-text still leaks into structured fields.
   control_evidence_note: |
     For production labels, use structured output plus a small confusion-set eval.
   safety_eval_checks:

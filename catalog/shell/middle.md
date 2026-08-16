@@ -27,9 +27,11 @@ flowchart LR
 
 </details>
 
+Text equivalent of the escalation flow: pick the closest recipe; fill trusted context and untrusted input; if software will consume the output, add a schema or tool contract then run parser and regression evals; otherwise ask for the answer, checks, and uncertainty, and add evals when the workflow is reusable or high-stakes.
+
 <p align="right">
   <a href="#table-of-contents"><img alt="Table of contents" src="https://shieldcn.dev/badge/TOC-6366F1.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiListCheck&logoColor=f8fafc"></a>
-  <a href="#prompt-library"><img alt="Back to top" src="https://shieldcn.dev/badge/Top-10B981.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiArrowUpLine&logoColor=f8fafc"></a>
+  <a href="#top"><img alt="Back to top" src="https://shieldcn.dev/badge/Top-10B981.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiArrowUpLine&logoColor=f8fafc"></a>
 </p>
 
 ---
@@ -41,7 +43,7 @@ Provider badges link to docs, not endorsements. Verify model-specific controls i
 | Provider | Check first | Prompt implication |
 | --- | --- | --- |
 | OpenAI | [Prompting](https://developers.openai.com/api/docs/guides/prompting), [Structured Outputs](https://developers.openai.com/api/docs/guides/structured-outputs), [function calling](https://developers.openai.com/api/docs/guides/function-calling), [agent evals](https://developers.openai.com/api/docs/guides/agent-evals), [citation formatting](https://developers.openai.com/api/docs/guides/citation-formatting) | Prefer schema, tools/functions, eval traces, and checked citations over more prose when those are the real interface. |
-| Anthropic Claude | [Prompting](https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices), [tools](https://platform.claude.com/docs/en/agents-and-tools/tool-use/overview), [structured outputs](https://platform.claude.com/docs/en/build-with-claude/structured-outputs), [citations](https://platform.claude.com/docs/en/build-with-claude/citations), [prompt caching](https://platform.claude.com/docs/en/build-with-claude/prompt-caching) | Clear structure, explicit tool boundaries, citations, caching, and provider thinking controls when available. |
+| Anthropic Claude | [Prompting](https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices), [tools](https://platform.claude.com/docs/en/agents-and-tools/tool-use/overview), [structured outputs](https://platform.claude.com/docs/en/build-with-claude/structured-outputs), [citations](https://platform.claude.com/docs/en/build-with-claude/citations), [prompt caching](https://platform.claude.com/docs/en/build-with-claude/prompt-caching), [thinking](https://platform.claude.com/docs/en/build-with-claude/thinking) | Clear structure, explicit tool boundaries, citations, caching, and adaptive thinking controls (`thinking.type: "adaptive"` as verified on 2026-08-16). |
 | Google Gemini | [Prompting](https://ai.google.dev/gemini-api/docs/prompting-strategies), [structured output](https://ai.google.dev/gemini-api/docs/structured-output), [function calling](https://ai.google.dev/gemini-api/docs/function-calling), [Grounding with Search](https://ai.google.dev/gemini-api/docs/google-search), [URL Context](https://ai.google.dev/gemini-api/docs/url-context), [thinking](https://ai.google.dev/gemini-api/docs/thinking) | Treat thinking, grounding, URL context, function calling, and schema as API controls, not template filler. |
 | Perplexity | [Search API](https://docs.perplexity.ai/docs/search/quickstart), [Search endpoint](https://docs.perplexity.ai/api-reference/search-post), [Agent API](https://docs.perplexity.ai/docs/agent-api/quickstart), [Agent web search](https://docs.perplexity.ai/docs/agent-api/tools/web-search) | Search workflows where citations and freshness matter; verify filters, citation fields, and API options live. |
 | Grok / xAI | [Overview](https://docs.x.ai/overview), [structured outputs](https://docs.x.ai/developers/model-capabilities/text/structured-outputs), [function calling](https://docs.x.ai/developers/tools/function-calling), [web search](https://docs.x.ai/developers/tools/web-search), [reasoning](https://docs.x.ai/developers/model-capabilities/text/reasoning) | Verify behavior live; do not assume OpenAI-compatible parity. |
@@ -50,7 +52,7 @@ Provider badges link to docs, not endorsements. Verify model-specific controls i
 
 <p align="right">
   <a href="#table-of-contents"><img alt="Table of contents" src="https://shieldcn.dev/badge/TOC-6366F1.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiListCheck&logoColor=f8fafc"></a>
-  <a href="#prompt-library"><img alt="Back to top" src="https://shieldcn.dev/badge/Top-10B981.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiArrowUpLine&logoColor=f8fafc"></a>
+  <a href="#top"><img alt="Back to top" src="https://shieldcn.dev/badge/Top-10B981.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiArrowUpLine&logoColor=f8fafc"></a>
 </p>
 
 ---
@@ -93,17 +95,20 @@ Provider badges link to docs, not endorsements. Verify model-specific controls i
 > [!CAUTION]
 > Prompt injection is a workflow risk, not a magic-string problem. Untrusted
 > content must not authorize tools, override durable instructions, bypass review,
-> or change safety policy. See [OWASP GenAI LLM Top 10](https://genai.owasp.org/llm-top-10/),
-> [OWASP Top 10 for LLM Applications](https://owasp.org/www-project-top-10-for-large-language-model-applications/),
-> [OWASP LLM Prompt Injection Prevention Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/LLM_Prompt_Injection_Prevention_Cheat_Sheet.html),
-> [Microsoft Prompt Shields](https://learn.microsoft.com/en-us/azure/foundry/openai/concepts/content-filter-prompt-shields),
+> or change safety policy. Current list: [OWASP GenAI LLM Top 10 2026 (`2026/final`)](https://github.com/GenAI-Security-Project/GenAI-LLM-Top10/tree/main/2026/final),
+> as verified on 2026-08-16. Treat [owasp.org LLM Top 10](https://owasp.org/www-project-top-10-for-large-language-model-applications/)
+> as a **legacy archive**. Do not use [genai.owasp.org/llm-top-10](https://genai.owasp.org/llm-top-10/) as year-SSOT (H1 still 2025).
+> See [OWASP LLM Prompt Injection Prevention Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/LLM_Prompt_Injection_Prevention_Cheat_Sheet.html).
+> When the model acts (tools, memory, downstream effects), pair with
+> [OWASP Top 10 for Agentic Applications 2026](https://genai.owasp.org/resource/owasp-top-10-for-agentic-applications/).
+> Also [Microsoft Prompt Shields](https://learn.microsoft.com/en-us/azure/foundry/openai/concepts/content-filter-prompt-shields),
 > [AgentDojo](https://arxiv.org/abs/2406.13352),
 > [NIST AI Risk Management Framework](https://www.nist.gov/itl/ai-risk-management-framework), and
 > [NIST AI RMF Generative AI Profile](https://www.nist.gov/publications/artificial-intelligence-risk-management-framework-generative-artificial-intelligence).
 
 <p align="right">
   <a href="#table-of-contents"><img alt="Table of contents" src="https://shieldcn.dev/badge/TOC-6366F1.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiListCheck&logoColor=f8fafc"></a>
-  <a href="#prompt-library"><img alt="Back to top" src="https://shieldcn.dev/badge/Top-10B981.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiArrowUpLine&logoColor=f8fafc"></a>
+  <a href="#top"><img alt="Back to top" src="https://shieldcn.dev/badge/Top-10B981.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiArrowUpLine&logoColor=f8fafc"></a>
 </p>
 
 ---
@@ -127,8 +132,7 @@ Provider badges link to docs, not endorsements. Verify model-specific controls i
 
 <p align="right">
   <a href="#table-of-contents"><img alt="Table of contents" src="https://shieldcn.dev/badge/TOC-6366F1.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiListCheck&logoColor=f8fafc"></a>
-  <a href="#prompt-library"><img alt="Back to top" src="https://shieldcn.dev/badge/Top-10B981.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiArrowUpLine&logoColor=f8fafc"></a>
+  <a href="#top"><img alt="Back to top" src="https://shieldcn.dev/badge/Top-10B981.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiArrowUpLine&logoColor=f8fafc"></a>
 </p>
 
 ---
-

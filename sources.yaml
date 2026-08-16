@@ -2,7 +2,7 @@
 # Auto-expanded from all non-badge external https URLs cited in README.md.
 # Keep machine-checkable by scripts/check_sources_manifest.py.
 # Dates are UTC ISO dates. last_checked is inventory-refresh date; re-verify for 'latest model' claims.
-# Coverage: 119 unique external README sources (badge hosts excluded).
+# Coverage: 124 unique external README sources (badge hosts excluded).
 
 - id: anthropic-about-claude-model-deprecations
   owner: Anthropic
@@ -104,6 +104,16 @@
   replacement_url: none
   notes: Verify live before latest/current model or API claims. Prefer this over secondary blogs. Content-deep live fetch 2026-07-31 (catalog-ultradeep-research-enrich).
 
+- id: anthropic-build-with-claude-thinking
+  owner: Anthropic
+  url: https://platform.claude.com/docs/en/build-with-claude/thinking
+  source_type: official doc
+  status: checked
+  last_checked: 2026-08-04
+  claim_scope: Provider reasoning or thinking controls.
+  replacement_url: none
+  notes: Adaptive thinking is current as verified on 2026-08-16. Inventory date stays 2026-08-04 with the rest of the manifest.
+
 - id: anthropic-news-fable-mythos-access
   owner: Anthropic
   url: https://www.anthropic.com/news/fable-mythos-access
@@ -112,7 +122,17 @@
   last_checked: 2026-08-04
   claim_scope: External source cited in the catalog (README refs ~1).
   replacement_url: none
-  notes: Verify live before latest/current model or API claims. Prefer this over secondary blogs.
+  notes: Verify live before latest/current model or API claims. Prefer this over secondary blogs. Jun 12 2026 suspension letter; pair with redeploying-fable-5.
+
+- id: anthropic-news-redeploying-fable-5
+  owner: Anthropic
+  url: https://www.anthropic.com/news/redeploying-fable-5
+  source_type: official doc
+  status: checked
+  last_checked: 2026-08-04
+  claim_scope: External source cited in the catalog (README refs ~1).
+  replacement_url: none
+  notes: Jul 1 2026 Fable 5 restore, as verified on 2026-08-16. Inventory date stays 2026-08-04 with the rest of the manifest.
 
 - id: anthropic-prompt-engineering-overview
   owner: Anthropic
@@ -313,6 +333,16 @@
   claim_scope: External source cited in the catalog (README refs ~2).
   replacement_url: none
   notes: Verify live before latest/current model or API claims. Prefer this over secondary blogs. Content-deep live fetch 2026-07-31 (catalog-ultradeep-research-enrich).
+
+- id: openai-api-deprecations
+  owner: OpenAI
+  url: https://developers.openai.com/api/docs/deprecations
+  source_type: official doc
+  status: checked
+  last_checked: 2026-08-04
+  claim_scope: Evaluation, agent evals, or trace grading guidance.
+  replacement_url: none
+  notes: Hosted Evals dashboard/API shutdown dates, as verified on 2026-08-16. Inventory date stays 2026-08-04 with the rest of the manifest.
 
 - id: openai-api-deployment-checklist
   owner: OpenAI
@@ -682,7 +712,27 @@
   last_checked: 2026-08-04
   claim_scope: Safety, injection defense, or adversarial technique reference.
   replacement_url: none
-  notes: Safety or governance standard. Prefer primary page over stale mirrors.
+  notes: Safety or governance standard. Prefer primary page over stale mirrors. H1 still 2025 as verified on 2026-08-16; do not use as year-SSOT.
+
+- id: owasp-genai-llm-top-10-2026-final
+  owner: OWASP
+  url: https://github.com/GenAI-Security-Project/GenAI-LLM-Top10/tree/main/2026/final
+  source_type: standard
+  status: checked
+  last_checked: 2026-08-04
+  claim_scope: Safety, injection defense, or adversarial technique reference.
+  replacement_url: none
+  notes: Canonical OWASP GenAI LLM Top 10 2026 list (`2026/final`), as verified on 2026-08-16. Inventory date stays 2026-08-04 with the rest of the manifest.
+
+- id: owasp-top-10-for-agentic-applications
+  owner: OWASP
+  url: https://genai.owasp.org/resource/owasp-top-10-for-agentic-applications/
+  source_type: standard
+  status: checked
+  last_checked: 2026-08-04
+  claim_scope: Safety, injection defense, or adversarial technique reference.
+  replacement_url: none
+  notes: OWASP Top 10 for Agentic Applications 2026, as verified on 2026-08-16. Inventory date stays 2026-08-04 with the rest of the manifest.
 
 - id: owasp-llm-top-10
   owner: OWASP

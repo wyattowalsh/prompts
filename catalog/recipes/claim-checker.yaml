@@ -6,7 +6,7 @@ order: 40
 badge:
   logo: ri:RiShieldCheckLine
   color: "60A5FA"
-  chip_label: "Claim Checker"
+  chip_label: Claims
 use_for: "test a claim against provided evidence"
 placeholders:
   - name: claim
@@ -57,7 +57,7 @@ after_copy:
   fill_pointer: match_placeholder_table
   expected_output: "Verdict; Evidence for; Evidence against; Missing evidence; Safer wording."
   upgrade_when: |
-    Add examples when style, labels, or edge cases are hard to infer.; Add retrieval when freshness, private context, or source grounding drives correctness.; Add evals when the prompt will be reused or automated.
+    Add retrieval traces, citation checks, and a disagreement pass when claims leave the supplied sources.
   control_evidence_note: |
     For public claims, require cited evidence and missing-evidence behavior before rewriting.
   safety_eval_checks:

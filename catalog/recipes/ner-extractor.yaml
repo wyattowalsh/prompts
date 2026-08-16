@@ -6,7 +6,7 @@ order: 40
 badge:
   logo: ri:RiUserSearchLine
   color: "FDE047"
-  chip_label: "NER Extractor"
+  chip_label: NER
 use_for: "extract entities with spans and normalization"
 placeholders:
   - name: text_to_analyze
@@ -57,7 +57,7 @@ after_copy:
   expected_output: |
     Entity table with type, text, normalized value, span/evidence, confidence.
   upgrade_when: |
-    Add examples when style, labels, or edge cases are hard to infer.; Add retrieval when freshness, private context, or source grounding drives correctness.; Add evals when the prompt will be reused or automated.
+    Add a schema fixture and parser round-trip when free-text still leaks into structured fields.
   control_evidence_note: |
     For entity extraction pipelines, use structured output plus span validators.
   safety_eval_checks:

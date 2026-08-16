@@ -84,7 +84,7 @@ after_copy:
   expected_output: |
     Selected simulated personas and why; Rejected roles; Persona reviews; Cross-critiques; Disagreements; Evidence gaps; Recommendation; Real-review trigger.
   upgrade_when: |
-    Add examples when style, labels, or edge cases are hard to infer.; Add retrieval when freshness, private context, or source grounding drives correctness.; Add evals when the prompt will be reused or automated.
+    Add a verifier pass and an explicit stop condition when extra search no longer changes the answer.
   control_evidence_note: |
     For panel review, treat personas as simulated perspectives, not expertise, consensus, or sign-off.
   safety_eval_checks:

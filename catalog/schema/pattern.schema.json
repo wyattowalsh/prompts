@@ -1,6 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://prompts.w4w.dev/schema/pattern.schema.json",
+  "$comment": "Record shape is Draft 2020-12 validated; package-wide section ownership remains semantic catalog validation.",
   "title": "Pattern note",
   "type": "object",
   "additionalProperties": false,
@@ -20,6 +21,20 @@
     "eval_required",
     "caveat",
     "sources"
+  ],
+  "oneOf": [
+    {
+      "required": ["template"],
+      "properties": {
+        "template": { "type": "string", "pattern": "\\S" }
+      }
+    },
+    {
+      "required": ["template_omission_reason"],
+      "properties": {
+        "template_omission_reason": { "type": "string", "pattern": "\\S" }
+      }
+    }
   ],
   "properties": {
     "slug": {
@@ -58,7 +73,11 @@
         "required": ["title", "url"],
         "properties": {
           "title": { "type": "string", "minLength": 1 },
-          "url": { "type": "string", "format": "uri" }
+          "url": {
+            "type": "string",
+            "format": "uri",
+            "pattern": "^https://(?![^/?#]*@)[^/?#:@\\s]+(?::(?:0|[1-9][0-9]{0,3}|[1-5][0-9]{4}|6[0-4][0-9]{3}|65[0-4][0-9]{2}|655[0-2][0-9]|6553[0-5]))?(?:[/?#][\\x21-\\x7E]*)?$"
+          }
         }
       }
     }

@@ -12,14 +12,9 @@
  */
 import assert from "node:assert/strict";
 import { describe, it } from "node:test";
-import {
-  emitPatternNotes,
-  emitReadmeFromPackage,
-  emitRecipeCard
-} from "../src/emit-readme.js";
+import { emitPatternNotes, emitReadmeFromPackage, emitRecipeCard } from "../src/emit-readme.js";
 
-const FENCE_THEN_MODEL =
-  /```(?:text)?\n[\s\S]*?\n```\n\n- \*\*Model\/API controls\*\*:/;
+const FENCE_THEN_MODEL = /```(?:text)?\n[\s\S]*?\n```\n\n- \*\*Model\/API controls\*\*:/;
 
 function minimalRecipe(overrides = {}) {
   return {
@@ -172,15 +167,13 @@ describe("emitRecipeCard paste previews (MD009)", () => {
   it("P-09: empty-string preview is falsy and skipped", () => {
     const card = emitRecipeCard(
       minimalRecipe({
-        placeholders: [
-          { name: "zone", required: true, example: "e", notes: "n", preview: "" }
-        ]
+        placeholders: [{ name: "zone", required: true, example: "e", notes: "n", preview: "" }]
       })
     );
     assert.equal(card.includes("Paste preview"), false);
   });
 
-  it("P-12: never emits exact \"> \" line", () => {
+  it('P-12: never emits exact "> " line', () => {
     const card = emitRecipeCard(
       minimalRecipe({
         placeholders: [
@@ -196,6 +189,45 @@ describe("emitRecipeCard paste previews (MD009)", () => {
     );
     assertNoIllegalEmptyBlockquote(card);
   });
+
+  it("P-13: escapes structural Markdown characters in placeholder table cells", () => {
+    const card = emitRecipeCard(
+      minimalRecipe({
+        placeholders: [
+          {
+            name: "zone",
+            required: true,
+            example: "A | B < C",
+            notes: "line 1\nline 2 & final"
+          }
+        ]
+      })
+    );
+
+    assert.match(
+      card,
+      /\| `\{zone\}` \| yes \| A &#124; B &lt; C \| line 1<br>line 2 &amp; final \|/u
+    );
+  });
+
+  it("P-14: escapes source titles and link-destination parentheses", () => {
+    const card = emitRecipeCard(
+      minimalRecipe({
+        sources: [
+          {
+            title: "A [tricky] <source> & `label`",
+            url: "https://example.com/a_(b)[c]"
+          }
+        ]
+      })
+    );
+
+    assert.ok(
+      card.includes(
+        "[A \\[tricky\\] &lt;source&gt; &amp; \\`label\\`](https://example.com/a_%28b%29%5Bc%5D)"
+      )
+    );
+  });
 });
 
 describe("emitPatternNotes fences (MD031/MD032)", () => {
@@ -207,9 +239,7 @@ describe("emitPatternNotes fences (MD031/MD032)", () => {
         })
       ],
       index: {
-        pattern_sections: [
-          { title: "Sec", order: 1, pattern_slugs: ["sample-pattern"] }
-        ]
+        pattern_sections: [{ title: "Sec", order: 1, pattern_slugs: ["sample-pattern"] }]
       }
     });
     assert.match(out, FENCE_THEN_MODEL);
@@ -224,9 +254,7 @@ describe("emitPatternNotes fences (MD031/MD032)", () => {
         })
       ],
       index: {
-        pattern_sections: [
-          { title: "Sec", order: 1, pattern_slugs: ["sample-pattern"] }
-        ]
+        pattern_sections: [{ title: "Sec", order: 1, pattern_slugs: ["sample-pattern"] }]
       }
     });
     assert.equal(out.includes("```"), false);
@@ -238,9 +266,7 @@ describe("emitPatternNotes fences (MD031/MD032)", () => {
     const out = emitPatternNotes({
       patterns: [minimalPattern({ template: "only-line" })],
       index: {
-        pattern_sections: [
-          { title: "Sec", order: 1, pattern_slugs: ["sample-pattern"] }
-        ]
+        pattern_sections: [{ title: "Sec", order: 1, pattern_slugs: ["sample-pattern"] }]
       }
     });
     assert.match(out, FENCE_THEN_MODEL);
@@ -250,9 +276,7 @@ describe("emitPatternNotes fences (MD031/MD032)", () => {
     const out = emitPatternNotes({
       patterns: [minimalPattern({ template: "A\n\nB\n" })],
       index: {
-        pattern_sections: [
-          { title: "Sec", order: 1, pattern_slugs: ["sample-pattern"] }
-        ]
+        pattern_sections: [{ title: "Sec", order: 1, pattern_slugs: ["sample-pattern"] }]
       }
     });
     assert.match(out, /```text\nA\n\nB\n```/);
@@ -266,9 +290,7 @@ describe("emitPatternNotes fences (MD031/MD032)", () => {
         minimalPattern({ slug: "p2", title: "Pattern Two", template: "t2\n" })
       ],
       index: {
-        pattern_sections: [
-          { title: "Sec", order: 1, pattern_slugs: ["p1", "p2"] }
-        ]
+        pattern_sections: [{ title: "Sec", order: 1, pattern_slugs: ["p1", "p2"] }]
       }
     });
     assert.match(out, /#### Pattern One/);
@@ -280,7 +302,7 @@ describe("emitPatternNotes fences (MD031/MD032)", () => {
 
 describe("emitReadmeFromPackage join contracts", () => {
   const tinyShell = {
-    preamble: "# Preamble\n",
+    preamble: '<a id="top"></a>\n\n# Preamble\n',
     middle: "\n## Middle\n",
     post: "\n## Post\n"
   };
@@ -291,9 +313,7 @@ describe("emitReadmeFromPackage join contracts", () => {
       patterns: [minimalPattern({ template: "body\n" })],
       index: {
         lanes: [],
-        pattern_sections: [
-          { title: "Sec", order: 1, pattern_slugs: ["sample-pattern"] }
-        ]
+        pattern_sections: [{ title: "Sec", order: 1, pattern_slugs: ["sample-pattern"] }]
       }
     };
     const full = emitReadmeFromPackage(pkg, tinyShell);
@@ -330,5 +350,115 @@ describe("emitReadmeFromPackage join contracts", () => {
     };
     const full = emitReadmeFromPackage(pkg, tinyShell);
     assertNoIllegalEmptyBlockquote(full);
+  });
+
+  it("J-03: preamble still exposes #top; recipe cards omit per-card TOC/Top badges", () => {
+    const pkg = {
+      recipes: [minimalRecipe()],
+      patterns: [],
+      index: {
+        lanes: [{ key: "research", title: "Research", order: 1, recipe_slugs: ["sample"] }],
+        pattern_sections: []
+      }
+    };
+    const full = emitReadmeFromPackage(pkg, tinyShell);
+    const card = emitRecipeCard(minimalRecipe());
+    assert.match(full, /<a id="top"><\/a>/u);
+    assert.doesNotMatch(card, /alt="Back to top"/u);
+    assert.doesNotMatch(card, /badge\/TOC-/u);
+    assert.match(card, /Optional zones: paste `none` if omitted/u);
+    assert.match(
+      card,
+      /Match the \*\*placeholder table\*\* above; paste `none` for optional zones you omit\./u
+    );
+    assert.doesNotMatch(card, /Before you copy:/u);
+  });
+
+  it("J-04: generated section headings keep their preceding blank line", () => {
+    const pkg = {
+      recipes: [minimalRecipe()],
+      patterns: [minimalPattern()],
+      index: {
+        lanes: [{ key: "research", title: "Research", order: 1, recipe_slugs: ["sample"] }],
+        pattern_sections: [{ title: "Section", order: 1, pattern_slugs: ["sample-pattern"] }]
+      }
+    };
+    const full = emitReadmeFromPackage(pkg, tinyShell);
+
+    assert.match(full, /# Preamble\n\n## Prompt Library/u);
+    assert.match(full, /## Middle\n\n## Pattern Notes/u);
+  });
+
+  it("J-05: boundary normalization preserves repeated blank lines inside fenced bodies", () => {
+    const pkg = {
+      recipes: [
+        minimalRecipe({
+          placeholders: [{ name: "zone", required: true, example: "e", notes: "n" }],
+          prompt: "Recipe A\n\n\nRecipe B\n{zone}"
+        })
+      ],
+      patterns: [minimalPattern({ template: "Pattern A\n\n\nPattern B" })],
+      index: {
+        lanes: [{ key: "research", title: "Research", order: 1, recipe_slugs: ["sample"] }],
+        pattern_sections: [{ title: "Section", order: 1, pattern_slugs: ["sample-pattern"] }]
+      }
+    };
+
+    const full = emitReadmeFromPackage(pkg, tinyShell);
+    assert.match(full, /```text\nRecipe A\n\n\nRecipe B\n\{zone\}\n```/u);
+    assert.match(full, /```text\nPattern A\n\n\nPattern B\n```/u);
+  });
+
+  it("J-06: trims scalar boundary newlines without introducing extra blank lines", () => {
+    const pkg = {
+      recipes: [
+        minimalRecipe({
+          title: "Sample\n",
+          use_for: "test use\n",
+          placeholders: [
+            {
+              name: "zone",
+              required: true,
+              example: "value\n",
+              notes: "first line\nsecond line\n"
+            }
+          ],
+          prompt: "Recipe A\n\n\nRecipe B\n{zone}",
+          after_copy: {
+            expected_output: "out\n",
+            upgrade_when: "up\n",
+            control_evidence_note: "note\n",
+            safety_eval_checks: ["safe one\n", "safe two\n"]
+          }
+        })
+      ],
+      patterns: [
+        minimalPattern({
+          title: "Sample Pattern\n",
+          definition: "definition\n",
+          best_use: "best\n",
+          avoid_when: "avoid\n",
+          template: "Pattern A\n\n\nPattern B",
+          model_api_controls: "controls\n",
+          cost_latency: "low\n",
+          failure_modes: "fail\n",
+          evidence_tier: "Strong\n",
+          source_type: "survey\n",
+          caveat: "caveat\n"
+        })
+      ],
+      index: {
+        lanes: [{ key: "research", title: "Research\n", order: 1, recipe_slugs: ["sample"] }],
+        pattern_sections: [{ title: "Section\n", order: 1, pattern_slugs: ["sample-pattern"] }]
+      }
+    };
+
+    const full = emitReadmeFromPackage(pkg, tinyShell);
+    assert.match(full, /```text\nRecipe A\n\n\nRecipe B\n\{zone\}\n```/u);
+    assert.match(full, /```text\nPattern A\n\n\nPattern B\n```/u);
+    assert.match(full, /\| `\{zone\}` \| yes \| value \| first line<br>second line \|/u);
+
+    const outsideFences = full.replace(/```text\n[\s\S]*?\n```/gu, "```text\n[body]\n```");
+    assert.doesNotMatch(outsideFences, /\n{3,}/u);
   });
 });

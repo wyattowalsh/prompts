@@ -1,0 +1,8 @@
+--- catalog/recipes/code-review.yaml
++++ catalog/recipes/code-review.yaml
+@@ -73,3 +73,5 @@
+ sources:
+   - title: "OpenAI prompt engineering"
+     url: https://developers.openai.com/api/docs/guides/prompt-engineering
++  - title: "Anthropic prompting best practices"
++    url: https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices

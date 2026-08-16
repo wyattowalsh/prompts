@@ -57,7 +57,7 @@ after_copy:
   fill_pointer: match_placeholder_table
   expected_output: "Ranked papers table; Inclusion rationale; Exclusion rationale; Gaps; Search terms to try next."
   upgrade_when: |
-    Add examples when style, labels, or edge cases are hard to infer.; Add retrieval when freshness, private context, or source grounding drives correctness.; Add evals when the prompt will be reused or automated.
+    Add retrieval traces, citation checks, and a disagreement pass when claims leave the supplied sources.
   control_evidence_note: |
     For reusable literature scans, pair source-quality labels with an explicit inclusion rubric.
   safety_eval_checks:

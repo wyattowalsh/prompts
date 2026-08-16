@@ -57,7 +57,7 @@ after_copy:
   fill_pointer: match_placeholder_table
   expected_output: "Eval cases; Expected labels; Rubric; Data gaps; Maintenance notes."
   upgrade_when: |
-    Add examples when style, labels, or edge cases are hard to infer.; Add retrieval when freshness, private context, or source grounding drives correctness.; Add evals when the prompt will be reused or automated.
+    Add tool-allowlist, approval gates, and an eval set when the agent can act outside the contract.
   control_evidence_note: |
     For reusable workflows, design eval datasets from real failures and review criteria before tuning prompts.
   safety_eval_checks:

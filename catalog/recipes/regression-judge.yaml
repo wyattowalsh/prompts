@@ -58,7 +58,7 @@ after_copy:
   fill_pointer: match_placeholder_table
   expected_output: "Pass/fail; Scores; Evidence; Critical failures; Suggested prompt fix."
   upgrade_when: |
-    Add examples when style, labels, or edge cases are hard to infer.; Add retrieval when freshness, private context, or source grounding drives correctness.; Add evals when the prompt will be reused or automated.
+    Add tool-allowlist, approval gates, and an eval set when the agent can act outside the contract.
   control_evidence_note: |
     For regression judging, use a stable rubric and representative failure set before accepting prompt changes.
   safety_eval_checks:

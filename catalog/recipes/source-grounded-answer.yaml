@@ -6,7 +6,7 @@ order: 10
 badge:
   logo: ri:RiQuoteText
   color: "2563EB"
-  chip_label: "Source-Grounded Answer"
+  chip_label: Grounded
 use_for: "answer a question from supplied sources without drifting into unsupported claims"
 placeholders:
   - name: question
@@ -68,7 +68,7 @@ after_copy:
   fill_pointer: match_placeholder_table
   expected_output: "A direct answer; a Sources used list; Unsupported or missing evidence; Confidence level."
   upgrade_when: |
-    Add examples when style, labels, or edge cases are hard to infer.; Add retrieval when freshness, private context, or source grounding drives correctness.; Add evals when the prompt will be reused or automated.
+    Add retrieval traces, citation checks, and a disagreement pass when claims leave the supplied sources.
   control_evidence_note: |
     For repeated source-backed answers, add source IDs and citation checks before trusting the workflow.
   safety_eval_checks:

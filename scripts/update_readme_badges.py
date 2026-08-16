@@ -1,22 +1,23 @@
 #!/usr/bin/env python3
-"""Generate README ShieldCN badge surfaces.
-
-The README is the public surface, but badge values should not be hand
-maintained. This script counts prompt recipes and pattern notes from headings,
-then rewrites the generated badge marker blocks.
-"""
+"""Generate README ShieldCN badge surfaces from parsed catalog metadata."""
 
 from __future__ import annotations
 
 import argparse
+import json
+import os
 import re
 import subprocess
 import sys
+from functools import lru_cache
+from html import escape, unescape
 from pathlib import Path
-from urllib.parse import quote, urlencode
+from urllib.parse import quote, urlencode, urlsplit
 
 
-DEFAULT_REPO = ("wyattowalsh", "prompts")
+REPOSITORY_ROOT = Path(__file__).resolve().parents[1]
+DEFAULT_CATALOG_ROOT = REPOSITORY_ROOT / "catalog"
+CATALOG_BADGE_DATA_SCRIPT = REPOSITORY_ROOT / "scripts" / "catalog_badge_data.mjs"
 START = "<!-- BADGES:START -->"
 END = "<!-- BADGES:END -->"
 SHORTCUTS_START = "<!-- SHORTCUTS:START -->"
@@ -25,6 +26,9 @@ LANES_START = "<!-- LANES:START -->"
 LANES_END = "<!-- LANES:END -->"
 JOB_MAP_START = "<!-- JOB-MAP:START -->"
 JOB_MAP_END = "<!-- JOB-MAP:END -->"
+_PACKAGE_MANAGER_NODE_NAMES = frozenset(
+    {"pnpm", "pnpm.exe", "pnpm.cjs", "npm", "npm-cli.js", "yarn", "yarn.js", "corepack"}
+)
 
 COMMON_STATIC_PARAMS = {
     "mode": "dark",
@@ -132,8 +136,6 @@ PROVIDER_BADGES = [
     },
 ]
 
-# CI, commit-count, and contributors endpoints render as SVGs, but the README
-# keeps repo-status badges compact: recency, issues, PRs, stars, and forks.
 DYNAMIC_GITHUB_BADGES = [
     {
         "endpoint": "last-commit",
@@ -167,62 +169,6 @@ DYNAMIC_GITHUB_BADGES = [
     },
 ]
 
-SHORTCUT_BADGES = [
-    {
-        "label": "Sources",
-        "color": "2563EB",
-        "logo": "ri:RiQuoteText",
-        "href": "#source-grounded-answer",
-        "alt": "Copy shortcut: Source-Grounded Answer",
-    },
-    {
-        "label": "Code Review",
-        "color": "16A34A",
-        "logo": "ri:RiCodeSSlashLine",
-        "href": "#code-review",
-        "alt": "Copy shortcut: Code Review",
-    },
-    {
-        "label": "JSON",
-        "color": "F59E0B",
-        "logo": "ri:RiBracesLine",
-        "href": "#json-extractor",
-        "alt": "Copy shortcut: JSON Extractor",
-    },
-    {
-        "label": "RAG",
-        "color": "0EA5E9",
-        "logo": "ri:RiDatabase2Line",
-        "href": "#rag-answer-contract",
-        "alt": "Copy shortcut: RAG Answer Contract",
-    },
-    {
-        "label": "Panel",
-        "color": "8B5CF6",
-        "logo": "ri:RiTeamLine",
-        "href": "#panel-review",
-        "alt": "Copy shortcut: Panel Review",
-    },
-    {
-        "label": "Optimize",
-        "color": "DB2777",
-        "logo": "ri:RiLoopRightLine",
-        "href": "#prompt-optimizer",
-        "alt": "Copy shortcut: Prompt Optimizer",
-    },
-]
-
-LANE_BADGES = [
-    {"label": "Research", "color": "3B82F6", "logo": "ri:RiMicroscopeLine", "href": "#research", "alt": "Research lane"},
-    {"label": "Writing", "color": "A855F7", "logo": "ri:RiQuillPenLine", "href": "#writing", "alt": "Writing lane"},
-    {"label": "Coding", "color": "22C55E", "logo": "ri:RiCodeBoxLine", "href": "#coding", "alt": "Coding lane"},
-    {"label": "Data", "color": "EAB308", "logo": "ri:RiDatabaseLine", "href": "#data", "alt": "Data lane"},
-    {"label": "Product", "color": "EC4899", "logo": "ri:RiLayoutGridLine", "href": "#product", "alt": "Product lane"},
-    {"label": "Ops", "color": "F97316", "logo": "ri:RiPulseLine", "href": "#operations", "alt": "Operations lane"},
-    {"label": "Agents", "color": "06B6D4", "logo": "ri:RiRobot2Line", "href": "#agent-and-tool-workflows", "alt": "Agent workflows lane"},
-    {"label": "Reasoning", "color": "8B5CF6", "logo": "ri:RiBrainLine", "href": "#reasoning", "alt": "Reasoning lane"},
-]
-
 LANE_BADGE_PARAMS = {
     **COMMON_STATIC_PARAMS,
     "split": "false",
@@ -247,155 +193,6 @@ RECIPE_HEADING_PARAMS = {
     "iconSize": "16",
 }
 
-RECIPE_HEADING_ICON_OVERRIDES: dict[str, str] = {
-    "JSON Extractor": "ri:RiNodeTree",
-}
-
-RECIPE_HEADING_BADGE_OVERRIDES: dict[str, dict[str, str]] = {
-    "Literature Scan": {"color": "1E40AF", "logo": "ri:RiBookReadLine", "lane": "research"},
-    "Disagreement Map": {"color": "93C5FD", "logo": "ri:RiDivideLine", "lane": "research"},
-    "Style Transfer Without Examples": {"color": "C026D3", "logo": "ri:RiPaletteLine", "lane": "writing"},
-    "FAQ Generator": {"color": "A21CAF", "logo": "ri:RiQuestionnaireLine", "lane": "writing"},
-    "Refactor Planner": {"color": "059669", "logo": "ri:RiFlowChart", "lane": "coding"},
-    "PR Description": {"color": "34D399", "logo": "ri:RiGitPullRequestLine", "lane": "coding"},
-    "Sentiment Triage": {"color": "F59E0B", "logo": "ri:RiEmotionLine", "lane": "data"},
-    "Synthetic Edge Cases": {"color": "D97706", "logo": "ri:RiCornerDownRightLine", "lane": "data"},
-    "Acceptance Criteria Writer": {"color": "BE185D", "logo": "ri:RiListCheck2", "lane": "product"},
-    "Support Macro": {"color": "F9A8D4", "logo": "ri:RiCustomerService2Line", "lane": "product"},
-    "Risk Register": {"color": "C2410C", "logo": "ri:RiAlertLine", "lane": "operations"},
-    "Meeting Action Extractor": {"color": "FD7E14", "logo": "ri:RiCalendarCheckLine", "lane": "operations"},
-    "Eval-Set Generator": {"color": "0E7490", "logo": "ri:RiListOrdered", "lane": "agents"},
-    "Regression Judge": {"color": "155E75", "logo": "ri:RiScales2Line", "lane": "agents"},
-    "Step-Back Answer": {"color": "6D28D9", "logo": "ri:RiArrowLeftUpLine", "lane": "reasoning"},
-    "Panel Review": {"color": "9F7AEA", "logo": "ri:RiGroupLine", "lane": "reasoning"},
-}
-
-LANE_CHIP_SECTIONS = [
-    {
-        "key": "research",
-        "chips": [
-            {"label": "Grounded", "color": "2563EB", "logo": "ri:RiQuoteText", "href": "#source-grounded-answer", "alt": "Source-Grounded Answer"},
-            {"label": "Web brief", "color": "3B82F6", "logo": "ri:RiGlobalLine", "href": "#web-research-brief", "alt": "Web Research Brief"},
-            {"label": "Claims", "color": "60A5FA", "logo": "ri:RiShieldCheckLine", "href": "#claim-checker", "alt": "Claim Checker"},
-            {"label": "Citations", "color": "1D4ED8", "logo": "ri:RiLinksLine", "href": "#citation-matrix", "alt": "Citation Matrix"},
-        ],
-    },
-    {
-        "key": "writing",
-        "chips": [
-            {"label": "Brief", "color": "9333EA", "logo": "ri:RiFileTextLine", "href": "#executive-brief", "alt": "Executive Brief"},
-            {"label": "Rewrite", "color": "A855F7", "logo": "ri:RiEditLine", "href": "#rewrite-with-constraints", "alt": "Rewrite With Constraints"},
-            {"label": "Summary", "color": "C084FC", "logo": "ri:RiAlignLeft", "href": "#dense-summary", "alt": "Dense Summary"},
-            {"label": "Newsletter", "color": "D946EF", "logo": "ri:RiMailLine", "href": "#newsletter-draft", "alt": "Newsletter Draft"},
-        ],
-    },
-    {
-        "key": "coding",
-        "chips": [
-            {"label": "Review", "color": "16A34A", "logo": "ri:RiCodeSSlashLine", "href": "#code-review", "alt": "Code Review"},
-            {"label": "RCA", "color": "22C55E", "logo": "ri:RiBugLine", "href": "#bug-rca", "alt": "Bug RCA"},
-            {"label": "Tests", "color": "4ADE80", "logo": "ri:RiTestTubeLine", "href": "#unit-test-writer", "alt": "Unit Test Writer"},
-            {"label": "API", "color": "10B981", "logo": "ri:RiBracesLine", "href": "#api-contract-explainer", "alt": "API Contract Explainer"},
-        ],
-    },
-    {
-        "key": "data",
-        "chips": [
-            {"label": "JSON", "color": "EAB308", "logo": "ri:RiBracesLine", "href": "#json-extractor", "alt": "JSON Extractor"},
-            {"label": "Tables", "color": "FACC15", "logo": "ri:RiTableLine", "href": "#table-normalizer", "alt": "Table Normalizer"},
-            {"label": "Classify", "color": "CA8A04", "logo": "ri:RiPriceTag3Line", "href": "#classifier", "alt": "Classifier"},
-            {"label": "NER", "color": "FDE047", "logo": "ri:RiUserSearchLine", "href": "#ner-extractor", "alt": "NER Extractor"},
-        ],
-    },
-    {
-        "key": "product",
-        "chips": [
-            {"label": "PRD", "color": "EC4899", "logo": "ri:RiDraftLine", "href": "#prd-drafter", "alt": "PRD Drafter"},
-            {"label": "Stories", "color": "F472B6", "logo": "ri:RiStickyNoteLine", "href": "#user-story-splitter", "alt": "User Story Splitter"},
-            {"label": "Launch", "color": "FB7185", "logo": "ri:RiRocketLine", "href": "#launch-checklist", "alt": "Launch Checklist"},
-            {"label": "UX", "color": "E879F9", "logo": "ri:RiLayoutLine", "href": "#ux-review", "alt": "UX Review"},
-        ],
-    },
-    {
-        "key": "operations",
-        "chips": [
-            {"label": "Incident", "color": "F97316", "logo": "ri:RiAlarmWarningLine", "href": "#incident-summary", "alt": "Incident Summary"},
-            {"label": "Runbook", "color": "FB923C", "logo": "ri:RiBookOpenLine", "href": "#runbook-generator", "alt": "Runbook Generator"},
-            {"label": "Logs", "color": "FDBA74", "logo": "ri:RiFileSearchLine", "href": "#log-triage", "alt": "Log Triage"},
-            {"label": "Decision", "color": "EA580C", "logo": "ri:RiScalesLine", "href": "#decision-memo", "alt": "Decision Memo"},
-        ],
-    },
-    {
-        "key": "agents",
-        "chips": [
-            {"label": "Tools", "color": "06B6D4", "logo": "ri:RiToolsLine", "href": "#tool-use-planner", "alt": "Tool-Use Planner"},
-            {"label": "RAG", "color": "0891B2", "logo": "ri:RiDatabase2Line", "href": "#rag-answer-contract", "alt": "RAG Answer Contract"},
-            {"label": "Injection", "color": "22D3EE", "logo": "ri:RiShieldKeyholeLine", "href": "#prompt-injection-scanner", "alt": "Prompt-Injection Scanner"},
-            {"label": "Optimize", "color": "67E8F9", "logo": "ri:RiLoopRightLine", "href": "#prompt-optimizer", "alt": "Prompt Optimizer"},
-        ],
-    },
-    {
-        "key": "reasoning",
-        "chips": [
-            {"label": "Plan", "color": "8B5CF6", "logo": "ri:RiRouteLine", "href": "#plan-and-solve", "alt": "Plan-and-Solve"},
-            {"label": "Verify", "color": "7C3AED", "logo": "ri:RiCheckboxCircleLine", "href": "#verification-pass", "alt": "Verification Pass"},
-            {"label": "Refine", "color": "A78BFA", "logo": "ri:RiRefreshLine", "href": "#self-refine-pass", "alt": "Self-Refine Pass"},
-            {"label": "Tradeoffs", "color": "C4B5FD", "logo": "ri:RiScales3Line", "href": "#tradeoff-matrix", "alt": "Tradeoff Matrix"},
-        ],
-    },
-]
-
-JOB_MAP_ROWS = [
-    {
-        "badge": LANE_BADGES[0],
-        "row_bg": "#172554",
-        "row_accent": "#3B82F6",
-        "recipes": "[Source-Grounded Answer](#source-grounded-answer) · [Web Research Brief](#web-research-brief) · [Literature Scan](#literature-scan) · [Claim Checker](#claim-checker) · [Citation Matrix](#citation-matrix) · [Disagreement Map](#disagreement-map)",
-    },
-    {
-        "badge": LANE_BADGES[1],
-        "row_bg": "#3b0764",
-        "row_accent": "#A855F7",
-        "recipes": "[Executive Brief](#executive-brief) · [Rewrite With Constraints](#rewrite-with-constraints) · [Style Transfer Without Examples](#style-transfer-without-examples) · [Dense Summary](#dense-summary) · [FAQ Generator](#faq-generator) · [Newsletter Draft](#newsletter-draft)",
-    },
-    {
-        "badge": LANE_BADGES[2],
-        "row_bg": "#14532d",
-        "row_accent": "#22C55E",
-        "recipes": "[Code Review](#code-review) · [Bug RCA](#bug-rca) · [Unit Test Writer](#unit-test-writer) · [Refactor Planner](#refactor-planner) · [PR Description](#pr-description) · [API Contract Explainer](#api-contract-explainer)",
-    },
-    {
-        "badge": LANE_BADGES[3],
-        "row_bg": "#713f12",
-        "row_accent": "#EAB308",
-        "recipes": "[JSON Extractor](#json-extractor) · [Table Normalizer](#table-normalizer) · [Classifier](#classifier) · [NER Extractor](#ner-extractor) · [Sentiment Triage](#sentiment-triage) · [Synthetic Edge Cases](#synthetic-edge-cases)",
-    },
-    {
-        "badge": LANE_BADGES[4],
-        "row_bg": "#500724",
-        "row_accent": "#EC4899",
-        "recipes": "[PRD Drafter](#prd-drafter) · [User Story Splitter](#user-story-splitter) · [Acceptance Criteria Writer](#acceptance-criteria-writer) · [Launch Checklist](#launch-checklist) · [UX Review](#ux-review) · [Support Macro](#support-macro)",
-    },
-    {
-        "badge": LANE_BADGES[5],
-        "row_bg": "#431407",
-        "row_accent": "#F97316",
-        "recipes": "[Incident Summary](#incident-summary) · [Runbook Generator](#runbook-generator) · [Log Triage](#log-triage) · [Risk Register](#risk-register) · [Decision Memo](#decision-memo) · [Meeting Action Extractor](#meeting-action-extractor)",
-    },
-    {
-        "badge": LANE_BADGES[6],
-        "row_bg": "#164e63",
-        "row_accent": "#06B6D4",
-        "recipes": "[Tool-Use Planner](#tool-use-planner) · [RAG Answer Contract](#rag-answer-contract) · [Prompt-Injection Scanner](#prompt-injection-scanner) · [Eval-Set Generator](#eval-set-generator) · [Regression Judge](#regression-judge) · [Prompt Optimizer](#prompt-optimizer)",
-    },
-    {
-        "badge": LANE_BADGES[7],
-        "row_bg": "#2e1065",
-        "row_accent": "#8B5CF6",
-        "recipes": "[Plan-and-Solve](#plan-and-solve) · [Step-Back Answer](#step-back-answer) · [Verification Pass](#verification-pass) · [Self-Refine Pass](#self-refine-pass) · [Panel Review](#panel-review) · [Tradeoff Matrix](#tradeoff-matrix)",
-    },
-]
-
 NAV_BADGES = [
     {
         "label": "TOC",
@@ -412,68 +209,78 @@ NAV_BADGES = [
 ]
 
 
-def recipe_links_from_job_map() -> list[tuple[str, str]]:
-    links: list[tuple[str, str]] = []
-    for row in JOB_MAP_ROWS:
-        for match in re.finditer(r"\[([^\]]+)\]\(#([^)]+)\)", row["recipes"]):
-            links.append((match.group(1), match.group(2)))
-    return links
+def node_executable() -> str:
+    """Return a Node binary. Ignore NODE when a package manager overwrites it.
+
+    `pnpm run` under mise sets NODE (and npm_node_execpath) to the pnpm binary.
+    Spawning catalog_badge_data.mjs with that value fails with EACCES.
+    """
+
+    candidate = os.environ.get("NODE", "").strip()
+    if candidate:
+        name = Path(candidate).name.lower()
+        if name not in _PACKAGE_MANAGER_NODE_NAMES and "pnpm" not in name:
+            return candidate
+    return "node"
 
 
-def lane_chip_lookup() -> dict[str, tuple[dict[str, str], str]]:
-    lookup: dict[str, tuple[dict[str, str], str]] = {}
-    for section in LANE_CHIP_SECTIONS:
-        lane = section["key"]
-        for chip in section["chips"]:
-            lookup[chip["alt"]] = (chip, lane)
-    return lookup
+@lru_cache(maxsize=8)
+def load_catalog_badge_data(catalog_root: Path = DEFAULT_CATALOG_ROOT) -> dict[str, object]:
+    """Load normalized badge data through the Node catalog parser and validator."""
 
-
-def build_recipe_heading_badges() -> list[dict[str, str]]:
-    chip_lookup = lane_chip_lookup()
-    badges: list[dict[str, str]] = []
-    for name, slug in recipe_links_from_job_map():
-        if name in RECIPE_HEADING_BADGE_OVERRIDES:
-            override = RECIPE_HEADING_BADGE_OVERRIDES[name]
-            badges.append({"name": name, "slug": slug, **override})
-            continue
-        chip, lane = chip_lookup[name]
-        logo = RECIPE_HEADING_ICON_OVERRIDES.get(name, chip["logo"])
-        badges.append(
-            {
-                "name": name,
-                "slug": slug,
-                "color": chip["color"],
-                "logo": logo,
-                "lane": lane,
-            }
+    root = Path(catalog_root).resolve()
+    command = node_executable()
+    result = subprocess.run(
+        [command, str(CATALOG_BADGE_DATA_SCRIPT), "--root", str(root)],
+        cwd=REPOSITORY_ROOT,
+        check=False,
+        capture_output=True,
+        text=True,
+    )
+    if result.returncode != 0:
+        detail = (result.stderr or result.stdout).strip()
+        raise SystemExit(
+            f"Could not load parsed catalog badge data from {root}"
+            f"{f': {detail}' if detail else ''}"
         )
-    if len(badges) != 48:
-        raise SystemExit(f"Expected 48 recipe heading badges, found {len(badges)}")
-    logos = [badge["logo"] for badge in badges]
-    if len(logos) != len(set(logos)):
-        duplicates = sorted({logo for logo in logos if logos.count(logo) > 1})
-        raise SystemExit(f"Recipe heading badge icons must be unique; duplicates: {', '.join(duplicates)}")
-    return badges
-
-
-RECIPE_HEADING_BADGES = build_recipe_heading_badges()
-
-
-def repo_slug() -> tuple[str, str]:
     try:
-        remote = subprocess.check_output(
-            ["git", "remote", "get-url", "origin"],
-            text=True,
-            stderr=subprocess.DEVNULL,
-        ).strip()
-    except (subprocess.CalledProcessError, FileNotFoundError):
-        return DEFAULT_REPO
+        data = json.loads(result.stdout)
+    except json.JSONDecodeError as error:
+        raise SystemExit(f"Catalog badge data was not valid JSON: {error}") from error
+    if not isinstance(data, dict):
+        raise SystemExit("Catalog badge data must be a JSON object")
+    return data
 
-    match = re.search(r"github\.com[:/](?P<owner>[^/]+)/(?P<repo>[^/.]+)(?:\.git)?$", remote)
-    if not match:
-        return DEFAULT_REPO
-    return match.group("owner"), match.group("repo")
+
+def repo_slug(repository_url: str) -> tuple[str, str]:
+    """Normalize the schema-validated canonical GitHub repository URL."""
+
+    try:
+        parsed = urlsplit(repository_url)
+        port = parsed.port
+    except ValueError as error:
+        raise SystemExit(
+            "catalog meta.repository_url must be a credential-free canonical HTTPS GitHub repository URL"
+        ) from error
+    path_match = re.fullmatch(
+        r"/(?P<owner>[A-Za-z0-9_.-]+)/(?P<repo>[A-Za-z0-9_.-]+?)(?:\.git)?/?",
+        parsed.path,
+    )
+    if (
+        not repository_url.startswith("https://")
+        or parsed.scheme != "https"
+        or (parsed.hostname or "").lower() != "github.com"
+        or port is not None
+        or parsed.username is not None
+        or parsed.password is not None
+        or parsed.query
+        or parsed.fragment
+        or path_match is None
+    ):
+        raise SystemExit(
+            "catalog meta.repository_url must be a credential-free canonical HTTPS GitHub repository URL"
+        )
+    return path_match.group("owner"), path_match.group("repo")
 
 
 def is_recipe_heading_open(line: str) -> bool:
@@ -500,12 +307,38 @@ def count_headings(markdown: str, section: str) -> int:
     return count
 
 
-def recipe_heading_badge_url(badge: dict[str, str]) -> str:
+def catalog_recipes(catalog_data: dict[str, object]) -> list[dict[str, object]]:
+    recipes: list[dict[str, object]] = []
+    for lane in catalog_data["lanes"]:
+        recipes.extend(lane["recipes"])
+    logos = [recipe["badge"]["logo"] for recipe in recipes]
+    duplicates = sorted({logo for logo in logos if logos.count(logo) > 1})
+    if duplicates:
+        raise SystemExit(
+            f"Recipe heading badge icons must be unique; duplicates: {', '.join(duplicates)}"
+        )
+    return recipes
+
+
+# Named fills 67E8F9 / EAB308 are YAML identity. Live split=false SVGs paint
+# labelColor 020617 + logoColor f8fafc (jewel ≠ fill; T016/T024). Do not invert
+# ink to 020617 on those names — that would be dark-on-dark.
+PALE_NAMED_FILLS = frozenset({"67E8F9", "EAB308"})
+
+
+def heading_logo_color(fill: str) -> str:
+    if str(fill).upper() in PALE_NAMED_FILLS:
+        return "f8fafc"
+    return "f8fafc"
+
+
+def recipe_heading_badge_url(recipe: dict[str, object]) -> str:
+    badge = recipe["badge"]
     params = {
         **RECIPE_HEADING_PARAMS,
         "variant": "default",
         "logo": badge["logo"],
-        "logoColor": "f8fafc",
+        "logoColor": heading_logo_color(str(badge["color"])),
         "label": "",
     }
     return (
@@ -515,21 +348,22 @@ def recipe_heading_badge_url(badge: dict[str, str]) -> str:
     )
 
 
-def render_recipe_heading(badge: dict[str, str]) -> str:
-    src = recipe_heading_badge_url(badge)
-    name = badge["name"]
+def render_recipe_heading(recipe: dict[str, object]) -> str:
+    src = recipe_heading_badge_url(recipe)
+    name = escape(str(recipe["title"]), quote=True)
+    slug = escape(str(recipe["slug"]), quote=True)
     return (
-        f'<h4 id="{badge["slug"]}">\n'
+        f'<h4 id="{slug}">\n'
         f'  <img src="{src}" alt="" title="{name}" height="28" width="28" '
         f'loading="lazy" decoding="async" '
         f'style="vertical-align:text-bottom;margin-right:0.35em;" />\n'
-        f'  {name}\n'
+        f"  {name}\n"
         f"</h4>"
     )
 
 
-def apply_recipe_heading_badges(markdown: str) -> str:
-    badges_by_name = {badge["name"]: badge for badge in RECIPE_HEADING_BADGES}
+def apply_recipe_heading_badges(markdown: str, catalog_data: dict[str, object]) -> str:
+    badges_by_name = {recipe["title"]: recipe for recipe in catalog_recipes(catalog_data)}
     lines = markdown.splitlines()
     in_prompt_library = False
     in_fence = False
@@ -552,10 +386,10 @@ def apply_recipe_heading_badges(markdown: str) -> str:
         if in_prompt_library and not in_fence:
             if line.startswith("#### "):
                 name = line[5:].strip()
-                badge = badges_by_name.get(name)
-                if badge is None:
-                    raise SystemExit(f"Missing recipe heading badge config for {name!r}")
-                updated.extend(render_recipe_heading(badge).splitlines())
+                recipe = badges_by_name.get(name)
+                if recipe is None:
+                    raise SystemExit(f"Missing catalog recipe badge metadata for {name!r}")
+                updated.extend(render_recipe_heading(recipe).splitlines())
                 index += 1
                 continue
             if line.startswith('<h4 id="'):
@@ -569,13 +403,13 @@ def apply_recipe_heading_badges(markdown: str) -> str:
                 name_match = re.search(r"<img[^>]*>\s*(.+?)\s*</h4>", block, re.DOTALL)
                 if not slug_match or not name_match:
                     raise SystemExit(f"Malformed recipe heading near line {index + 1}")
-                name = re.sub(r"<[^>]+>", "", name_match.group(1)).strip()
-                badge = badges_by_name.get(name)
-                if badge is None:
-                    raise SystemExit(f"Missing recipe heading badge config for {name!r}")
-                if slug_match.group(1) != badge["slug"]:
+                name = unescape(re.sub(r"<[^>]+>", "", name_match.group(1))).strip()
+                recipe = badges_by_name.get(name)
+                if recipe is None:
+                    raise SystemExit(f"Missing catalog recipe badge metadata for {name!r}")
+                if slug_match.group(1) != recipe["slug"]:
                     raise SystemExit(f"Recipe heading slug mismatch for {name!r}")
-                updated.extend(render_recipe_heading(badge).splitlines())
+                updated.extend(render_recipe_heading(recipe).splitlines())
                 index = block_end + 1
                 continue
         updated.append(line)
@@ -583,21 +417,23 @@ def apply_recipe_heading_badges(markdown: str) -> str:
     return "\n".join(updated) + ("\n" if markdown.endswith("\n") else "")
 
 
-def chip_badge_url(chip: dict[str, str]) -> str:
+def chip_badge_url(recipe: dict[str, object]) -> str:
+    badge = recipe["badge"]
     params = {
         **LANE_CHIP_PARAMS,
         "variant": "default",
-        "logo": chip["logo"],
-        "logoColor": chip.get("logoColor", "f8fafc"),
+        "logo": badge["logo"],
+        "logoColor": heading_logo_color(str(badge["color"])),
     }
     return (
         "https://shieldcn.dev/badge/"
-        f"{quote(chip['label'], safe='')}-{chip['color']}.svg?"
+        f"{quote(str(badge['chip_label']), safe='')}-{badge['color']}.svg?"
         f"{urlencode(params, safe=':')}"
     )
 
 
-def lane_badge_url(badge: dict[str, str]) -> str:
+def lane_badge_url(lane: dict[str, object]) -> str:
+    badge = lane["badge"]
     params = {
         **LANE_BADGE_PARAMS,
         "variant": "default",
@@ -606,13 +442,15 @@ def lane_badge_url(badge: dict[str, str]) -> str:
     }
     return (
         "https://shieldcn.dev/badge/"
-        f"{quote(badge['label'], safe='')}-{badge['color']}.svg?"
+        f"{quote(str(badge['label']), safe='')}-{lane['color']}.svg?"
         f"{urlencode(params, safe=':')}"
     )
 
 
-def compact_static_badge_url(badge: dict[str, str], counts: dict[str, int], variant: str) -> str:
-    label = badge["label"].format(**counts)
+def compact_static_badge_url(
+    badge: dict[str, object], counts: dict[str, int], variant: str
+) -> str:
+    label = str(badge["label"]).format(**counts)
     params = {
         **COMMON_STATIC_PARAMS,
         "split": "false",
@@ -666,18 +504,18 @@ def nav_badge_url(badge: dict[str, str]) -> str:
 
 
 def image_link(href: str, alt: str, src: str, indent: str = "    ") -> str:
-    return f'{indent}<a href="{href}"><img alt="{alt}" src="{src}"></a>'
+    return (
+        f'{indent}<a href="{escape(href, quote=True)}"><img '
+        f'alt="{escape(alt, quote=True)}" src="{src}"></a>'
+    )
 
 
-def format_job_map_recipe_links(recipes_md: str) -> str:
-    """Render recipe links as HTML anchors for GitHub table cells."""
-    links = re.findall(r"\[([^\]]+)\]\(#([^)]+)\)", recipes_md)
-    if not links:
-        return recipes_md
-    return " · ".join(f'<a href="#{slug}">{label}</a>' for label, slug in links)
+def github_heading_anchor(title: str) -> str:
+    normalized = re.sub(r"[^a-z0-9 _-]", "", title.lower())
+    return re.sub(r"[ _]+", "-", normalized).strip("-")
 
 
-def render_badge_block(markdown: str) -> str:
+def render_badge_block(markdown: str, catalog_data: dict[str, object]) -> str:
     prompt_count = count_headings(markdown, "Prompt Library")
     pattern_count = count_headings(markdown, "Pattern Notes")
     if prompt_count == 0:
@@ -686,35 +524,25 @@ def render_badge_block(markdown: str) -> str:
         raise SystemExit("Could not count pattern notes in README.md")
 
     counts = {"prompt_count": prompt_count, "pattern_count": pattern_count}
-    owner, repo = repo_slug()
-    rows: list[str] = [START]
-
-    rows.append('<p align="center">')
+    owner, repo = repo_slug(str(catalog_data["repository_url"]))
+    rows: list[str] = [START, '<p align="center">']
     for badge in CORE_BADGES:
         src = compact_static_badge_url(badge, counts, "default")
         rows.append(image_link(badge["href"], badge["alt"].format(**counts), src, indent="  "))
-    rows.append("</p>")
-    rows.append("")
-
-    rows.append('<p align="center">')
+    rows.extend(["</p>", "", '<p align="center">'])
     for badge in PROVIDER_BADGES:
         src = compact_static_badge_url(badge, counts, "default")
         rows.append(image_link(badge["href"], badge["alt"], src, indent="  "))
-    rows.append("</p>")
-    rows.append("")
-
-    rows.append('<p align="center">')
+    rows.extend(["</p>", "", '<p align="center">'])
     for badge in DYNAMIC_GITHUB_BADGES:
         src = dynamic_badge_url(badge, owner, repo)
         href = badge["href"].format(owner=owner, repo=repo)
         rows.append(image_link(href, badge["alt"], src, indent="  "))
-    rows.append("</p>")
-    rows.append("")
-    rows.append(END)
+    rows.extend(["</p>", "", END])
     return "\n".join(rows)
 
 
-def render_job_map_block() -> str:
+def render_job_map_block(catalog_data: dict[str, object]) -> str:
     rows: list[str] = [
         JOB_MAP_START,
         "<table>",
@@ -723,17 +551,25 @@ def render_job_map_block() -> str:
         "    <th>Copy these first</th>",
         "  </tr>",
     ]
-    for entry in JOB_MAP_ROWS:
-        badge = entry["badge"]
-        src = lane_badge_url(badge)
-        badge_link = image_link(badge["href"], badge["alt"], src, indent="      ")
+    for lane in catalog_data["lanes"]:
+        anchor = github_heading_anchor(str(lane["title"]))
+        src = lane_badge_url(lane)
+        badge_link = image_link(
+            f"#{anchor}", f"{lane['title']} lane", src, indent="      "
+        )
+        recipe_links = " · ".join(
+            f'<a href="#{escape(str(recipe["slug"]), quote=True)}">'
+            f'{escape(str(recipe["title"]))}</a>'
+            for recipe in lane["recipes"]
+        )
         rows.extend(
             [
                 "  <tr>",
-                f'    <td style="background-color:{entry["row_bg"]};border-left:4px solid {entry["row_accent"]};vertical-align:top;width:190px">',
+                f'    <td style="background-color:#{lane["badge"]["background"]};'
+                f'border-left:4px solid #{lane["color"]};vertical-align:top;width:190px">',
                 f"      {badge_link.strip()}",
                 "    </td>",
-                f'    <td style="vertical-align:top">{format_job_map_recipe_links(entry["recipes"])}</td>',
+                f'    <td style="vertical-align:top">{recipe_links}</td>',
                 "  </tr>",
             ]
         )
@@ -741,63 +577,72 @@ def render_job_map_block() -> str:
     return "\n".join(rows)
 
 
-def render_lane_chip_block(section: dict[str, object]) -> str:
-    key = section["key"]
-    chips = section["chips"]
+def render_lane_chip_block(lane: dict[str, object]) -> str:
+    key = lane["key"]
     start = f"<!-- LANE-CHIPS:{key}:START -->"
     end = f"<!-- LANE-CHIPS:{key}:END -->"
     rows: list[str] = [start, '<p align="left">']
-    for chip in chips:
-        src = chip_badge_url(chip)
-        rows.append(image_link(chip["href"], chip["alt"], src, indent="  "))
+    for recipe in lane["featured_recipes"]:
+        rows.append(
+            image_link(
+                f"#{recipe['slug']}", str(recipe["title"]), chip_badge_url(recipe), indent="  "
+            )
+        )
     rows.extend(["</p>", end])
     return "\n".join(rows)
 
 
-def replace_lane_chips(markdown: str) -> str:
+def replace_lane_chips(markdown: str, catalog_data: dict[str, object]) -> str:
     updated = markdown
-    for section in LANE_CHIP_SECTIONS:
-        start = f"<!-- LANE-CHIPS:{section['key']}:START -->"
-        end = f"<!-- LANE-CHIPS:{section['key']}:END -->"
+    for lane in catalog_data["lanes"]:
+        start = f"<!-- LANE-CHIPS:{lane['key']}:START -->"
+        end = f"<!-- LANE-CHIPS:{lane['key']}:END -->"
         if updated.count(start) != 1 or updated.count(end) != 1:
-            raise SystemExit(f"README lane chip markers are missing: {section['key']}")
-        block = render_lane_chip_block(section)
+            raise SystemExit(f"README lane chip markers are missing: {lane['key']}")
         pattern = re.compile(f"{re.escape(start)}.*?{re.escape(end)}", re.DOTALL)
-        updated = pattern.sub(block, updated, count=1)
+        updated = pattern.sub(render_lane_chip_block(lane), updated, count=1)
     return updated
 
 
-def render_lane_block() -> str:
-    rows: list[str] = [LANES_START]
-    rows.append('<p align="center">')
-    for badge in LANE_BADGES:
-        src = lane_badge_url(badge)
-        rows.append(image_link(badge["href"], badge["alt"], src, indent="  "))
-    rows.append("</p>")
-    rows.append(LANES_END)
+def render_lane_block(catalog_data: dict[str, object]) -> str:
+    rows: list[str] = [LANES_START, '<p align="center">']
+    for lane in catalog_data["lanes"]:
+        anchor = github_heading_anchor(str(lane["title"]))
+        rows.append(
+            image_link(
+                f"#{anchor}", f"{lane['title']} lane", lane_badge_url(lane), indent="  "
+            )
+        )
+    rows.extend(["</p>", LANES_END])
     return "\n".join(rows)
 
 
-def render_shortcut_block() -> str:
-    rows: list[str] = [SHORTCUTS_START]
-    rows.append('<p align="center">')
-    for badge in SHORTCUT_BADGES:
-        src = compact_static_badge_url(badge, {}, "default")
-        rows.append(image_link(badge["href"], badge["alt"], src, indent="  "))
-    rows.append("</p>")
-    rows.append(SHORTCUTS_END)
+def render_shortcut_block(catalog_data: dict[str, object]) -> str:
+    rows: list[str] = [SHORTCUTS_START, '<p align="center">']
+    for shortcut in catalog_data["shortcuts"]:
+        recipe = shortcut["recipe"]
+        badge = {
+            "label": shortcut["label"],
+            "color": recipe["badge"]["color"],
+            "logo": recipe["badge"]["logo"],
+        }
+        rows.append(
+            image_link(
+                f"#{recipe['slug']}",
+                f"Copy shortcut: {recipe['title']}",
+                compact_static_badge_url(badge, {}, "default"),
+                indent="  ",
+            )
+        )
+    rows.extend(["</p>", SHORTCUTS_END])
     return "\n".join(rows)
 
 
-def generated_badge_urls(markdown: str) -> list[str]:
-    blocks = [render_badge_block(markdown), render_lane_block(), render_shortcut_block(), render_job_map_block()]
-    blocks.extend(render_lane_chip_block(section) for section in LANE_CHIP_SECTIONS)
-    blocks.extend(render_recipe_heading(badge) for badge in RECIPE_HEADING_BADGES)
-    urls = re.findall(r'src="(https://shieldcn\.dev[^"]+)"', "\n".join(blocks))
-    # Nav badges are repeated in the README body, so list each unique URL once
-    # for smoke checks without making the script rewrite every section footer.
+def generated_badge_urls(markdown: str, catalog_data: dict[str, object]) -> list[str]:
+    rendered = replace_badges(markdown, catalog_data)
+    urls = re.findall(r'src="(https://shieldcn\.dev[^"]+)"', rendered)
     urls.extend(nav_badge_url(badge) for badge in NAV_BADGES)
-    return urls
+    return list(dict.fromkeys(urls))
 
 
 def replace_marker_block(markdown: str, start: str, end: str, block: str) -> str:
@@ -807,35 +652,59 @@ def replace_marker_block(markdown: str, start: str, end: str, block: str) -> str
     return pattern.sub(block, markdown, count=1)
 
 
-def replace_badges(markdown: str) -> str:
-    updated = replace_marker_block(markdown, START, END, render_badge_block(markdown))
-    updated = replace_marker_block(updated, LANES_START, LANES_END, render_lane_block())
-    updated = replace_marker_block(updated, SHORTCUTS_START, SHORTCUTS_END, render_shortcut_block())
-    updated = replace_marker_block(updated, JOB_MAP_START, JOB_MAP_END, render_job_map_block())
-    updated = replace_lane_chips(updated)
-    return apply_recipe_heading_badges(updated)
+def replace_badges(markdown: str, catalog_data: dict[str, object]) -> str:
+    updated = replace_marker_block(
+        markdown, START, END, render_badge_block(markdown, catalog_data)
+    )
+    updated = replace_marker_block(
+        updated, LANES_START, LANES_END, render_lane_block(catalog_data)
+    )
+    updated = replace_marker_block(
+        updated, SHORTCUTS_START, SHORTCUTS_END, render_shortcut_block(catalog_data)
+    )
+    updated = replace_marker_block(
+        updated, JOB_MAP_START, JOB_MAP_END, render_job_map_block(catalog_data)
+    )
+    updated = replace_lane_chips(updated, catalog_data)
+    return apply_recipe_heading_badges(updated, catalog_data)
 
 
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--readme", default="README.md", help="README path")
+    parser.add_argument(
+        "--catalog-root",
+        type=Path,
+        default=DEFAULT_CATALOG_ROOT,
+        help="catalog package root parsed by catalog-core",
+    )
+    parser.add_argument(
+        "--catalog-data",
+        type=Path,
+        help="normalized parsed catalog badge data from catalog_badge_data.mjs",
+    )
     parser.add_argument("--check", action="store_true", help="fail if badges are stale")
     parser.add_argument("--list-urls", action="store_true", help="print generated ShieldCN image URLs")
     args = parser.parse_args()
 
+    catalog_data = (
+        json.loads(args.catalog_data.read_text(encoding="utf-8"))
+        if args.catalog_data
+        else load_catalog_badge_data(args.catalog_root)
+    )
     readme = Path(args.readme)
     original = readme.read_text(encoding="utf-8")
 
     if args.list_urls:
-        for url in generated_badge_urls(original):
+        for url in generated_badge_urls(original, catalog_data):
             print(url)
         return 0
 
-    updated = replace_badges(original)
+    updated = replace_badges(original, catalog_data)
 
     if args.check:
         if original != updated:
-            print("README badge block is stale. Run scripts/update_readme_badges.py.", file=sys.stderr)
+            print("README badge block is stale. Run pnpm catalog:readme.", file=sys.stderr)
             return 1
         return 0
 

@@ -115,6 +115,11 @@ __pycache__/
 node_modules/
 /public/
 **/dist/
+# Committed Takumi README chrome (hash-checked). Parent **/dist/ would hide T033 rasters.
+!catalog/shell/chrome/dist/
+!catalog/shell/chrome/dist/**
+!catalog/shell/chrome/dist/*.png
+!catalog/shell/chrome/dist/hashes.json
 web/dist/
 playwright-report/
 test-results/

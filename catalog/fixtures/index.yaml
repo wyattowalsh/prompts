@@ -11,14 +11,26 @@ lanes:
   - key: research
     title: Research
     color: "2563EB"
+    badge:
+      label: Research
+      logo: ri:RiMicroscopeLine
+      background: "172554"
     order: 1
     recipe_slugs:
+      - source-grounded-answer
+    featured_recipe_slugs:
       - source-grounded-answer
   - key: coding
     title: Coding
     color: "16A34A"
+    badge:
+      label: Coding
+      logo: ri:RiCodeBoxLine
+      background: "14532D"
     order: 3
     recipe_slugs:
+      - code-review
+    featured_recipe_slugs:
       - code-review
 pattern_sections:
   - key: reasoning-and-search
@@ -26,3 +38,7 @@ pattern_sections:
     order: 2
     pattern_slugs:
       - tree-of-thoughts
+readme:
+  shortcuts:
+    - recipe_slug: source-grounded-answer
+      label: Sources

@@ -1,10 +1,11 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://prompts.w4w.dev/schema/index.schema.json",
+  "$comment": "The custom keyword uniqueBy is registered by packages/catalog-core/src/json-schema.js; cross-record ownership, subset, and reference checks remain semantic validation.",
   "title": "Catalog index",
   "type": "object",
   "additionalProperties": false,
-  "required": ["version", "meta", "lanes", "pattern_sections"],
+  "required": ["version", "meta", "lanes", "pattern_sections", "readme"],
   "properties": {
     "version": { "type": "integer", "const": 1 },
     "meta": {
@@ -14,8 +15,16 @@
       "properties": {
         "title": { "type": "string" },
         "description": { "type": "string" },
-        "repository_url": { "type": "string" },
-        "web_base_url_default": { "type": "string" }
+        "repository_url": {
+          "type": "string",
+          "format": "uri",
+          "pattern": "^https://[gG][iI][tT][hH][uU][bB]\\.[cC][oO][mM]/[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+(?:\\.git)?/?$"
+        },
+        "web_base_url_default": {
+          "type": "string",
+          "format": "uri",
+          "pattern": "^https://(?![^/?#]*@)[^/?#:@\\s]+(?::(?:0|[1-9][0-9]{0,3}|[1-5][0-9]{4}|6[0-4][0-9]{3}|65[0-4][0-9]{2}|655[0-2][0-9]|6553[0-5]))?/?$"
+        }
       }
     },
     "counts": {
@@ -28,35 +37,115 @@
     },
     "lanes": {
       "type": "array",
+      "uniqueBy": "key",
       "items": {
         "type": "object",
         "additionalProperties": false,
-        "required": ["key", "title", "order", "recipe_slugs"],
+        "required": [
+          "key",
+          "title",
+          "color",
+          "badge",
+          "order",
+          "recipe_slugs",
+          "featured_recipe_slugs"
+        ],
         "properties": {
-          "key": { "type": "string" },
+          "key": {
+            "type": "string",
+            "enum": [
+              "research",
+              "writing",
+              "coding",
+              "data",
+              "product",
+              "operations",
+              "agents",
+              "reasoning"
+            ]
+          },
           "title": { "type": "string" },
-          "color": { "type": "string" },
+          "color": { "type": "string", "pattern": "^[0-9A-Fa-f]{6}$" },
+          "badge": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["label", "logo", "background"],
+            "properties": {
+              "label": { "type": "string", "minLength": 1 },
+              "logo": { "type": "string", "minLength": 1 },
+              "background": { "type": "string", "pattern": "^[0-9A-Fa-f]{6}$" }
+            }
+          },
           "order": { "type": "integer" },
           "recipe_slugs": {
             "type": "array",
-            "items": { "type": "string" }
+            "uniqueItems": true,
+            "items": {
+              "type": "string",
+              "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+            }
+          },
+          "featured_recipe_slugs": {
+            "type": "array",
+            "uniqueItems": true,
+            "items": {
+              "type": "string",
+              "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+            }
           }
         }
       }
     },
     "pattern_sections": {
       "type": "array",
+      "uniqueBy": "key",
       "items": {
         "type": "object",
         "additionalProperties": false,
         "required": ["key", "title", "order", "pattern_slugs"],
         "properties": {
-          "key": { "type": "string" },
+          "key": {
+            "type": "string",
+            "enum": [
+              "core-prompt-construction",
+              "reasoning-and-search",
+              "verification-and-iteration",
+              "task-and-workflow-snippets"
+            ]
+          },
           "title": { "type": "string" },
           "order": { "type": "integer" },
           "pattern_slugs": {
             "type": "array",
-            "items": { "type": "string" }
+            "uniqueItems": true,
+            "items": {
+              "type": "string",
+              "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+            }
+          }
+        }
+      }
+    },
+    "readme": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["shortcuts"],
+      "properties": {
+        "shortcuts": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueBy": "recipe_slug",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["recipe_slug", "label"],
+            "properties": {
+              "recipe_slug": {
+                "type": "string",
+                "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+              },
+              "label": { "type": "string", "minLength": 1 }
+            }
           }
         }
       }
