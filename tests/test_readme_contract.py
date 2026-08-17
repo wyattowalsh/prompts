@@ -28,8 +28,12 @@ class GoldenReadmeContractTest(unittest.TestCase):
         result = audit_paste_zone_cells.audit_readme(README)
         counts = result["counts"]
         self.assertTrue(result["ok"], msg=f"paste-zone audit not ok: {result}")
-        self.assertEqual(counts["warn"], 0, msg=f"paste-zone warn count: {counts['warn']}")
-        self.assertEqual(counts["error"], 0, msg=f"paste-zone error count: {counts['error']}")
+        self.assertEqual(
+            counts["warn"], 0, msg=f"paste-zone warn count: {counts['warn']}"
+        )
+        self.assertEqual(
+            counts["error"], 0, msg=f"paste-zone error count: {counts['error']}"
+        )
 
     def test_golden_readme_recipe_count(self) -> None:
         result = checker.run(README)
@@ -49,6 +53,31 @@ class GoldenReadmeContractTest(unittest.TestCase):
 
         codes = {error["code"] for error in result["errors"]}
         self.assertIn("RECIPE_MAP_EXTRA", codes)
+
+    def test_index_yaml_recipe_slugs_are_48_and_exclude_patterns(self) -> None:
+        slugs = checker.load_index_recipe_slugs(ROOT / "catalog" / "index.yaml")
+        self.assertEqual(len(slugs), RECIPE_COUNT)
+        self.assertEqual(len(set(slugs)), RECIPE_COUNT)
+        self.assertIn("source-grounded-answer", slugs)
+        self.assertIn("tool-use-planner", slugs)
+        self.assertNotIn("program-of-thoughts", slugs)
+        self.assertNotIn("chain-of-density-summarization", slugs)
+
+    def test_prompt_index_rejects_href_missing_from_index_yaml(self) -> None:
+        original = README.read_text(encoding="utf-8")
+        mutated = original.replace(
+            '<kbd>01</kbd> <a href="#source-grounded-answer">Source-Grounded Answer</a>',
+            '<kbd>01</kbd> <a href="#source-grounded-answer-stale">Source-Grounded Answer</a>',
+            1,
+        )
+        with tempfile.TemporaryDirectory() as tmp:
+            readme = Path(tmp) / "README.md"
+            readme.write_text(mutated, encoding="utf-8")
+            result = checker.run(readme)
+
+        codes = {error["code"] for error in result["errors"]}
+        self.assertIn("PROMPT_INDEX_YAML_MISSING", codes)
+        self.assertIn("PROMPT_INDEX_YAML_EXTRA", codes)
 
 
 if __name__ == "__main__":

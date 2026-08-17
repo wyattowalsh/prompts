@@ -35,14 +35,25 @@ Every recipe After-copy block MUST include the exact line `Match the **placehold
 - **THEN** the After-copy canonical Fill line remains unchanged
 - **AND** checkers do not report `DUPLICATE_COPY_TIP`
 
+### Requirement: Agents-lane cards hoist one safety line above the fence
+
+Recipes whose catalog lane is `agents` MUST emit exactly one visible `**Safety:**` sentence between the above-fence `none` reminder and the copy fence. That sentence MUST NOT be a second `Fill these in:` heading and MUST NOT use `Before you copy:`. After-copy MUST still contain the full Safety/eval list.
+
+#### Scenario: An agents-lane recipe is emitted
+
+- **WHEN** `emitRecipeCard` renders a recipe with `lane: agents`
+- **THEN** the card includes one `**Safety:**` line above the `text` fence
+- **AND** `Fill these in:` appears only inside the After-copy block
+
 ### Requirement: Prompt Index lists every catalog recipe slug
 
-`### Prompt Index` under `## Table of Contents` MUST contain one unique link per catalog recipe slug (48). Checkers MAY additionally compare those hrefs to `catalog/index.yaml`.
+`### Prompt Index` under `## Table of Contents` MUST contain one unique link per catalog recipe slug (48). Checkers MUST compare those hrefs to `catalog/index.yaml` `recipe_slugs`.
 
 #### Scenario: Prompt Index is validated
 
 - **WHEN** `scripts/check_readme_recipes.py --check` runs
 - **THEN** it finds `### Prompt Index` under `## Table of Contents` with 48 unique recipe anchors
+- **AND** those hrefs equal the unique `recipe_slugs` listed in `catalog/index.yaml`
 
 ### Requirement: Takumi README chrome is hash-checked committed PNGs
 

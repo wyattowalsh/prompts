@@ -22,7 +22,7 @@ placeholders:
   - name: answer_constraints
     required: false
     example: none
-    notes: Omit from paste if unused
+    notes: "Paste `none` if unused"
 prompt: |
   Job: Answer the user question using only trusted source excerpts unless general knowledge is explicitly allowed.
 

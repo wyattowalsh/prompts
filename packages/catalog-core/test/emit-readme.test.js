@@ -372,6 +372,57 @@ describe("emitReadmeFromPackage join contracts", () => {
       /Match the \*\*placeholder table\*\* above; paste `none` for optional zones you omit\./u
     );
     assert.doesNotMatch(card, /Before you copy:/u);
+    assert.doesNotMatch(card, /shieldcn\.dev\/badge\/[^"\s]+\?/u);
+  });
+
+  it("J-09: JS heading and lane-chip placeholders omit ShieldCN query constructors", () => {
+    const pkg = {
+      recipes: [minimalRecipe()],
+      patterns: [],
+      index: {
+        lanes: [
+          {
+            key: "research",
+            title: "Research",
+            order: 1,
+            recipe_slugs: ["sample"],
+            featured_recipe_slugs: ["sample"]
+          }
+        ],
+        pattern_sections: []
+      }
+    };
+    const full = emitReadmeFromPackage(pkg, tinyShell);
+    const laneBlock = full.match(
+      /<!-- LANE-CHIPS:research:START -->[\s\S]*?<!-- LANE-CHIPS:research:END -->/u
+    );
+    assert.ok(laneBlock);
+    assert.doesNotMatch(laneBlock[0], /shieldcn\.dev\/badge\/[^"\s]+\?/u);
+    assert.match(laneBlock[0], /shieldcn\.dev\/badge\/placeholder\.svg/u);
+  });
+
+  it("J-10: agents-lane cards hoist one safety line above the fence", () => {
+    const card = emitRecipeCard(
+      minimalRecipe({
+        slug: "tool-use-planner",
+        title: "Tool-Use Planner",
+        lane: "agents"
+      })
+    );
+    const beforeFence = card.split("```text")[0];
+    assert.match(
+      beforeFence,
+      /\*\*Safety:\*\* Require explicit approval before mutating, credentialed, or irreversible tool actions\./u
+    );
+    assert.equal((beforeFence.match(/Fill these in:/gu) ?? []).length, 0);
+    assert.doesNotMatch(beforeFence, /Before you copy:/u);
+    assert.match(card, /Fill these in:\n\nMatch the \*\*placeholder table\*\* above/u);
+  });
+
+  it("J-11: non-agents cards do not hoist an agents-lane safety line", () => {
+    const card = emitRecipeCard(minimalRecipe({ lane: "research" }));
+    const beforeFence = card.split("```text")[0];
+    assert.doesNotMatch(beforeFence, /\*\*Safety:\*\*/u);
   });
 
   it("J-04: generated section headings keep their preceding blank line", () => {

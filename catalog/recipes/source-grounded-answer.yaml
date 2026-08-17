@@ -22,7 +22,7 @@ placeholders:
   - name: answer_constraints
     required: false
     example: "Two sentences; neutral product voice"
-    notes: "Omit from paste if unused"
+    notes: "Paste `none` if unused"
   - name: general_knowledge_policy
     required: false
     example: none

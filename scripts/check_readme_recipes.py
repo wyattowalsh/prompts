@@ -12,6 +12,7 @@ from pathlib import Path
 
 # Allow `python3 scripts/check_readme_recipes.py` without installing a package.
 _SCRIPTS_DIR = Path(__file__).resolve().parent
+DEFAULT_INDEX_PATH = _SCRIPTS_DIR.parent / "catalog" / "index.yaml"
 if str(_SCRIPTS_DIR) not in sys.path:
     sys.path.insert(0, str(_SCRIPTS_DIR))
 
@@ -879,7 +880,37 @@ def build_prompt_library_category_anchors() -> set[str]:
     return {github_anchor(title, used) for title in PROMPT_LIBRARY_CATEGORIES}
 
 
-def validate_prompt_index(lines: list[str], recipes: list[Recipe], errors: list[Diagnostic]) -> int:
+INDEX_RECIPE_SLUGS_HEADER = re.compile(r"^    recipe_slugs:\s*$")
+INDEX_RECIPE_SLUG_ITEM = re.compile(r"^      - ([a-z0-9]+(?:-[a-z0-9]+)*)$")
+
+
+def load_index_recipe_slugs(index_path: Path) -> list[str]:
+    """Return `recipe_slugs` from catalog/index.yaml without a YAML dependency."""
+    slugs: list[str] = []
+    in_recipe_slugs = False
+    lineno = 0
+    for lineno, raw in enumerate(index_path.read_text(encoding="utf-8").splitlines(), start=1):
+        if INDEX_RECIPE_SLUGS_HEADER.match(raw):
+            in_recipe_slugs = True
+            continue
+        if not in_recipe_slugs:
+            continue
+        item = INDEX_RECIPE_SLUG_ITEM.match(raw)
+        if item:
+            slugs.append(item.group(1))
+            continue
+        in_recipe_slugs = False
+    if not slugs:
+        raise ValueError(f"{index_path}:{lineno}: no recipe_slugs entries found")
+    return slugs
+
+
+def validate_prompt_index(
+    lines: list[str],
+    recipes: list[Recipe],
+    errors: list[Diagnostic],
+    index_slugs: list[str] | None = None,
+) -> int:
     region = find_subsection(lines, "## Table of Contents", "### Prompt Index")
     if region is None:
         errors.append(Diagnostic("PROMPT_INDEX", "Missing ### Prompt Index subsection.", 1))
@@ -890,14 +921,48 @@ def validate_prompt_index(lines: list[str], recipes: list[Recipe], errors: list[
     used: dict[str, int] = {}
     expected = {github_anchor(recipe.name, used): recipe.name for recipe in recipes}
     unique_links = set(links)
-    if len(links) != 48 or len(unique_links) != 48:
-        errors.append(Diagnostic("PROMPT_INDEX_COUNT", "Prompt Index must contain 48 unique recipe links.", start + 1))
+    if len(links) != RECIPE_COUNT or len(unique_links) != RECIPE_COUNT:
+        errors.append(
+            Diagnostic(
+                "PROMPT_INDEX_COUNT",
+                f"Prompt Index must contain {RECIPE_COUNT} unique recipe links.",
+                start + 1,
+            )
+        )
     missing = sorted(set(expected) - unique_links)
     extra = sorted(unique_links - set(expected))
     for anchor in missing:
         errors.append(Diagnostic("PROMPT_INDEX_MISSING", f"Prompt Index missing link to #{anchor}.", start + 1, expected.get(anchor)))
     for anchor in extra:
         errors.append(Diagnostic("PROMPT_INDEX_EXTRA", f"Prompt Index links to non-recipe anchor #{anchor}.", start + 1))
+    if index_slugs is not None:
+        expected_yaml = set(index_slugs)
+        if len(index_slugs) != RECIPE_COUNT or len(expected_yaml) != RECIPE_COUNT:
+            errors.append(
+                Diagnostic(
+                    "PROMPT_INDEX_YAML_COUNT",
+                    f"catalog/index.yaml must list {RECIPE_COUNT} unique recipe_slugs.",
+                    start + 1,
+                )
+            )
+        missing_yaml = sorted(expected_yaml - unique_links)
+        extra_yaml = sorted(unique_links - expected_yaml)
+        for slug in missing_yaml:
+            errors.append(
+                Diagnostic(
+                    "PROMPT_INDEX_YAML_MISSING",
+                    f"Prompt Index missing index.yaml slug #{slug}.",
+                    start + 1,
+                )
+            )
+        for slug in extra_yaml:
+            errors.append(
+                Diagnostic(
+                    "PROMPT_INDEX_YAML_EXTRA",
+                    f"Prompt Index links to slug #{slug} that is not in catalog/index.yaml.",
+                    start + 1,
+                )
+            )
     return len(links)
 
 
@@ -954,10 +1019,22 @@ def validate_recipe_map(lines: list[str], recipes: list[Recipe], errors: list[Di
     return len(recipe_links)
 
 
-def run(readme: Path) -> dict[str, object]:
+def run(readme: Path, index_path: Path | None = None) -> dict[str, object]:
     lines = readme.read_text(encoding="utf-8").splitlines()
     errors: list[Diagnostic] = []
     warnings: list[Diagnostic] = []
+    resolved_index = Path(index_path) if index_path is not None else DEFAULT_INDEX_PATH
+    index_slugs: list[str] | None
+    try:
+        index_slugs = load_index_recipe_slugs(resolved_index)
+    except FileNotFoundError:
+        errors.append(
+            Diagnostic("PROMPT_INDEX_YAML", f"Missing catalog index at {resolved_index}.", 1)
+        )
+        index_slugs = None
+    except ValueError as exc:
+        errors.append(Diagnostic("PROMPT_INDEX_YAML", str(exc), 1))
+        index_slugs = None
     recipes = parse_recipes(lines, errors)
     if len(recipes) != RECIPE_COUNT:
         errors.append(
@@ -988,7 +1065,7 @@ def run(readme: Path) -> dict[str, object]:
 
     recipe_results = [validate_recipe(recipe, errors, warnings) for recipe in recipes]
     map_count = validate_recipe_map(lines, recipes, errors)
-    prompt_index_count = validate_prompt_index(lines, recipes, errors)
+    prompt_index_count = validate_prompt_index(lines, recipes, errors, index_slugs)
     section_map_count = validate_section_map(lines, errors)
     pattern_count = count_pattern_notes(lines)
     if pattern_count != PATTERN_NOTE_COUNT:
@@ -1032,6 +1109,7 @@ def run(readme: Path) -> dict[str, object]:
             "rag_retrieved_sources",
             "recipe_map_links",
             "prompt_index_links",
+            "prompt_index_yaml_slugs",
             "section_map_links",
             "recipe_paste_zone_table",
             "recipe_paste_zone_rows",
@@ -1066,12 +1144,17 @@ def print_check(result: dict[str, object]) -> None:
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--readme", default="README.md", help="README path")
+    parser.add_argument(
+        "--index",
+        default=None,
+        help="catalog/index.yaml path (default: repo catalog/index.yaml)",
+    )
     mode = parser.add_mutually_exclusive_group(required=True)
     mode.add_argument("--check", action="store_true", help="print diagnostics and exit nonzero on errors")
     mode.add_argument("--json", action="store_true", help="print deterministic JSON and exit nonzero on errors")
     args = parser.parse_args()
 
-    result = run(Path(args.readme))
+    result = run(Path(args.readme), Path(args.index) if args.index else None)
     if args.json:
         print(json.dumps(result, indent=2, sort_keys=True))
     else:
