@@ -52,11 +52,11 @@ class CatalogResearchDeepenTests(unittest.TestCase):
             1,
             f"LIVE set must expand beyond prior documented live sets; got only {sorted(live_ids)}",
         )
-        # Honesty: must not claim all 119 as live without evidence file size
+        # Honesty: must not claim all 124 as live without evidence file size
         self.assertLess(
             len(live_ids),
-            119,
-            "Do not bulk-mark all 119 sources live without full fetch evidence",
+            124,
+            "Do not bulk-mark all 124 sources live without full fetch evidence",
         )
 
     def test_source_refresh_status_matches_live_ids(self) -> None:
@@ -90,7 +90,7 @@ class CatalogResearchDeepenTests(unittest.TestCase):
     def test_sources_yaml_last_checked_pass_date(self) -> None:
         text = (ROOT / "sources.yaml").read_text()
         dates = re.findall(r"last_checked:\s*(\d{4}-\d{2}-\d{2})", text)
-        self.assertEqual(len(dates), 119)
+        self.assertEqual(len(dates), 124)
         self.assertTrue(all(d == PASS_DATE for d in dates), set(dates))
 
     def test_card_changelog_documents_more_than_five_upgrades(self) -> None:

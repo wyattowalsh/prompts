@@ -49,7 +49,7 @@ class CatalogResearchUpgrade20260725Test(unittest.TestCase):
         """Uniform last_checked is inventory-refresh; must be at least upgrade AS_OF.
 
         Successor waves may advance the shared inventory date; they must keep a
-        single date across all 119 entries (no mixed partial bumps).
+        single date across all 124 entries (no mixed partial bumps).
         """
         entries = check_sources_manifest.parse_manifest(SOURCE_MANIFEST)
         self.assertGreaterEqual(len(entries), 100)
