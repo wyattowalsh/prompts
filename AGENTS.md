@@ -156,7 +156,8 @@ DOCS=(
   .agents/skills/readme-catalog-steward/references/*.md
   source-refresh.md
   $(git ls-files --cached --others --exclude-standard -- \
-    'openspec/changes/**/*.md' ':(exclude)openspec/changes/archive/**')
+    'openspec/specs/**/*.md' 'openspec/changes/**/*.md' \
+    ':(exclude)openspec/changes/archive/**')
   goals/codebase-sota-improvement/scratch/a11y-defer.md
   goals/codebase-sota-improvement/scratch/cb-closeout-residual.md
   goals/codebase-sota-improvement/scratch/residual-register.md

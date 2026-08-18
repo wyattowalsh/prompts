@@ -128,7 +128,8 @@ repos:
           .agents/skills/readme-catalog-steward/references/*.md
           source-refresh.md
           $(git ls-files --cached --others --exclude-standard --
-          "openspec/changes/**/*.md" ":(exclude)openspec/changes/archive/**")
+          "openspec/specs/**/*.md" "openspec/changes/**/*.md"
+          ":(exclude)openspec/changes/archive/**")
           goals/codebase-sota-improvement/scratch/a11y-defer.md
           goals/codebase-sota-improvement/scratch/cb-closeout-residual.md
           goals/codebase-sota-improvement/scratch/residual-register.md
@@ -138,7 +139,7 @@ repos:
           pnpm exec markdownlint-cli2 "${DOCS[@]}"'
         language: system
         pass_filenames: false
-        files: ^(README\.md|AGENTS\.md|DESIGN\.md|CONTRIBUTING\.md|SECURITY\.md|CODE_OF_CONDUCT\.md|source-refresh\.md|\.agents/skills/readme-catalog-steward/.*\.md|openspec/changes/(?!archive/).*\.md|goals/codebase-sota-improvement/scratch/(?:a11y-defer|cb-closeout-residual|residual-register)\.md|goals/prompt-catalog-research-upgrade/hygiene-report\.md|goals/web-design-sota-enrich/goal\.md)$
+        files: ^(README\.md|AGENTS\.md|DESIGN\.md|CONTRIBUTING\.md|SECURITY\.md|CODE_OF_CONDUCT\.md|source-refresh\.md|\.agents/skills/readme-catalog-steward/.*\.md|openspec/specs/.*\.md|openspec/changes/(?!archive/).*\.md|goals/codebase-sota-improvement/scratch/(?:a11y-defer|cb-closeout-residual|residual-register)\.md|goals/prompt-catalog-research-upgrade/hygiene-report\.md|goals/web-design-sota-enrich/goal\.md)$
 
       - id: web-generated-site-check
         name: Web generated-site check
@@ -211,7 +212,7 @@ repos:
         entry: pnpm run docs:links
         language: system
         pass_filenames: false
-        files: ^(README\.md|AGENTS\.md|DESIGN\.md|CONTRIBUTING\.md|SECURITY\.md|CODE_OF_CONDUCT\.md|source-refresh\.md|\.agents/skills/readme-catalog-steward/.*\.md|openspec/changes/(?!archive/).*\.md|goals/codebase-sota-improvement/scratch/(?:a11y-defer|cb-closeout-residual|residual-register)\.md|goals/prompt-catalog-research-upgrade/hygiene-report\.md|goals/web-design-sota-enrich/goal\.md|\.markdown-link-check\.json|scripts/check_markdown_links(?:\.test)?\.mjs|package\.json)$
+        files: ^(README\.md|AGENTS\.md|DESIGN\.md|CONTRIBUTING\.md|SECURITY\.md|CODE_OF_CONDUCT\.md|source-refresh\.md|\.agents/skills/readme-catalog-steward/.*\.md|openspec/specs/.*\.md|openspec/changes/(?!archive/).*\.md|goals/codebase-sota-improvement/scratch/(?:a11y-defer|cb-closeout-residual|residual-register)\.md|goals/prompt-catalog-research-upgrade/hygiene-report\.md|goals/web-design-sota-enrich/goal\.md|\.markdown-link-check\.json|scripts/check_markdown_links(?:\.test)?\.mjs|package\.json)$
         stages:
           - pre-push
           - manual

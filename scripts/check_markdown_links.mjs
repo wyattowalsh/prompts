@@ -93,6 +93,10 @@ export function activeOpenSpecMarkdownPaths(root = repoRoot) {
     .flatMap((entry) => markdownFilesBelow(root, `openspec/changes/${entry.name}`));
 }
 
+export function canonicalOpenSpecMarkdownPaths(root = repoRoot) {
+  return markdownFilesBelow(root, "openspec/specs");
+}
+
 export function defaultMarkdownPaths(root = repoRoot) {
   const referencesDirectory = resolve(root, ".agents/skills/readme-catalog-steward/references");
   const references = readdirSync(referencesDirectory, { withFileTypes: true })
@@ -112,6 +116,7 @@ export function defaultMarkdownPaths(root = repoRoot) {
     ".agents/skills/readme-catalog-steward/SKILL.md",
     ...references,
     "source-refresh.md",
+    ...canonicalOpenSpecMarkdownPaths(root),
     ...activeOpenSpecMarkdownPaths(root),
     "goals/codebase-sota-improvement/scratch/a11y-defer.md",
     "goals/codebase-sota-improvement/scratch/cb-closeout-residual.md",

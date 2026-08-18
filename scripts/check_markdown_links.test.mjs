@@ -9,6 +9,7 @@ import {
   assertDescriptiveUserAgent,
   assertFailClosedLinkPolicy,
   assertSingleRetryOwner,
+  canonicalOpenSpecMarkdownPaths,
   classifyFailedAttempt,
   deadLinkStatuses,
   defaultMarkdownPaths,
@@ -17,11 +18,32 @@ import {
   writeAttemptOutput
 } from "./check_markdown_links.mjs";
 
-test("default link scope includes active OpenSpec and closeout evidence without the fenced artifact", () => {
+test("default link scope includes canonical OpenSpec and closeout evidence without the fenced artifact", () => {
   const paths = defaultMarkdownPaths();
-  assert.ok(paths.includes("openspec/changes/finish-web-redesign-seo-security/proposal.md"));
+  assert.ok(paths.includes("openspec/specs/web-build-assurance/spec.md"));
   assert.ok(paths.includes("goals/codebase-sota-improvement/scratch/cb-closeout-residual.md"));
   assert.equal(paths.includes("goals/prompt-catalog-research-upgrade/interview.json"), false);
+});
+
+test("discovers every canonical OpenSpec Markdown file recursively", async (t) => {
+  const sandbox = await mkdtemp(join(tmpdir(), "prompts-canonical-spec-docs-"));
+  t.after(() => rm(sandbox, { recursive: true, force: true }));
+  await Promise.all([
+    mkdir(join(sandbox, "openspec/specs/alpha/nested"), { recursive: true }),
+    mkdir(join(sandbox, "openspec/specs/beta"), { recursive: true })
+  ]);
+  await Promise.all([
+    writeFile(join(sandbox, "openspec/specs/alpha/spec.md"), "# Alpha\n"),
+    writeFile(join(sandbox, "openspec/specs/alpha/nested/notes.md"), "# Notes\n"),
+    writeFile(join(sandbox, "openspec/specs/alpha/fixture.json"), "{}\n"),
+    writeFile(join(sandbox, "openspec/specs/beta/spec.md"), "# Beta\n")
+  ]);
+
+  assert.deepEqual(canonicalOpenSpecMarkdownPaths(sandbox), [
+    "openspec/specs/alpha/nested/notes.md",
+    "openspec/specs/alpha/spec.md",
+    "openspec/specs/beta/spec.md"
+  ]);
 });
 
 test("discovers every active OpenSpec Markdown file recursively and skips archived changes", async (t) => {

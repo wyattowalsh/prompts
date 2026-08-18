@@ -7,7 +7,7 @@ python3 := require("python3")
 actionlint := require("actionlint")
 node := require("node")
 
-DOCS := "README.md AGENTS.md DESIGN.md $(git ls-files --cached --others --exclude-standard -- CONTRIBUTING.md SECURITY.md CODE_OF_CONDUCT.md) .agents/skills/readme-catalog-steward/SKILL.md .agents/skills/readme-catalog-steward/references/*.md source-refresh.md $(git ls-files --cached --others --exclude-standard -- 'openspec/changes/**/*.md' ':(exclude)openspec/changes/archive/**') goals/codebase-sota-improvement/scratch/a11y-defer.md goals/codebase-sota-improvement/scratch/cb-closeout-residual.md goals/codebase-sota-improvement/scratch/residual-register.md goals/prompt-catalog-research-upgrade/hygiene-report.md goals/web-design-sota-enrich/goal.md"
+DOCS := "README.md AGENTS.md DESIGN.md $(git ls-files --cached --others --exclude-standard -- CONTRIBUTING.md SECURITY.md CODE_OF_CONDUCT.md) .agents/skills/readme-catalog-steward/SKILL.md .agents/skills/readme-catalog-steward/references/*.md source-refresh.md $(git ls-files --cached --others --exclude-standard -- 'openspec/specs/**/*.md' 'openspec/changes/**/*.md' ':(exclude)openspec/changes/archive/**') goals/codebase-sota-improvement/scratch/a11y-defer.md goals/codebase-sota-improvement/scratch/cb-closeout-residual.md goals/codebase-sota-improvement/scratch/residual-register.md goals/prompt-catalog-research-upgrade/hygiene-report.md goals/web-design-sota-enrich/goal.md"
 
 # Private helper: print recipe name then run command
 @_run-with-status name +cmd:
