@@ -5,10 +5,7 @@ import { useDocumentMeta } from "../../hooks/useDocumentMeta";
 import { catalog } from "../../lib/catalog";
 
 export function PatternsIndexPage() {
-  useDocumentMeta(
-    "Pattern notes",
-    "Research-backed prompt engineering techniques and templates."
-  );
+  useDocumentMeta("Pattern notes", "Research-backed prompt engineering techniques and templates.");
   return (
     <section className="section">
       <div className="section-head">

@@ -37,8 +37,14 @@ describe("related-clusters panel pilot", () => {
   });
 
   it("builds trailing-slash hrefs by kind", () => {
-    assert.equal(hrefForMember({ kind: "recipe", slug: "panel-review", role: "x" }), "/recipes/panel-review/");
-    assert.equal(hrefForMember({ kind: "pattern", slug: "panelgpt", role: "x" }), "/patterns/panelgpt/");
+    assert.equal(
+      hrefForMember({ kind: "recipe", slug: "panel-review", role: "x" }),
+      "/recipes/panel-review/"
+    );
+    assert.equal(
+      hrefForMember({ kind: "pattern", slug: "panelgpt", role: "x" }),
+      "/patterns/panelgpt/"
+    );
   });
 
   it("membersForCluster returns empty for unknown ids", () => {

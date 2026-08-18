@@ -7,18 +7,21 @@ ShieldCN badge rows in `README.md`.
 
 ## Generator Script
 
-All generated badge blocks and recipe heading icons come from
-`scripts/update_readme_badges.py`. Do not hand-edit counts, marker boundaries,
-or long ShieldCN URLs inside generated regions.
+All generated badge blocks and recipe heading icons flow through
+`scripts/update_readme_badges.py`, but catalog YAML owns recipe, lane, featured
+chip, shortcut, and job-map metadata. Do not hand-edit counts, marker
+boundaries, or long ShieldCN URLs inside generated regions.
 
 ```bash
-python3 scripts/update_readme_badges.py          # rewrite stale blocks
-python3 scripts/update_readme_badges.py --check  # fail on drift
+pnpm catalog:readme                             # canonical transactional rewrite
+python3 scripts/update_readme_badges.py --check  # focused badge-only drift check
 python3 scripts/update_readme_badges.py --list-urls  # list generated image URLs
+pnpm run badges:urls                             # fail-closed tests + bounded live probe
 ```
 
-When badge URLs change, run `curl -I` on each changed ShieldCN URL and require
-successful SVG responses before claiming completion.
+README Quality runs `pnpm run badges:urls` on every invocation and requires
+successful SVG responses. When badge URLs change, additionally inspect each
+changed URL and its generated surface before claiming completion.
 
 ## Marker Blocks
 
@@ -30,8 +33,9 @@ successful SVG responses before claiming completion.
 | `<!-- LANE-CHIPS:{lane}:START/END -->` | Per-lane recipe chip rows under each `###` category |
 | `<!-- JOB-MAP:START/END -->` | Collapsed browse-by-job HTML table with lane-tinted rows |
 
-Preserve marker comments exactly. Edit badge definitions in the Python script, then
-regenerate.
+Preserve marker comments exactly. Edit curated badge ownership in
+`catalog/index.yaml` and per-recipe visual metadata in
+`catalog/recipes/*.yaml`, then regenerate through `pnpm catalog:readme`.
 
 ## Recipe Heading Icons (48 Recipes)
 
@@ -56,20 +60,19 @@ Rules:
   stale `<h4>` blocks when the script runs.
 - **Unique icons** — each of 48 recipes must have a distinct `ri:` logo slug.
   Duplicates fail script startup.
-- **Lane colors** — default color/logo come from lane chip config;
-  `RECIPE_HEADING_BADGE_OVERRIDES` and `RECIPE_HEADING_ICON_OVERRIDES` in the
-  script cover recipes without lane chips or shared chip icons.
+- **Catalog owned** — color, logo, and chip label come from each recipe's
+  validated `badge` object, including recipes that are not featured lane chips.
 - **Stable anchors** — `id` slug must match Prompt Index and Section Map links.
   `scripts/check_readme_recipes.py` parses recipe names from `####` or `<h4>`.
 
 ### Adding a New Recipe Heading
 
-1. Add the recipe to `JOB_MAP_ROWS` recipe links (correct lane row).
-2. Add a lane chip if the recipe should appear in the category chip row (optional
-   but preferred for navigation).
-3. Ensure `build_recipe_heading_badges()` can resolve icon/color — add an entry
-   to `RECIPE_HEADING_BADGE_OVERRIDES` when the recipe is not in lane chips.
-4. Run `python3 scripts/update_readme_badges.py` to emit the `<h4>` block.
+1. Add the recipe to the correct lane's `recipe_slugs` in `catalog/index.yaml`.
+2. Add it to that lane's `featured_recipe_slugs` only when it should appear in
+   the compact chip row.
+3. Set the recipe `badge` color, unique logo, and short `chip_label` in its
+   catalog YAML.
+4. Run `pnpm catalog:readme` to emit the job-map link, optional chip, and `<h4>`.
 5. Run full validation from [AGENTS.md § Validation](../../../../AGENTS.md#validation).
 
 ## Lane Chips vs Heading Icons

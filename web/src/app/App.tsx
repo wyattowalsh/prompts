@@ -1,8 +1,40 @@
-import { BookOpen, Layers, Library, Link as LinkIcon, Search } from "lucide-react";
-import { lazy, Suspense, useCallback, useEffect, useState, type ReactNode } from "react";
-import { Link, NavLink, Navigate, Route, Routes, useLocation } from "react-router-dom";
+import { Database, LayoutGrid, Search } from "lucide-react";
+import { lazy, Suspense, useCallback, useEffect, useRef, useState, type ReactNode } from "react";
+import { flushSync } from "react-dom";
+import {
+  Link,
+  NavLink,
+  Navigate,
+  Route,
+  Routes,
+  useLocation,
+  useNavigate,
+  useParams
+} from "react-router-dom";
+import { BrandMark } from "../components/BrandMark";
+import {
+  LazyLoadBoundary,
+  LazyLoadFailure,
+  LazyOverlayPending
+} from "../components/LazyLoadBoundary";
 import { ThemeToggle } from "../components/theme-toggle";
+import { DocumentMetaRouteContext, useDocumentMeta } from "../hooks/useDocumentMeta";
 import { catalogMeta } from "../lib/catalog-meta";
+import {
+  focusOverlayOpener,
+  overlayClosePlan,
+  type OverlayCloseReason
+} from "../lib/overlay-lifecycle";
+import {
+  canonicalSlashNavigation,
+  catalogEntryRouteDescriptor,
+  clientRouteManifestFromDescriptors,
+  clientRouteRegistrationsFromManifest,
+  routeDescriptorsFromCatalog,
+  type ClientDetailPageType,
+  type ClientStaticPageType,
+  type PageRouteDescriptor
+} from "../lib/route-descriptors.js";
 import { cn } from "../lib/utils";
 
 const CommandPalette = lazy(() => import("../components/CommandPalette"));
@@ -12,17 +44,63 @@ const HomePage = lazy(() =>
 const RecipesIndexPage = lazy(() =>
   import("../features/recipes/RecipesIndexPage").then((m) => ({ default: m.RecipesIndexPage }))
 );
-const RecipePage = lazy(() =>
-  import("../features/recipes/RecipePage").then((m) => ({ default: m.RecipePage }))
-);
+const RecipePage = lazy(async () => {
+  const [pageModule, catalogModule] = await Promise.all([
+    import("../features/recipes/RecipePage"),
+    import("../lib/catalog")
+  ]);
+  return {
+    default: function RecipeRoute() {
+      const { slug = "" } = useParams();
+      const recipe = catalogModule.getRecipe(slug);
+      const page = <pageModule.RecipePage />;
+      if (!recipe) return page;
+      return (
+        <DescriptorMetadataBoundary
+          descriptor={catalogEntryRouteDescriptor(
+            "recipe",
+            recipe,
+            catalogModule.catalog.meta.description
+          )}
+        >
+          {page}
+        </DescriptorMetadataBoundary>
+      );
+    }
+  };
+});
 const PatternsIndexPage = lazy(() =>
   import("../features/patterns/PatternsIndexPage").then((m) => ({ default: m.PatternsIndexPage }))
 );
-const PatternPage = lazy(() =>
-  import("../features/patterns/PatternPage").then((m) => ({ default: m.PatternPage }))
-);
-const SourcesPage = lazy(() =>
-  import("../features/sources/SourcesPage").then((m) => ({ default: m.SourcesPage }))
+const PatternPage = lazy(async () => {
+  const [pageModule, catalogModule] = await Promise.all([
+    import("../features/patterns/PatternPage"),
+    import("../lib/catalog")
+  ]);
+  return {
+    default: function PatternRoute() {
+      const { slug = "" } = useParams();
+      const pattern = catalogModule.getPattern(slug);
+      const page = <pageModule.PatternPage />;
+      if (!pattern) return page;
+      return (
+        <DescriptorMetadataBoundary
+          descriptor={catalogEntryRouteDescriptor(
+            "pattern",
+            pattern,
+            catalogModule.catalog.meta.description
+          )}
+        >
+          {page}
+        </DescriptorMetadataBoundary>
+      );
+    }
+  };
+});
+const DataExplorerPage = lazy(() =>
+  import("../features/explore/DataExplorerPage").then((m) => ({
+    default: m.DataExplorerPage
+  }))
 );
 
 function GitHubMark({ size = 15 }: { size?: number }) {
@@ -37,10 +115,6 @@ function navClass({ isActive }: { isActive: boolean }) {
   return isActive ? "nav-link is-active" : "nav-link";
 }
 
-function prefetchCommandPalette() {
-  void import("../components/CommandPalette");
-}
-
 function RouteFallback() {
   return (
     <div className="empty-state" role="status" aria-live="polite">
@@ -50,20 +124,163 @@ function RouteFallback() {
   );
 }
 
-function LazyRoute({ children }: { children: ReactNode }) {
-  return <Suspense fallback={<RouteFallback />}>{children}</Suspense>;
+function DetailRoutePending() {
+  useDocumentMeta("Loading catalog page", "The requested catalog page is loading.", {
+    indexable: false,
+    canonicalPath: null
+  });
+  return <RouteFallback />;
+}
+
+function DetailRouteFailure() {
+  useDocumentMeta("Catalog page unavailable", "The requested catalog page could not be loaded.", {
+    indexable: false,
+    canonicalPath: null
+  });
+  return <LazyLoadFailure label="This page couldn't load." />;
+}
+
+function LazyRoute({
+  children,
+  protectDetailMetadata = false
+}: {
+  children: ReactNode;
+  protectDetailMetadata?: boolean;
+}) {
+  const location = useLocation();
+  return (
+    <LazyLoadBoundary
+      resetKey={`${location.pathname}${location.search}`}
+      fallback={
+        protectDetailMetadata ? (
+          <DetailRouteFailure />
+        ) : (
+          <LazyLoadFailure label="This page couldn't load." />
+        )
+      }
+    >
+      <Suspense fallback={protectDetailMetadata ? <DetailRoutePending /> : <RouteFallback />}>
+        {children}
+      </Suspense>
+    </LazyLoadBoundary>
+  );
+}
+
+function DescriptorMetadataBoundary({
+  descriptor,
+  children
+}: {
+  descriptor: PageRouteDescriptor;
+  children: ReactNode;
+}) {
+  useDocumentMeta(descriptor);
+  return (
+    <DocumentMetaRouteContext.Provider value={descriptor}>
+      {children}
+    </DocumentMetaRouteContext.Provider>
+  );
+}
+
+const appRouteManifest = clientRouteManifestFromDescriptors(
+  routeDescriptorsFromCatalog({
+    meta: catalogMeta.meta,
+    recipes: [],
+    patterns: []
+  })
+);
+const appRouteRegistrations = clientRouteRegistrationsFromManifest(appRouteManifest);
+
+function CanonicalSlashBoundary({ children }: { children: ReactNode }) {
+  const location = useLocation();
+  const navigation = canonicalSlashNavigation(location);
+  return navigation ? <Navigate to={navigation} replace /> : children;
+}
+
+function NotFoundPage() {
+  useDocumentMeta("Page not found", "The requested catalog page does not exist.", {
+    indexable: false,
+    canonicalPath: null
+  });
+
+  return (
+    <section className="empty-state" aria-labelledby="not-found-title">
+      <h1 id="not-found-title">Page not found</h1>
+      <p>The requested catalog page does not exist.</p>
+      <Link className="text-link" to="/">
+        Return to prompts
+      </Link>
+    </section>
+  );
 }
 
 export function App() {
   const location = useLocation();
+  const navigate = useNavigate();
   const isHome = location.pathname === "/";
   const [paletteOpen, setPaletteOpen] = useState(false);
-  // Mount lazy palette only after first open (or warm prefetch) so the chunk is not on critical path.
+  // Mount the lazy palette only after explicit invocation.
   const [paletteMounted, setPaletteMounted] = useState(false);
-  const onOpenChange = useCallback((open: boolean) => {
-    if (open) setPaletteMounted(true);
-    setPaletteOpen(open);
+  const [paletteLoadFailed, setPaletteLoadFailed] = useState(false);
+  const paletteReturnFocusRef = useRef<HTMLElement | null>(null);
+  const routeFocusIntentRef = useRef(false);
+  const previousPathnameRef = useRef(location.pathname);
+  const previewIntentRef = useRef(false);
+  const onPreviewIntentChange = useCallback((active: boolean) => {
+    previewIntentRef.current = active;
   }, []);
+  const onPreviewNavigate = useCallback(() => {
+    routeFocusIntentRef.current = true;
+  }, []);
+  const rememberPaletteOpener = useCallback((element?: HTMLElement | null) => {
+    const candidate = element ?? document.activeElement;
+    paletteReturnFocusRef.current = candidate instanceof HTMLElement ? candidate : null;
+  }, []);
+  const closePalette = useCallback((reason: OverlayCloseReason) => {
+    const plan = overlayClosePlan(reason);
+    if (plan.focusRoute) routeFocusIntentRef.current = true;
+    flushSync(() => {
+      setPaletteOpen(false);
+      if (plan.unmount) setPaletteMounted(false);
+    });
+    if (plan.restoreOpener) focusOverlayOpener(paletteReturnFocusRef.current);
+  }, []);
+  const onOpenChange = useCallback(
+    (open: boolean) => {
+      if (open) {
+        if (previewIntentRef.current) return;
+        setPaletteLoadFailed(false);
+        setPaletteMounted(true);
+        setPaletteOpen(true);
+        return;
+      }
+      closePalette("dismiss");
+    },
+    [closePalette]
+  );
+  const onPaletteNavigate = useCallback(
+    (href: string) => {
+      closePalette("navigate");
+      void navigate(href);
+    },
+    [closePalette, navigate]
+  );
+  const onPaletteLoadError = useCallback(() => {
+    setPaletteLoadFailed(true);
+    closePalette("load-error");
+  }, [closePalette]);
+
+  useEffect(() => {
+    const pathnameChanged = previousPathnameRef.current !== location.pathname;
+    previousPathnameRef.current = location.pathname;
+    if (pathnameChanged) routeFocusIntentRef.current = true;
+    if (!routeFocusIntentRef.current) return;
+    const frame = window.requestAnimationFrame(() => {
+      if (!routeFocusIntentRef.current) return;
+      routeFocusIntentRef.current = false;
+      document.getElementById("main-content")?.focus();
+    });
+    return () => window.cancelAnimationFrame(frame);
+  }, [location.key, location.pathname]);
 
   useEffect(() => {
     function onKey(event: KeyboardEvent) {
@@ -76,14 +293,17 @@ export function App() {
         (event.key === "k" || event.key === "K") && (event.metaKey || event.ctrlKey);
       if (isPaletteShortcut) {
         event.preventDefault();
-        setPaletteMounted(true);
-        setPaletteOpen((open) => !open);
-        return;
-      }
-
-      if (event.key === "Escape" && paletteOpen) {
-        event.preventDefault();
-        setPaletteOpen(false);
+        if (
+          !paletteOpen &&
+          (previewIntentRef.current || document.querySelector('[role="dialog"]'))
+        ) {
+          return;
+        }
+        if (paletteOpen) onOpenChange(false);
+        else {
+          rememberPaletteOpener(target);
+          onOpenChange(true);
+        }
         return;
       }
 
@@ -91,38 +311,30 @@ export function App() {
         // Home owns / for search focus; elsewhere open palette
         if (!isHome) {
           event.preventDefault();
-          setPaletteMounted(true);
-          setPaletteOpen(true);
+          rememberPaletteOpener(target);
+          onOpenChange(true);
         }
       }
     }
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
-  }, [isHome, paletteOpen]);
+  }, [isHome, onOpenChange, paletteOpen, rememberPaletteOpener]);
 
-  // Warm the palette chunk after first paint (non-blocking); keep unmounted until needed.
-  useEffect(() => {
-    const warm = () => {
-      setPaletteMounted(true);
-      prefetchCommandPalette();
-    };
-    const ric = (
-      window as Window & {
-        requestIdleCallback?: (cb: () => void, opts?: { timeout: number }) => number;
-      }
-    ).requestIdleCallback;
-    if (typeof ric === "function") {
-      const id = ric(warm, { timeout: 2_500 });
-      return () => {
-        const cic = (
-          window as Window & { cancelIdleCallback?: (id: number) => void }
-        ).cancelIdleCallback;
-        if (typeof cic === "function") cic(id);
-      };
-    }
-    const t = window.setTimeout(warm, 1_200);
-    return () => window.clearTimeout(t);
-  }, []);
+  const staticPageRegistry: Record<ClientStaticPageType, () => ReactNode> = {
+    home: () => (
+      <HomePage
+        onPreviewIntentChange={onPreviewIntentChange}
+        onPreviewNavigate={onPreviewNavigate}
+      />
+    ),
+    explore: () => <DataExplorerPage />,
+    "recipes-index": () => <RecipesIndexPage />,
+    "patterns-index": () => <PatternsIndexPage />
+  };
+  const detailPageRegistry: Record<ClientDetailPageType, () => ReactNode> = {
+    recipe: () => <RecipePage />,
+    pattern: () => <PatternPage />
+  };
 
   return (
     <>
@@ -132,24 +344,30 @@ export function App() {
       <header className="site-header" id="top">
         <div className="site-header-inner">
           <Link className="site-title" to="/">
-            <span className="site-mark" aria-hidden="true">
-              <Library size={16} />
+            <span className="site-mark">
+              <BrandMark size={22} className="brand-mark-nav" decorative />
             </span>
             <span className="site-title-text">{catalogMeta.meta.title}</span>
           </Link>
-          <div className="flex flex-wrap items-center gap-2">
+          <div className="site-actions">
             <nav className="site-nav" aria-label="Site">
               <NavLink to="/" end className={navClass}>
+                <LayoutGrid
+                  size={15}
+                  strokeWidth={2}
+                  aria-hidden="true"
+                  className="nav-icon-stroke"
+                />
                 Catalog
               </NavLink>
-              <NavLink to="/recipes/" className={navClass}>
-                <BookOpen size={15} aria-hidden="true" /> Recipes
-              </NavLink>
-              <NavLink to="/patterns/" className={navClass}>
-                <Layers size={15} aria-hidden="true" /> Patterns
-              </NavLink>
-              <NavLink to="/sources/" className={navClass}>
-                <LinkIcon size={15} aria-hidden="true" /> Sources
+              <NavLink to="/explore/" className={navClass}>
+                <Database
+                  size={15}
+                  strokeWidth={2}
+                  aria-hidden="true"
+                  className="nav-icon-stroke"
+                />
+                Explore
               </NavLink>
               <a
                 className="nav-link nav-github"
@@ -160,128 +378,112 @@ export function App() {
                 <GitHubMark /> GitHub
               </a>
             </nav>
-            <button
-              type="button"
-              className={cn(
-                "inline-flex items-center gap-1.5 rounded-md border border-border bg-card px-2.5 py-1.5 text-xs font-medium text-muted-foreground shadow-sm transition-colors hover:bg-muted hover:text-foreground"
-              )}
-              onClick={() => {
-                setPaletteMounted(true);
-                setPaletteOpen(true);
-              }}
-              onMouseEnter={() => {
-                setPaletteMounted(true);
-                prefetchCommandPalette();
-              }}
-              onFocus={() => {
-                setPaletteMounted(true);
-                prefetchCommandPalette();
-              }}
-              aria-label="Open command palette"
-              title="Command palette (⌘K / Ctrl+K)"
-            >
-              <Search size={14} aria-hidden="true" />
-              <span className="hidden md:inline">Search</span>
-              <kbd className="hidden rounded border border-border bg-muted px-1 py-0.5 text-[10px] lg:inline">
-                ⌘K
-              </kbd>
-              <kbd className="hidden rounded border border-border bg-muted px-1 py-0.5 text-[10px] xl:inline">
-                Ctrl+K
-              </kbd>
-            </button>
-            <ThemeToggle />
+            <div className="site-utilities">
+              <button
+                type="button"
+                className={cn(
+                  "inline-flex items-center gap-1.5 rounded-md border border-border bg-card px-2.5 py-1.5 text-xs font-medium text-muted-foreground shadow-sm transition-colors hover:bg-muted hover:text-foreground"
+                )}
+                onClick={(event) => {
+                  rememberPaletteOpener(event.currentTarget);
+                  onOpenChange(true);
+                }}
+                aria-label="Open command palette"
+                aria-haspopup="dialog"
+                aria-expanded={paletteOpen || paletteMounted}
+                title="Command palette (⌘K / Ctrl+K)"
+              >
+                <Search size={14} strokeWidth={2} aria-hidden="true" />
+                <span className="hidden sm:inline">Search</span>
+                <kbd className="hidden rounded border border-border bg-muted px-1 py-0.5 text-[10px] md:inline">
+                  ⌘K
+                </kbd>
+              </button>
+              <ThemeToggle />
+            </div>
           </div>
         </div>
       </header>
       <main className={`shell${isHome ? " shell-home" : ""}`} id="main-content" tabIndex={-1}>
         <Routes>
-          <Route
-            path="/"
-            element={
-              <LazyRoute>
-                <HomePage />
-              </LazyRoute>
+          {appRouteRegistrations.map((registration) => {
+            if (registration.kind === "redirect") {
+              return (
+                <Route
+                  key={registration.path}
+                  path={registration.path}
+                  element={<Navigate to={registration.redirectTo} replace />}
+                />
+              );
             }
-          />
-          <Route path="/recipes" element={<Navigate to="/recipes/" replace />} />
-          <Route
-            path="/recipes/"
-            element={
-              <LazyRoute>
-                <RecipesIndexPage />
-              </LazyRoute>
+            if (registration.kind === "static-page") {
+              return (
+                <Route
+                  key={registration.path}
+                  path={registration.path}
+                  element={
+                    <CanonicalSlashBoundary>
+                      <DescriptorMetadataBoundary descriptor={registration.descriptor}>
+                        <LazyRoute>{staticPageRegistry[registration.pageType]()}</LazyRoute>
+                      </DescriptorMetadataBoundary>
+                    </CanonicalSlashBoundary>
+                  }
+                />
+              );
             }
-          />
-          <Route
-            path="/recipes/:slug"
-            element={
-              <LazyRoute>
-                <RecipePage />
-              </LazyRoute>
-            }
-          />
-          <Route
-            path="/recipes/:slug/"
-            element={
-              <LazyRoute>
-                <RecipePage />
-              </LazyRoute>
-            }
-          />
-          <Route path="/patterns" element={<Navigate to="/patterns/" replace />} />
-          <Route
-            path="/patterns/"
-            element={
-              <LazyRoute>
-                <PatternsIndexPage />
-              </LazyRoute>
-            }
-          />
-          <Route
-            path="/patterns/:slug"
-            element={
-              <LazyRoute>
-                <PatternPage />
-              </LazyRoute>
-            }
-          />
-          <Route
-            path="/patterns/:slug/"
-            element={
-              <LazyRoute>
-                <PatternPage />
-              </LazyRoute>
-            }
-          />
-          <Route path="/sources" element={<Navigate to="/sources/" replace />} />
-          <Route
-            path="/sources/"
-            element={
-              <LazyRoute>
-                <SourcesPage />
-              </LazyRoute>
-            }
-          />
-          <Route path="*" element={<Navigate to="/" replace />} />
+            return (
+              <Route
+                key={registration.path}
+                path={registration.path}
+                element={
+                  <CanonicalSlashBoundary>
+                    <LazyRoute protectDetailMetadata>
+                      {detailPageRegistry[registration.pageType]()}
+                    </LazyRoute>
+                  </CanonicalSlashBoundary>
+                }
+              />
+            );
+          })}
+          <Route path="*" element={<NotFoundPage />} />
         </Routes>
-        <footer className="footer">
-          <span>
-            Generated from the catalog · {catalogMeta.counts.recipes} recipes ·{" "}
-            {catalogMeta.counts.patterns} patterns
-          </span>
-          <span className="footer-hint">
-            Press{" "}
-            <kbd className="rounded border border-border bg-muted px-1 text-xs">⌘K</kbd> /{" "}
-            <kbd className="rounded border border-border bg-muted px-1 text-xs">Ctrl+K</kbd> to
-            jump anywhere · <kbd className="rounded border border-border bg-muted px-1 text-xs">/</kbd>{" "}
-            searches on home
-          </span>
-        </footer>
       </main>
+      <footer className="footer">
+        <span>
+          {catalogMeta.counts.recipes} recipes · {catalogMeta.counts.patterns} patterns
+        </span>
+        <span className="footer-hint">
+          <kbd className="rounded border border-border bg-muted px-1 text-xs">⌘K</kbd> jump ·{" "}
+          <kbd className="rounded border border-border bg-muted px-1 text-xs">/</kbd> search
+        </span>
+      </footer>
       {paletteMounted ? (
-        <Suspense fallback={null}>
-          <CommandPalette open={paletteOpen} onOpenChange={onOpenChange} />
-        </Suspense>
+        <LazyLoadBoundary fallback={null} onError={onPaletteLoadError}>
+          <Suspense
+            fallback={
+              <LazyOverlayPending
+                label="Loading search"
+                onCancel={() => closePalette("load-cancel")}
+              />
+            }
+          >
+            <CommandPalette
+              open={paletteOpen}
+              onOpenChange={onOpenChange}
+              onNavigate={onPaletteNavigate}
+            />
+          </Suspense>
+        </LazyLoadBoundary>
+      ) : null}
+      {paletteLoadFailed ? (
+        <LazyLoadFailure
+          label="Search couldn't load."
+          variant="notice"
+          onDismiss={() => {
+            setPaletteLoadFailed(false);
+            closePalette("load-error");
+          }}
+        />
       ) : null}
     </>
   );

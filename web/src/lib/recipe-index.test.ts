@@ -3,13 +3,17 @@
  * No hardcoded slug lists — set equality vs catalog.recipes only.
  */
 import assert from "node:assert/strict";
+import { readFileSync } from "node:fs";
+import { dirname, join } from "node:path";
 import { test } from "node:test";
+import { fileURLToPath } from "node:url";
 import catalog from "../data/catalog.json" with { type: "json" };
 import {
   buildLandingRecipeIndex,
   groupRecipesByLane,
   landingIndexSlugSet,
-  recipeDetailHref
+  recipeDetailHref,
+  resolveRecipeLaneFilter
 } from "./recipe-index.ts";
 
 type CatalogShape = {
@@ -25,6 +29,8 @@ type CatalogShape = {
 };
 
 const data = catalog as CatalogShape;
+const here = dirname(fileURLToPath(import.meta.url));
+const homePageSource = readFileSync(join(here, "../features/recipes/HomePage.tsx"), "utf8");
 
 test("landing index includes every catalog recipe when unfiltered", () => {
   const entries = buildLandingRecipeIndex(data.recipes);
@@ -71,6 +77,20 @@ test("lane filter subsets without inventing slugs", () => {
   }
 });
 
+test("unknown or blank URL lanes resolve to the full catalog", () => {
+  const laneKeys = data.lanes.map((lane) => lane.key);
+  assert.equal(resolveRecipeLaneFilter(laneKeys, laneKeys[0]), laneKeys[0]);
+  assert.equal(resolveRecipeLaneFilter(laneKeys, "unknown-lane"), null);
+  assert.equal(resolveRecipeLaneFilter(laneKeys, "  "), null);
+  assert.equal(resolveRecipeLaneFilter(laneKeys, null), null);
+  assert.equal(
+    buildLandingRecipeIndex(data.recipes, {
+      lane: resolveRecipeLaneFilter(laneKeys, "unknown-lane")
+    }).length,
+    data.counts.recipes
+  );
+});
+
 test("groupRecipesByLane partitions full index without dropping recipes", () => {
   const entries = buildLandingRecipeIndex(data.recipes);
   const groups = groupRecipesByLane(entries, data.lanes);
@@ -81,4 +101,11 @@ test("groupRecipesByLane partitions full index without dropping recipes", () => 
   for (const slug of catalogSlugs) {
     assert.ok(groupedSlugs.has(slug), `lane groups dropped ${slug}`);
   }
+});
+
+test("home lane regions retain jump targets and reference their visible headings", () => {
+  assert.match(homePageSource, /id=\{`lane-\$\{group\.key\}`\}/);
+  assert.match(homePageSource, /id=\{`heading-lane-\$\{group\.key\}`\}/);
+  assert.match(homePageSource, /aria-labelledby=\{`heading-lane-\$\{group\.key\}`\}/);
+  assert.doesNotMatch(homePageSource, /aria-labelledby=\{`lane-\$\{group\.key\}`\}/);
 });

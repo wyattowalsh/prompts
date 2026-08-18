@@ -1,20 +1,21 @@
-import { ExternalLink, ShieldAlert } from "lucide-react";
-import { CHAT_PROVIDERS, truncateQuery } from "../lib/share-urls";
+import { MessageSquareShare, ShieldAlert } from "lucide-react";
+import type { CSSProperties } from "react";
+import { CHAT_PROVIDERS } from "../lib/share-urls";
+import { ProviderMark } from "./ProviderMark";
 
 type OpenInChatProps = {
   /** Prompt text sent via deep-link (already filled when possible). */
   promptText: string;
-  /** Compact row for sticky toolbars. */
+  /** Compact row for sticky toolbars / near-top placement. */
   compact?: boolean;
   className?: string;
 };
 
 /**
- * Integrated “open in chat app” actions — primary path is open with filled prompt.
+ * Open filled prompt in a chat app — brand marks + accents.
+ * Prefer placing near the top of the recipe workspace (after sticky actions).
  */
 export function OpenInChat({ promptText, compact = false, className = "" }: OpenInChatProps) {
-  const deep = truncateQuery(promptText);
-
   return (
     <div
       className={["open-in-chat", compact ? "open-in-chat-compact" : "", className]
@@ -24,36 +25,37 @@ export function OpenInChat({ promptText, compact = false, className = "" }: Open
     >
       <div className="open-in-chat-head">
         <span className="open-in-chat-title">
-          <ExternalLink size={compact ? 14 : 16} aria-hidden="true" />
-          Open in chat app
+          <MessageSquareShare size={compact ? 14 : 16} aria-hidden="true" />
+          Open in chat
         </span>
-        {!compact ? (
-          <p className="muted open-in-chat-note">
-            <ShieldAlert size={14} aria-hidden="true" />
-            Sends template text in the URL — avoid secrets and private data.
-          </p>
-        ) : null}
+        <p className="muted open-in-chat-note open-in-chat-note-inline">
+          <ShieldAlert size={13} aria-hidden="true" />
+          Shares prompt in URL — do not include secrets or private data.
+        </p>
       </div>
       <div className="open-in-chat-grid" role="group" aria-label="Open filled prompt in a chat app">
         {CHAT_PROVIDERS.map((provider) => (
           <a
             key={provider.id}
             className={`provider-chip provider-${provider.id}`}
-            href={provider.buildUrl(deep)}
+            href={provider.buildUrl(promptText)}
             target="_blank"
             rel="noopener noreferrer"
             title={`Open in ${provider.label} with the current prompt`}
+            style={
+              {
+                "--provider-brand": provider.brand,
+                "--provider-soft": provider.brandSoft
+              } as CSSProperties
+            }
           >
+            <span className="provider-chip-mark" aria-hidden="true">
+              <ProviderMark id={provider.id} size={15} />
+            </span>
             <span className="provider-chip-label">{provider.label}</span>
-            <ExternalLink size={13} aria-hidden="true" className="provider-chip-icon" />
           </a>
         ))}
       </div>
-      {compact ? (
-        <p className="muted open-in-chat-note open-in-chat-note-inline">
-          URL includes prompt text — no secrets.
-        </p>
-      ) : null}
     </div>
   );
 }

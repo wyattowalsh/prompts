@@ -1,0 +1,4 @@
+schema: spec-driven
+created: 2026-08-12
+goal: Produce a production-ready local change set with focused and full
+  validation, without commit, push, deploy, or unrelated cleanup.

@@ -84,6 +84,9 @@ export function CopyableBlock({
         >
           {copied ? "Copied" : copyLabel}
         </Button>
+        <span className="sr-only" role="status" aria-live="polite" aria-atomic="true">
+          {copied ? "Copied" : ""}
+        </span>
       </div>
       <pre className="copyable-block-body" tabIndex={0}>
         {text}

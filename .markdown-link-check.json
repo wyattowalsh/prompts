@@ -1,0 +1,13 @@
+{
+  "timeout": "30s",
+  "ignoreDisable": true,
+  "retryOn429": false,
+  "httpHeaders": [
+    {
+      "urls": ["https://"],
+      "headers": {
+        "User-Agent": "Mozilla/5.0 (compatible; prompts-link-check/1.0; +https://github.com/wyattowalsh/prompts)"
+      }
+    }
+  ]
+}

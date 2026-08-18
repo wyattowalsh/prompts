@@ -116,10 +116,11 @@ Load references selectively; do not load all of them for focused edits.
    contract fields that apply to its format.
 8. Separate durable instructions, trusted context, untrusted input, tool
    permissions, output contract, and validation in templates.
-9. Generate README badges and recipe heading icons with
-   `scripts/update_readme_badges.py`; do not hand-edit counts, marker blocks, or
-   long ShieldCN URLs. Recipe heading badges are **icon-only** (no label words on
-   the pill; use `alt`/`title` for tooltips).
+9. Generate README badges and recipe heading icons through `pnpm catalog:readme`;
+   catalog YAML owns recipe/lane/chip/shortcut/job-map metadata and
+   `scripts/update_readme_badges.py` owns rendering style only. Do not hand-edit
+   counts, marker blocks, or long ShieldCN URLs. Recipe heading badges are
+   **icon-only** (no label words on the pill; use `alt`/`title` for tooltips).
 10. Do not add **Filled example** walkthrough blocks; placeholder tables and
     hoisted previews are the input contract.
 11. Do not add license, package, release, coverage, or download badges unless
@@ -157,16 +158,16 @@ Run the canonical validation block from the repository root:
 That block includes recipe contract checks (Prompt Index and Section Map
 completeness), paste-zone cell length audit
 (`scripts/audit_paste_zone_cells.py`), unit tests, markdown lint, link checks,
-badge drift (`scripts/update_readme_badges.py --check`), `py_compile` with
-`PYTHONPYCACHEPREFIX`, JSON/YAML syntax, Vercel/static-site checks, whitespace
-diff checks, and conditional badge URL inspection when README badge URLs
-changed.
+badge drift (`scripts/update_readme_badges.py --check`), the fail-closed bounded
+badge URL harness and live probe (`pnpm run badges:urls`), `py_compile` with
+`PYTHONPYCACHEPREFIX`, JSON/YAML syntax, Vercel/static-site checks, and
+whitespace diff checks. README Quality runs the bounded badge probe on every
+invocation.
 
 Completion criteria:
 
 - Markdown lint, link check, JSON syntax, YAML syntax, and whitespace checks pass.
-- Generated badge checks and README badge SVG checks pass when README badge URLs
-  changed.
+- Generated badge checks and the bounded README badge SVG probe pass.
 - Generated HTML does not publish `.agents/` or unpublished relative Markdown
   links; repo-local stewardship links are routed to GitHub source URLs.
 - Referenced skill files exist and no unindexed references were added.

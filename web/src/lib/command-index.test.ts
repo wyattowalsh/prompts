@@ -2,9 +2,17 @@
  * Drives shipped command-index builders against real catalog.json.
  */
 import assert from "node:assert/strict";
+import { readFileSync } from "node:fs";
+import { dirname, join } from "node:path";
 import { test } from "node:test";
+import { fileURLToPath } from "node:url";
 import catalog from "../data/catalog.json" with { type: "json" };
 import { buildCommandIndexFromCatalog, filterCommandItems } from "./command-index.ts";
+
+const commandPaletteSource = readFileSync(
+  join(dirname(fileURLToPath(import.meta.url)), "../components/CommandPalette.tsx"),
+  "utf8"
+);
 
 type CatalogShape = {
   recipes: Array<{
@@ -64,10 +72,10 @@ test("returns empty array for nonsense queries", () => {
   assert.equal(hits.length, 0);
 });
 
-test("does not emit per-URL Sources group items; Pages includes Sources", () => {
+test("does not emit per-URL Sources group items; Pages includes Explore", () => {
   const items = buildCommandIndexFromCatalog(data);
   const sourcesGroup = items.filter((i) => (i.group as string) === "Sources");
   assert.equal(sourcesGroup.length, 0);
   const pages = items.filter((i) => i.group === "Pages");
-  assert.ok(pages.some((p) => p.href === "/sources/" && /sources/i.test(p.title)));
+  assert.ok(pages.some((p) => p.href === "/explore/" && /explore/i.test(p.title)));
 });

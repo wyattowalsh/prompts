@@ -10,6 +10,13 @@ default_stages:
 repos:
   - repo: local
     hooks:
+      - id: toolchain-versions
+        name: Node and pnpm version policy
+        entry: pnpm run toolchain:check
+        language: system
+        pass_filenames: false
+        always_run: true
+
       - id: readme-recipe-contract
         name: README recipe contract
         entry: bash -c 'PYTHONDONTWRITEBYTECODE=1 python3 scripts/check_readme_recipes.py --readme README.md --check'
@@ -29,7 +36,14 @@ repos:
         entry: bash -c 'PYTHONDONTWRITEBYTECODE=1 python3 scripts/update_readme_badges.py --check'
         language: system
         pass_filenames: false
-        files: ^(README\.md|scripts/update_readme_badges\.py)$
+        files: ^(README\.md|catalog/.*|packages/catalog-core/.*|scripts/(catalog_badge_data\.mjs|update_readme_badges\.py))$
+
+      - id: catalog-readme-chrome-check
+        name: Catalog README chrome hash check
+        entry: pnpm catalog:readme-chrome:check
+        language: system
+        pass_filenames: false
+        files: ^(catalog/shell/chrome/.*|scripts/render_readme_chrome\.mjs|package\.json|pnpm-lock\.yaml)$
 
       - id: source-manifest-check
         name: Source manifest check
@@ -63,23 +77,43 @@ repos:
         files: ^scripts/.*\.py$
 
       - id: skill-evals-json
-        name: Skill eval JSON syntax
+        name: Repository JSON syntax
         entry: >-
           bash -c 'python3 -m json.tool .agents/skills/readme-catalog-steward/evals/evals.json >/dev/null
-          && python3 -m json.tool .agents/skills/readme-catalog-steward/evals/adversarial-fixtures.json >/dev/null'
+          && python3 -m json.tool .agents/skills/readme-catalog-steward/evals/adversarial-fixtures.json >/dev/null
+          && python3 -m json.tool .markdown-link-check.json >/dev/null'
         language: system
         pass_filenames: false
-        files: ^\.agents/skills/readme-catalog-steward/evals/(evals|adversarial-fixtures)\.json$
+        files: ^(\.agents/skills/readme-catalog-steward/evals/(evals|adversarial-fixtures)\.json|\.markdown-link-check\.json)$
 
       - id: workflow-yaml-syntax
-        name: Workflow and pre-commit YAML syntax
+        name: Workflow, action manifest, and pre-commit YAML syntax
         entry: >-
-          bash -c 'pnpm exec js-yaml .github/workflows/readme-quality.yml >/dev/null
+          bash -c 'pnpm run ci:action-pins
+          && pnpm run ci:dependency-policy
+          && pnpm exec js-yaml .github/workflows/readme-quality.yml >/dev/null
+          && pnpm exec js-yaml .github/workflows/dependency-audit.yml >/dev/null
+          && pnpm exec js-yaml .github/dependabot.yml >/dev/null
           && pnpm exec js-yaml .pre-commit-config.yaml >/dev/null
+          && python3 -m json.tool .markdown-link-check.json >/dev/null
           && python3 -m json.tool vercel.json >/dev/null'
         language: system
         pass_filenames: false
-        files: ^(\.github/workflows/readme-quality\.yml|\.pre-commit-config\.yaml|vercel\.json)$
+        files: ^(\.github/(workflows/.*\.ya?ml|actions/(?:[^/]+/)*action\.ya?ml|dependabot\.yml)|scripts/check_(?:ci_action_pins(?:\.test)?|dependency_policy\.test|markdown_links(?:\.test)?|toolchain(?:\.test)?)\.mjs|(?:web/)?package\.json|pnpm-lock\.yaml|pnpm-workspace\.yaml|\.markdown-link-check\.json|\.pre-commit-config\.yaml|\.node-version|vercel\.json)$
+
+      - id: openspec-strict
+        name: OpenSpec strict validation
+        entry: pnpm exec openspec validate --all --strict --no-interactive --json
+        language: system
+        pass_filenames: false
+        files: ^openspec/
+
+      - id: validation-file-enumeration
+        name: Validation file enumeration policy
+        entry: pnpm run validation-files:test
+        language: system
+        pass_filenames: false
+        files: ^(scripts/list_validation_files(?:\.test)?\.mjs|justfile|package\.json|\.pre-commit-config\.yaml)$
 
       - id: markdownlint-docs
         name: Markdown lint docs
@@ -88,43 +122,66 @@ repos:
           README.md
           AGENTS.md
           DESIGN.md
+          $(git ls-files --cached --others --exclude-standard --
+          CONTRIBUTING.md SECURITY.md CODE_OF_CONDUCT.md)
           .agents/skills/readme-catalog-steward/SKILL.md
           .agents/skills/readme-catalog-steward/references/*.md
           source-refresh.md
+          $(git ls-files --cached --others --exclude-standard --
+          "openspec/changes/**/*.md" ":(exclude)openspec/changes/archive/**")
+          goals/codebase-sota-improvement/scratch/a11y-defer.md
+          goals/codebase-sota-improvement/scratch/cb-closeout-residual.md
+          goals/codebase-sota-improvement/scratch/residual-register.md
+          goals/prompt-catalog-research-upgrade/hygiene-report.md
+          goals/web-design-sota-enrich/goal.md
           );
           pnpm exec markdownlint-cli2 "${DOCS[@]}"'
         language: system
         pass_filenames: false
-        files: ^(README\.md|AGENTS\.md|DESIGN\.md|source-refresh\.md|\.agents/skills/readme-catalog-steward/.*\.md)$
+        files: ^(README\.md|AGENTS\.md|DESIGN\.md|CONTRIBUTING\.md|SECURITY\.md|CODE_OF_CONDUCT\.md|source-refresh\.md|\.agents/skills/readme-catalog-steward/.*\.md|openspec/changes/(?!archive/).*\.md|goals/codebase-sota-improvement/scratch/(?:a11y-defer|cb-closeout-residual|residual-register)\.md|goals/prompt-catalog-research-upgrade/hygiene-report\.md|goals/web-design-sota-enrich/goal\.md)$
 
       - id: web-generated-site-check
         name: Web generated-site check
         entry: >-
-          bash -c 'pnpm run lint
+          bash -c 'pnpm catalog:validate
+          && pnpm catalog:test
+          && pnpm catalog:readme:check
+          && pnpm run lint
           && pnpm run format:check
+          && pnpm catalog:site-data:check
           && pnpm run web:test
-          && pnpm run build'
+          && pnpm run web:build'
         language: system
         pass_filenames: false
-        files: ^(README\.md|CONTRIBUTING\.md|SECURITY\.md|CODE_OF_CONDUCT\.md|web/|package\.json|pnpm-lock\.yaml|pnpm-workspace\.yaml|vercel\.json|eslint\.config\.js|prettier\.config\.cjs|playwright\.config\.mjs|tests/node/)$
+        files: ^(README\.md|CONTRIBUTING\.md|SECURITY\.md|CODE_OF_CONDUCT\.md|catalog/|packages/catalog-core/|web/|scripts/(catalog_badge_data|catalog_readme|check_catalog_readme(?:\.test)?|check_markdown_links(?:\.test)?|run_playwright(?:\.test)?|serve_dist(?:\.test)?)\.mjs|package\.json|pnpm-lock\.yaml|pnpm-workspace\.yaml|vercel\.json|eslint\.config\.js|prettier\.config\.cjs|playwright\.config\.mjs|\.node-version)$
 
       - id: staged-whitespace
         name: Staged whitespace check
         entry: >-
-          bash -c 'git diff --cached --check --
+          bash -c 'whitespace_failure=0;
+          git diff --cached --check --
           README.md
           AGENTS.md
           DESIGN.md
+          CONTRIBUTING.md
+          SECURITY.md
+          CODE_OF_CONDUCT.md
           source-refresh.md
+          .markdown-link-check.json
           .pre-commit-config.yaml
+          .node-version
           .agents/skills/readme-catalog-steward/SKILL.md
           .agents/skills/readme-catalog-steward/references/*.md
           .agents/skills/readme-catalog-steward/evals/evals.json
           .agents/skills/readme-catalog-steward/evals/adversarial-fixtures.json
           LICENSE
           .gitignore
-          .github/workflows/readme-quality.yml
+          .github
+          catalog
+          goals
+          openspec
           package.json
+          packages/catalog-core
           pnpm-lock.yaml
           pnpm-workspace.yaml
           vercel.json
@@ -135,26 +192,26 @@ repos:
           web
           scripts
           tests
-          sources.yaml'
+          sources.yaml || whitespace_failure=1;
+          while IFS= read -r -d "" file; do
+          check_output="$(git diff --no-index --check /dev/null "$file" 2>&1 || true)";
+          if [ -n "$check_output" ]; then
+          printf "%s\n" "$check_output";
+          whitespace_failure=1;
+          fi;
+          done < <(git ls-files --others --exclude-standard -z -- .
+          ":(exclude)goals/prompt-catalog-research-upgrade/interview.json");
+          exit "$whitespace_failure"'
         language: system
         pass_filenames: false
         always_run: true
 
       - id: markdown-link-check-docs
         name: Markdown link check docs
-        entry: >-
-          bash -c 'DOCS=(
-          README.md
-          AGENTS.md
-          DESIGN.md
-          .agents/skills/readme-catalog-steward/SKILL.md
-          .agents/skills/readme-catalog-steward/references/*.md
-          source-refresh.md
-          );
-          pnpm exec markdown-link-check "${DOCS[@]}"'
+        entry: pnpm run docs:links
         language: system
         pass_filenames: false
-        files: ^(README\.md|AGENTS\.md|DESIGN\.md|source-refresh\.md|\.agents/skills/readme-catalog-steward/.*\.md)$
+        files: ^(README\.md|AGENTS\.md|DESIGN\.md|CONTRIBUTING\.md|SECURITY\.md|CODE_OF_CONDUCT\.md|source-refresh\.md|\.agents/skills/readme-catalog-steward/.*\.md|openspec/changes/(?!archive/).*\.md|goals/codebase-sota-improvement/scratch/(?:a11y-defer|cb-closeout-residual|residual-register)\.md|goals/prompt-catalog-research-upgrade/hygiene-report\.md|goals/web-design-sota-enrich/goal\.md|\.markdown-link-check\.json|scripts/check_markdown_links(?:\.test)?\.mjs|package\.json)$
         stages:
           - pre-push
           - manual
@@ -164,17 +221,25 @@ repos:
         entry: pnpm run web:test:browser
         language: system
         pass_filenames: false
-        files: ^(README\.md|CONTRIBUTING\.md|SECURITY\.md|CODE_OF_CONDUCT\.md|web/|package\.json|pnpm-lock\.yaml|pnpm-workspace\.yaml|vercel\.json|eslint\.config\.js|prettier\.config\.cjs|playwright\.config\.mjs|tests/node/)$
+        files: ^(README\.md|CONTRIBUTING\.md|SECURITY\.md|CODE_OF_CONDUCT\.md|catalog/|packages/catalog-core/|web/|scripts/(run_playwright(?:\.test)?|serve_dist(?:\.test)?)\.mjs|package\.json|pnpm-lock\.yaml|pnpm-workspace\.yaml|vercel\.json|eslint\.config\.js|prettier\.config\.cjs|playwright\.config\.mjs|\.node-version)$
         stages:
           - pre-push
           - manual
 
       - id: shieldcn-badge-url-smoke
         name: ShieldCN badge URL smoke check
-        entry: bash scripts/check_badge_urls.sh
+        entry: pnpm run badges:urls
         language: system
         pass_filenames: false
-        files: ^(README\.md|scripts/update_readme_badges\.py|scripts/check_badge_urls\.sh)$
+        files: ^(README\.md|catalog/.*|packages/catalog-core/.*|package\.json|scripts/(catalog_badge_data\.mjs|update_readme_badges\.py|check_badge_urls\.sh|check_badge_urls\.test\.mjs))$
         stages:
           - pre-push
           - manual
+
+  - repo: https://github.com/rhysd/actionlint
+    rev: 914e7df21a07ef503a81201c76d2b11c789d3fca # v1.7.12
+    hooks:
+      # actionlint parses workflow files, not composite action manifests. The
+      # repository-owned hook above parses and pins those manifests instead.
+      - id: actionlint
+        files: ^\.github/workflows/.*\.ya?ml$

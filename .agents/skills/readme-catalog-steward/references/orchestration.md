@@ -46,8 +46,8 @@ claim its findings were used unless they were actually read.
 1. Run the canonical validation block in
    [AGENTS.md § Validation](../../../../AGENTS.md#validation) (recipe contract,
    Prompt Index, Section Map, paste-zone audit, unit tests, markdown lint, link
-   checks, badge drift, `py_compile`, JSON/YAML syntax, whitespace diff, and
-   conditional badge URL checks).
+   checks, badge drift, `py_compile`, JSON/YAML syntax, whitespace diff, and the
+   bounded badge URL harness plus live probe).
 2. Inspect `git diff --stat`, focused diffs, and `git status --short --branch`.
 3. Fix failures and rerun the failed checks.
 

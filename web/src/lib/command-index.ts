@@ -37,34 +37,34 @@ export function buildCommandIndexFromCatalog(data: CommandCatalog): CommandItem[
     {
       id: "page-home",
       title: "Catalog home",
-      subtitle: "Search and browse the prompt library",
+      subtitle: "Search and browse the library catalog",
       href: "/",
       group: "Pages",
-      keywords: "home catalog search"
+      keywords: "home catalog search library"
+    },
+    {
+      id: "page-explore",
+      title: "Explore data",
+      subtitle: "Sources, recipes, and patterns in one explorer",
+      href: "/explore/",
+      group: "Pages",
+      keywords: "explore research sources data favicon"
     },
     {
       id: "page-recipes",
       title: "All recipes",
-      subtitle: "Browse recipe index",
+      subtitle: "Recipe index (deep link)",
       href: "/recipes/",
       group: "Pages",
-      keywords: "recipes index"
+      keywords: "recipes index catalog"
     },
     {
       id: "page-patterns",
       title: "All patterns",
-      subtitle: "Browse pattern index",
+      subtitle: "Pattern index (deep link)",
       href: "/patterns/",
       group: "Pages",
-      keywords: "patterns index"
-    },
-    {
-      id: "page-sources",
-      title: "Sources",
-      subtitle: "Referenced papers and docs",
-      href: "/sources/",
-      group: "Pages",
-      keywords: "sources papers docs"
+      keywords: "patterns index catalog"
     }
   ];
 
@@ -86,7 +86,7 @@ export function buildCommandIndexFromCatalog(data: CommandCatalog): CommandItem[
     keywords: [p.title, p.slug, p.section, p.definition].join(" ").toLowerCase()
   }));
 
-  // Pages already includes Sources; do not emit per-URL Sources rows (all pointed at /sources/).
+  // Pages already includes Explore; do not emit per-source URL rows.
   return [...pages, ...recipes, ...patterns];
 }
 

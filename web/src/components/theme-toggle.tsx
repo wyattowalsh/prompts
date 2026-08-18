@@ -119,9 +119,7 @@ export function ThemeToggle({ className = "" }: { className?: string }) {
       case "ArrowUp": {
         event.preventDefault();
         if (!open) {
-          openMenu(
-            event.key === "ArrowUp" ? OPTION_COUNT - 1 : indexForPreference(preference)
-          );
+          openMenu(event.key === "ArrowUp" ? OPTION_COUNT - 1 : indexForPreference(preference));
         }
         break;
       }
@@ -223,6 +221,7 @@ export function ThemeToggle({ className = "" }: { className?: string }) {
         <div
           id={menuId}
           role="menu"
+          aria-orientation="vertical"
           aria-labelledby={triggerId}
           className="absolute right-0 top-[calc(100%+0.35rem)] z-50 min-w-[10.5rem] overflow-hidden rounded-lg border border-border bg-card p-1 shadow-lg"
           onKeyDown={onMenuKeyDown}
@@ -247,7 +246,6 @@ export function ThemeToggle({ className = "" }: { className?: string }) {
                     : "text-muted-foreground hover:bg-muted hover:text-foreground"
                 )}
                 onClick={() => selectPreference(id)}
-                onMouseEnter={() => setActiveIndex(index)}
               >
                 <Icon size={15} aria-hidden="true" />
                 <span className="flex-1 font-medium">{label}</span>

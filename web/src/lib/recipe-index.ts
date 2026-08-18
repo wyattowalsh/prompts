@@ -29,6 +29,15 @@ export function recipeDetailHref(slug: string): string {
   return `/recipes/${slug}/`;
 }
 
+/** Resolve a shareable lane filter without letting unknown URL values empty the catalog. */
+export function resolveRecipeLaneFilter(
+  laneKeys: readonly string[],
+  rawLane: string | null | undefined
+): string | null {
+  const lane = rawLane?.trim() || null;
+  return lane && laneKeys.includes(lane) ? lane : null;
+}
+
 /**
  * Build the full (or lane-filtered) recipe index for the landing page.
  * Empty/whitespace lane means all recipes — no artificial truncation.

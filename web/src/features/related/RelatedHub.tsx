@@ -37,9 +37,8 @@ export function RelatedHub({ kind, slug, className }: RelatedHubProps) {
     >
       <div className="section-head section-head-tight">
         <h2 className="section-title" id={`related-hub-${cluster.id}`}>
-          <Layers size={18} aria-hidden="true" /> Related set · {cluster.title}
+          <Layers size={18} aria-hidden="true" /> Related · {cluster.title}
         </h2>
-        <p className="muted related-hub-desc">{cluster.description}</p>
       </div>
 
       <ul className="related-hub-list" role="list">
@@ -51,9 +50,9 @@ export function RelatedHub({ kind, slug, className }: RelatedHubProps) {
             <li key={`${member.kind}:${member.slug}`}>
               {active ? (
                 <div
+                  role="article"
                   className="related-hub-card related-hub-card-active"
                   aria-current="page"
-                  aria-label={`${title} — you are here (${member.kind})`}
                 >
                   <div className="related-hub-card-top">
                     <Badge tone="accent">{member.kind}</Badge>

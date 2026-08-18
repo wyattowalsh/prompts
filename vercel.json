@@ -2,14 +2,20 @@
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "framework": null,
   "installCommand": "pnpm install --frozen-lockfile",
-  "buildCommand": "pnpm catalog:site-data && pnpm web:build",
+  "buildCommand": "WEB_PUBLICATION_BUILD=1 pnpm catalog:site-data && WEB_PUBLICATION_BUILD=1 pnpm web:build",
   "outputDirectory": "web/dist",
   "cleanUrls": true,
   "trailingSlash": true,
-  "rewrites": [
+  "redirects": [
     {
-      "source": "/:path*",
-      "destination": "/index.html"
+      "source": "/sources/",
+      "destination": "/explore/?scope=sources",
+      "permanent": true
+    },
+    {
+      "source": "/research/",
+      "destination": "/explore/",
+      "permanent": true
     }
   ],
   "headers": [
@@ -43,7 +49,7 @@
         },
         {
           "key": "Content-Security-Policy",
-          "value": "default-src 'self'; img-src 'self' https://shieldcn.dev data: https:; script-src 'self'; style-src 'self' 'unsafe-inline'; font-src 'self' data:; connect-src 'self'; worker-src 'self' blob:; object-src 'none'; base-uri 'self'; frame-ancestors 'none'"
+          "value": "default-src 'self'; img-src 'self' data:; script-src 'self'; style-src 'self' 'unsafe-inline'; font-src 'self' data:; connect-src 'self'; worker-src 'self' blob:; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'"
         }
       ]
     }

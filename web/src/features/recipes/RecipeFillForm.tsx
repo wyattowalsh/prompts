@@ -35,7 +35,11 @@ export function RecipeFillForm({
 }: RecipeFillFormProps) {
   function handleSubmit(event: FormEvent) {
     event.preventDefault();
-    document.getElementById("prompt")?.scrollIntoView({ behavior: "smooth", block: "start" });
+    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    document.getElementById("prompt")?.scrollIntoView({
+      behavior: reduceMotion ? "auto" : "smooth",
+      block: "start"
+    });
   }
 
   return (

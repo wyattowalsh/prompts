@@ -1,12 +1,14 @@
-# RF-010 / CB-012 axe gate — deferred with rationale
+<!-- markdownlint-disable MD013 -->
 
-**Decision:** defer automated axe-playwright CI gate.
+# RF-010 / CB-012 axe gate — closed
 
-**Why:**
-- Functional Playwright smoke already covers routes, palette, deep links (16/16).
-- Adding axe-core + @axe-core/playwright expands CI surface and flake risk without a dedicated a11y owner wave.
-- Manual semantic/keyboard paths are already exercised (skip link, dialog, focusable controls).
+**Decision (2026-08-12):** automated axe-playwright coverage is now part of the browser suite.
 
-**Reopen when:** shipping significant interactive chrome, or a maintainer requests WCAG regression CI.
+The gate covers representative home, open preview dialog, explorer, palette,
+and mobile states, failing on any detected WCAG A/AA violation, including the
+WCAG 2.2 AA target-size rule. Focus containment, restoration, listbox
+navigation, and dialog-stacking regressions have dedicated Playwright
+assertions.
 
-**Minimal future ship:** two routes (`/` + one recipe deep link), `impact: critical|serious` only, fail-closed on violations.
+The earlier deferral rationale remains useful history, but no longer describes
+the current validation contract.

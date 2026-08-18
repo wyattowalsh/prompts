@@ -52,7 +52,7 @@ full validation block in generated-site docs.
 - OpenAI evaluation best practices: [https://developers.openai.com/api/docs/guides/evaluation-best-practices](https://developers.openai.com/api/docs/guides/evaluation-best-practices)
 - OpenAI agent evals: [https://developers.openai.com/api/docs/guides/agent-evals](https://developers.openai.com/api/docs/guides/agent-evals)
 - Anthropic docs: [https://docs.anthropic.com/](https://docs.anthropic.com/)
-- Anthropic Claude API docs: [https://platform.claude.com/docs/](https://platform.claude.com/docs/)
+- Anthropic Claude API docs: [https://platform.claude.com/docs/en/get-started](https://platform.claude.com/docs/en/get-started)
 - Anthropic citations: [https://platform.claude.com/docs/en/build-with-claude/citations](https://platform.claude.com/docs/en/build-with-claude/citations)
 - Anthropic tool context: [https://platform.claude.com/docs/en/agents-and-tools/tool-use/manage-tool-context](https://platform.claude.com/docs/en/agents-and-tools/tool-use/manage-tool-context)
 - Google Gemini API docs: [https://ai.google.dev/gemini-api/docs](https://ai.google.dev/gemini-api/docs)

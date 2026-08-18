@@ -23,8 +23,7 @@ export const RELATED_CLUSTERS: readonly RelatedCluster[] = [
   {
     id: "panel",
     title: "Simulated panel review",
-    description:
-      "Related recipes and patterns for multi-persona panel-style review. Pick the shape that fits your job — catalog entries stay separate.",
+    description: "Related panel-style recipes and patterns.",
     members: [
       {
         kind: "recipe",

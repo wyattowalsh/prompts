@@ -30,6 +30,7 @@ on:
       - scripts/list_validation_files.mjs
       - scripts/list_validation_files.test.mjs
       - scripts/run_playwright.mjs
+      - scripts/run_playwright.test.mjs
       - scripts/serve_dist.mjs
       - scripts/serve_dist.test.mjs
       - scripts/catalog_constants.py
@@ -90,6 +91,7 @@ on:
       - scripts/list_validation_files.mjs
       - scripts/list_validation_files.test.mjs
       - scripts/run_playwright.mjs
+      - scripts/run_playwright.test.mjs
       - scripts/serve_dist.mjs
       - scripts/serve_dist.test.mjs
       - scripts/catalog_constants.py

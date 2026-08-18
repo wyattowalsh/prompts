@@ -3,4 +3,17 @@ packages:
   - "packages/*"
   - "web"
 allowBuilds:
+  # OpenSpec 1.8.0 postinstall only prints an opt-in completion hint and is silent in CI.
+  "@fission-ai/openspec": true
   esbuild: true
+overrides:
+  # GHSA-4cwx-7wf7-3272 et al.; remove when cheerio resolves undici >=7.29.0.
+  cheerio>undici: 7.29.0
+  # GHSA-rgw5-rvv9-x895; remove when minimatch resolves brace-expansion >=5.0.9.
+  minimatch>brace-expansion: 5.0.9
+  # GHSA-mwp4-54f8-5fhr; remove when socks resolves ip-address >=10.3.1.
+  socks>ip-address: 10.5.0
+  # GHSA-fxqj-rqcc-2cmp; remove when Vite resolves PostCSS >=8.5.23.
+  vite>postcss: 8.5.26
+  # GHSA-5p4m-2wfm-xmqj; remove when xmlbuilder2 resolves js-yaml >=4.3.1.
+  xmlbuilder2>js-yaml: 4.3.1

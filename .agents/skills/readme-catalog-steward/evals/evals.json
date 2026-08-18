@@ -25,7 +25,8 @@
         "Verifies method-specific official docs or primary sources before editing.",
         "Applies the full README Card Contract including paste-zone table rules.",
         "Uses the canonical Fill these in pointer: Match the **placeholder table** above; paste `none` for optional zones you omit.",
-        "Updates badge/heading config in scripts/update_readme_badges.py when adding recipes.",
+        "When adding a recipe, authors badge, lane, chip, shortcut, and job-map metadata in catalog YAML rather than scripts/update_readme_badges.py.",
+        "Regenerates README badge and heading surfaces through `pnpm catalog:readme` after catalog changes.",
         "Includes safety, cost, latency, failure-mode, caveat, and eval notes.",
         "Avoids visible long chain-of-thought as a default template instruction."
       ],
@@ -105,12 +106,14 @@
       "expected_output": "A badge-surface audit or regeneration plan covering hero badges, shortcuts, lanes, lane chips, job map, and 48 recipe heading icons.",
       "expected_behavior": [
         "Reads references/badge-surfaces.md or equivalent badge contract.",
-        "Uses scripts/update_readme_badges.py for generated blocks; does not hand-edit ShieldCN URLs.",
+        "Treats catalog YAML as the owner of recipe, lane, chip, shortcut, and job-map metadata; scripts/update_readme_badges.py owns rendering style only.",
+        "Regenerates the canonical README with `pnpm catalog:readme`; does not hand-edit ShieldCN URLs.",
         "Treats recipe heading badges as icon-only with alt/title tooltips.",
-        "Runs badge --check and curl-verifies changed URLs when applicable."
+        "Runs `pnpm catalog:readme:check` and the bounded `pnpm run badges:urls` probe."
       ],
       "assertions": [
-        "Mentions update_readme_badges.py or badge drift check.",
+        "Mentions catalog YAML ownership and `pnpm catalog:readme` regeneration.",
+        "Mentions the bounded `pnpm run badges:urls` probe.",
         "Distinguishes icon-only heading badges from worded lane chips.",
         "Does not propose Filled example walkthrough blocks."
       ]
@@ -136,13 +139,14 @@
       "expected_output": "Runs or cites the AGENTS validation block and reports exact failures without editing files.",
       "expected_behavior": [
         "Reads AGENTS.md Validation section or lists equivalent commands.",
-        "Runs or instructs recipe check, paste-zone audit, unittest discover, badge --check, markdown lint, and link check.",
+        "Runs or instructs recipe check, paste-zone audit, unittest discover, `pnpm catalog:readme:check`, markdown lint, link check, and `pnpm run badges:urls`.",
         "Reports failures verbatim with command output or error codes.",
         "Does not edit README, scripts, skill files, or workflow."
       ],
       "assertions": [
         "Mentions validate mode or AGENTS validation block.",
         "Cites at least two concrete validation commands from the block.",
+        "Mentions `pnpm catalog:readme:check` and `pnpm run badges:urls` as canonical badge validation.",
         "Does not claim files were edited or fixes applied."
       ]
     },

@@ -40,14 +40,17 @@ export function RecipePage() {
 
   useDocumentMeta(
     recipe ? recipe.title : "Recipe not found",
-    recipe?.use_for
+    recipe?.use_for,
+    recipe ? undefined : { indexable: false, canonicalPath: null }
   );
 
   if (!recipe) {
     return (
       <section className="section empty-state-panel">
         <h1>Recipe not found</h1>
-        <p className="muted">That recipe slug is not in the catalog. Check the URL or browse the index.</p>
+        <p className="muted">
+          That recipe slug is not in the catalog. Check the URL or browse the index.
+        </p>
         <Link className="nav-link is-active" to="/recipes/">
           Back to recipes
         </Link>
@@ -184,6 +187,10 @@ export function RecipePage() {
         </div>
       </div>
 
+      <section className="section open-in-section open-in-section-top" aria-label="Open in chat">
+        <OpenInChat promptText={filledPrompt} compact />
+      </section>
+
       <div className="recipe-workspace">
         <section className="section recipe-workspace-form" aria-labelledby="fill-form-heading">
           <RecipeFillForm
@@ -218,10 +225,6 @@ export function RecipePage() {
               emphasis="primary"
               icon={<FileText size={15} aria-hidden="true" />}
             />
-          </section>
-
-          <section className="section open-in-section">
-            <OpenInChat promptText={filledPrompt} />
           </section>
         </div>
       </div>

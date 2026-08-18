@@ -10,15 +10,13 @@ export default defineConfig({
   build: {
     rollupOptions: {
       output: {
-        // Keep react/react-dom in the graph default (splitting them often breaks
-        // dynamic import hydration). Isolate heavy, stable vendors + catalog JSON.
+        // Keep react/react-dom and dialog/command dependencies in the graph
+        // default. Dynamic imports then keep modal/palette code out of the entry
+        // graph instead of a shared manual chunk pulling JSX runtime into preload.
         manualChunks(id) {
           if (id.includes("node_modules")) {
             if (id.includes("react-router")) {
               return "router-vendor";
-            }
-            if (id.includes("cmdk") || id.includes("@radix-ui/react-dialog")) {
-              return "cmdk-vendor";
             }
             if (id.includes("lucide-react")) {
               return "icons-vendor";

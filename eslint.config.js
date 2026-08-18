@@ -10,7 +10,6 @@ export default tseslint.config(
       // web/tsconfig; keep out of projectService lint (policy: app sources only).
       "web/src/**/*.test.ts",
       "node_modules/**",
-      "packages/**",
       "playwright-report/**",
       "test-results/**",
       "public/**",
@@ -23,10 +22,11 @@ export default tseslint.config(
     files: [
       "web/scripts/**/*.mjs",
       "web/site.config.mjs",
+      "web/vite.config.ts",
       "web/browser/**/*.mjs",
       "scripts/**/*.mjs",
-      "*.mjs",
-      "tests/node/**/*.mjs"
+      "packages/catalog-core/**/*.{js,mjs}",
+      "*.mjs"
     ],
     languageOptions: {
       ecmaVersion: "latest",

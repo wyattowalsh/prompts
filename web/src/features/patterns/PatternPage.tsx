@@ -20,7 +20,8 @@ export function PatternPage() {
 
   useDocumentMeta(
     pattern ? pattern.title : "Pattern not found",
-    pattern?.definition
+    pattern?.definition,
+    pattern ? undefined : { indexable: false, canonicalPath: null }
   );
 
   if (!pattern) {

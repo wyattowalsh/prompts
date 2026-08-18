@@ -189,8 +189,8 @@ requiring hidden deliberation to be printed.
   (`alt` + `title` = recipe name; badge pill has no label words).
 - Category navigation uses `<!-- LANE-CHIPS:{lane}:START/END -->` chip rows.
 - Browse-by-job table lives inside `<!-- JOB-MAP:START/END -->`.
-- After adding or renaming a recipe, update script config and run
-  `scripts/update_readme_badges.py`.
+- After adding or renaming a recipe, update its catalog lane/featured/shortcut
+  metadata and run `pnpm catalog:readme`.
 
 ## Recipe And Pattern Review Checklist
 

@@ -1,6 +1,12 @@
+<!-- markdownlint-disable MD013 -->
+
 # Hygiene report — RV-006 / RV-007
 
 **Would-stage count:** 28
+
+> Historical dry-run snapshot. The research batch was later committed; the
+> current web hardening lane still excludes every DROP path below, especially
+> untracked `interview.json`.
 
 ## Would stage (SHIP_A ∪ SHIP_B existing)
 
@@ -86,3 +92,8 @@
 while IFS= read -r f; do git add -- "$f"; done < goals/prompt-catalog-research-upgrade/stage-files.txt
 git status --short
 ```
+
+## Wave 4 commit
+
+- Committed: `8c21af7 docs(catalog): research upgrade freshness, card controls, ship hygiene`
+- Foreign web WIP left unstaged.

@@ -1,3 +1,5 @@
+<!-- markdownlint-disable MD013 -->
+
 # Design
 
 ## Product goals and non-goals
@@ -8,6 +10,9 @@
   patterns, lanes, and sources.
 - **Generate** GitHub Flavored Markdown `README.md` from catalog data;
   keep it committed and drift-checked in CI.
+- Keep recipe, lane, featured-chip, shortcut, and job-map metadata in catalog
+  YAML; the badge postprocessor consumes a validated snapshot and owns style,
+  not a second content map.
 - Ship a **Vite + React** site under `web/` that consumes generated
   `web/src/data/catalog.json` (multi-route recipes/patterns, share/copy chrome).
 - Present the site as the **ultimate prompt-engineering guide/catalog**:
@@ -22,7 +27,9 @@
 - Hand-editing recipe bodies in `README.md`.
 - Invented SEO schema (FAQPage, SearchAction, AggregateRating) without
   matching UI.
-- Default third-party analytics or pre-widened CSP for PostHog/Umami.
+- Analytics event capture, a report pipeline, or pre-widened CSP for
+  PostHog/Umami. The React app has no event producer; the orphan web-analytics
+  report is retired.
 - Hosting LLM proxies or user accounts on the static site.
 - Pagefind / dual markdown-it static builder (removed).
 - Charts, 3D, or heavy global client state frameworks.
@@ -38,7 +45,7 @@ quiet**: selective depth and surface wash only where the scan path stays clear.
 **Soft redesign (web-design-sota-enrich)** prioritizes the paste path
 (browse → open → fill → copy → open-in-chat) over marketing atmosphere.
 
-**Signature moves**
+### Signature moves
 
 - App-wide **command palette** (⌘K / Ctrl+K; `/` opens palette off-home)
 - **Theme menu**: single control → Light / Dark / System (Menu Button keyboard;
@@ -62,25 +69,37 @@ quiet**: selective depth and surface wash only where the scan path stays clear.
 5. **Balanced density** — Airier hero/landing; denser indexes and recipe
    workspaces.
 
+### Minimal landing + icons
+
+- Home hero is **title + optional count badges + search** only — no kicker,
+  long lede, or instructional paragraphs. Section heads stay short (title +
+  count); avoid explanatory section-sub copy on scan surfaces.
+- Brand mark SSOT: `web/public/favicon.svg` + `BrandMark` (32×32 geometric **p**
+  on primary tile). The OG card, Apple-touch icon, and ICO share that `prompts`
+  identity. When the mark sits next to the product name, pass `decorative` so
+  the accessible name stays a single `prompts`.
+- Primary nav items always show **icon + label**; active state must not hide
+  icons (`stroke: currentColor` on Lucide icons; primary-tint active background).
+
 ## Stack
 
-| Piece | Location |
-| --- | --- |
-| Tailwind v4 | `web` deps + `@tailwindcss/vite` |
-| Theme CSS | `web/src/styles/globals.css` (`@import "tailwindcss"`, `@theme`, `.dark`) |
-| shadcn config | `web/components.json` (`rsc: false`, new-york, lucide) |
-| `cn` helper | `web/src/lib/utils.ts` (clsx + tailwind-merge) |
-| Primitives | `web/src/components/ui/*` (Button, Badge, CopyableBlock via cva) |
-| Theme | `web/src/lib/theme.ts` (pure) + `theme-provider.tsx` + `theme-toggle.tsx` (single-button menu) |
-| Related hub | `web/src/lib/related-clusters.ts` + `features/related/RelatedHub.tsx` (no catalog merge) |
-| Document meta | `web/src/hooks/useDocumentMeta.ts` |
-| Command palette | `cmdk` **Command.Dialog** (`CommandPalette.tsx`, lazy from `App`) + `lib/command-index.ts` |
-| Fonts | self-hosted **Fontsource** DM Sans + IBM Plex Mono (no Google CDN) |
-| Radix | `@radix-ui/react-dialog` (cmdk Dialog) + `@radix-ui/react-slot` (Button) |
-| Code split | Route-level `React.lazy` pages; Vite `manualChunks` (`router-vendor`, `cmdk-vendor`, `icons-vendor`, `catalog-data`, `catalog-meta`). **Do not** split `react`/`react-dom` (breaks dynamic import). App shell uses `catalog-meta` only so full `catalog-data` is not entry-preloaded. |
-| Lint | Root ESLint + `typescript-eslint` covers `web/src/**/*.{ts,tsx}`; unit `*.test.ts` intentionally excluded (`projectService` / node:test outside app tsconfig) |
-| Idle warm | Palette chunk: hover/focus + `requestIdleCallback` prefetch; mount only when opened (⌘K still works cold via App hotkeys) |
-| A11y e2e | Functional Playwright smoke is required; axe critical/serious gate is optional residual (see goals scratch) |
+| Piece           | Location                                                                                                                                                                                                                         |
+| --------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Tailwind v4     | `web` deps + `@tailwindcss/vite`                                                                                                                                                                                                 |
+| Theme CSS       | `web/src/styles/globals.css` (`@import "tailwindcss"`, `@theme`, `.dark`)                                                                                                                                                        |
+| shadcn config   | `web/components.json` (`rsc: false`, new-york, lucide)                                                                                                                                                                           |
+| `cn` helper     | `web/src/lib/utils.ts` (clsx + tailwind-merge)                                                                                                                                                                                   |
+| Primitives      | `web/src/components/ui/*` (Button, Badge, CopyableBlock via cva)                                                                                                                                                                 |
+| Theme           | `web/public/theme-init.js` (pre-paint, CSP-safe) + `web/src/lib/theme.ts` + `theme-provider.tsx` + `theme-toggle.tsx`                                                                                                            |
+| Related hub     | `web/src/lib/related-clusters.ts` + `features/related/RelatedHub.tsx` (no catalog merge)                                                                                                                                         |
+| Document meta   | One route descriptor inventory + static shell emitter + `web/src/hooks/useDocumentMeta.ts`                                                                                                                                       |
+| Command palette | `cmdk` **Command.Dialog** (`CommandPalette.tsx`, lazy from `App`) + `lib/command-index.ts`                                                                                                                                       |
+| Fonts           | self-hosted **Fontsource** DM Sans + IBM Plex Mono (no Google CDN)                                                                                                                                                               |
+| Radix           | `@radix-ui/react-dialog` (command palette and catalog preview) + `@radix-ui/react-slot` (Button)                                                                                                                                 |
+| Code split      | Route-level `React.lazy` pages; Vite `manualChunks` only for router/icons/catalog data/meta. Dialog and command dependencies follow their dynamic imports and stay out of initial preload. **Do not** split `react`/`react-dom`. |
+| Lint            | Root ESLint + `typescript-eslint` covers `web/src/**/*.{ts,tsx}`; unit `*.test.ts` intentionally excluded (`projectService` / node:test outside app tsconfig)                                                                    |
+| Deferred UI     | Palette and catalog preview load only after explicit invocation; no idle, hover, or focus warm-up                                                                                                                                |
+| A11y e2e        | Playwright axe WCAG A/AA (including 2.2 AA target-size) fails on any violation, plus keyboard/focus regression checks                                                                                                            |
 
 ## Tokens
 
@@ -89,16 +108,16 @@ Semantic colors are CSS variables on `:root` / `.dark`, exposed to Tailwind via
 
 ### Color (semantic)
 
-| Token | Light | Dark | Usage |
-| --- | --- | --- | --- |
-| `--background` | `#eef1f6` | `#080c12` | Page background |
-| `--foreground` | `#0c1222` | `#e8eef7` | Body text |
-| `--card` | `#ffffff` | `#0f1620` | Panels / header |
-| `--primary` | `#0a56f0` | `#4d8dff` | Brand, links, CTAs |
-| `--muted-foreground` | `#3d4a5c` | `#9da7b3` | Secondary text |
-| `--border` | `#d0d7e2` | `#243041` | Dividers |
-| `--ring` | `#2563eb` | `#79c0ff` | Focus rings |
-| `--success` | `#0f7a32` | `#3fb950` | Copied state |
+| Token                | Light     | Dark      | Usage              |
+| -------------------- | --------- | --------- | ------------------ |
+| `--background`       | `#eef1f6` | `#080c12` | Page background    |
+| `--foreground`       | `#0c1222` | `#e8eef7` | Body text          |
+| `--card`             | `#ffffff` | `#0f1620` | Panels / header    |
+| `--primary`          | `#0a56f0` | `#4d8dff` | Brand, links, CTAs |
+| `--muted-foreground` | `#3d4a5c` | `#9da7b3` | Secondary text     |
+| `--border`           | `#d0d7e2` | `#243041` | Dividers           |
+| `--ring`             | `#2563eb` | `#79c0ff` | Focus rings        |
+| `--success`          | `#0f7a32` | `#3fb950` | Copied state       |
 
 ### Lane accents
 
@@ -107,32 +126,31 @@ Semantic colors are CSS variables on `:root` / `.dark`, exposed to Tailwind via
 
 ### Type
 
-| Token | Value |
-| --- | --- |
-| `--font-sans` | DM Sans, system UI stack |
-| `--font-mono` | IBM Plex Mono, SF Mono, Menlo |
-| Display | clamp-driven hero `text-3xl` / `sm:text-4xl` |
+| Token         | Value                                        |
+| ------------- | -------------------------------------------- |
+| `--font-sans` | DM Sans, system UI stack                     |
+| `--font-mono` | IBM Plex Mono, SF Mono, Menlo                |
+| Display       | clamp-driven hero `text-3xl` / `sm:text-4xl` |
 
 ### Spacing / radius / layout
 
-| Token | Value |
-| --- | --- |
-| Radius scale | `sm`–`2xl` in `@theme` |
-| `--header-height` | `3.85rem` |
-| `--content-max` | `74rem` |
-| `--measure` | `66ch` |
+| Token             | Value                  |
+| ----------------- | ---------------------- |
+| Radius scale      | `sm`–`2xl` in `@theme` |
+| `--header-height` | `3.85rem`              |
+| `--content-max`   | `74rem`                |
+| `--measure`       | `66ch`                 |
 
 ## Theme behavior
 
 - Storage key: `prompts-theme` (`light` \| `dark` \| `system`)
-- Early FOUC script in `web/index.html` applies `.dark` before paint
+- Synchronous same-origin `web/public/theme-init.js` applies `.dark` before paint under `script-src 'self'`
 - Header control: single theme button → menu (Light / Dark / System)
 - System mode tracks `prefers-color-scheme` live
 
 ## Layout
 
-- Sticky header with Catalog / Recipes / Patterns / Sources / GitHub +
-  Search (palette) + theme toggle
+- Sticky header with Catalog / Explore / GitHub + Search (palette) + theme toggle
 - Main content shell; home gets slightly looser bottom padding
 - Skip link targets `#main-content` with `tabindex="-1"`
 - Footer: catalog counts + keyboard hints
@@ -152,9 +170,8 @@ Semantic colors are CSS variables on `:root` / `.dark`, exposed to Tailwind via
 ### Command palette
 
 - `cmdk` **Command.Dialog** (Radix Dialog composition); code-split via
-  `React.lazy` from `App` with hover/idle prefetch
-- Groups: Pages / Recipes / Patterns (Pages includes Sources hub; no
-  per-URL Sources spam)
+  `React.lazy` from `App` and loaded only on explicit invocation
+- Groups: Pages / Recipes / Patterns (Pages includes Explore; no per-URL source spam)
 - Global ⌘K / Ctrl+K owned by `App` (so cold open works before chunk load);
   Escape closes; `/` opens palette off-home when not in editable fields
 - Home still uses `/` to focus the in-page search field
@@ -169,11 +186,48 @@ Semantic colors are CSS variables on `:root` / `.dark`, exposed to Tailwind via
 
 - Sticky **Recipe actions** group (accessible name preserved for Playwright)
 - Fill form + live prompt column; Open-in-chat remains available
+- Open-in-chat links warn that filled prompts enter third-party URL query strings,
+  preserve Unicode within a 4,096-character final encoded URL budget using the
+  supported browser's standards-complete `Intl.Segmenter` (failing closed when
+  unavailable), and use
+  uniform local circle-and-initial cues instead of official provider artwork
+- Small provider labels/recipe calls to action use contrast-safe foreground
+  tokens; focus-visible indicators use the shared `--ring` token
 
-## Routes (preserve)
+### Catalog preview
 
-`/`, `/recipes/`, `/recipes/:slug/`, `/patterns/`, `/patterns/:slug/`,
-`/sources/` with trailing-slash redirects.
+- Conditionally imported Radix Dialog with focus containment, inert background,
+  Escape/overlay dismissal, and opener focus restoration
+
+### Catalog home filtering
+
+- Filter changes expose one concise atomic polite count status
+- The complete dynamic results container is not a live region, avoiding
+  repeated announcements of every matching card
+
+### Data explorer
+
+- Unified sources/recipes/patterns surface at `/explore/`
+- Shareable normalized `scope` and `q` URL state with history restoration
+- Listbox keyboard navigation and live result counts
+- Source identity is rendered locally; no third-party favicon requests
+
+## Routes and publication
+
+One validated descriptor inventory emits 95 canonical page shells: `/`,
+`/explore/`, recipe/pattern indexes, and 91 detail routes. Each shell has
+route-specific escaped title, description, canonical, Open Graph, and Twitter
+metadata. `/sources/` permanently redirects to `/explore/?scope=sources` and
+`/research/` to `/explore/`; neither is indexed. Unknown hard requests receive
+the standalone noindex `404.html`, while unknown client navigation renders a
+visible noindex Not Found view. `robots.txt`, `llms.txt`, and the sitemap contain
+only canonical content; the sitemap omits unverifiable build-date `lastmod`
+values. `llms-full.txt` serializes every public recipe and pattern field from
+catalog YAML, including nested fence text. Publication builds run with
+`WEB_PUBLICATION_BUILD=1` (or a production/Vercel runtime signal) and accept
+only a stable public HTTPS root origin from `WEB_BASE_URL` or
+`VERCEL_PROJECT_PRODUCTION_URL`; deployment-specific preview URLs, special-use
+DNS names, non-public IPs, and local/path-prefixed bases fail the build.
 
 ## Motion
 
@@ -189,18 +243,20 @@ Semantic colors are CSS variables on `:root` / `.dark`, exposed to Tailwind via
 
 ## Proof / quality
 
-Required gates for UI changes:
+Required gates for UI changes. Browser smoke allocates an isolated port, builds
+current source, and never reuses an existing server:
 
 ```bash
-pnpm --filter @prompts/web typecheck
-pnpm --filter @prompts/web test
-pnpm build
+pnpm catalog:site-data:check
+pnpm web:typecheck
+pnpm web:test
+pnpm web:build
 pnpm web:test:browser
 ```
 
 Smoke-critical accessible names:
 
-- Heading “Prompt Library” (catalog meta title)
+- Heading “prompts” (catalog meta title)
 - Navigation “Site”
 - Group “Recipe actions”
 - Button “Copy prompt”
