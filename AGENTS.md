@@ -343,3 +343,58 @@ for canonicals. Do not hardcode an unverified live domain as the canonical
 default; the fallback URL is for local previews only.
 `DESIGN.md` documents the React site architecture and non-goals, but this
 validation block remains the single source of truth for required checks.
+
+## Cursor Cloud specific instructions
+
+Durable, non-obvious notes for Cloud Agents. Standard commands live in
+`package.json` scripts and the Validation block above; this section only
+records gotchas and clarifications.
+
+### Toolchain (Node 24 / pnpm)
+
+- The repo requires Node `24.x` and pnpm `11.21.0` (`pnpm run toolchain:check`).
+  The base VM ships Node 22 at `/exec-daemon/node`, which is force-prepended to
+  `PATH` on every shell, so `nvm use 24` does not stick. Node 24 and pnpm are
+  therefore shimmed as symlinks in `/usr/local/cargo/bin` (that directory is
+  first in `PATH`, ahead of `/exec-daemon`).
+- If `node --version` ever reports v22, re-point the shims:
+  `NODE24="$HOME/.nvm/versions/node/v24.19.0/bin"; for b in node npm npx corepack; do ln -sf "$NODE24/$b" /usr/local/cargo/bin/$b; done; corepack enable --install-directory /usr/local/cargo/bin pnpm`.
+- Playwright browsers for `pnpm web:test:browser` are installed with
+  `pnpm exec playwright install chromium` (already baked into the snapshot).
+- `pnpm web:build` requires fresh site data; run `pnpm catalog:site-data`
+  first. Regenerating churns `generated_at` in `web/src/data/*.json` — revert
+  that timestamp-only noise instead of committing it.
+
+### wyattowalsh/agents plugin + MCPHub (VM tooling, outside this repo)
+
+These live in the VM/home dir, not in the `prompts` repo tree.
+
+- Skills bundle: installed globally via
+  `npx skills add github:wyattowalsh/agents --all -y -g --agent ...`; canonical
+  copy at `~/.agents/skills` (mirrored to `~/.claude`, `~/.grok`, `~/.config/crush`).
+  Refresh with `npx skills update`.
+- `wagents` CLI is installed (`uv tool install --from ~/agents wagents`) but the
+  pinned commit has an upstream import bug (`web_app` missing from
+  `wagents.docs`), so it currently fails to run. MCPHub does not depend on it.
+- MCPHub control plane: the agents repo is cloned at `~/agents`. Start/stop/health:
+  `cd ~/agents && bash scripts/mcphub/up.sh` (loopback `127.0.0.1:46683`),
+  `bash scripts/mcphub/down.sh`, `curl -fsS http://127.0.0.1:46683/health`.
+  Do not put this in the update script (it is a long-running service).
+- MCPHub gotchas (Linux):
+  - Secrets come from `~/agents/.env.mcphub` (gitignored; local-only
+    `ADMIN_PASSWORD`/`JWT_SECRET`/`MCPHUB_BEARER_TOKEN`).
+  - It reads a runtime settings copy at
+    `~/agents/.mcphub/runtime/mcp_settings.json` (via `MCPHUB_SETTING_PATH` in
+    `.env.mcphub`). That copy removes the 6 remote-URL servers (context7,
+    deepwiki, exa, papersflow, penpot, tavily) and sets
+    `systemConfig.routing.enableBearerAuth=false`. Reason: MCPHub registers the
+    `/mcp/:group` POST routes only after every upstream initializes, and the
+    remote `tavily` URL trips its SSRF guard and aborts route registration;
+    bearer keys are otherwise provisioned only via the admin API/hosted mode.
+    The repo's `reconcile-runtime`/restart helpers are macOS-LaunchAgent based
+    and do not apply here.
+  - Many upstream servers stay disconnected without API keys/managed runtimes,
+    so `/health` reports `degraded` — that is expected.
+  - Call tools over MCP streamable HTTP:
+    `POST http://127.0.0.1:46683/mcp/<group-or-server>` (initialize →
+    `notifications/initialized` → `tools/list` → `tools/call`).
