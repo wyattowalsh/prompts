@@ -1,4 +1,5 @@
 import assert from "node:assert/strict";
+import { spawnSync } from "node:child_process";
 import { mkdir, mkdtemp, rm, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
@@ -9,20 +10,34 @@ import {
   assertDescriptiveUserAgent,
   assertFailClosedLinkPolicy,
   assertSingleRetryOwner,
+  assertTrackedLocalMarkdownLinks,
   canonicalOpenSpecMarkdownPaths,
   classifyFailedAttempt,
   deadLinkStatuses,
   defaultMarkdownPaths,
+  gitIndexPaths,
+  main,
   MAX_ATTEMPTS,
   runWithRetries,
   writeAttemptOutput
 } from "./check_markdown_links.mjs";
+
+function runGit(root, args) {
+  const result = spawnSync("git", args, { cwd: root, encoding: "utf8" });
+  assert.equal(result.error, undefined);
+  assert.equal(result.signal, null);
+  assert.equal(result.status, 0, result.stderr);
+}
 
 test("default link scope includes canonical OpenSpec and closeout evidence without the fenced artifact", () => {
   const paths = defaultMarkdownPaths();
   assert.ok(paths.includes("openspec/specs/web-build-assurance/spec.md"));
   assert.ok(paths.includes("goals/codebase-sota-improvement/scratch/cb-closeout-residual.md"));
   assert.equal(paths.includes("goals/prompt-catalog-research-upgrade/interview.json"), false);
+});
+
+test("default link scope resolves every local target from the Git index", () => {
+  assert.doesNotThrow(() => assertTrackedLocalMarkdownLinks(defaultMarkdownPaths()));
 });
 
 test("discovers every canonical OpenSpec Markdown file recursively", async (t) => {
@@ -81,6 +96,341 @@ test("includes optional governance Markdown only when each file exists", async (
   assert.ok(paths.includes("SECURITY.md"));
   assert.equal(paths.includes("CONTRIBUTING.md"), false);
   assert.equal(paths.includes("CODE_OF_CONDUCT.md"), false);
+});
+
+test("rejects a local link whose target exists only outside eligible Git index paths", async (t) => {
+  const sandbox = await mkdtemp(join(tmpdir(), "prompts-untracked-link-"));
+  t.after(() => rm(sandbox, { recursive: true, force: true }));
+  await mkdir(join(sandbox, "docs"), { recursive: true });
+  await Promise.all([
+    writeFile(join(sandbox, "docs/source.md"), "[Untracked](./result.json)\n"),
+    writeFile(join(sandbox, "docs/result.json"), "{}\n")
+  ]);
+
+  assert.throws(
+    () =>
+      assertTrackedLocalMarkdownLinks(["docs/source.md"], {
+        root: sandbox,
+        trackedPaths: new Set(["docs/source.md"])
+      }),
+    /absent from commit-materializable Git index paths:[\s\S]*docs\/result\.json/u
+  );
+});
+
+test("excludes real intent-to-add file and directory targets from an unborn index", async (t) => {
+  const sandbox = await mkdtemp(join(tmpdir(), "prompts-ita-link-"));
+  t.after(() => rm(sandbox, { recursive: true, force: true }));
+  await mkdir(join(sandbox, "docs/pending"), { recursive: true });
+  await Promise.all([
+    writeFile(
+      join(sandbox, "docs/source.md"),
+      [
+        "[Tracked](./tracked.md)",
+        "[Intent to add file](./result.json)",
+        "[Intent to add directory](./pending/)"
+      ].join("\n")
+    ),
+    writeFile(join(sandbox, "docs/tracked.md"), "# Tracked\n"),
+    writeFile(join(sandbox, "docs/result.json"), "{}\n"),
+    writeFile(join(sandbox, "docs/pending/result.json"), "{}\n")
+  ]);
+  runGit(sandbox, ["init", "--quiet"]);
+  runGit(sandbox, ["add", "--", "docs/source.md", "docs/tracked.md"]);
+  runGit(sandbox, ["add", "--intent-to-add", "--", "docs/result.json", "docs/pending/result.json"]);
+
+  const paths = gitIndexPaths(sandbox);
+  assert.equal(paths.has("docs/source.md"), true);
+  assert.equal(paths.has("docs/tracked.md"), true);
+  assert.equal(paths.has("docs/result.json"), false);
+  assert.equal(paths.has("docs/pending/result.json"), false);
+  assert.throws(
+    () => assertTrackedLocalMarkdownLinks(["docs/source.md"], { root: sandbox }),
+    (error) => {
+      assert.match(error.message, /absent from commit-materializable Git index paths/u);
+      assert.match(error.message, /docs\/result\.json/u);
+      assert.match(error.message, /docs\/pending/u);
+      return true;
+    }
+  );
+});
+
+test("accepts tracked targets and only HTTP, HTTPS, and mailto checker-owned schemes", async (t) => {
+  const sandbox = await mkdtemp(join(tmpdir(), "prompts-tracked-links-"));
+  t.after(() => rm(sandbox, { recursive: true, force: true }));
+  await Promise.all([
+    mkdir(join(sandbox, "docs/proof"), { recursive: true }),
+    mkdir(join(sandbox, ".agents/skills/example"), { recursive: true })
+  ]);
+  await Promise.all([
+    writeFile(
+      join(sandbox, "docs/source.md"),
+      [
+        "[File](./tracked%20file.md?plain=1#details)",
+        "[Directory](./proof/#gallery)",
+        "[Anchor](#local-heading)",
+        "[HTTP](HTTP://example.test/docs)",
+        "[HTTPS](https://example.test/docs)",
+        "[Mail](mailto:maintainer@example.test)"
+      ].join("\n")
+    ),
+    writeFile(
+      join(sandbox, ".agents/skills/example/SKILL.md"),
+      "[Validation](../../../AGENTS.md#validation)\n"
+    ),
+    writeFile(join(sandbox, "AGENTS.md"), "# Validation\n"),
+    writeFile(join(sandbox, "docs/tracked file.md"), "# Details\n"),
+    writeFile(join(sandbox, "docs/proof/image.png"), "fixture\n")
+  ]);
+
+  assert.doesNotThrow(() =>
+    assertTrackedLocalMarkdownLinks(["docs/source.md", ".agents/skills/example/SKILL.md"], {
+      root: sandbox,
+      trackedPaths: new Set([
+        ".agents/skills/example/SKILL.md",
+        "AGENTS.md",
+        "docs/source.md",
+        "docs/tracked file.md",
+        "docs/proof/image.png"
+      ])
+    })
+  );
+});
+
+test("rejects unsupported explicit schemes and Windows drive-letter-like links", async (t) => {
+  const sandbox = await mkdtemp(join(tmpdir(), "prompts-unsupported-schemes-"));
+  t.after(() => rm(sandbox, { recursive: true, force: true }));
+  await mkdir(join(sandbox, "docs"), { recursive: true });
+
+  for (const [link, scheme] of [
+    ["javascript:alert%281%29", "javascript"],
+    ["data:text/plain,fixture", "data"],
+    ["ftp://example.test/file", "ftp"],
+    ["tel:+15551234567", "tel"],
+    ["custom+demo:fixture", "custom+demo"],
+    ["file:///tmp/fixture.md", "file"],
+    ["C:/temp/fixture.md", "c"],
+    ["D:%5Ctemp%5Cfixture.md", "d"]
+  ]) {
+    await writeFile(join(sandbox, "docs/source.md"), `[Target](${link})\n`);
+    assert.throws(
+      () =>
+        assertTrackedLocalMarkdownLinks(["docs/source.md"], {
+          root: sandbox,
+          trackedPaths: new Set(["docs/source.md"])
+        }),
+      (error) => {
+        assert.match(error.message, /Unsupported Markdown link scheme/u);
+        assert.ok(error.message.includes(`"${scheme}"`));
+        return true;
+      }
+    );
+  }
+});
+
+test("fails closed for repository escapes and invalid URL encoding", async (t) => {
+  const sandbox = await mkdtemp(join(tmpdir(), "prompts-unsafe-links-"));
+  t.after(() => rm(sandbox, { recursive: true, force: true }));
+  await mkdir(join(sandbox, "docs"), { recursive: true });
+
+  for (const [link, pattern] of [
+    ["../../outside.md", /escapes the repository root/u],
+    ["/root-absolute.md", /Unsafe root-absolute Markdown link/u],
+    ["//example.test/docs", /Unsafe network-relative Markdown link/u],
+    ["./bad%ZZ.md", /Invalid URL encoding/u],
+    ["./bad%00path.md", /Unsafe local Markdown link path/u],
+    ["./bad%5Cpath.md", /Unsafe local Markdown link path/u]
+  ]) {
+    await writeFile(join(sandbox, "docs/source.md"), `[Target](${link})\n`);
+    assert.throws(
+      () =>
+        assertTrackedLocalMarkdownLinks(["docs/source.md"], {
+          root: sandbox,
+          trackedPaths: new Set(["docs/source.md"])
+        }),
+      pattern
+    );
+  }
+});
+
+test("matches Git index paths with exact case and directory boundaries", async (t) => {
+  const sandbox = await mkdtemp(join(tmpdir(), "prompts-exact-index-links-"));
+  t.after(() => rm(sandbox, { recursive: true, force: true }));
+  await mkdir(join(sandbox, "docs"), { recursive: true });
+
+  for (const [link, trackedPath] of [
+    ["./Case.md", "docs/case.md"],
+    ["./pro", "docs/proof/image.png"]
+  ]) {
+    await writeFile(join(sandbox, "docs/source.md"), `[Target](${link})\n`);
+    assert.throws(
+      () =>
+        assertTrackedLocalMarkdownLinks(["docs/source.md"], {
+          root: sandbox,
+          trackedPaths: new Set(["docs/source.md", trackedPath])
+        }),
+      /absent from commit-materializable Git index paths/u
+    );
+  }
+});
+
+test("fails closed when the Git index cannot be read", () => {
+  assert.throws(
+    () =>
+      gitIndexPaths("/fixture", () => ({
+        error: null,
+        signal: null,
+        status: 128,
+        stderr: "fatal: not a git repository",
+        stdout: ""
+      })),
+    /Unable to read the Git index with git --no-pager ls-files --cached -z --: fatal: not a git repository/u
+  );
+});
+
+test("uses fixed Git argv and subtracts intent-to-add paths from cached paths", () => {
+  const calls = [];
+  const outputs = ["tracked.md\0staged.md\0intent.md\0", "staged.md\0intent.md\0", "staged.md\0"];
+  const paths = gitIndexPaths("/fixture", (command, args, options) => {
+    calls.push({ command, args: [...args], options });
+    return {
+      error: undefined,
+      signal: null,
+      status: 0,
+      stderr: "",
+      stdout: outputs[calls.length - 1]
+    };
+  });
+
+  assert.deepEqual(paths, new Set(["tracked.md", "staged.md"]));
+  assert.deepEqual(
+    calls.map(({ command, args }) => [command, args]),
+    [
+      ["git", ["--no-pager", "ls-files", "--cached", "-z", "--"]],
+      [
+        "git",
+        [
+          "--no-pager",
+          "diff",
+          "--cached",
+          "--name-only",
+          "-z",
+          "--no-ext-diff",
+          "--no-textconv",
+          "--no-renames",
+          "--ita-visible-in-index",
+          "--"
+        ]
+      ],
+      [
+        "git",
+        [
+          "--no-pager",
+          "diff",
+          "--cached",
+          "--name-only",
+          "-z",
+          "--no-ext-diff",
+          "--no-textconv",
+          "--no-renames",
+          "--ita-invisible-in-index",
+          "--"
+        ]
+      ]
+    ]
+  );
+  assert.ok(calls.every(({ options }) => options.cwd === "/fixture"));
+  assert.ok(calls.every(({ options }) => options.encoding === "utf8"));
+  assert.ok(calls.every(({ options }) => options.env.GIT_OPTIONAL_LOCKS === "0"));
+});
+
+test("fails closed when the three Git inventory views violate set invariants", () => {
+  for (const outputs of [
+    ["tracked.md\0", "tracked.md\0", "tracked.md\0unexpected.md\0"],
+    ["tracked.md\0", "tracked.md\0intent.md\0", "tracked.md\0"]
+  ]) {
+    let call = 0;
+    assert.throws(
+      () =>
+        gitIndexPaths("/fixture", () => {
+          const stdout = outputs[call];
+          call += 1;
+          return { error: undefined, signal: null, status: 0, stderr: "", stdout };
+        }),
+      /Inconsistent Git index inventory/u
+    );
+  }
+});
+
+test("fails closed for Git errors, signals, thrown calls, and non-text output", () => {
+  const ok = { error: undefined, signal: null, status: 0, stderr: "", stdout: "" };
+  const failures = [
+    {
+      at: 0,
+      result: { ...ok, error: new Error("spawn failed"), status: null },
+      pattern: /Unable to read the Git index/u
+    },
+    {
+      at: 1,
+      result: { ...ok, status: 128, stderr: "fatal: diff failed" },
+      pattern: /fatal: diff failed/u
+    },
+    {
+      at: 2,
+      result: { ...ok, signal: "SIGTERM", status: null },
+      pattern: /Unable to read the Git index/u
+    },
+    {
+      at: 0,
+      result: { ...ok, stdout: Buffer.from("tracked.md\0") },
+      pattern: /did not return UTF-8 text/u
+    },
+    {
+      at: 0,
+      result: { ...ok, stderr: Buffer.from("") },
+      pattern: /did not return UTF-8 text/u
+    }
+  ];
+
+  for (const { at, result, pattern } of failures) {
+    let call = 0;
+    assert.throws(
+      () =>
+        gitIndexPaths("/fixture", () => {
+          const current = call;
+          call += 1;
+          return current === at ? result : ok;
+        }),
+      pattern
+    );
+  }
+
+  assert.throws(
+    () =>
+      gitIndexPaths("/fixture", () => {
+        throw new Error("injected throw");
+      }),
+    /Unable to read the Git index/u
+  );
+});
+
+test("runs the tracked-link preflight before invoking markdown-link-check", async () => {
+  const expected = new Error("preflight failed");
+  let checkerInvocations = 0;
+
+  await assert.rejects(
+    main(["docs/source.md"], {
+      assertTrackedLocalMarkdownLinksImpl: () => {
+        throw expected;
+      },
+      loadCheckerConfigImpl: () => {},
+      runCheckerImpl: async () => {
+        checkerInvocations += 1;
+        return { exitCode: 0, signal: null, error: null, output: "ok" };
+      }
+    }),
+    expected
+  );
+  assert.equal(checkerInvocations, 0);
 });
 
 function failed(output, overrides = {}) {

@@ -1,13 +1,41 @@
-import { spawn } from "node:child_process";
+import { spawn, spawnSync } from "node:child_process";
 import { existsSync, readFileSync, readdirSync } from "node:fs";
 import { createRequire } from "node:module";
-import { dirname, relative, resolve } from "node:path";
+import { dirname, isAbsolute, relative, resolve, sep } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 
 const require = createRequire(import.meta.url);
 const repoRoot = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const checkerPath = require.resolve("markdown-link-check/markdown-link-check");
+const checkerRequire = createRequire(checkerPath);
+const extractMarkdownLinks = checkerRequire("markdown-link-extractor");
 const configPath = resolve(repoRoot, ".markdown-link-check.json");
+const checkerOwnedSchemes = new Set(["http", "https", "mailto"]);
+const cachedPathArgs = ["--no-pager", "ls-files", "--cached", "-z", "--"];
+const itaVisiblePathArgs = [
+  "--no-pager",
+  "diff",
+  "--cached",
+  "--name-only",
+  "-z",
+  "--no-ext-diff",
+  "--no-textconv",
+  "--no-renames",
+  "--ita-visible-in-index",
+  "--"
+];
+const itaInvisiblePathArgs = [
+  "--no-pager",
+  "diff",
+  "--cached",
+  "--name-only",
+  "-z",
+  "--no-ext-diff",
+  "--no-textconv",
+  "--no-renames",
+  "--ita-invisible-in-index",
+  "--"
+];
 
 export const MAX_ATTEMPTS = 3;
 export const RETRY_BACKOFF_MS = [500, 1_000];
@@ -124,6 +152,155 @@ export function defaultMarkdownPaths(root = repoRoot) {
     "goals/prompt-catalog-research-upgrade/hygiene-report.md",
     "goals/web-design-sota-enrich/goal.md"
   ];
+}
+
+function gitPathSet(root, args, spawnSyncImpl) {
+  const command = `git ${args.join(" ")}`;
+  let result;
+  try {
+    result = spawnSyncImpl("git", args, {
+      cwd: root,
+      encoding: "utf8",
+      env: { ...process.env, GIT_OPTIONAL_LOCKS: "0" }
+    });
+  } catch (error) {
+    throw new Error(`Unable to read the Git index with ${command}`, { cause: error });
+  }
+
+  if (!result || typeof result !== "object") {
+    throw new Error(`Unable to read the Git index with ${command}: invalid process result`);
+  }
+  if (result.error || result.signal || result.status !== 0) {
+    const detail = typeof result.stderr === "string" ? result.stderr.trim() : "";
+    throw new Error(
+      `Unable to read the Git index with ${command}${detail ? `: ${detail}` : ""}`,
+      result.error ? { cause: result.error } : undefined
+    );
+  }
+  if (typeof result.stdout !== "string" || typeof result.stderr !== "string") {
+    throw new Error(`${command} did not return UTF-8 text`);
+  }
+  return new Set(result.stdout.split("\0").filter(Boolean));
+}
+
+export function gitIndexPaths(root = repoRoot, spawnSyncImpl = spawnSync) {
+  const cachedPaths = gitPathSet(root, cachedPathArgs, spawnSyncImpl);
+  const itaVisiblePaths = gitPathSet(root, itaVisiblePathArgs, spawnSyncImpl);
+  const itaInvisiblePaths = gitPathSet(root, itaInvisiblePathArgs, spawnSyncImpl);
+
+  for (const path of itaInvisiblePaths) {
+    if (!itaVisiblePaths.has(path)) {
+      throw new Error(
+        `Inconsistent Git index inventory: the ITA-invisible diff contains ${JSON.stringify(path)} but the ITA-visible diff does not`
+      );
+    }
+  }
+  for (const path of itaVisiblePaths) {
+    if (!itaInvisiblePaths.has(path)) {
+      if (!cachedPaths.has(path)) {
+        throw new Error(
+          `Inconsistent Git index inventory: intent-to-add candidate ${JSON.stringify(path)} is absent from cached paths`
+        );
+      }
+      cachedPaths.delete(path);
+    }
+  }
+  return cachedPaths;
+}
+
+function repositoryRelativePath(root, absolutePath, { sourcePath, link }) {
+  const target = relative(root, absolutePath);
+  if (target === ".." || target.startsWith(`..${sep}`) || isAbsolute(target)) {
+    throw new Error(`Local Markdown link escapes the repository root: ${sourcePath} -> ${link}`);
+  }
+  return target.split(sep).join("/");
+}
+
+function decodedLocalLinkPath(link, sourcePath) {
+  if (link.startsWith("#")) return null;
+  if (link.startsWith("//")) {
+    throw new Error(`Unsafe network-relative Markdown link: ${sourcePath} -> ${link}`);
+  }
+  if (link.startsWith("/")) {
+    throw new Error(`Unsafe root-absolute Markdown link: ${sourcePath} -> ${link}`);
+  }
+  const scheme = /^([a-z][a-z0-9+.-]*):/iu.exec(link)?.[1]?.toLowerCase();
+  if (scheme) {
+    if (!checkerOwnedSchemes.has(scheme)) {
+      throw new Error(`Unsupported Markdown link scheme "${scheme}": ${sourcePath} -> ${link}`);
+    }
+    return null;
+  }
+  const separator = link.search(/[?#]/u);
+  const encodedPath = separator === -1 ? link : link.slice(0, separator);
+  if (!encodedPath) return null;
+
+  let decodedPath;
+  try {
+    decodedPath = decodeURIComponent(encodedPath);
+  } catch (error) {
+    throw new Error(`Invalid URL encoding in local Markdown link: ${sourcePath} -> ${link}`, {
+      cause: error
+    });
+  }
+  if (decodedPath.includes("\0") || decodedPath.includes("\\")) {
+    throw new Error(`Unsafe local Markdown link path: ${sourcePath} -> ${link}`);
+  }
+  return decodedPath;
+}
+
+function trackedTargetExists(target, trackedPaths) {
+  if (trackedPaths.has(target)) return true;
+  const directoryPrefix = target ? `${target}/` : "";
+  return [...trackedPaths].some((path) => path.startsWith(directoryPrefix));
+}
+
+export function assertTrackedLocalMarkdownLinks(
+  markdownPaths,
+  {
+    extractLinksImpl = extractMarkdownLinks,
+    gitIndexPathsImpl = gitIndexPaths,
+    readFileImpl = readFileSync,
+    root = repoRoot,
+    trackedPaths
+  } = {}
+) {
+  const indexPaths = trackedPaths === undefined ? gitIndexPathsImpl(root) : new Set(trackedPaths);
+  const missing = [];
+
+  for (const markdownPath of markdownPaths) {
+    const sourceAbsolutePath = resolve(root, markdownPath);
+    const sourcePath = repositoryRelativePath(root, sourceAbsolutePath, {
+      sourcePath: markdownPath,
+      link: markdownPath
+    });
+    const markdown = readFileImpl(sourceAbsolutePath, "utf8");
+    for (const link of extractLinksImpl(markdown)) {
+      const decodedPath = decodedLocalLinkPath(link, sourcePath);
+      if (decodedPath === null) continue;
+      const target = repositoryRelativePath(
+        root,
+        resolve(dirname(sourceAbsolutePath), decodedPath),
+        {
+          sourcePath,
+          link
+        }
+      );
+      if (!trackedTargetExists(target, indexPaths)) {
+        missing.push(`${sourcePath}: ${link} -> ${target || "."}`);
+      }
+    }
+  }
+
+  if (missing.length > 0) {
+    throw new Error(
+      `Local Markdown link targets are absent from commit-materializable Git index paths:\n${[
+        ...new Set(missing)
+      ]
+        .map((entry) => `- ${entry}`)
+        .join("\n")}`
+    );
+  }
 }
 
 export function deadLinkStatuses(output) {
@@ -277,11 +454,20 @@ export function writeAttemptOutput(
   }
 }
 
-export async function main(markdownPaths = process.argv.slice(2)) {
-  loadCheckerConfig();
-  const paths = markdownPaths.length > 0 ? markdownPaths : defaultMarkdownPaths();
+export async function main(
+  markdownPaths = process.argv.slice(2),
+  {
+    assertTrackedLocalMarkdownLinksImpl = assertTrackedLocalMarkdownLinks,
+    loadCheckerConfigImpl = loadCheckerConfig,
+    repositoryRoot = repoRoot,
+    runCheckerImpl = runChecker
+  } = {}
+) {
+  loadCheckerConfigImpl();
+  const paths = markdownPaths.length > 0 ? markdownPaths : defaultMarkdownPaths(repositoryRoot);
+  assertTrackedLocalMarkdownLinksImpl(paths, { root: repositoryRoot });
   const outcome = await runWithRetries({
-    runAttempt: () => runChecker(paths),
+    runAttempt: () => runCheckerImpl(paths),
     onAttempt: ({ attempt, maxAttempts, result, willRetry }) => {
       if (attempt > 1 || willRetry) {
         process.stderr.write(

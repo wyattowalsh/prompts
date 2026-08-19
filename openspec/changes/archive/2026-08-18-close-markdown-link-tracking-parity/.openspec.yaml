@@ -1,0 +1,4 @@
+schema: spec-driven
+created: 2026-08-18
+goal: Enforce clean-checkout parity and deterministic URI boundaries for
+  governed Markdown links using materializable Git index entries.

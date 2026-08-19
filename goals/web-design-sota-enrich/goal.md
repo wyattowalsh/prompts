@@ -12,15 +12,15 @@ Next-wave soft redesign of the Vite/React catalog site (`web/`) so it feels like
 | --- | --- |
 | Facts | [`facts.md`](./facts.md) · [`facts.meta.json`](./facts.meta.json) (21 accepted) |
 | Plan | [`plan.md`](./plan.md) **v4** (gate **approved**) |
-| Task graph | [`task-graph.json`](./task-graph.json) **91 nodes / 129 edges** |
+| Task graph | `task-graph.json` **91 nodes / 129 edges** |
 | Edges | [`task-graph.edges.tsv`](./task-graph.edges.tsv) |
 | Minimal-UI edges | [`minimal-ui-task-graph.edges.tsv`](./minimal-ui-task-graph.edges.tsv) **77 edges** through `H-DONE` |
 | Research | [`research.md`](./research.md) |
 | Visual contract | [`visual-contract.md`](./visual-contract.md) |
 | Grill notes | [`grill-notes.md`](./grill-notes.md) |
-| Interview | [`interview-result.json`](./interview-result.json) |
-| Facts review | [`facts-result.json`](./facts-result.json) |
-| Plan gate | [`plan-gate-result.json`](./plan-gate-result.json) → `{"decision":"approved"}` |
+| Interview | `interview-result.json` |
+| Facts review | `facts-result.json` |
+| Plan gate | `plan-gate-result.json` → `{"decision":"approved"}` |
 | Proof dir | [`proof/`](./proof/) (desktop dark palette, desktop light hub, mobile workspace) |
 
 ## Locks (from grill + interview + facts)
