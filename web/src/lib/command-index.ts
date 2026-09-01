@@ -50,9 +50,7 @@ export function buildCommandIndexFromCatalog(data: CommandCatalog): CommandItem[
     subtitle: prompt.blurb,
     href: `/catalog/${prompt.slug}/`,
     group: "Prompts" as const,
-    keywords: [prompt.title, prompt.slug, prompt.lane, prompt.blurb]
-      .join(" ")
-      .toLowerCase()
+    keywords: [prompt.title, prompt.slug, prompt.lane, prompt.blurb].join(" ").toLowerCase()
   }));
 
   // Pages already includes Explore; do not emit per-source URL rows.

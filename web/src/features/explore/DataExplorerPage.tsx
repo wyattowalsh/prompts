@@ -405,9 +405,7 @@ export function DataExplorerPage() {
                 </p>
               ) : null}
               {selected.kind === "prompt" ? (
-                <p className="muted meta-line">
-                  Lane: {selected.lane}
-                </p>
+                <p className="muted meta-line">Lane: {selected.lane}</p>
               ) : null}
             </div>
           )}
