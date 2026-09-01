@@ -19,8 +19,8 @@ const root = join(dirname(fileURLToPath(import.meta.url)), "..");
 /** Load and minimally validate the generated catalog for Node publication scripts. */
 export function loadCatalog(catalogPath = join(root, "src/data/catalog.json")) {
   const catalog = JSON.parse(readFileSync(catalogPath, "utf8"));
-  if (!catalog || !Array.isArray(catalog.recipes) || !Array.isArray(catalog.patterns)) {
-    throw new TypeError("Catalog route input must contain recipe and pattern arrays.");
+  if (!catalog || !Array.isArray(catalog.prompts)) {
+    throw new TypeError("Catalog route input must contain a prompts array.");
   }
   return catalog;
 }

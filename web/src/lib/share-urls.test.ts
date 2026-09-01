@@ -2,97 +2,28 @@ import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import { describe, it } from "node:test";
 import { PROVIDER_MARK_PROVENANCE } from "./provider-mark-contract.ts";
-import {
-  CHAT_PROVIDERS,
-  MAX_CHAT_SHARE_URL_LENGTH,
-  queryGraphemes,
-  truncateQuery
-} from "./share-urls.ts";
+import { CHAT_PROVIDERS } from "./share-urls.ts";
 
 describe("share-urls helpers", () => {
-  it("truncateQuery preserves surrounding input and caps", () => {
-    assert.equal(truncateQuery("  hi  "), "  hi  ");
-    const long = "x".repeat(4000);
-    assert.ok(truncateQuery(long, 100).endsWith("…"));
-    assert.equal(truncateQuery("abc", 0), "");
-    assert.equal(truncateQuery("abc", 1), "…");
-  });
-
-  it("fails closed instead of approximating graphemes without Intl.Segmenter", () => {
-    assert.throws(() => queryGraphemes("\r\n가🏴󠁧󠁢󠁳󠁣󠁴󠁿", null), /must support Intl\.Segmenter/);
-  });
-
-  it("truncateQuery never splits a surrogate pair or grapheme cluster", () => {
-    const emojiBoundary = truncateQuery("ab😀c", 4);
-    assert.equal(emojiBoundary, "ab…");
-    assert.doesNotThrow(() => encodeURIComponent(emojiBoundary));
-
-    const familyBoundary = truncateQuery("a👨‍👩‍👧‍👦b", 6);
-    assert.equal(familyBoundary, "a…");
-    assert.doesNotThrow(() => encodeURIComponent(familyBoundary));
-
-    const combiningBoundary = truncateQuery("ae\u0301bc", 3);
-    assert.equal(combiningBoundary, "a…");
-
-    const malformedInput = truncateQuery("before\ud83dafter\udc00");
-    assert.equal(malformedInput, "before�after�");
-    assert.doesNotThrow(() => encodeURIComponent(malformedInput));
-  });
-
-  it("provider URLs round-trip Unicode and reserved characters", () => {
-    const query = "  Review 🚀 & validate? #1\nUse 50% confidence.  ";
-
+  it("exposes provider home URLs without prompt query payloads", () => {
     for (const provider of CHAT_PROVIDERS) {
-      const url = new URL(provider.buildUrl(query));
-      assert.equal(url.searchParams.get(provider.queryParameter), query, provider.id);
-      assert.equal(provider.maxUrlLength, MAX_CHAT_SHARE_URL_LENGTH);
+      const url = new URL(provider.homeUrl);
+      assert.equal(url.search, "", provider.id);
+      assert.equal(url.searchParams.get("q"), null, provider.id);
+      assert.equal(url.searchParams.get("text"), null, provider.id);
+      assert.equal("buildUrl" in provider, false, provider.id);
     }
   });
 
-  it("preserves every within-budget character without a fixed pre-cap", () => {
-    const ascii = "x".repeat(3_550);
-    const spaced = "  keep boundary whitespace  ";
-    for (const provider of CHAT_PROVIDERS) {
-      for (const query of [ascii, spaced]) {
-        const href = provider.buildUrl(query);
-        assert.ok(href.length <= provider.maxUrlLength, provider.id);
-        assert.equal(new URL(href).searchParams.get(provider.queryParameter), query, provider.id);
-      }
-    }
-  });
-
-  it("caps every final provider URL after encoding without splitting graphemes", () => {
-    const inputs = [
-      `start-${"😀".repeat(2_500)}-finish`,
-      `start-${"e\u0301".repeat(4_000)}-finish`,
-      `start-${"👨‍👩‍👧‍👦".repeat(800)}-finish`,
-      `before\ud83d${"🚀".repeat(2_500)}after\udc00`
-    ];
-
-    for (const provider of CHAT_PROVIDERS) {
-      for (const input of inputs) {
-        const href = provider.buildUrl(input);
-        assert.ok(
-          href.length <= provider.maxUrlLength,
-          `${provider.id} exceeded ${provider.maxUrlLength}: ${href.length}`
-        );
-
-        const decoded = new URL(href).searchParams.get(provider.queryParameter);
-        assert.ok(decoded, `${provider.id} produced an empty bounded query`);
-        assert.ok(decoded.endsWith("…"), `${provider.id} omitted its truncation marker`);
-        assert.doesNotThrow(() => encodeURIComponent(decoded));
-
-        const retained = decoded.slice(0, -1);
-        const sanitizedInput = truncateQuery(input);
-        assert.ok(
-          sanitizedInput.startsWith(retained),
-          `${provider.id} did not preserve a grapheme-safe query prefix`
-        );
-        if (input.includes("e\u0301")) {
-          assert.ok(retained.endsWith("\u0301"), `${provider.id} split a combining grapheme`);
-        }
-      }
-    }
+  it("Open-in-Chat copies locally and opens only provider homeUrl", () => {
+    const source = readFileSync(new URL("../components/OpenInChat.tsx", import.meta.url), "utf8");
+    assert.match(source, /provider\.homeUrl/);
+    assert.match(source, /window\.open\(homeUrl/);
+    assert.match(source, /prompt is copied, not placed in\s+the URL/i);
+    assert.doesNotMatch(source, /buildUrl\(/);
+    assert.doesNotMatch(source, /\?q=/);
+    assert.doesNotMatch(source, /\?text=/);
+    assert.doesNotMatch(source, /Shares prompt in URL/);
   });
 
   it("records local, non-network provenance for uniform neutral monograms", () => {

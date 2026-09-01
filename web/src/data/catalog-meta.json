@@ -1,9 +1,9 @@
 {
   "version": 1,
-  "generated_at": "2026-08-18T06:13:30.157Z",
+  "generated_at": "2026-09-01T06:03:22.274Z",
   "meta": {
     "title": "prompts",
-    "description": "Research-backed engineering recipes, model/API controls, safety checks, eval patterns, and source-grounded templates for practical AI workflows.",
+    "description": "Research-backed prompt catalog: model/API controls, safety checks, eval guidance, and source-grounded templates for practical AI workflows.",
     "repository_url": "https://github.com/wyattowalsh/prompts",
     "web_base_url_default": "https://prompts.w4w.dev"
   },
@@ -18,15 +18,18 @@
         "background": "172554"
       },
       "order": 1,
-      "recipe_slugs": [
+      "prompt_slugs": [
         "source-grounded-answer",
         "web-research-brief",
         "literature-scan",
         "claim-checker",
         "citation-matrix",
-        "disagreement-map"
+        "research-synthesis",
+        "disagreement-map",
+        "knowledge-base-engineer",
+        "multimodal-evidence-reasoning"
       ],
-      "featured_recipe_slugs": [
+      "featured_prompt_slugs": [
         "source-grounded-answer",
         "web-research-brief",
         "claim-checker",
@@ -43,15 +46,18 @@
         "background": "3B0764"
       },
       "order": 2,
-      "recipe_slugs": [
+      "prompt_slugs": [
         "executive-brief",
         "rewrite-with-constraints",
         "style-transfer-without-examples",
         "dense-summary",
         "faq-generator",
-        "newsletter-draft"
+        "newsletter-draft",
+        "chain-of-density-summarization",
+        "markmap-generator",
+        "quick-enhance"
       ],
-      "featured_recipe_slugs": [
+      "featured_prompt_slugs": [
         "executive-brief",
         "rewrite-with-constraints",
         "dense-summary",
@@ -68,18 +74,18 @@
         "background": "14532D"
       },
       "order": 3,
-      "recipe_slugs": [
+      "prompt_slugs": [
         "code-review",
         "bug-rca",
-        "unit-test-writer",
+        "unit-test-authoring",
         "refactor-planner",
         "pr-description",
         "api-contract-explainer"
       ],
-      "featured_recipe_slugs": [
+      "featured_prompt_slugs": [
         "code-review",
         "bug-rca",
-        "unit-test-writer",
+        "unit-test-authoring",
         "api-contract-explainer"
       ]
     },
@@ -93,19 +99,23 @@
         "background": "713F12"
       },
       "order": 4,
-      "recipe_slugs": [
+      "prompt_slugs": [
         "json-extractor",
+        "structured-outputs-json-schema",
         "table-normalizer",
         "classifier",
-        "ner-extractor",
+        "text-classification",
+        "named-entity-extraction",
         "sentiment-triage",
-        "synthetic-edge-cases"
+        "sentiment-analysis",
+        "synthetic-edge-cases",
+        "data-augmentation"
       ],
-      "featured_recipe_slugs": [
+      "featured_prompt_slugs": [
         "json-extractor",
         "table-normalizer",
         "classifier",
-        "ner-extractor"
+        "named-entity-extraction"
       ]
     },
     {
@@ -118,19 +128,19 @@
         "background": "500724"
       },
       "order": 5,
-      "recipe_slugs": [
+      "prompt_slugs": [
         "prd-drafter",
         "user-story-splitter",
         "acceptance-criteria-writer",
         "launch-checklist",
-        "ux-review",
+        "usability-review",
         "support-macro"
       ],
-      "featured_recipe_slugs": [
+      "featured_prompt_slugs": [
         "prd-drafter",
         "user-story-splitter",
         "launch-checklist",
-        "ux-review"
+        "usability-review"
       ]
     },
     {
@@ -143,7 +153,7 @@
         "background": "431407"
       },
       "order": 6,
-      "recipe_slugs": [
+      "prompt_slugs": [
         "incident-summary",
         "runbook-generator",
         "log-triage",
@@ -151,7 +161,7 @@
         "decision-memo",
         "meeting-action-extractor"
       ],
-      "featured_recipe_slugs": [
+      "featured_prompt_slugs": [
         "incident-summary",
         "runbook-generator",
         "log-triage",
@@ -168,15 +178,25 @@
         "background": "164E63"
       },
       "order": 7,
-      "recipe_slugs": [
+      "prompt_slugs": [
         "tool-use-planner",
         "rag-answer-contract",
+        "react",
         "prompt-injection-scanner",
         "eval-set-generator",
         "regression-judge",
-        "prompt-optimizer"
+        "prompt-chaining",
+        "reflexion",
+        "prompt-optimizer",
+        "evaluation-flywheel",
+        "meta-prompting",
+        "eval-driven-prompt-optimization",
+        "context-engineering",
+        "rag-citation-grounded-answering",
+        "tool-calling-contract",
+        "prompt-injection-defense"
       ],
-      "featured_recipe_slugs": [
+      "featured_prompt_slugs": [
         "tool-use-planner",
         "rag-answer-contract",
         "prompt-injection-scanner",
@@ -193,50 +213,18 @@
         "background": "2E1065"
       },
       "order": 8,
-      "recipe_slugs": [
-        "plan-and-solve",
-        "step-back-answer",
+      "prompt_slugs": [
+        "plan-then-solve",
+        "step-back-reasoning",
         "verification-pass",
-        "self-refine-pass",
-        "panel-review",
-        "tradeoff-matrix"
-      ],
-      "featured_recipe_slugs": [
-        "plan-and-solve",
-        "verification-pass",
-        "self-refine-pass",
-        "tradeoff-matrix"
-      ]
-    }
-  ],
-  "pattern_sections": [
-    {
-      "key": "core-prompt-construction",
-      "title": "Core Prompt Construction",
-      "order": 1,
-      "pattern_slugs": [
+        "critique-revise",
+        "simulated-panel",
+        "tradeoff-matrix",
         "direct-zero-shot",
         "structured-zero-shot",
-        "structured-outputs-json-schema",
         "few-shot-prompting",
-        "prompt-chaining",
-        "meta-prompting",
-        "eval-driven-prompt-optimization",
         "active-prompt",
-        "context-engineering",
-        "rag-citation-grounded-answering",
-        "tool-calling-contract",
-        "prompt-injection-defense"
-      ]
-    },
-    {
-      "key": "reasoning-and-search",
-      "title": "Reasoning and Search",
-      "order": 2,
-      "pattern_slugs": [
         "zero-shot-chain-of-thought",
-        "plan-and-solve-prompting",
-        "step-back-prompting",
         "intentional-analysis",
         "chain-of-draft",
         "skeleton-of-thought",
@@ -244,46 +232,19 @@
         "tree-of-thoughts",
         "graph-of-thoughts",
         "program-of-thoughts",
-        "multimodal-evidence-reasoning"
-      ]
-    },
-    {
-      "key": "verification-and-iteration",
-      "title": "Verification and Iteration",
-      "order": 3,
-      "pattern_slugs": [
         "self-consistency",
-        "react",
         "chain-of-verification",
-        "self-refine",
-        "reflexion",
-        "evaluation-flywheel"
-      ]
-    },
-    {
-      "key": "task-and-workflow-snippets",
-      "title": "Task and Workflow Snippets",
-      "order": 4,
-      "pattern_slugs": [
-        "text-classification",
-        "ner-named-entity-recognition",
-        "sentiment-analysis",
-        "data-augmentation",
-        "research-synthesis",
-        "chain-of-density-summarization",
-        "knowledge-base-engineer",
-        "markmap-generator",
-        "python-unit-test-writer",
-        "quick-enhance",
-        "panelgpt",
-        "expert-panel-discussion",
-        "ux-review-checklist",
         "emotional-persuasion-prompting"
+      ],
+      "featured_prompt_slugs": [
+        "plan-then-solve",
+        "verification-pass",
+        "critique-revise",
+        "tradeoff-matrix"
       ]
     }
   ],
   "counts": {
-    "recipes": 48,
-    "patterns": 43
+    "prompts": 83
   }
 }

@@ -65,8 +65,8 @@ function markdownSourceList(sources = []) {
     .join("\n");
 }
 
-function renderRecipeExport(recipe, descriptor, baseUrl) {
-  const placeholders = recipe.placeholders
+function renderPlaceholders(placeholders = []) {
+  return placeholders
     .map(
       (placeholder) => `#### \`{${placeholder.name}}\`
 
@@ -82,94 +82,98 @@ ${fencedText(placeholder.notes)}${
       }`
     )
     .join("\n\n");
-  const controlNote = recipe.after_copy.control_evidence_note;
+}
 
-  return `# ${markdownLinkText(descriptor.title)}
+function renderModeExport(mode) {
+  const paste = mode.prompt?.trim()
+    ? `### Prompt\n\n${fencedText(mode.prompt)}`
+    : `### Template omission\n\n${fullMarkdownText(mode.template_omission_reason)}`;
+  const afterCopy = mode.after_copy
+    ? `### After copy
 
-Source: catalog/recipes/${descriptor.slug}.yaml
-Canonical URL: ${publicUrl(descriptor.path, baseUrl)}
+#### Fill pointer
 
-- Lane: ${fullMarkdownText(recipe.lane)}
-- Class: ${fullMarkdownText(recipe.class)}
-- Order: ${recipe.order}
-- Badge logo: ${fullMarkdownText(recipe.badge.logo)}
-- Badge color: ${fullMarkdownText(recipe.badge.color)}
-- Badge chip label: ${fullMarkdownText(recipe.badge.chip_label)}
+${fullMarkdownText(mode.after_copy.fill_pointer)}
 
-## Use for
+#### Expected output
 
-${fullMarkdownText(recipe.use_for)}
+${fullMarkdownText(mode.after_copy.expected_output)}
 
-## Placeholders
+#### Upgrade when
+
+${fullMarkdownText(mode.after_copy.upgrade_when)}`
+    : "";
+  const extraSources = mode.sources?.length
+    ? `### Mode sources\n\n${markdownSourceList(mode.sources)}`
+    : "";
+  const placeholders = mode.placeholders?.length
+    ? `### Placeholders\n\n${renderPlaceholders(mode.placeholders)}`
+    : "";
+
+  return `## Mode: ${markdownLinkText(mode.label)} (\`${fullMarkdownText(mode.id)}\`)
+
+- Default: ${mode.default ? "yes" : "no"}
+- When to use: ${fullMarkdownText(mode.when_to_use)}
 
 ${placeholders}
 
-## Prompt
+${paste}
 
-${fencedText(recipe.prompt)}
+${afterCopy}
 
-## After copy
-
-### Fill pointer
-
-${fullMarkdownText(recipe.after_copy.fill_pointer)}
-
-### Expected output
-
-${fullMarkdownText(recipe.after_copy.expected_output)}
-
-### Upgrade when
-
-${fullMarkdownText(recipe.after_copy.upgrade_when)}${
-    controlNote == null ? "" : `\n\n### Control/evidence note\n\n${fullMarkdownText(controlNote)}`
-  }
-
-### Safety/eval checks
-
-${recipe.after_copy.safety_eval_checks.map((check) => `- ${fullMarkdownText(check)}`).join("\n")}
-
-## Sources
-
-${markdownSourceList(recipe.sources)}
-`;
+${extraSources}`.replace(/\n{3,}/g, "\n\n");
 }
 
-function renderPatternExport(pattern, descriptor, baseUrl) {
-  const template = pattern.template?.trim()
-    ? fencedText(pattern.template)
-    : fullMarkdownText(pattern.template_omission_reason);
-  const fields = [
-    ["Definition", pattern.definition],
-    ["Best use", pattern.best_use],
-    ["Avoid when", pattern.avoid_when],
-    ["Copyable template", template, true],
-    ["Model/API controls", pattern.model_api_controls],
-    ["Cost and latency", pattern.cost_latency],
-    ["Failure modes", pattern.failure_modes],
-    ["Evidence tier", pattern.evidence_tier],
-    ["Source type", pattern.source_type],
-    ["Eval required", pattern.eval_required ? "yes" : "no"],
-    ["Caveat", pattern.caveat]
+function renderPromptExport(prompt, descriptor, baseUrl) {
+  const optionalFields = [
+    ["Definition", prompt.definition],
+    ["Avoid when", prompt.avoid_when],
+    ["Model/API controls", prompt.model_api_controls],
+    ["Cost and latency", prompt.cost_latency],
+    ["Failure modes", prompt.failure_modes],
+    ["Eval required", prompt.eval_required == null ? "" : prompt.eval_required ? "yes" : "no"],
+    ["Related", (prompt.related ?? []).join(", ")]
   ]
-    .map(
-      ([label, value, preRendered]) =>
-        `## ${label}\n\n${preRendered ? value : fullMarkdownText(value)}`
-    )
+    .filter(([, value]) => value)
+    .map(([label, value]) => `## ${label}\n\n${fullMarkdownText(value)}`)
     .join("\n\n");
+  const modes = (prompt.modes ?? []).map((mode) => renderModeExport(mode)).join("\n\n");
 
   return `# ${markdownLinkText(descriptor.title)}
 
-Source: catalog/patterns/${descriptor.slug}.yaml
+Source: catalog/items/${descriptor.slug}.yaml
 Canonical URL: ${publicUrl(descriptor.path, baseUrl)}
 
-- Section: ${fullMarkdownText(pattern.section)}
-- Order: ${pattern.order}
+- Facet: ${fullMarkdownText(prompt.facet)}
+- Lane: ${fullMarkdownText(prompt.lane)}
+- Order: ${prompt.order}
+- Badge logo: ${fullMarkdownText(prompt.badge.logo)}
+- Badge color: ${fullMarkdownText(prompt.badge.color)}
+- Badge chip label: ${fullMarkdownText(prompt.badge.chip_label)}
 
-${fields}
+## Blurb
+
+${fullMarkdownText(prompt.blurb)}
+
+## Evidence
+
+${fullMarkdownText(prompt.evidence)}
+
+## Caveat
+
+${fullMarkdownText(prompt.caveat)}
+
+## Safety
+
+${(prompt.safety ?? []).map((item) => `- ${fullMarkdownText(item)}`).join("\n")}
+
+${optionalFields}
+
+${modes}
 
 ## Sources
 
-${markdownSourceList(pattern.sources)}
+${markdownSourceList(prompt.sources)}
 `;
 }
 
@@ -223,7 +227,7 @@ ${urls}
 
 export function renderLlmsTxt(descriptors, catalog, { baseUrl = siteBaseUrl() } = {}) {
   const indexable = indexableRouteDescriptors(descriptors);
-  const primaryTypes = new Set(["home", "explore", "recipes-index", "patterns-index"]);
+  const primaryTypes = new Set(["home", "explore"]);
   const pages = indexable
     .filter((descriptor) => primaryTypes.has(descriptor.pageType))
     .map(
@@ -231,15 +235,8 @@ export function renderLlmsTxt(descriptors, catalog, { baseUrl = siteBaseUrl() } 
         `- [${markdownLinkText(descriptor.title)}](${publicUrl(descriptor.path, baseUrl)}): ${markdownProse(descriptor.description)}`
     )
     .join("\n");
-  const recipes = indexable
-    .filter((descriptor) => descriptor.pageType === "recipe")
-    .map(
-      (descriptor) =>
-        `- [${markdownLinkText(descriptor.title)}](${publicUrl(descriptor.path, baseUrl)})`
-    )
-    .join("\n");
-  const patterns = indexable
-    .filter((descriptor) => descriptor.pageType === "pattern")
+  const prompts = indexable
+    .filter((descriptor) => descriptor.pageType === "prompt")
     .map(
       (descriptor) =>
         `- [${markdownLinkText(descriptor.title)}](${publicUrl(descriptor.path, baseUrl)})`
@@ -254,7 +251,7 @@ export function renderLlmsTxt(descriptors, catalog, { baseUrl = siteBaseUrl() } 
 
 ${markdownLinkText(site.name)} is a catalog-driven, source-grounded prompt engineering library. The authoring SSOT is \`catalog/\`; generated surfaces include README.md and this static site.
 
-When citing, prefer specific recipe URLs (for example \`${base}/recipes/source-grounded-answer/\`). Treat catalog YAML as the source of truth.
+When citing, prefer specific prompt URLs (for example \`${base}/catalog/source-grounded-answer/\`). Treat catalog YAML as the source of truth.
 
 ## Primary Sources
 
@@ -267,13 +264,9 @@ When citing, prefer specific recipe URLs (for example \`${base}/recipes/source-g
 
 ${pages}
 
-## Prompt recipes
+## Prompts
 
-${recipes}
-
-## Pattern notes
-
-${patterns}
+${prompts}
 `;
 }
 
@@ -291,14 +284,9 @@ function publicUrl(path, baseUrl) {
 
 export function renderLlmsFullTxt(descriptors, catalog, { baseUrl = siteBaseUrl() } = {}) {
   const indexable = indexableRouteDescriptors(descriptors);
-  const recipesBySlug = new Map(
+  const promptsBySlug = new Map(
     indexable
-      .filter((descriptor) => descriptor.pageType === "recipe")
-      .map((descriptor) => [descriptor.slug, descriptor])
-  );
-  const patternsBySlug = new Map(
-    indexable
-      .filter((descriptor) => descriptor.pageType === "pattern")
+      .filter((descriptor) => descriptor.pageType === "prompt")
       .map((descriptor) => [descriptor.slug, descriptor])
   );
   const home = indexable.find((descriptor) => descriptor.pageType === "home");
@@ -314,16 +302,10 @@ ${markdownProse(catalog.meta?.description, site.description)}
 `
   ];
 
-  for (const recipe of catalog.recipes) {
-    const descriptor = recipesBySlug.get(recipe.slug);
-    if (!descriptor) throw new Error(`Route inventory is missing recipe: ${recipe.slug}`);
-    chunks.push(renderRecipeExport(recipe, descriptor, baseUrl));
-  }
-
-  for (const pattern of catalog.patterns) {
-    const descriptor = patternsBySlug.get(pattern.slug);
-    if (!descriptor) throw new Error(`Route inventory is missing pattern: ${pattern.slug}`);
-    chunks.push(renderPatternExport(pattern, descriptor, baseUrl));
+  for (const prompt of catalog.prompts) {
+    const descriptor = promptsBySlug.get(prompt.slug);
+    if (!descriptor) throw new Error(`Route inventory is missing prompt: ${prompt.slug}`);
+    chunks.push(renderPromptExport(prompt, descriptor, baseUrl));
   }
 
   return chunks.join("\n\n---\n\n");

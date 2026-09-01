@@ -10,96 +10,121 @@ export type Placeholder = {
   preview?: string;
 };
 
-export type Recipe = {
-  slug: string;
-  title: string;
-  lane: string;
-  class: string;
-  order: number;
-  badge: { logo: string; color: string; chip_label: string };
-  use_for: string;
+export type PromptMode = {
+  id: string;
+  label: string;
+  default: boolean;
+  when_to_use: string;
+  prompt?: string;
+  template_omission_reason?: string;
   placeholders: Placeholder[];
-  prompt: string;
-  after_copy: {
+  after_copy?: {
     fill_pointer: string;
     expected_output: string;
     upgrade_when: string;
-    control_evidence_note?: string | null;
-    safety_eval_checks: string[];
   };
-  sources: SourceRef[];
+  sources?: SourceRef[];
 };
 
-export type Pattern = {
+export type PromptFacet = "job" | "method";
+
+export type Prompt = {
   slug: string;
   title: string;
-  section: string;
+  facet: PromptFacet;
+  lane: string;
+  blurb: string;
   order: number;
-  definition: string;
-  best_use: string;
-  avoid_when: string;
-  template?: string | null;
-  model_api_controls: string;
-  cost_latency: string;
-  failure_modes: string;
-  evidence_tier: string;
-  source_type: string;
-  eval_required: boolean;
-  caveat: string;
+  badge: { logo: string; color: string; chip_label: string };
   sources: SourceRef[];
+  evidence: string;
+  safety: string[];
+  caveat: string;
+  definition?: string;
+  avoid_when?: string;
+  model_api_controls?: string;
+  cost_latency?: string;
+  failure_modes?: string;
+  eval_required?: boolean;
+  related?: string[];
+  modes: PromptMode[];
+};
+
+export type CatalogLane = {
+  key: string;
+  title: string;
+  color?: string;
+  badge?: { label: string; logo: string; background: string };
+  order: number;
+  prompt_slugs: string[];
+  featured_prompt_slugs?: string[];
 };
 
 export type Catalog = {
   version: number;
+  generated_at?: string;
   meta: {
     title: string;
     description: string;
     repository_url: string;
     web_base_url_default?: string;
   };
-  lanes: Array<{
-    key: string;
-    title: string;
-    color?: string;
-    order: number;
-    recipe_slugs: string[];
-  }>;
-  pattern_sections: Array<{
-    key: string;
-    title: string;
-    order: number;
-    pattern_slugs: string[];
-  }>;
-  recipes: Recipe[];
-  patterns: Pattern[];
-  counts: { recipes: number; patterns: number };
+  lanes: CatalogLane[];
+  prompts: Prompt[];
+  counts: { prompts: number };
 };
 
 export const catalog = data as Catalog;
 
-export function getRecipe(slug: string) {
-  return catalog.recipes.find((recipe) => recipe.slug === slug);
+/** Absolute in-app path for a prompt detail page (trailing slash). */
+export function promptDetailHref(slug: string): string {
+  return `/catalog/${slug}/`;
 }
 
-export function getPattern(slug: string) {
-  return catalog.patterns.find((pattern) => pattern.slug === slug);
+export function getPrompt(slug: string) {
+  return catalog.prompts.find((prompt) => prompt.slug === slug);
 }
 
-export function searchCatalog(query: string) {
+export function resolvePromptMode(prompt: Prompt, modeId?: string | null): PromptMode {
+  const requested = modeId ? prompt.modes.find((mode) => mode.id === modeId) : undefined;
+  const fallback = prompt.modes.find((mode) => mode.default) ?? prompt.modes[0];
+  if (!fallback) {
+    throw new Error(`Prompt ${prompt.slug} has no modes`);
+  }
+  return requested ?? fallback;
+}
+
+export function modeHasPastePath(mode: PromptMode): boolean {
+  return Boolean(mode.prompt?.trim());
+}
+
+export function promptSources(prompt: Prompt, mode?: PromptMode): SourceRef[] {
+  const list = [...prompt.sources, ...(mode?.sources ?? [])];
+  const seen = new Set<string>();
+  const unique: SourceRef[] = [];
+  for (const source of list) {
+    if (seen.has(source.url)) continue;
+    seen.add(source.url);
+    unique.push(source);
+  }
+  return unique;
+}
+
+export function searchCatalog(query: string): Prompt[] {
   const q = query.trim().toLowerCase();
-  if (!q) return { recipes: catalog.recipes, patterns: catalog.patterns };
-  return {
-    recipes: catalog.recipes.filter(
-      (recipe) =>
-        recipe.title.toLowerCase().includes(q) ||
-        recipe.use_for.toLowerCase().includes(q) ||
-        recipe.slug.includes(q)
-    ),
-    patterns: catalog.patterns.filter(
-      (pattern) =>
-        pattern.title.toLowerCase().includes(q) ||
-        pattern.definition.toLowerCase().includes(q) ||
-        pattern.slug.includes(q)
-    )
-  };
+  if (!q) return catalog.prompts.slice();
+  return catalog.prompts.filter((prompt) => {
+    const hay = [
+      prompt.title,
+      prompt.blurb,
+      prompt.slug,
+      prompt.facet,
+      prompt.lane,
+      prompt.definition ?? "",
+      prompt.avoid_when ?? ""
+    ]
+      .join(" ")
+      .toLowerCase();
+    return hay.includes(q);
+  });
 }

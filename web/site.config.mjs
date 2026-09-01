@@ -7,7 +7,8 @@ export const site = {
   rawRepositoryUrl: "https://raw.githubusercontent.com/wyattowalsh/prompts/main",
   authorName: "Wyatt Walsh",
   language: "en",
-  description: "Research-backed engineering recipes, patterns, and safety-first templates.",
+  description:
+    "Research-backed prompt catalog: model/API controls, safety checks, eval guidance, and source-grounded templates for practical AI workflows.",
   topicTags: [
     "prompt engineering",
     "AI workflows",

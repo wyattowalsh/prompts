@@ -39,55 +39,24 @@ import { cn } from "../lib/utils";
 
 const CommandPalette = lazy(() => import("../components/CommandPalette"));
 const HomePage = lazy(() =>
-  import("../features/recipes/HomePage").then((m) => ({ default: m.HomePage }))
+  import("../features/catalog/HomePage").then((m) => ({ default: m.HomePage }))
 );
-const RecipesIndexPage = lazy(() =>
-  import("../features/recipes/RecipesIndexPage").then((m) => ({ default: m.RecipesIndexPage }))
-);
-const RecipePage = lazy(async () => {
+const PromptPage = lazy(async () => {
   const [pageModule, catalogModule] = await Promise.all([
-    import("../features/recipes/RecipePage"),
+    import("../features/catalog/PromptPage"),
     import("../lib/catalog")
   ]);
   return {
-    default: function RecipeRoute() {
+    default: function PromptRoute() {
       const { slug = "" } = useParams();
-      const recipe = catalogModule.getRecipe(slug);
-      const page = <pageModule.RecipePage />;
-      if (!recipe) return page;
+      const prompt = catalogModule.getPrompt(slug);
+      const page = <pageModule.PromptPage />;
+      if (!prompt) return page;
       return (
         <DescriptorMetadataBoundary
           descriptor={catalogEntryRouteDescriptor(
-            "recipe",
-            recipe,
-            catalogModule.catalog.meta.description
-          )}
-        >
-          {page}
-        </DescriptorMetadataBoundary>
-      );
-    }
-  };
-});
-const PatternsIndexPage = lazy(() =>
-  import("../features/patterns/PatternsIndexPage").then((m) => ({ default: m.PatternsIndexPage }))
-);
-const PatternPage = lazy(async () => {
-  const [pageModule, catalogModule] = await Promise.all([
-    import("../features/patterns/PatternPage"),
-    import("../lib/catalog")
-  ]);
-  return {
-    default: function PatternRoute() {
-      const { slug = "" } = useParams();
-      const pattern = catalogModule.getPattern(slug);
-      const page = <pageModule.PatternPage />;
-      if (!pattern) return page;
-      return (
-        <DescriptorMetadataBoundary
-          descriptor={catalogEntryRouteDescriptor(
-            "pattern",
-            pattern,
+            "prompt",
+            prompt,
             catalogModule.catalog.meta.description
           )}
         >
@@ -184,8 +153,7 @@ function DescriptorMetadataBoundary({
 const appRouteManifest = clientRouteManifestFromDescriptors(
   routeDescriptorsFromCatalog({
     meta: catalogMeta.meta,
-    recipes: [],
-    patterns: []
+    prompts: []
   })
 );
 const appRouteRegistrations = clientRouteRegistrationsFromManifest(appRouteManifest);
@@ -327,13 +295,10 @@ export function App() {
         onPreviewNavigate={onPreviewNavigate}
       />
     ),
-    explore: () => <DataExplorerPage />,
-    "recipes-index": () => <RecipesIndexPage />,
-    "patterns-index": () => <PatternsIndexPage />
+    explore: () => <DataExplorerPage />
   };
   const detailPageRegistry: Record<ClientDetailPageType, () => ReactNode> = {
-    recipe: () => <RecipePage />,
-    pattern: () => <PatternPage />
+    prompt: () => <PromptPage />
   };
 
   return (
@@ -449,9 +414,7 @@ export function App() {
         </Routes>
       </main>
       <footer className="footer">
-        <span>
-          {catalogMeta.counts.recipes} recipes · {catalogMeta.counts.patterns} patterns
-        </span>
+        <span>{catalogMeta.counts.prompts} prompts</span>
         <span className="footer-hint">
           <kbd className="rounded border border-border bg-muted px-1 text-xs">⌘K</kbd> jump ·{" "}
           <kbd className="rounded border border-border bg-muted px-1 text-xs">/</kbd> search

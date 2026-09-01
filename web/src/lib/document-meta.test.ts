@@ -15,7 +15,7 @@ describe("document-meta helpers", () => {
     assert.equal(formatDocumentTitle("Panel Review"), "Panel Review · prompts");
     assert.equal(formatDocumentTitle("  "), DEFAULT_TITLE);
     assert.equal(formatDocumentTitle("prompts"), "prompts");
-    assert.equal(formatDocumentTitle("Recipes · prompts"), "Recipes · prompts");
+    assert.equal(formatDocumentTitle("Explore · prompts"), "Explore · prompts");
   });
 
   it("collapses whitespace and caps descriptions", () => {
@@ -32,7 +32,10 @@ describe("document-meta helpers", () => {
 
   it("normalizes canonical paths without retaining query or hash state", () => {
     assert.equal(normalizeCanonicalPath("/"), "/");
-    assert.equal(normalizeCanonicalPath("recipes/panel-review"), "/recipes/panel-review/");
+    assert.equal(
+      normalizeCanonicalPath("catalog/source-grounded-answer"),
+      "/catalog/source-grounded-answer/"
+    );
     assert.equal(normalizeCanonicalPath("//explore///?scope=sources#selected"), "/explore/");
   });
 
@@ -51,14 +54,14 @@ describe("document-meta helpers", () => {
     const metadata = buildDocumentMetadata({
       title: "Panel Review",
       description: "  collect   perspectives  ",
-      pathname: "/recipes/panel-review?draft=1",
-      baseUrl: "https://docs.example.com/catalog/"
+      pathname: "/catalog/source-grounded-answer?draft=1",
+      baseUrl: "https://docs.example.com/"
     });
     assert.deepEqual(metadata, {
       title: "Panel Review · prompts",
       description: "collect perspectives",
-      canonicalUrl: "https://docs.example.com/catalog/recipes/panel-review/",
-      socialImageUrl: "https://docs.example.com/catalog/og-default.png",
+      canonicalUrl: "https://docs.example.com/catalog/source-grounded-answer/",
+      socialImageUrl: "https://docs.example.com/og-default.png",
       socialImageAlt: "Panel Review — prompts catalog",
       robots: "index,follow,max-snippet:-1,max-image-preview:large,max-video-preview:-1"
     });

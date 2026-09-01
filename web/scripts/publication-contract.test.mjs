@@ -70,6 +70,8 @@ test("static shell template carries Open Graph and Twitter image-alt placeholder
   const html = readFileSync(join(webRoot, "index.html"), "utf8");
   assert.match(html, /<meta property="og:image:alt" content="[^"]+" \/>/);
   assert.match(html, /<meta name="twitter:image:alt" content="[^"]+" \/>/);
+  assert.match(html, /Research-backed prompt catalog/);
+  assert.doesNotMatch(html, /engineering recipes|recipes, patterns/i);
 });
 
 test("social and app-icon assets carry the current prompts brand contract", () => {
@@ -78,7 +80,7 @@ test("social and app-icon assets carry the current prompts brand contract", () =
   assert.equal(social.text.get("Title"), "prompts");
   assert.equal(
     social.text.get("Description"),
-    "Research-backed engineering recipes, model/API controls, safety checks, eval patterns, and source-grounded templates."
+    "Research-backed prompt catalog: model/API controls, safety checks, eval guidance, and source-grounded templates for practical AI workflows."
   );
 
   const apple = pngContract(join(webRoot, "public/apple-touch-icon.png"));

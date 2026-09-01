@@ -1,4 +1,4 @@
-export const EXPLORER_SCOPES = ["all", "sources", "recipes", "patterns"] as const;
+export const EXPLORER_SCOPES = ["all", "sources", "prompts"] as const;
 
 export type ExplorerScope = (typeof EXPLORER_SCOPES)[number];
 

@@ -4,7 +4,7 @@ import type { Placeholder } from "../../lib/catalog";
 import { Badge } from "../../components/ui/Badge";
 import { Button } from "../../components/ui/Button";
 
-export type RecipeFillFormProps = {
+export type PromptFillFormProps = {
   placeholders: readonly Placeholder[];
   values: Record<string, string>;
   onChange: (name: string, value: string) => void;
@@ -24,7 +24,7 @@ function fieldIsLong(ph: Placeholder): boolean {
 /**
  * Controlled form that maps catalog placeholders → values for template injection.
  */
-export function RecipeFillForm({
+export function PromptFillForm({
   placeholders,
   values,
   onChange,
@@ -32,7 +32,7 @@ export function RecipeFillForm({
   onClear,
   filledRequired,
   remaining
-}: RecipeFillFormProps) {
+}: PromptFillFormProps) {
   function handleSubmit(event: FormEvent) {
     event.preventDefault();
     const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -43,7 +43,7 @@ export function RecipeFillForm({
   }
 
   return (
-    <form className="fill-form" onSubmit={handleSubmit} data-recipe-fill-form>
+    <form className="fill-form" onSubmit={handleSubmit} data-prompt-fill-form>
       <div className="fill-form-head">
         <div>
           <h2 className="section-title" id="fill-form-heading">

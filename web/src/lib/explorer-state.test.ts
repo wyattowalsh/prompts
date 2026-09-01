@@ -15,6 +15,9 @@ import {
 describe("explorer state", () => {
   it("parses scopes and falls back to the default", () => {
     assert.equal(parseExplorerScope("sources"), "sources");
+    assert.equal(parseExplorerScope("prompts"), "prompts");
+    assert.equal(parseExplorerScope("recipes"), "all");
+    assert.equal(parseExplorerScope("patterns"), "all");
     assert.equal(parseExplorerScope("unknown"), "all");
     assert.equal(parseExplorerScope(null), "all");
   });
@@ -30,9 +33,9 @@ describe("explorer state", () => {
     const defaults = buildExplorerSearchParams(initial, "all", "   ");
     assert.equal(defaults.toString(), "utm_source=test");
 
-    const filtered = buildExplorerSearchParams(defaults, "patterns", "  chain\n of thought ");
+    const filtered = buildExplorerSearchParams(defaults, "prompts", "  chain\n of thought ");
     assert.equal(filtered.get("utm_source"), "test");
-    assert.equal(filtered.get("scope"), "patterns");
+    assert.equal(filtered.get("scope"), "prompts");
     assert.equal(filtered.get("q"), "chain of thought");
   });
 
@@ -40,20 +43,20 @@ describe("explorer state", () => {
     const initial = explorerUrlIntentFromParams(
       new URLSearchParams("utm_source=test&scope=sources&q=arxiv")
     );
-    const recipes = updateExplorerUrlIntent(initial, { scope: "recipes" });
-    const filtered = updateExplorerUrlIntent(recipes, { query: "source-grounded" });
+    const prompts = updateExplorerUrlIntent(initial, { scope: "prompts" });
+    const filtered = updateExplorerUrlIntent(prompts, { query: "source-grounded" });
 
-    assert.equal(filtered.scope, "recipes");
+    assert.equal(filtered.scope, "prompts");
     assert.equal(filtered.query, "source-grounded");
-    assert.equal(filtered.params.get("scope"), "recipes");
+    assert.equal(filtered.params.get("scope"), "prompts");
     assert.equal(filtered.params.get("q"), "source-grounded");
     assert.equal(filtered.params.get("utm_source"), "test");
     assert.equal(initial.params.get("scope"), "sources");
 
     const queryFirst = updateExplorerUrlIntent(initial, { query: "panel" });
-    const patterns = updateExplorerUrlIntent(queryFirst, { scope: "patterns" });
-    assert.equal(patterns.params.get("scope"), "patterns");
-    assert.equal(patterns.params.get("q"), "panel");
+    const allScope = updateExplorerUrlIntent(queryFirst, { scope: "all" });
+    assert.equal(allScope.params.get("scope"), null);
+    assert.equal(allScope.params.get("q"), "panel");
   });
 
   it("uses one normalized query value for UI state and the shareable URL", () => {
@@ -68,36 +71,28 @@ describe("explorer state", () => {
 
   it("rehydrates a popped entry even when its search is still pending", () => {
     const initial = explorerUrlIntentFromParams(new URLSearchParams("scope=sources&q=arxiv"));
-    const recipes = updateExplorerUrlIntent(initial, { scope: "recipes" });
-    const patterns = updateExplorerUrlIntent(recipes, { scope: "patterns" });
-    const pending = new Set([recipes.params.toString(), patterns.params.toString()]);
+    const prompts = updateExplorerUrlIntent(initial, { scope: "prompts" });
+    const allScope = updateExplorerUrlIntent(prompts, { scope: "all" });
+    const pending = new Set([prompts.params.toString(), allScope.params.toString()]);
 
-    assert.equal(reconcileExplorerUrlIntent(recipes.params, "PUSH", pending).kind, "acknowledge");
-    const popped = reconcileExplorerUrlIntent(recipes.params, "POP", pending);
+    assert.equal(reconcileExplorerUrlIntent(prompts.params, "PUSH", pending).kind, "acknowledge");
+    const popped = reconcileExplorerUrlIntent(prompts.params, "POP", pending);
     assert.equal(popped.kind, "rehydrate");
 
     const edited = updateExplorerUrlIntent(popped.intent, { query: "source-grounded" });
-    assert.equal(edited.params.get("scope"), "recipes");
+    assert.equal(edited.params.get("scope"), "prompts");
     assert.equal(edited.params.get("q"), "source-grounded");
   });
 
-  it("matches display metadata such as recipe lanes and pattern sections", () => {
-    const recipe = {
-      kind: "recipe",
+  it("matches display metadata such as prompt lanes", () => {
+    const prompt = {
+      kind: "prompt",
       title: "Runbook Generator",
       subtitle: "produce an operational runbook",
       searchTerms: ["operations", "Operations"]
     };
-    assert.equal(matchesExplorerQuery(recipe, "operations"), true);
-    assert.equal(matchesExplorerQuery(recipe, "writing"), false);
-
-    const pattern = {
-      kind: "pattern",
-      title: "Tool Calling Contract",
-      subtitle: "define a strict tool interface",
-      searchTerms: ["core-prompt-construction", "Core Prompt Construction"]
-    };
-    assert.equal(matchesExplorerQuery(pattern, " core\n prompt   construction "), true);
+    assert.equal(matchesExplorerQuery(prompt, "operations"), true);
+    assert.equal(matchesExplorerQuery(prompt, "writing"), false);
   });
 
   it("builds local domain marks without remote URLs", () => {

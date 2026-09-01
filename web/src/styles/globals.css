@@ -277,7 +277,7 @@
   }
 
   .hero {
-    @apply mb-8 grid gap-5 rounded-xl border border-border/80 bg-card p-4 sm:p-5 lg:grid-cols-[1fr_1.1fr] lg:items-end;
+    @apply mb-8 grid gap-5 rounded-2xl border border-border/80 bg-card p-4 sm:p-5 lg:grid-cols-[1fr_1.1fr] lg:items-end;
   }
 
   .hero-minimal {
@@ -329,12 +329,12 @@
     @apply relative block rounded-xl border border-border bg-card p-4 text-card-foreground shadow-[var(--shadow-soft)] transition-[box-shadow,transform,border-color] duration-200 hover:border-primary/35 hover:shadow-[var(--shadow-lift)] hover:no-underline;
   }
 
-  .catalog-card:hover .recipe-card-title,
-  .recipe-card:hover .recipe-card-title {
+  .catalog-card:hover .prompt-card-title,
+  .prompt-card:hover .prompt-card-title {
     @apply text-primary;
   }
 
-  .recipe-card {
+  .prompt-card {
     --card-lane: var(--primary);
     display: grid;
     gap: 0.5rem;
@@ -349,7 +349,7 @@
     );
   }
 
-  .recipe-card::before {
+  .prompt-card::before {
     content: "";
     position: absolute;
     inset-block: 0;
@@ -363,36 +363,36 @@
     border-radius: 1.0625rem 0 0 1.0625rem;
   }
 
-  .recipe-card-lane-research {
+  .prompt-card-lane-research {
     --card-lane: var(--lane-research);
   }
-  .recipe-card-lane-writing {
+  .prompt-card-lane-writing {
     --card-lane: var(--lane-writing);
   }
-  .recipe-card-lane-coding {
+  .prompt-card-lane-coding {
     --card-lane: var(--lane-coding);
   }
-  .recipe-card-lane-data {
+  .prompt-card-lane-data {
     --card-lane: var(--lane-data);
   }
-  .recipe-card-lane-product {
+  .prompt-card-lane-product {
     --card-lane: var(--lane-product);
   }
-  .recipe-card-lane-operations {
+  .prompt-card-lane-operations {
     --card-lane: var(--lane-operations);
   }
-  .recipe-card-lane-agents {
+  .prompt-card-lane-agents {
     --card-lane: var(--lane-agents);
   }
-  .recipe-card-lane-reasoning {
+  .prompt-card-lane-reasoning {
     --card-lane: var(--lane-reasoning);
   }
 
-  .recipe-card-title {
+  .prompt-card-title {
     @apply m-0 text-base font-semibold tracking-tight text-foreground no-underline;
   }
 
-  .recipe-card-blurb {
+  .prompt-card-blurb {
     margin: 0;
     display: -webkit-box;
     -webkit-line-clamp: 3;
@@ -402,11 +402,11 @@
     @apply text-sm text-muted-foreground;
   }
 
-  .recipe-card-top {
+  .prompt-card-top {
     @apply mb-0 flex flex-wrap items-center justify-between gap-2;
   }
 
-  .recipe-card-arrow {
+  .prompt-card-arrow {
     color: var(--muted-foreground);
     opacity: 0.65;
     transition:
@@ -415,13 +415,13 @@
       transform var(--duration-fast) var(--ease-out);
   }
 
-  .recipe-card:hover .recipe-card-arrow {
+  .prompt-card:hover .prompt-card-arrow {
     opacity: 1;
     color: var(--card-lane, var(--primary));
     transform: translate(2px, -2px);
   }
 
-  .recipe-card-cta {
+  .prompt-card-cta {
     display: inline-flex;
     align-items: center;
     gap: 0.25rem;
@@ -436,11 +436,11 @@
     opacity: 1;
   }
 
-  .recipe-card:hover .recipe-card-cta {
+  .prompt-card:hover .prompt-card-cta {
     opacity: 1;
   }
 
-  .recipe-card:focus-visible .recipe-card-cta {
+  .prompt-card:focus-visible .prompt-card-cta {
     color: var(--foreground);
   }
 
@@ -448,7 +448,7 @@
     @apply grid gap-3 sm:grid-cols-2;
   }
 
-  .recipe-index-list {
+  .prompt-index-list {
     @apply grid gap-3;
   }
 
@@ -606,7 +606,7 @@
   }
 
   .research-list-item {
-    @apply mb-1 flex w-full flex-col gap-0.5 rounded-lg border border-transparent px-3 py-2.5 text-left transition-colors outline-none hover:bg-muted focus-visible:ring-2 focus-visible:ring-ring;
+    @apply mb-1 flex min-h-11 w-full flex-col gap-0.5 rounded-lg border border-transparent px-3 py-2.5 text-left transition-colors outline-none hover:bg-muted focus-visible:ring-2 focus-visible:ring-ring;
   }
 
   .research-list-item.is-active {
@@ -711,19 +711,19 @@
     @apply text-muted-foreground;
   }
 
-  .recipe-workspace {
+  .prompt-workspace {
     display: grid;
     gap: 1.25rem;
     margin-top: 0.5rem;
   }
 
   @media (min-width: 1000px) {
-    .recipe-workspace {
+    .prompt-workspace {
       grid-template-columns: minmax(18rem, 0.95fr) minmax(0, 1.15fr);
       align-items: start;
     }
 
-    .recipe-workspace-form {
+    .prompt-workspace-form {
       position: sticky;
       top: calc(var(--sticky-offset) + 4.25rem);
       max-height: calc(100vh - var(--header-height) - 5.5rem);
@@ -999,7 +999,7 @@
     border-radius: 4px;
   }
 
-  .recipe-card-preview-hitbox {
+  .prompt-card-preview-hitbox {
     position: absolute;
     inset: 0;
     z-index: 1;
@@ -1010,7 +1010,7 @@
     cursor: pointer;
   }
 
-  .recipe-card-preview-hitbox:focus-visible {
+  .prompt-card-preview-hitbox:focus-visible {
     outline: 3px solid var(--ring);
     outline-offset: -3px;
   }
@@ -1163,11 +1163,11 @@
     display: flex;
     flex-direction: column;
     width: 100%;
-    max-width: 42rem;
-    max-height: min(92vh, 52rem);
+    max-width: 44rem;
+    max-height: min(92vh, 54rem);
     overflow: hidden;
     border: 1px solid var(--border);
-    border-radius: 1rem 1rem 0 0;
+    border-radius: 1.125rem 1.125rem 0 0;
     background: var(--card);
     box-shadow: var(--shadow-lift);
   }
@@ -1214,14 +1214,15 @@
   .catalog-modal-body {
     flex: 1;
     overflow-y: auto;
-    padding: 1rem;
+    padding: 1.1rem 1.15rem 1.25rem;
   }
 
   .catalog-modal-title {
     margin: 0;
-    font-size: 1.25rem;
+    font-size: 1.35rem;
     font-weight: 650;
-    letter-spacing: -0.02em;
+    letter-spacing: -0.03em;
+    text-wrap: balance;
   }
 
   .catalog-modal-lede {
@@ -1314,12 +1315,10 @@
     @apply max-h-48;
   }
 
-  .pattern-detail .info-panel h3,
   .info-panel h3 {
     @apply m-0 mb-2 text-sm font-semibold;
   }
 
-  .pattern-detail .info-panel p,
   .info-panel p {
     @apply m-0 text-sm text-muted-foreground;
   }
@@ -1339,8 +1338,32 @@
     gap: 0.5rem;
   }
 
-  .recipe-detail {
+  .prompt-detail {
     max-width: 72rem;
+  }
+
+  .mode-bar {
+    @apply mb-6 rounded-xl border border-border bg-card p-4 shadow-[var(--shadow-soft)];
+  }
+
+  .mode-bar-label {
+    @apply m-0 mb-2 text-sm font-semibold tracking-tight;
+  }
+
+  .mode-bar-chips {
+    @apply mb-2;
+  }
+
+  .mode-bar-when {
+    @apply m-0 max-w-[var(--measure)] text-sm;
+  }
+
+  .catalog-modal-ph {
+    @apply mt-4 rounded-xl border border-border bg-background/70 p-3;
+  }
+
+  .catalog-modal-ph .subhead {
+    @apply mt-0;
   }
 
   .breadcrumb a {
@@ -1395,7 +1418,7 @@
   }
 
   .chip {
-    @apply inline-flex items-center gap-1.5 rounded-full border border-border bg-card px-3 py-1.5 text-xs font-medium text-muted-foreground transition-colors hover:border-primary/40 hover:text-foreground;
+    @apply inline-flex min-h-9 items-center gap-1.5 rounded-full border border-border bg-card px-3 py-1.5 text-xs font-medium text-muted-foreground transition-colors hover:border-primary/40 hover:text-foreground;
   }
 
   .chip.is-active {
@@ -1470,7 +1493,7 @@
     @apply mt-2;
   }
 
-  .recipe-detail .section-prompt {
+  .prompt-detail .section-prompt {
     max-width: none;
   }
 
@@ -1531,7 +1554,7 @@
     @apply font-medium;
   }
 
-  .recipe-workspace-output {
+  .prompt-workspace-output {
     @apply min-w-0;
   }
 }

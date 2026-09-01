@@ -1,18 +1,15 @@
 export type CatalogEntry = {
   slug: string;
   title?: string;
-  use_for?: string;
-  definition?: string;
+  blurb?: string;
 };
 
 export type RouteCatalog = {
   meta?: { title?: string; description?: string };
-  recipes: CatalogEntry[];
-  patterns: CatalogEntry[];
+  prompts: CatalogEntry[];
 };
 
-export type PageType =
-  "home" | "explore" | "recipes-index" | "patterns-index" | "recipe" | "pattern";
+export type PageType = "home" | "explore" | "prompt";
 
 export type PageRouteDescriptor = Readonly<{
   kind: "page";
@@ -36,8 +33,8 @@ export type RedirectRouteDescriptor = Readonly<{
 }>;
 
 export type RouteDescriptor = PageRouteDescriptor | RedirectRouteDescriptor;
-export type ClientStaticPageType = "home" | "explore" | "recipes-index" | "patterns-index";
-export type ClientDetailPageType = "recipe" | "pattern";
+export type ClientStaticPageType = "home" | "explore";
+export type ClientDetailPageType = "prompt";
 
 export type ClientStaticPageBinding = Readonly<{
   kind: "static-page";
@@ -96,7 +93,7 @@ export const ROUTE_BRAND: "prompts";
 export const ROUTE_DESCRIPTION_MAX: 155;
 export function normalizeRouteText(value: unknown, fallback?: unknown, max?: number): string;
 export function catalogEntryRouteDescriptor(
-  kind: "recipe" | "pattern",
+  kind: "prompt",
   entry: CatalogEntry,
   fallbackDescription?: string
 ): PageRouteDescriptor;
@@ -110,8 +107,7 @@ export function redirectRouteDescriptors(
 export const CLIENT_STATIC_PAGE_TYPES: ReadonlyArray<ClientStaticPageType>;
 export const CLIENT_DETAIL_PAGE_TYPES: ReadonlyArray<ClientDetailPageType>;
 export const CLIENT_DETAIL_ROUTE_PATTERNS: Readonly<{
-  recipe: "/recipes/:slug/";
-  pattern: "/patterns/:slug/";
+  prompt: "/catalog/:slug/";
 }>;
 export function clientRoutePatternMatchesPath(pattern: string, path: string): boolean;
 export function clientDetailPatternMatchesDescriptor(descriptor: RouteDescriptor): boolean;

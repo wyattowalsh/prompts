@@ -36,23 +36,30 @@ test("requiredPlaceholdersFilled checks required fields only", () => {
   assert.equal(requiredPlaceholdersFilled(ph, { a: "  ", b: "y" }), false);
 });
 
-test("fillTemplate works on a real catalog recipe prompt", () => {
-  const recipe = catalog.recipes.find((r) => r.slug === "code-review");
-  assert.ok(recipe, "code-review recipe must exist");
-  if (!recipe) return;
+test("fillTemplate works on a real catalog prompt mode", () => {
+  const prompt = catalog.prompts.find((item) => item.slug === "code-review");
+  assert.ok(prompt, "code-review prompt must exist");
+  if (!prompt) return;
+  const mode = prompt.modes.find((entry) => entry.default) ?? prompt.modes[0];
+  assert.ok(mode?.prompt, "code-review must have a default paste path");
   const values: Record<string, string> = {};
-  for (const ph of recipe.placeholders) {
-    values[ph.name] = ph.preview || ph.example || `sample-${ph.name}`;
+  for (const placeholder of mode.placeholders) {
+    values[placeholder.name] =
+      placeholder.preview || placeholder.example || `sample-${placeholder.name}`;
   }
-  const filled = fillTemplate(recipe.prompt, values);
-  for (const ph of recipe.placeholders) {
-    assert.equal(filled.includes(`{${ph.name}}`), false, `expected {${ph.name}} to be injected`);
+  const filled = fillTemplate(mode.prompt, values);
+  for (const placeholder of mode.placeholders) {
+    assert.equal(
+      filled.includes(`{${placeholder.name}}`),
+      false,
+      `expected {${placeholder.name}} to be injected`
+    );
   }
-  assert.ok(filled.length >= recipe.prompt.length - 50);
+  assert.ok(filled.length >= mode.prompt.length - 50);
   assert.equal(
     remainingPlaceholderCount(
       filled,
-      recipe.placeholders.map((p) => p.name)
+      mode.placeholders.map((placeholder) => placeholder.name)
     ),
     0
   );

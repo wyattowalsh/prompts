@@ -76,7 +76,8 @@ test("home search announces one atomic result count instead of the result cards"
 
   const status = resultsSection.getByRole("status");
   await expect(status).toHaveAttribute("aria-atomic", "true");
-  await expect(status).toContainText(/search results?: \d+ recipes? and \d+ patterns?\./i);
+  await expect(status).toContainText(/\d+ search results?\./i);
+  await expect(status).not.toContainText(/recipes? and \d+ patterns?/i);
 });
 
 test("mobile header controls remain visible, separate, and overflow-free at 320px", async ({
@@ -215,43 +216,43 @@ test("explorer preserves URL state, supports listbox keys, and makes no favicon 
 
 test("explorer rehydrates a popped scope before the next query edit", async ({ page }) => {
   await gotoPath(page, "/explore/?scope=sources", /Explore/i);
-  const recipesScope = page.getByRole("button", { name: /^Recipes$/i });
-  await recipesScope.click();
-  await expect(recipesScope).toHaveAttribute("aria-pressed", "true");
+  const promptsScope = page.getByRole("button", { name: /^Prompts$/i });
+  await promptsScope.click();
+  await expect(promptsScope).toHaveAttribute("aria-pressed", "true");
   await expect(page).toHaveURL((url) => {
-    return url.searchParams.get("scope") === "recipes" && !url.searchParams.has("q");
+    return url.searchParams.get("scope") === "prompts" && !url.searchParams.has("q");
   });
-  const patternsScope = page.getByRole("button", { name: /^Patterns$/i });
-  await patternsScope.click();
-  await expect(patternsScope).toHaveAttribute("aria-pressed", "true");
+  const sourcesScope = page.getByRole("button", { name: /^Sources$/i });
+  await sourcesScope.click();
+  await expect(sourcesScope).toHaveAttribute("aria-pressed", "true");
   await expect(page).toHaveURL((url) => {
-    return url.searchParams.get("scope") === "patterns" && !url.searchParams.has("q");
+    return url.searchParams.get("scope") === "sources" && !url.searchParams.has("q");
   });
   await page.goBack();
-  await expect(page).toHaveURL((url) => url.searchParams.get("scope") === "recipes");
+  await expect(page).toHaveURL((url) => url.searchParams.get("scope") === "prompts");
   const search = page.getByRole("searchbox", { name: /Filter catalog data/i });
   // The pure state regression covers uncommitted writes. This browser case
   // proves a real POP is adopted before a subsequent input event composes URL state.
-  await search.fill("source-grounded");
-  await expect(recipesScope).toHaveAttribute("aria-pressed", "true");
+  await search.fill("source-grounded-answer");
+  await expect(promptsScope).toHaveAttribute("aria-pressed", "true");
   await expect(page).toHaveURL((url) => {
     return (
       url.pathname === "/explore/" &&
-      url.searchParams.get("scope") === "recipes" &&
-      url.searchParams.get("q") === "source-grounded"
+      url.searchParams.get("scope") === "prompts" &&
+      url.searchParams.get("q") === "source-grounded-answer"
     );
   });
   const listbox = page.getByRole("listbox", { name: /Explorer results/i });
-  const activeRecipe = listbox.locator('[role="option"][aria-selected="true"]');
-  await expect(activeRecipe).toHaveCount(1);
-  await activeRecipe.focus();
+  const activePrompt = listbox.locator('[role="option"][aria-selected="true"]');
+  await expect(activePrompt).toHaveCount(1);
+  await activePrompt.focus();
   await page.keyboard.press("Enter");
-  await expect(page).toHaveURL(/\/recipes\/source-grounded-answer\/$/);
+  await expect(page).toHaveURL(/\/catalog\/source-grounded-answer\/$/);
 });
 
 test("catalog card opens preview modal from home", async ({ page }) => {
   await gotoHome(page);
-  const card = page.locator('button[data-recipe-slug="source-grounded-answer"]');
+  const card = page.locator('button[data-prompt-slug="source-grounded-answer"]');
   await expect(card).toBeVisible({ timeout: 10_000 });
   await card.click();
   const dialog = page.getByRole("dialog");
@@ -272,23 +273,26 @@ test("catalog card opens preview modal from home", async ({ page }) => {
   await page.keyboard.press("Escape");
   await expect(page.getByRole("dialog")).toHaveCount(0);
   await expect(opener).toBeFocused();
+  await expect(page.locator("#root")).not.toHaveAttribute("aria-hidden", "true");
 
   await opener.click();
   await expect(page.getByRole("dialog")).toBeVisible();
   await page.locator(".catalog-modal-backdrop").click({ position: { x: 4, y: 4 } });
   await expect(page.getByRole("dialog")).toHaveCount(0);
   await expect(opener).toBeFocused();
+  await expect(page.locator("#root")).not.toHaveAttribute("aria-hidden", "true");
 
   await opener.click();
   await expect(dialog).toBeVisible();
   await dialog.getByRole("button", { name: "Close", exact: true }).last().click();
   await expect(dialog).toHaveCount(0);
   await expect(opener).toBeFocused();
+  await expect(page.locator("#root")).not.toHaveAttribute("aria-hidden", "true");
 
   await opener.click();
   await expect(dialog).toBeVisible();
   await dialog.getByRole("link", { name: /Open full page/i }).click();
-  await expect(page).toHaveURL(/\/recipes\/source-grounded-answer\/$/);
+  await expect(page).toHaveURL(/\/catalog\/source-grounded-answer\/$/);
   await expect(
     page.getByRole("heading", { name: /Source-Grounded Answer/i }).first()
   ).toBeVisible();
@@ -314,7 +318,7 @@ test("pending preview is announced, cancellable, and releases overlay intent", a
 
   try {
     await gotoHome(page);
-    const card = page.locator("button[data-recipe-slug]").first();
+    const card = page.locator("button[data-prompt-slug]").first();
     const appRoot = page.locator("#root");
     const priorOverflow = await page.evaluate(() => globalThis.document.body.style.overflow);
     await card.click();
@@ -342,6 +346,7 @@ test("pending preview is announced, cancellable, and releases overlay intent", a
     await expect(paletteDialog).toBeVisible();
     await page.keyboard.press("Escape");
     await expect(searchButton).toBeFocused();
+    await expect(appRoot).not.toHaveAttribute("aria-hidden", "true");
   } finally {
     if (!released) releasePreviewChunk();
   }
@@ -377,12 +382,15 @@ test("pending command palette is announced and Escape restores its opener", asyn
     await page.keyboard.press("Escape");
     await expect(loadingDialog).toHaveCount(0);
     await expect(searchButton).toBeFocused();
+    await expect(page.locator("#root")).not.toHaveAttribute("aria-hidden", "true");
 
     releasePaletteChunk();
     released = true;
     await searchButton.click();
     await expect(page.getByRole("dialog", { name: "Site command palette" })).toBeVisible();
     await page.keyboard.press("Escape");
+    await expect(searchButton).toBeFocused();
+    await expect(page.locator("#root")).not.toHaveAttribute("aria-hidden", "true");
   } finally {
     if (!released) releasePaletteChunk();
   }
@@ -392,7 +400,7 @@ test("a rejected preview chunk is contained and reload retry recovers", async ({
   await failFirstChunkRequest(page, /\/assets\/CatalogPreviewModal-[^/?]+\.js(?:\?.*)?$/);
 
   await gotoHome(page);
-  const card = page.locator("button[data-recipe-slug]").first();
+  const card = page.locator("button[data-prompt-slug]").first();
   await card.click();
   const failure = page.getByRole("alert").filter({ hasText: "Preview couldn't load." });
   await expect(failure).toHaveCount(1);
@@ -417,10 +425,11 @@ test("a rejected preview chunk is contained and reload retry recovers", async ({
   ).toEqual({ alert: 70, dialog: 81 });
   await page.keyboard.press("Escape");
   await expect(card).toBeFocused();
+  await expect(page.locator("#root")).not.toHaveAttribute("aria-hidden", "true");
 
   await reloadFromFailure(page, failure);
   await expect(page.getByRole("heading", { name: "prompts" }).first()).toBeVisible();
-  await page.locator("button[data-recipe-slug]").first().click();
+  await page.locator("button[data-prompt-slug]").first().click();
   await expect(page.getByRole("dialog").locator(".catalog-modal-title")).toBeVisible();
 });
 
@@ -435,7 +444,7 @@ test("a rejected command palette chunk keeps the shell usable and reload retry r
   await expect(failure).toHaveCount(1);
   await expect(failure).toBeVisible();
 
-  const card = page.locator("button[data-recipe-slug]").first();
+  const card = page.locator("button[data-prompt-slug]").first();
   await card.click();
   const preview = page.getByRole("dialog").filter({ has: page.locator(".catalog-modal-title") });
   await expect(preview).toBeVisible();
@@ -453,6 +462,7 @@ test("a rejected command palette chunk keeps the shell usable and reload retry r
   ).toEqual({ alert: 70, modal: 80 });
   await page.keyboard.press("Escape");
   await expect(card).toBeFocused();
+  await expect(page.locator("#root")).not.toHaveAttribute("aria-hidden", "true");
 
   await page
     .getByRole("navigation", { name: "Site" })
@@ -494,29 +504,29 @@ test("a rejected route chunk stays scoped, resets on navigation, and reload retr
 test("a pending or rejected detail chunk never retains metadata from the previous route", async ({
   page
 }) => {
-  let releaseRecipeChunk;
-  const heldRecipeChunk = new Promise((resolve) => {
-    releaseRecipeChunk = resolve;
+  let releasePromptChunk;
+  const heldPromptChunk = new Promise((resolve) => {
+    releasePromptChunk = resolve;
   });
-  let recipeRequestSeen;
-  const sawRecipeRequest = new Promise((resolve) => {
-    recipeRequestSeen = resolve;
+  let promptRequestSeen;
+  const sawPromptRequest = new Promise((resolve) => {
+    promptRequestSeen = resolve;
   });
 
-  await page.route(/\/assets\/RecipePage-[^/?]+\.js(?:\?.*)?$/, async (route) => {
-    recipeRequestSeen(route.request().url());
-    await heldRecipeChunk;
+  await page.route(/\/assets\/PromptPage-[^/?]+\.js(?:\?.*)?$/, async (route) => {
+    promptRequestSeen(route.request().url());
+    await heldPromptChunk;
     await route.abort("failed");
   });
 
   try {
-    await gotoPath(page, "/explore/?scope=recipes&q=source-grounded", /Explore/i);
+    await gotoPath(page, "/explore/?scope=prompts&q=source-grounded-answer", /Explore/i);
     const exploreCanonical = `${new URL(page.url()).origin}/explore/`;
     await expect(page.locator('link[rel="canonical"]')).toHaveAttribute("href", exploreCanonical);
 
     await page.getByRole("link", { name: "Open in catalog" }).click();
-    await sawRecipeRequest;
-    await expect(page).toHaveURL(/\/recipes\/source-grounded-answer\/$/);
+    await sawPromptRequest;
+    await expect(page).toHaveURL(/\/catalog\/source-grounded-answer\/$/);
     await expect(page.locator('meta[name="robots"]')).toHaveAttribute(
       "content",
       "noindex,nofollow"
@@ -524,7 +534,7 @@ test("a pending or rejected detail chunk never retains metadata from the previou
     await expect(page.locator('link[rel="canonical"]')).toHaveCount(0);
     await expect(page.locator('meta[property="og:url"]')).toHaveCount(0);
 
-    releaseRecipeChunk();
+    releasePromptChunk();
     const failure = page.getByRole("alert").filter({ hasText: "This page couldn't load." });
     await expect(failure).toBeVisible();
     await expect(page).toHaveTitle("Catalog page unavailable · prompts");
@@ -535,21 +545,28 @@ test("a pending or rejected detail chunk never retains metadata from the previou
     await expect(page.locator('link[rel="canonical"]')).toHaveCount(0);
     await expect(page.locator('meta[property="og:url"]')).toHaveCount(0);
   } finally {
-    releaseRecipeChunk();
+    releasePromptChunk();
   }
 });
 
-test("recipes lane URLs expose one current filter and invalid lanes fall back to all", async ({
-  page
-}) => {
-  await gotoPath(page, "/recipes/?lane=unknown-lane", /^Recipes$/i);
-  await expect(page.locator("[data-recipe-slug]")).toHaveCount(48);
-  await expect(
-    page.getByRole("navigation", { name: "Filter by lane" }).locator('[aria-current="page"]')
-  ).toHaveCount(1);
-  await expect(
-    page.getByRole("navigation", { name: "Filter by lane" }).getByRole("link", { name: /^All/i })
-  ).toHaveAttribute("aria-current", "page");
+test("home facet and lane filters subset the prompt index", async ({ page }) => {
+  await gotoHome(page);
+  const allCount = await page.locator("[data-prompt-slug]").count();
+  expect(allCount).toBeGreaterThan(1);
+  await page
+    .getByRole("group", { name: "Filter by facet" })
+    .getByRole("button", { name: /^Job/ })
+    .click();
+  const jobCount = await page.locator("[data-prompt-slug]").count();
+  expect(jobCount).toBeGreaterThan(0);
+  expect(jobCount).toBeLessThan(allCount);
+  await page
+    .getByRole("group", { name: "Filter by lane" })
+    .getByRole("button", { name: /^Coding/ })
+    .click();
+  const codingCount = await page.locator("[data-prompt-slug]").count();
+  expect(codingCount).toBeGreaterThan(0);
+  expect(codingCount).toBeLessThanOrEqual(jobCount);
 });
 
 test("representative catalog states have no WCAG A or AA accessibility violations", async ({
@@ -557,7 +574,7 @@ test("representative catalog states have no WCAG A or AA accessibility violation
 }) => {
   await gotoHome(page);
   await expectNoAccessibilityViolations(page);
-  await page.locator("button[data-recipe-slug]").first().click();
+  await page.locator("button[data-prompt-slug]").first().click();
   await expect(page.getByRole("dialog")).toBeVisible();
   await expectNoAccessibilityViolations(page);
   await page.keyboard.press("Escape");
@@ -571,9 +588,9 @@ test("representative catalog states have no WCAG A or AA accessibility violation
   await expect(page.getByRole("dialog")).toHaveCount(0);
   await expect(searchButton).toBeFocused();
 
-  await gotoPath(page, "/recipes/source-grounded-answer/", /Source-Grounded Answer/i);
+  await gotoPath(page, "/catalog/source-grounded-answer/", /Source-Grounded Answer/i);
   await expectNoAccessibilityViolations(page);
-  await gotoPath(page, "/patterns/panelgpt/", /PanelGPT/i);
+  await gotoPath(page, "/catalog/tree-of-thoughts/", /Tree-of-Thoughts/i);
   await expectNoAccessibilityViolations(page);
   await gotoHome(page);
   await page.evaluate(() => globalThis.history.pushState({}, "", "/missing-a11y-route/"));
@@ -582,7 +599,7 @@ test("representative catalog states have no WCAG A or AA accessibility violation
   await expectNoAccessibilityViolations(page);
 });
 
-test("dark recipe cards and provider interaction states retain accessible contrast", async ({
+test("dark prompt cards and provider interaction states retain accessible contrast", async ({
   page
 }) => {
   await page.addInitScript(() => globalThis.localStorage.setItem("prompts-theme", "dark"));
@@ -590,7 +607,7 @@ test("dark recipe cards and provider interaction states retain accessible contra
   await expect(page.locator("html")).toHaveClass(/dark/);
   await expectNoAccessibilityViolations(page);
 
-  await gotoPath(page, "/recipes/source-grounded-answer/", /Source-Grounded Answer/i);
+  await gotoPath(page, "/catalog/source-grounded-answer/", /Source-Grounded Answer/i);
   const providerMarks = page.locator('[data-provider-mark-kind="neutral-monogram"]');
   await expect(providerMarks).toHaveCount(5);
   await expect(page.locator(".provider-perplexity [data-provider-mark-glyph='P']")).toBeVisible();
@@ -619,7 +636,7 @@ test("deferred overlays stay off the initial graph until explicit invocation", a
   expect(commandRequests).toEqual([]);
   expect(previewRequests).toEqual([]);
 
-  await page.locator("button[data-recipe-slug]").first().click();
+  await page.locator("button[data-prompt-slug]").first().click();
   await expect(page.getByRole("dialog")).toBeVisible();
   expect(previewRequests.length).toBeGreaterThan(0);
   await page.keyboard.press("Escape");
@@ -639,11 +656,11 @@ async function gotoPath(page, path, heading) {
   await expect(h).toBeVisible({ timeout: 30_000 });
 }
 
-test("recipe hard navigation serves deep link shell", async ({ page, context }) => {
+test("prompt hard navigation serves deep link shell", async ({ page, context }) => {
   await context.grantPermissions(["clipboard-read", "clipboard-write"]);
-  await gotoPath(page, "/recipes/source-grounded-answer/", /Source-Grounded Answer/i);
+  await gotoPath(page, "/catalog/source-grounded-answer/", /Source-Grounded Answer/i);
   const copyPrompt = page
-    .getByRole("group", { name: "Recipe actions" })
+    .getByRole("group", { name: "Prompt actions" })
     .getByRole("button", { name: "Copy prompt", exact: true });
   await expect(copyPrompt).toBeVisible();
   await copyPrompt.click();
@@ -659,14 +676,14 @@ test("recipe hard navigation serves deep link shell", async ({ page, context }) 
 
 test("client navigation keeps canonical and social metadata route-correct", async ({ page }) => {
   await gotoHome(page);
-  await page.locator('button[data-recipe-slug="source-grounded-answer"]').click();
+  await page.locator('button[data-prompt-slug="source-grounded-answer"]').click();
   await page.getByRole("link", { name: /Open full page/i }).click();
-  await expect(page).toHaveURL(/\/recipes\/source-grounded-answer\/$/);
-  const expectedRecipeUrl = `${new URL(page.url()).origin}/recipes/source-grounded-answer/`;
-  await expect(page.locator('link[rel="canonical"]')).toHaveAttribute("href", expectedRecipeUrl);
+  await expect(page).toHaveURL(/\/catalog\/source-grounded-answer\/$/);
+  const expectedPromptUrl = `${new URL(page.url()).origin}/catalog/source-grounded-answer/`;
+  await expect(page.locator('link[rel="canonical"]')).toHaveAttribute("href", expectedPromptUrl);
   await expect(page.locator('meta[property="og:url"]')).toHaveAttribute(
     "content",
-    expectedRecipeUrl
+    expectedPromptUrl
   );
   await expect(page.locator('meta[name="twitter:title"]')).toHaveAttribute(
     "content",
@@ -685,22 +702,27 @@ test("client navigation keeps canonical and social metadata route-correct", asyn
   );
 });
 
-test("patterns index deep link still works", async ({ page }) => {
-  await gotoPath(page, "/patterns/", /Pattern notes|Patterns/i);
-  await expect(page.getByRole("heading", { level: 1 }).first()).toBeVisible();
+test("retired recipe and pattern routes return branded 404", async ({ request }) => {
+  for (const path of ["/recipes/code-review/", "/recipes/", "/patterns/", "/catalog/"]) {
+    const response = await request.get(path, { maxRedirects: 0 });
+    expect(response.status(), path).toBe(404);
+    expect(response.headers().location).toBeUndefined();
+    const html = await response.text();
+    expect(html).toContain("Page not found");
+  }
 });
 
 test("static shells expose route-correct metadata and unknown paths return 404", async ({
   request
 }) => {
-  const recipe = await request.get("/recipes/source-grounded-answer/");
-  expect(recipe.status()).toBe(200);
+  const promptPage = await request.get("/catalog/source-grounded-answer/");
+  expect(promptPage.status()).toBe(200);
   if (!process.env.PLAYWRIGHT_WEB_SERVER_CMD) {
-    expect(recipe.headers()["x-prompts-dist-server"]).toBe("1");
+    expect(promptPage.headers()["x-prompts-dist-server"]).toBe("1");
   }
-  const recipeHtml = await recipe.text();
-  expect(recipeHtml).toContain("/recipes/source-grounded-answer/");
-  expect(recipeHtml).toContain("Source-Grounded Answer · prompts");
+  const promptHtml = await promptPage.text();
+  expect(promptHtml).toContain("/catalog/source-grounded-answer/");
+  expect(promptHtml).toContain("Source-Grounded Answer · prompts");
 
   const missing = await request.get("/definitely-not-a-catalog-route/", { maxRedirects: 0 });
   expect(missing.status()).toBe(404);
@@ -741,27 +763,27 @@ test("theme menu persists light/dark preference", async ({ page }) => {
   expect(storedLight).toBe("light");
 });
 
-test("related hub lists panel pilot members and navigates to sibling", async ({ page }) => {
-  await gotoPath(page, "/recipes/panel-review/", /Panel Review/i);
-  const hub = page.getByRole("heading", { name: /Related ·/i });
+test("related hub lists YAML related slugs and navigates to sibling", async ({ page }) => {
+  await gotoPath(page, "/catalog/tree-of-thoughts/", /Tree-of-Thoughts/i);
+  const hub = page.getByRole("heading", { name: /See also/i });
   await expect(hub).toBeVisible();
-  await expect(page.getByText("You are here")).toBeVisible();
-  const siblingLink = page.getByRole("link", { name: /PanelGPT/i }).first();
+  const siblingLink = page.getByRole("link", { name: /Graph-of-Thoughts/i }).first();
   await siblingLink.focus();
   await page.keyboard.press("Enter");
-  await expect(page).toHaveURL(/\/patterns\/panelgpt\/?/);
-  await expect(page.getByRole("heading", { level: 1, name: /PanelGPT/i })).toBeVisible();
+  await expect(page).toHaveURL(/\/catalog\/graph-of-thoughts\/?/);
+  await expect(page.getByRole("heading", { level: 1, name: /Graph-of-Thoughts/i })).toBeVisible();
   await expect(page.locator("#main-content")).toBeFocused();
-  await expect(page.getByRole("heading", { name: /Related ·/i })).toBeVisible();
+  await expect(page.getByRole("heading", { name: /See also/i })).toBeVisible();
 });
 
-test("recipe fill path substitutes placeholders before copy", async ({ page, context }) => {
+test("prompt fill path substitutes placeholders before copy", async ({ page, context }) => {
   await context.grantPermissions(["clipboard-read", "clipboard-write"]);
-  await gotoPath(page, "/recipes/panel-review/", /Panel Review/i);
+  await gotoPath(page, "/catalog/source-grounded-answer/", /Source-Grounded Answer/i);
+  await expect(page.locator(".provider-chatgpt")).toHaveAttribute("href", "https://chatgpt.com/");
+  await expect(page.locator(".provider-chatgpt")).not.toHaveAttribute("href", /\?q=/);
+  await expect(page.locator(".provider-chatgpt")).not.toHaveAttribute("href", /\?text=/);
   await expect(
-    page.getByText("Shares prompt in URL — do not include secrets or private data.", {
-      exact: true
-    })
+    page.getByText(/The prompt is copied, not placed in the URL/i).first()
   ).toBeVisible();
   const tokenRe = /\{[a-zA-Z0-9_]+\}/;
   const before = await page
@@ -783,7 +805,7 @@ test("recipe fill path substitutes placeholders before copy", async ({ page, con
     }
   }).toPass({ timeout: 5_000 });
   const copyPrompt = page
-    .getByRole("group", { name: "Recipe actions" })
+    .getByRole("group", { name: "Prompt actions" })
     .getByRole("button", { name: "Copy prompt", exact: true });
   await copyPrompt.click();
   await expect(
@@ -839,20 +861,61 @@ test("theme menu keyboard open, system select, and escape restore focus", async 
   }).toPass({ timeout: 5_000 });
 });
 
-test("command palette opens via Search button and navigates to a recipe", async ({ page }) => {
+test("prompt mode switch uses only the mode query and announces the change", async ({ page }) => {
+  await gotoPath(page, "/catalog/unit-test-authoring/", /Unit Test Authoring/i);
+  const modes = page.getByRole("group", { name: "Prompt mode" });
+  await expect(modes).toBeVisible();
+  await expect(page).not.toHaveURL(/[?&]mode=/);
+  await modes.getByRole("button", { name: /^Python$/i }).click();
+  await expect(page).toHaveURL(/\/catalog\/unit-test-authoring\/\?mode=python$/);
+  await expect(
+    page.getByRole("status").filter({ hasText: /Mode switched to Python/i })
+  ).toBeVisible();
+  await expect(page).not.toHaveURL(/[?&]q=/);
+  await modes.getByRole("button", { name: /^General$/i }).click();
+  await expect(page).not.toHaveURL(/[?&]mode=/);
+});
+
+test("open in chat copies then opens provider home without query payload", async ({
+  page,
+  context
+}) => {
+  await context.grantPermissions(["clipboard-read", "clipboard-write"]);
+  await gotoPath(page, "/catalog/source-grounded-answer/", /Source-Grounded Answer/i);
+  await page.evaluate(() => {
+    globalThis.__openUrls = [];
+    globalThis.open = (url) => {
+      globalThis.__openUrls.push(String(url ?? ""));
+      return null;
+    };
+  });
+  await page.locator(".provider-chatgpt").click();
+  await expect(
+    page
+      .getByRole("status")
+      .filter({ hasText: /copied/i })
+      .first()
+  ).toBeVisible({ timeout: 5_000 });
+  const opened = await page.evaluate(() => globalThis.__openUrls);
+  expect(opened).toEqual(["https://chatgpt.com/"]);
+  expect(String(opened[0] ?? "")).not.toMatch(/[?&](q|text)=/);
+});
+
+test("command palette opens via Search button and navigates to a prompt", async ({ page }) => {
   await gotoHome(page);
   const searchButton = page.getByRole("button", { name: "Open command palette", exact: true });
   await searchButton.click();
   await expect(page.getByRole("dialog")).toBeVisible();
   await page.keyboard.press("Escape");
   await expect(searchButton).toBeFocused();
+  await expect(page.locator("#root")).not.toHaveAttribute("aria-hidden", "true");
 
   await searchButton.click();
   const dialog = page.getByRole("dialog");
   await expect(dialog).toBeVisible();
-  await dialog.getByPlaceholder(/Search (catalog|recipes)/i).fill("source-grounded");
+  await dialog.getByPlaceholder(/Search (catalog|recipes|prompts)/i).fill("source-grounded-answer");
   await page.keyboard.press("Enter");
-  await expect(page).toHaveURL(/\/recipes\/source-grounded-answer\/?/);
+  await expect(page).toHaveURL(/\/catalog\/source-grounded-answer\/?/);
   await expect(
     page.getByRole("heading", { name: /Source-Grounded Answer/i }).first()
   ).toBeVisible();

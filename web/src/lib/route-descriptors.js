@@ -10,7 +10,7 @@ export const ROUTE_BRAND = "prompts";
 export const ROUTE_DESCRIPTION_MAX = 155;
 
 const DEFAULT_DESCRIPTION =
-  "Research-backed engineering recipes, patterns, and safety-first templates.";
+  "Research-backed prompt catalog: model/API controls, safety checks, eval guidance, and source-grounded templates for practical AI workflows.";
 const SAFE_SLUG = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
 
 /** Collapse whitespace, apply a fallback, and cap route metadata. */
@@ -45,21 +45,17 @@ export function catalogEntryRouteDescriptor(
   entry,
   fallbackDescription = DEFAULT_DESCRIPTION
 ) {
-  if (kind !== "recipe" && kind !== "pattern") {
+  if (kind !== "prompt") {
     throw new TypeError(`Unsupported catalog route kind: ${String(kind)}`);
   }
   const slug = assertSafeSlug(entry?.slug, kind);
-  const isRecipe = kind === "recipe";
   return Object.freeze({
     kind: "page",
-    pageType: kind,
-    path: `/${isRecipe ? "recipes" : "patterns"}/${slug}/`,
-    shellPath: `${isRecipe ? "recipes" : "patterns"}/${slug}`,
+    pageType: "prompt",
+    path: `/catalog/${slug}/`,
+    shellPath: `catalog/${slug}`,
     title: normalizeRouteText(entry?.title, slug, 80),
-    description: normalizeRouteText(
-      isRecipe ? entry?.use_for : entry?.definition,
-      fallbackDescription
-    ),
+    description: normalizeRouteText(entry?.blurb, fallbackDescription),
     indexable: true,
     slug
   });
@@ -102,8 +98,8 @@ function validateInventory(descriptors) {
 
 /** Build the complete public route inventory from catalog-shaped data. */
 export function routeDescriptorsFromCatalog(catalog) {
-  if (!catalog || !Array.isArray(catalog.recipes) || !Array.isArray(catalog.patterns)) {
-    throw new TypeError("Catalog route input must contain recipe and pattern arrays.");
+  if (!catalog || !Array.isArray(catalog.prompts)) {
+    throw new TypeError("Catalog route input must contain a prompts array.");
   }
 
   const fallbackDescription = normalizeRouteText(catalog.meta?.description, DEFAULT_DESCRIPTION);
@@ -124,35 +120,13 @@ export function routeDescriptorsFromCatalog(catalog) {
       path: "/explore/",
       shellPath: "explore",
       title: "Explore",
-      description: "Browse catalog sources, recipes, and patterns in one data explorer.",
-      indexable: true
-    },
-    {
-      kind: "page",
-      pageType: "recipes-index",
-      path: "/recipes/",
-      shellPath: "recipes",
-      title: "Recipes",
-      description: "Browse pasteable prompt recipes by lane.",
-      indexable: true
-    },
-    {
-      kind: "page",
-      pageType: "patterns-index",
-      path: "/patterns/",
-      shellPath: "patterns",
-      title: "Pattern notes",
-      description: "Research-backed prompt engineering techniques and templates.",
+      description: "Browse catalog sources and prompts in one data explorer.",
       indexable: true
     }
   ];
 
-  for (const recipe of catalog.recipes) {
-    descriptors.push(catalogEntryRouteDescriptor("recipe", recipe, fallbackDescription));
-  }
-
-  for (const pattern of catalog.patterns) {
-    descriptors.push(catalogEntryRouteDescriptor("pattern", pattern, fallbackDescription));
+  for (const prompt of catalog.prompts) {
+    descriptors.push(catalogEntryRouteDescriptor("prompt", prompt, fallbackDescription));
   }
 
   descriptors.push(
@@ -188,16 +162,10 @@ export function redirectRouteDescriptors(descriptors) {
 }
 
 /** React Router patterns for catalog-backed detail descriptors. */
-export const CLIENT_STATIC_PAGE_TYPES = Object.freeze([
-  "home",
-  "explore",
-  "recipes-index",
-  "patterns-index"
-]);
-export const CLIENT_DETAIL_PAGE_TYPES = Object.freeze(["recipe", "pattern"]);
+export const CLIENT_STATIC_PAGE_TYPES = Object.freeze(["home", "explore"]);
+export const CLIENT_DETAIL_PAGE_TYPES = Object.freeze(["prompt"]);
 export const CLIENT_DETAIL_ROUTE_PATTERNS = Object.freeze({
-  recipe: "/recipes/:slug/",
-  pattern: "/patterns/:slug/"
+  prompt: "/catalog/:slug/"
 });
 
 /** Match one concrete catalog route against a browser-safe React Router pattern. */

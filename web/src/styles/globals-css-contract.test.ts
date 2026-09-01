@@ -1,6 +1,6 @@
 /**
  * Structural contract: product surface CSS must remain in shipped globals.css
- * after the Tailwind strangler (no silent deletion of open-in-chat / recipe-card rules).
+ * after the Tailwind strangler (no silent deletion of open-in-chat / prompt-card rules).
  */
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
@@ -51,12 +51,12 @@ const REQUIRED = [
   ".provider-chip-mark",
   ".check-list",
   ".check-list-icon",
-  ".recipe-card",
-  ".recipe-card-cta",
-  ".recipe-card-arrow",
-  ".recipe-card-preview-hitbox",
-  ".recipe-card-lane-research",
-  ".recipe-card-lane-coding",
+  ".prompt-card",
+  ".prompt-card-cta",
+  ".prompt-card-arrow",
+  ".prompt-card-preview-hitbox",
+  ".prompt-card-lane-research",
+  ".prompt-card-lane-coding",
   ".fill-form",
   ".fill-input",
   ".fill-form-actions",
@@ -75,7 +75,9 @@ const REQUIRED = [
   ".site-title-text",
   ".ui-btn-label",
   ".provider-chip-label",
-  ".recipe-workspace-output",
+  ".prompt-workspace-output",
+  ".mode-bar",
+  ".catalog-modal-ph",
   ".footer-hint",
   // soft redesign / related hub
   ".related-hub",
@@ -93,7 +95,7 @@ const REQUIRED = [
   ".lazy-load-button"
 ];
 
-test("globals.css ships product surface rules for recipe workspace chrome", () => {
+test("globals.css ships product surface rules for prompt workspace chrome", () => {
   for (const sel of REQUIRED) {
     assert.ok(css.includes(sel), `missing selector ${sel} in globals.css`);
   }
@@ -110,15 +112,15 @@ test("recoverable lazy notices cannot layer above active modal surfaces", () => 
 });
 
 test("preview cards keep block content outside the interactive button", () => {
-  const recipeIndexSource = readFileSync(
-    join(here, "../features/recipes/RecipeIndexList.tsx"),
+  const promptIndexSource = readFileSync(
+    join(here, "../features/catalog/PromptIndexList.tsx"),
     "utf8"
   );
-  const homeSource = readFileSync(join(here, "../features/recipes/HomePage.tsx"), "utf8");
-  for (const source of [recipeIndexSource, homeSource]) {
-    assert.doesNotMatch(source, /<button[^>]*className="card recipe-card"/u);
-    assert.match(source, /className="recipe-card-preview-hitbox"/u);
-  }
+  const homeSource = readFileSync(join(here, "../features/catalog/HomePage.tsx"), "utf8");
+  assert.doesNotMatch(promptIndexSource, /<button[^>]*className="card prompt-card"/u);
+  assert.match(promptIndexSource, /className="prompt-card-preview-hitbox"/u);
+  assert.match(homeSource, /onPreview=\{\(slug\) => openPreview\(\{ slug \}\)\}/u);
+  assert.doesNotMatch(homeSource, /<button[^>]*className="card prompt-card"/u);
 });
 
 test("related hub links keep keyboard focus-visible ring (RV-D-002)", () => {
@@ -135,10 +137,10 @@ test("related hub links keep keyboard focus-visible ring (RV-D-002)", () => {
 });
 
 test("small interactive labels use contrast-safe foreground and focus tokens", () => {
-  const recipeCta = ruleBody(".recipe-card-cta");
-  assert.match(recipeCta, /color:\s*var\(--foreground\)/);
-  assert.match(recipeCta, /opacity:\s*1/);
-  assert.match(ruleBody(".recipe-card:focus-visible .recipe-card-cta"), /var\(--foreground\)/);
+  const promptCta = ruleBody(".prompt-card-cta");
+  assert.match(promptCta, /color:\s*var\(--foreground\)/);
+  assert.match(promptCta, /opacity:\s*1/);
+  assert.match(ruleBody(".prompt-card:focus-visible .prompt-card-cta"), /var\(--foreground\)/);
 
   const providerHover = ruleBody(".provider-chip:hover");
   assert.match(providerHover, /border-color:\s*var\(--provider-brand/);

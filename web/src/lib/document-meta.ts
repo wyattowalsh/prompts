@@ -1,6 +1,6 @@
 const DEFAULT_TITLE = "prompts";
 const DEFAULT_DESCRIPTION =
-  "Research-backed engineering recipes, patterns, and safety-first templates.";
+  "Research-backed prompt catalog: model/API controls, safety checks, eval guidance, and source-grounded templates for practical AI workflows.";
 const DEFAULT_META_MAX = 155;
 const DEFAULT_SOCIAL_IMAGE_PATH = "/og-default.png";
 const INDEX_ROBOTS = "index,follow,max-snippet:-1,max-image-preview:large,max-video-preview:-1";

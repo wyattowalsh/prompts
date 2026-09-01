@@ -1,4 +1,4 @@
-import { BookOpen, Database, ExternalLink, FileText, Layers, Search } from "lucide-react";
+import { BookOpen, Database, ExternalLink, FileText, Search } from "lucide-react";
 import {
   useEffect,
   useLayoutEffect,
@@ -10,7 +10,7 @@ import {
 import { Link, useNavigate, useNavigationType, useSearchParams } from "react-router-dom";
 import { Badge } from "../../components/ui/Badge";
 import { useDocumentMeta } from "../../hooks/useDocumentMeta";
-import { catalog } from "../../lib/catalog";
+import { catalog, promptDetailHref, promptSources } from "../../lib/catalog";
 import {
   domainMarkForHref,
   explorerUrlIntentFromParams,
@@ -38,49 +38,28 @@ type ExplorerItem = (
       domainMark: DomainMark | null;
     }
   | {
-      kind: "recipe";
+      kind: "prompt";
       id: string;
       title: string;
       subtitle: string;
       href: string;
       external: false;
       lane: string;
-    }
-  | {
-      kind: "pattern";
-      id: string;
-      title: string;
-      subtitle: string;
-      href: string;
-      external: false;
-      section: string;
+      facet: string;
     }
 ) & { searchTerms: readonly string[] };
 
 function collectSources(): ExplorerItem[] {
   const map = new Map<string, { title: string; url: string; usedBy: string[] }>();
-  for (const recipe of catalog.recipes) {
-    for (const source of recipe.sources) {
+  for (const prompt of catalog.prompts) {
+    for (const source of promptSources(prompt)) {
       const existing = map.get(source.url);
-      if (existing) existing.usedBy.push(recipe.title);
+      if (existing) existing.usedBy.push(prompt.title);
       else {
         map.set(source.url, {
           title: source.title,
           url: source.url,
-          usedBy: [recipe.title]
-        });
-      }
-    }
-  }
-  for (const pattern of catalog.patterns) {
-    for (const source of pattern.sources) {
-      const existing = map.get(source.url);
-      if (existing) existing.usedBy.push(pattern.title);
-      else {
-        map.set(source.url, {
-          title: source.title,
-          url: source.url,
-          usedBy: [pattern.title]
+          usedBy: [prompt.title]
         });
       }
     }
@@ -100,33 +79,18 @@ function collectSources(): ExplorerItem[] {
     }));
 }
 
-function allRecipes(): ExplorerItem[] {
+function allPrompts(): ExplorerItem[] {
   const laneTitles = new Map(catalog.lanes.map((lane) => [lane.key, lane.title]));
-  return catalog.recipes.map((recipe) => ({
-    kind: "recipe" as const,
-    id: `recipe:${recipe.slug}`,
-    title: recipe.title,
-    subtitle: recipe.use_for,
-    href: `/recipes/${recipe.slug}/`,
+  return catalog.prompts.map((prompt) => ({
+    kind: "prompt" as const,
+    id: `prompt:${prompt.slug}`,
+    title: prompt.title,
+    subtitle: prompt.blurb,
+    href: promptDetailHref(prompt.slug),
     external: false as const,
-    lane: recipe.lane,
-    searchTerms: [recipe.lane, laneTitles.get(recipe.lane) ?? ""]
-  }));
-}
-
-function allPatterns(): ExplorerItem[] {
-  const sectionTitles = new Map(
-    catalog.pattern_sections.map((section) => [section.key, section.title])
-  );
-  return catalog.patterns.map((pattern) => ({
-    kind: "pattern" as const,
-    id: `pattern:${pattern.slug}`,
-    title: pattern.title,
-    subtitle: pattern.definition,
-    href: `/patterns/${pattern.slug}/`,
-    external: false as const,
-    section: pattern.section,
-    searchTerms: [pattern.section, sectionTitles.get(pattern.section) ?? ""]
+    lane: prompt.lane,
+    facet: prompt.facet,
+    searchTerms: [prompt.slug, prompt.lane, prompt.facet, laneTitles.get(prompt.lane) ?? ""]
   }));
 }
 
@@ -148,11 +112,11 @@ function SourceDomainMark({ mark, large = false }: { mark: DomainMark | null; la
 }
 
 /**
- * Unified data explorer: sources, recipes, and patterns.
+ * Unified data explorer: sources and prompts.
  * Replaces separate Research + Sources nav surfaces.
  */
 export function DataExplorerPage() {
-  useDocumentMeta("Explore", "Browse catalog sources, recipes, and patterns in one data explorer.");
+  useDocumentMeta("Explore", "Browse catalog sources and prompts in one data explorer.");
 
   const navigate = useNavigate();
   const navigationType = useNavigationType();
@@ -160,7 +124,7 @@ export function DataExplorerPage() {
   const serializedParams = params.toString();
   const urlIntent = explorerUrlIntentFromParams(params);
   const { query: urlQuery, scope } = urlIntent;
-  const allItems = useMemo(() => [...collectSources(), ...allRecipes(), ...allPatterns()], []);
+  const allItems = useMemo(() => [...collectSources(), ...allPrompts()], []);
 
   const [queryInput, setQueryInput] = useState(urlQuery);
   const query = normalizeExplorerQuery(queryInput);
@@ -228,8 +192,7 @@ export function DataExplorerPage() {
   const filtered = useMemo(() => {
     return allItems.filter((item) => {
       if (scope === "sources" && item.kind !== "source") return false;
-      if (scope === "recipes" && item.kind !== "recipe") return false;
-      if (scope === "patterns" && item.kind !== "pattern") return false;
+      if (scope === "prompts" && item.kind !== "prompt") return false;
       return matchesExplorerQuery(item, query);
     });
   }, [allItems, query, scope]);
@@ -244,9 +207,8 @@ export function DataExplorerPage() {
 
   const counts = useMemo(
     () => ({
-      sources: allItems.filter((i) => i.kind === "source").length,
-      recipes: allItems.filter((i) => i.kind === "recipe").length,
-      patterns: allItems.filter((i) => i.kind === "pattern").length
+      sources: allItems.filter((item) => item.kind === "source").length,
+      prompts: allItems.filter((item) => item.kind === "prompt").length
     }),
     [allItems]
   );
@@ -255,8 +217,6 @@ export function DataExplorerPage() {
     const item = filtered[index];
     if (!item) return;
     setSelectedId(item.id);
-    // The option is already mounted. Focus it synchronously so a following
-    // Escape cannot be overwritten by a stale animation-frame callback.
     optionRefs.current.get(item.id)?.focus();
   }
 
@@ -299,10 +259,7 @@ export function DataExplorerPage() {
             {counts.sources} sources
           </Badge>
           <Badge tone="muted" icon={<FileText size={12} aria-hidden="true" />}>
-            {counts.recipes} recipes
-          </Badge>
-          <Badge tone="muted" icon={<Layers size={12} aria-hidden="true" />}>
-            {counts.patterns} patterns
+            {counts.prompts} prompts
           </Badge>
         </div>
       </header>
@@ -326,7 +283,7 @@ export function DataExplorerPage() {
                 focusItemAt(Math.max(currentIndex, 0));
               }
             }}
-            placeholder="Filter by title, URL, lane, definition…"
+            placeholder="Filter by title, URL, lane, facet…"
             autoComplete="off"
           />
         </label>
@@ -335,8 +292,7 @@ export function DataExplorerPage() {
             [
               ["all", "All"],
               ["sources", "Sources"],
-              ["recipes", "Recipes"],
-              ["patterns", "Patterns"]
+              ["prompts", "Prompts"]
             ] as const
           ).map(([id, label]) => (
             <button
@@ -397,10 +353,8 @@ export function DataExplorerPage() {
                       <span className="research-list-kind">
                         {item.kind === "source" ? (
                           <SourceDomainMark mark={item.domainMark} />
-                        ) : item.kind === "recipe" ? (
-                          <FileText size={14} aria-hidden="true" />
                         ) : (
-                          <Layers size={14} aria-hidden="true" />
+                          <FileText size={14} aria-hidden="true" />
                         )}
                         {item.kind}
                       </span>
@@ -452,11 +406,10 @@ export function DataExplorerPage() {
                     : ""}
                 </p>
               ) : null}
-              {selected.kind === "recipe" ? (
-                <p className="muted meta-line">Lane: {selected.lane}</p>
-              ) : null}
-              {selected.kind === "pattern" ? (
-                <p className="muted meta-line">Section: {selected.section}</p>
+              {selected.kind === "prompt" ? (
+                <p className="muted meta-line">
+                  Lane: {selected.lane} · Facet: {selected.facet}
+                </p>
               ) : null}
             </div>
           )}

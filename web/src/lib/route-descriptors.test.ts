@@ -36,9 +36,7 @@ describe("shared route descriptors", () => {
       })),
       [
         { pageType: "home", canonicalPath: "/" },
-        { pageType: "explore", canonicalPath: "/explore/" },
-        { pageType: "recipes-index", canonicalPath: "/recipes/" },
-        { pageType: "patterns-index", canonicalPath: "/patterns/" }
+        { pageType: "explore", canonicalPath: "/explore/" }
       ]
     );
     assert.deepEqual(
@@ -49,20 +47,16 @@ describe("shared route descriptors", () => {
       })),
       [
         {
-          pageType: "recipe",
-          canonicalPattern: CLIENT_DETAIL_ROUTE_PATTERNS.recipe,
-          descriptorCount: 48
-        },
-        {
-          pageType: "pattern",
-          canonicalPattern: CLIENT_DETAIL_ROUTE_PATTERNS.pattern,
-          descriptorCount: 43
+          pageType: "prompt",
+          canonicalPattern: CLIENT_DETAIL_ROUTE_PATTERNS.prompt,
+          descriptorCount: catalogData.prompts.length
         }
       ]
     );
     for (const binding of manifest.detailPages) {
       for (const path of binding.descriptorPaths) {
         assert.ok(clientRoutePatternMatchesPath(binding.canonicalPattern, path), path);
+        assert.match(path, /^\/catalog\/[^/]+\/$/);
       }
     }
     assert.deepEqual(
@@ -82,7 +76,19 @@ describe("shared route descriptors", () => {
       ]
     );
     assert.equal(
-      clientRoutePatternMatchesPath(CLIENT_DETAIL_ROUTE_PATTERNS.recipe, "/patterns/panel-review/"),
+      clientRoutePatternMatchesPath(CLIENT_DETAIL_ROUTE_PATTERNS.prompt, "/recipes/code-review/"),
+      false
+    );
+    assert.equal(
+      descriptors.some((descriptor) => descriptor.path.startsWith("/recipes/")),
+      false
+    );
+    assert.equal(
+      descriptors.some((descriptor) => descriptor.path.startsWith("/patterns/")),
+      false
+    );
+    assert.equal(
+      descriptors.some((descriptor) => descriptor.path === "/catalog/"),
       false
     );
   });
@@ -93,16 +99,7 @@ describe("shared route descriptors", () => {
     );
     assert.deepEqual(
       registrations.map(({ path }) => path),
-      [
-        "/",
-        "/explore/",
-        "/recipes/",
-        "/patterns/",
-        "/recipes/:slug/",
-        "/patterns/:slug/",
-        "/sources/",
-        "/research/"
-      ]
+      ["/", "/explore/", "/catalog/:slug/", "/sources/", "/research/"]
     );
     const routerRoutes = registrations.map((registration, index) => ({
       id: String(index),
@@ -116,10 +113,8 @@ describe("shared route descriptors", () => {
     };
 
     for (const [slashless, canonical] of [
-      ["/recipes", "/recipes/"],
-      ["/patterns", "/patterns/"],
       ["/explore", "/explore/"],
-      ["/recipes/source-grounded-answer", "/recipes/source-grounded-answer/"]
+      ["/catalog/source-grounded-answer", "/catalog/source-grounded-answer/"]
     ]) {
       const slashlessRegistration = matchRegistration(slashless);
       const canonicalRegistration = matchRegistration(canonical);
@@ -131,6 +126,10 @@ describe("shared route descriptors", () => {
       );
       assert.equal(canonicalSlashNavigation({ pathname: canonical }), null);
     }
+
+    assert.equal(matchRoutes(routerRoutes, "/recipes/code-review/"), null);
+    assert.equal(matchRoutes(routerRoutes, "/patterns/"), null);
+    assert.equal(matchRoutes(routerRoutes, "/catalog/"), null);
 
     for (const [path, redirectTo] of [
       ["/sources", "/explore/?scope=sources"],
@@ -146,13 +145,13 @@ describe("shared route descriptors", () => {
   });
 
   it("fails closed when a descriptor is not covered by its registered pattern", () => {
-    const recipe = descriptors.find((descriptor) => descriptor.pageType === "recipe");
-    assert.ok(recipe);
+    const prompt = descriptors.find((descriptor) => descriptor.pageType === "prompt");
+    assert.ok(prompt);
     assert.throws(
       () =>
         clientRouteManifestFromDescriptors([
-          ...descriptors.filter((descriptor) => descriptor !== recipe),
-          { ...recipe, path: `/unregistered/${recipe.slug}/` }
+          ...descriptors.filter((descriptor) => descriptor !== prompt),
+          { ...prompt, path: `/unregistered/${prompt.slug}/` }
         ]),
       /No client route binding covers descriptor/
     );

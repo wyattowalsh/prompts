@@ -14,16 +14,12 @@ export type CatalogMeta = {
     key: string;
     title: string;
     color?: string;
+    badge?: { label: string; logo: string; background: string };
     order: number;
-    recipe_slugs: string[];
+    prompt_slugs: string[];
+    featured_prompt_slugs?: string[];
   }>;
-  pattern_sections: Array<{
-    key: string;
-    title: string;
-    order: number;
-    pattern_slugs: string[];
-  }>;
-  counts: { recipes: number; patterns: number };
+  counts: { prompts: number };
 };
 
 export const catalogMeta = data as CatalogMeta;

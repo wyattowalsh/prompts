@@ -35,7 +35,7 @@ export function CommandPalette({ open, onOpenChange, onNavigate }: CommandPalett
 
   // Global ⌘/Ctrl+K is owned by App (hotkey-before-lazy). Dialog handles Esc/focus trap.
 
-  const groups = ["Pages", "Recipes", "Patterns"] as const;
+  const groups = ["Pages", "Prompts"] as const;
 
   return (
     <Dialog.Root open={open} onOpenChange={onOpenChange}>
@@ -55,8 +55,8 @@ export function CommandPalette({ open, onOpenChange, onNavigate }: CommandPalett
               <Command.Input
                 value={query}
                 onValueChange={setQuery}
-                aria-label="Search recipes, patterns, and pages"
-                placeholder="Search recipes, patterns, and pages…"
+                aria-label="Search prompts and pages"
+                placeholder="Search prompts and pages…"
                 className="h-12 w-full bg-transparent text-sm outline-none placeholder:text-muted-foreground focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-0"
               />
               <kbd className="hidden rounded border border-border bg-muted px-1.5 py-0.5 text-[10px] font-medium text-muted-foreground sm:inline">

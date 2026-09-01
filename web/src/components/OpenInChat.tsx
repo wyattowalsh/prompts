@@ -1,21 +1,48 @@
 import { MessageSquareShare, ShieldAlert } from "lucide-react";
-import type { CSSProperties } from "react";
+import type { CSSProperties, MouseEvent } from "react";
+import { writeClipboardText } from "../lib/clipboard";
 import { CHAT_PROVIDERS } from "../lib/share-urls";
 import { ProviderMark } from "./ProviderMark";
 
 type OpenInChatProps = {
-  /** Prompt text sent via deep-link (already filled when possible). */
+  /** Current filled prompt copied locally before the provider home opens. */
   promptText: string;
   /** Compact row for sticky toolbars / near-top placement. */
   compact?: boolean;
   className?: string;
+  copy?: (text: string, label?: string) => Promise<boolean> | boolean;
 };
 
 /**
- * Open filled prompt in a chat app — brand marks + accents.
- * Prefer placing near the top of the recipe workspace (after sticky actions).
+ * Copy the current prompt, then open the provider home URL.
+ * Provider hrefs never include prompt text, paste values, or fill state.
  */
-export function OpenInChat({ promptText, compact = false, className = "" }: OpenInChatProps) {
+export function OpenInChat({ promptText, compact = false, className = "", copy }: OpenInChatProps) {
+  async function copyPrompt() {
+    const label = "Prompt copied — not placed in the URL";
+    if (copy) {
+      await copy(promptText, label);
+      return;
+    }
+    await writeClipboardText(promptText);
+  }
+
+  function openProvider(event: MouseEvent<HTMLAnchorElement>, homeUrl: string) {
+    if (
+      event.defaultPrevented ||
+      event.button !== 0 ||
+      event.metaKey ||
+      event.ctrlKey ||
+      event.shiftKey ||
+      event.altKey
+    ) {
+      return;
+    }
+    event.preventDefault();
+    void copyPrompt();
+    window.open(homeUrl, "_blank", "noopener,noreferrer");
+  }
+
   return (
     <div
       className={["open-in-chat", compact ? "open-in-chat-compact" : "", className]
@@ -30,7 +57,8 @@ export function OpenInChat({ promptText, compact = false, className = "" }: Open
         </span>
         <p className="muted open-in-chat-note open-in-chat-note-inline">
           <ShieldAlert size={13} aria-hidden="true" />
-          Shares prompt in URL — do not include secrets or private data.
+          Copies the current prompt, then opens the provider. The prompt is copied, not placed in
+          the URL.
         </p>
       </div>
       <div className="open-in-chat-grid" role="group" aria-label="Open filled prompt in a chat app">
@@ -38,10 +66,11 @@ export function OpenInChat({ promptText, compact = false, className = "" }: Open
           <a
             key={provider.id}
             className={`provider-chip provider-${provider.id}`}
-            href={provider.buildUrl(promptText)}
+            href={provider.homeUrl}
             target="_blank"
             rel="noopener noreferrer"
-            title={`Open in ${provider.label} with the current prompt`}
+            title={`Copy the current prompt, then open ${provider.label}`}
+            onClick={(event) => openProvider(event, provider.homeUrl)}
             style={
               {
                 "--provider-brand": provider.brand,

@@ -15,53 +15,45 @@ const commandPaletteSource = readFileSync(
 );
 
 type CatalogShape = {
-  recipes: Array<{
+  prompts: Array<{
     slug: string;
     title: string;
-    use_for: string;
+    blurb: string;
     lane: string;
-    class: string;
+    facet: string;
     sources: Array<{ title: string; url: string }>;
   }>;
-  patterns: Array<{
-    slug: string;
-    title: string;
-    section: string;
-    definition: string;
-    sources: Array<{ title: string; url: string }>;
-  }>;
-  counts: { recipes: number; patterns: number };
+  counts: { prompts: number };
 };
 
 const data = catalog as CatalogShape;
 
-test("indexes every recipe and pattern with trailing-slash detail hrefs", () => {
+test("indexes every prompt with trailing-slash catalog hrefs", () => {
   const items = buildCommandIndexFromCatalog(data);
-  const recipes = items.filter((i) => i.group === "Recipes");
-  const patterns = items.filter((i) => i.group === "Patterns");
-  assert.equal(recipes.length, data.counts.recipes);
-  assert.equal(patterns.length, data.counts.patterns);
-  for (const recipe of recipes) {
-    assert.match(recipe.href, /^\/recipes\/[^/]+\/$/);
+  const prompts = items.filter((item) => item.group === "Prompts");
+  assert.equal(prompts.length, data.counts.prompts);
+  for (const prompt of prompts) {
+    assert.match(prompt.href, /^\/catalog\/[^/]+\/$/);
   }
-  for (const pattern of patterns) {
-    assert.match(pattern.href, /^\/patterns\/[^/]+\/$/);
-  }
+  assert.equal(
+    items.some((item) => item.href === "/recipes/" || item.href === "/patterns/"),
+    false
+  );
 });
 
 test("filters by multi-token query against title keywords", () => {
   const items = buildCommandIndexFromCatalog(data);
-  const sample = data.recipes[0];
+  const sample = data.prompts[0];
   assert.ok(sample);
   const token = sample.slug.split("-")[0] ?? sample.title.slice(0, 4).toLowerCase();
   const hits = filterCommandItems(items, token);
   assert.ok(hits.length > 0);
   assert.ok(
     hits.some(
-      (h) =>
-        h.title.toLowerCase().includes(token) ||
-        h.keywords.includes(token) ||
-        h.href.includes(token)
+      (hit) =>
+        hit.title.toLowerCase().includes(token) ||
+        hit.keywords.includes(token) ||
+        hit.href.includes(token)
     )
   );
 });
@@ -72,10 +64,14 @@ test("returns empty array for nonsense queries", () => {
   assert.equal(hits.length, 0);
 });
 
-test("does not emit per-URL Sources group items; Pages includes Explore", () => {
+test("does not emit per-URL Sources group items; Pages includes Explore only", () => {
   const items = buildCommandIndexFromCatalog(data);
-  const sourcesGroup = items.filter((i) => (i.group as string) === "Sources");
+  const sourcesGroup = items.filter((item) => (item.group as string) === "Sources");
   assert.equal(sourcesGroup.length, 0);
-  const pages = items.filter((i) => i.group === "Pages");
-  assert.ok(pages.some((p) => p.href === "/explore/" && /explore/i.test(p.title)));
+  const pages = items.filter((item) => item.group === "Pages");
+  assert.equal(pages.length, 2);
+  assert.ok(pages.some((page) => page.href === "/explore/" && /explore/i.test(page.title)));
+  assert.ok(pages.some((page) => page.href === "/"));
+  assert.match(commandPaletteSource, /"Prompts"/);
+  assert.doesNotMatch(commandPaletteSource, /All recipes|All patterns/);
 });

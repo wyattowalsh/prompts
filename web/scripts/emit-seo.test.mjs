@@ -28,54 +28,72 @@ const baseEnvironmentKeys = [
 
 const fixtureCatalog = {
   meta: { title: "prompts", description: "  Test   catalog  " },
-  recipes: [
+  prompts: [
     {
       slug: "source-grounded-answer",
       title: 'Source <Grounded> "Answer" & more',
+      facet: "job",
       lane: "research",
-      class: "research",
+      blurb: "  RAG\nwith evidence  ",
       order: 1,
       badge: { logo: "ri:RiMicroscopeLine", color: "2563EB", chip_label: "Sources" },
-      use_for: "  RAG\nwith evidence  ",
-      placeholders: [
+      evidence: "Evidence sentinel",
+      safety: ["Safety sentinel"],
+      caveat: "Caveat sentinel",
+      sources: [{ title: "Recipe source sentinel", url: "https://example.com/recipe-source" }],
+      modes: [
         {
-          name: "question",
-          required: true,
-          example: "Expected example sentinel",
-          notes: "Placeholder notes sentinel",
-          preview: "Preview sentinel"
+          id: "paste",
+          label: "Paste job",
+          default: true,
+          when_to_use: "Best-use sentinel",
+          prompt: "A prompt containing ``` a nested fence",
+          placeholders: [
+            {
+              name: "question",
+              required: true,
+              example: "Expected example sentinel",
+              notes: "Placeholder notes sentinel",
+              preview: "Preview sentinel"
+            }
+          ],
+          after_copy: {
+            fill_pointer: "Fill-pointer sentinel",
+            expected_output: "Expected output sentinel",
+            upgrade_when: "Upgrade sentinel"
+          }
         }
-      ],
-      prompt: "A prompt containing ``` a nested fence",
-      after_copy: {
-        fill_pointer: "Fill-pointer sentinel",
-        expected_output: "Expected output sentinel",
-        upgrade_when: "Upgrade sentinel",
-        control_evidence_note: "Control sentinel",
-        safety_eval_checks: ["Safety sentinel"]
-      },
-      sources: [{ title: "Recipe source sentinel", url: "https://example.com/recipe-source" }]
-    }
-  ],
-  patterns: [
+      ]
+    },
     {
       slug: "chain-of-thought",
       title: "Chain [of] Thought",
-      section: "reasoning-and-search",
-      order: 1,
+      facet: "method",
+      lane: "reasoning",
+      blurb: "Reason privately",
+      order: 2,
+      badge: { logo: "ri:RiLightbulbLine", color: "8B5CF6", chip_label: "CoT" },
+      evidence: "Evidence sentinel",
+      safety: ["Safety sentinel"],
+      caveat: "Caveat sentinel",
       definition: "Reason privately",
-      best_use: "Best-use sentinel",
       avoid_when: "Avoid-when sentinel",
-      template: "Template sentinel",
-      template_omission_reason: null,
       model_api_controls: "Controls sentinel",
       cost_latency: "Cost sentinel",
       failure_modes: "Failure sentinel",
-      evidence_tier: "Evidence sentinel",
-      source_type: "Source-type sentinel",
       eval_required: true,
-      caveat: "Caveat sentinel",
-      sources: [{ title: "Pattern source sentinel", url: "https://example.com/pattern-source" }]
+      related: ["source-grounded-answer"],
+      sources: [{ title: "Pattern source sentinel", url: "https://example.com/pattern-source" }],
+      modes: [
+        {
+          id: "template",
+          label: "Method template",
+          default: true,
+          when_to_use: "Best-use sentinel",
+          prompt: "Template sentinel",
+          placeholders: []
+        }
+      ]
     }
   ]
 };
@@ -115,7 +133,10 @@ test("siteBaseUrl uses only explicit stable publication inputs", async () => {
   try {
     for (const key of keys) delete process.env[key];
     assert.equal(siteBaseUrl(), "http://127.0.0.1:4173/");
-    assert.equal(absoluteUrl("/recipes/"), "http://127.0.0.1:4173/recipes/");
+    assert.equal(
+      absoluteUrl("/catalog/source-grounded-answer/"),
+      "http://127.0.0.1:4173/catalog/source-grounded-answer/"
+    );
 
     process.env.VERCEL = "1";
     process.env.VERCEL_PROJECT_PRODUCTION_URL = "prompts.w4w.dev";
@@ -261,8 +282,8 @@ test("siteBaseUrl rejects unsafe publication canonical origins", async () => {
 
 test("one validated descriptor inventory partitions canonical pages and legacy redirects", () => {
   const descriptors = routeDescriptorsFromCatalog(fixtureCatalog);
-  assert.equal(descriptors.length, 8);
-  assert.equal(indexableRouteDescriptors(descriptors).length, 6);
+  assert.equal(descriptors.length, 6);
+  assert.equal(indexableRouteDescriptors(descriptors).length, 4);
   assert.equal(redirectRouteDescriptors(descriptors).length, 2);
   assert.deepEqual(
     redirectRouteDescriptors(descriptors).map(({ path, redirectTo }) => ({ path, redirectTo })),
@@ -273,17 +294,35 @@ test("one validated descriptor inventory partitions canonical pages and legacy r
   );
   assert.ok(descriptors.every((descriptor) => Object.isFrozen(descriptor)));
   assert.equal(
-    descriptors.find((descriptor) => descriptor.pageType === "recipe")?.description,
+    descriptors.find((descriptor) => descriptor.pageType === "prompt")?.description,
     "RAG with evidence"
+  );
+  assert.equal(
+    descriptors.some((descriptor) => descriptor.path.startsWith("/recipes/")),
+    false
+  );
+  assert.equal(
+    descriptors.some((descriptor) => descriptor.path === "/catalog/"),
+    false
   );
 });
 
-test("live catalog inventory contains exactly 95 indexable pages and two redirects", () => {
-  const descriptors = routeDescriptorsFromCatalog(loadCatalog());
-  assert.equal(indexableRouteDescriptors(descriptors).length, 95);
+test("live catalog inventory contains one prompt page per item plus home and explore", () => {
+  const catalog = loadCatalog();
+  const descriptors = routeDescriptorsFromCatalog(catalog);
+  const indexable = indexableRouteDescriptors(descriptors);
+  assert.equal(indexable.length, catalog.prompts.length + 2);
   assert.equal(redirectRouteDescriptors(descriptors).length, 2);
-  assert.equal(new Set(descriptors.map((descriptor) => descriptor.path)).size, 97);
-  assert.equal(new Set(descriptors.map((descriptor) => descriptor.shellPath)).size, 97);
+  assert.equal(
+    new Set(descriptors.map((descriptor) => descriptor.path)).size,
+    catalog.prompts.length + 4
+  );
+  assert.equal(
+    new Set(descriptors.map((descriptor) => descriptor.shellPath)).size,
+    catalog.prompts.length + 4
+  );
+  assert.ok(indexable.every((descriptor) => !descriptor.path.startsWith("/recipes/")));
+  assert.ok(indexable.every((descriptor) => !descriptor.path.startsWith("/patterns/")));
 });
 
 test("descriptor construction rejects unsafe or colliding catalog slugs", () => {
@@ -291,15 +330,15 @@ test("descriptor construction rejects unsafe or colliding catalog slugs", () => 
     () =>
       routeDescriptorsFromCatalog({
         ...fixtureCatalog,
-        recipes: [{ ...fixtureCatalog.recipes[0], slug: "../../escape" }]
+        prompts: [{ ...fixtureCatalog.prompts[0], slug: "../../escape" }]
       }),
-    /Unsafe recipe route slug/
+    /Unsafe prompt route slug/
   );
   assert.throws(
     () =>
       routeDescriptorsFromCatalog({
         ...fixtureCatalog,
-        recipes: [fixtureCatalog.recipes[0], { ...fixtureCatalog.recipes[0] }]
+        prompts: [fixtureCatalog.prompts[0], { ...fixtureCatalog.prompts[0] }]
       }),
     /Duplicate public route path/
   );
@@ -307,7 +346,7 @@ test("descriptor construction rejects unsafe or colliding catalog slugs", () => 
 
 test("route shell renders escaped, absolute, route-correct metadata", () => {
   const descriptor = routeDescriptorsFromCatalog(fixtureCatalog).find(
-    (entry) => entry.pageType === "recipe"
+    (entry) => entry.pageType === "prompt" && entry.slug === "source-grounded-answer"
   );
   assert.ok(descriptor);
   const html = renderRouteShell(fixtureTemplate, descriptor, { baseUrl });
@@ -319,11 +358,11 @@ test("route shell renders escaped, absolute, route-correct metadata", () => {
   assert.match(html, /content="RAG with evidence"/);
   assert.match(
     html,
-    /href="https:\/\/docs\.example\.com\/catalog\/recipes\/source-grounded-answer\/"/
+    /href="https:\/\/docs\.example\.com\/catalog\/catalog\/source-grounded-answer\/"/
   );
   assert.match(
     html,
-    /property="og:url" content="https:\/\/docs\.example\.com\/catalog\/recipes\/source-grounded-answer\/"/
+    /property="og:url" content="https:\/\/docs\.example\.com\/catalog\/catalog\/source-grounded-answer\/"/
   );
   assert.match(
     html,
@@ -349,11 +388,11 @@ test("shell writer emits every page, local redirect parity shells, and standalon
     distDir,
     baseUrl
   });
-  assert.deepEqual(result, { pageShells: 6, redirectShells: 2, notFoundShells: 1 });
+  assert.deepEqual(result, { pageShells: 4, redirectShells: 2, notFoundShells: 1 });
 
   const rootHtml = readFileSync(join(distDir, "index.html"), "utf8");
   const recipeHtml = readFileSync(
-    join(distDir, "recipes/source-grounded-answer/index.html"),
+    join(distDir, "catalog/source-grounded-answer/index.html"),
     "utf8"
   );
   const redirectHtml = readFileSync(join(distDir, "sources/index.html"), "utf8");
@@ -378,13 +417,13 @@ test("discovery writer emits only canonical indexable descriptors without fabric
     distDir,
     baseUrl
   });
-  assert.deepEqual(result, { indexableCount: 6 });
+  assert.deepEqual(result, { indexableCount: 4 });
 
   const sitemap = readFileSync(join(distDir, "sitemap.xml"), "utf8");
   const robots = readFileSync(join(distDir, "robots.txt"), "utf8");
   const llms = readFileSync(join(distDir, "llms.txt"), "utf8");
   const llmsFull = readFileSync(join(distDir, "llms-full.txt"), "utf8");
-  assert.equal((sitemap.match(/<url>/g) ?? []).length, 6);
+  assert.equal((sitemap.match(/<url>/g) ?? []).length, 4);
   assert.doesNotMatch(sitemap, /<lastmod>|\/sources\/|\/research\//);
   assert.match(sitemap, /https:\/\/docs\.example\.com\/catalog\/explore\//);
   assert.match(robots, /Sitemap: https:\/\/docs\.example\.com\/catalog\/sitemap\.xml/);
@@ -399,7 +438,6 @@ test("discovery writer emits only canonical indexable descriptors without fabric
     "Fill-pointer sentinel",
     "Expected output sentinel",
     "Upgrade sentinel",
-    "Control sentinel",
     "Safety sentinel",
     "https://example.com/recipe-source",
     "Best-use sentinel",
@@ -409,7 +447,6 @@ test("discovery writer emits only canonical indexable descriptors without fabric
     "Cost sentinel",
     "Failure sentinel",
     "Evidence sentinel",
-    "Source-type sentinel",
     "Caveat sentinel",
     "https://example.com/pattern-source"
   ]) {
@@ -427,10 +464,10 @@ test("sitemap renderer XML-escapes absolute URLs", () => {
 
 test("full LLM export refuses catalog content missing from the descriptor inventory", () => {
   const descriptors = routeDescriptorsFromCatalog(fixtureCatalog).filter(
-    (descriptor) => descriptor.pageType !== "recipe"
+    (descriptor) => descriptor.pageType !== "prompt"
   );
   assert.throws(
     () => renderLlmsFullTxt(descriptors, fixtureCatalog, { baseUrl }),
-    /Route inventory is missing recipe/
+    /Route inventory is missing prompt/
   );
 });
