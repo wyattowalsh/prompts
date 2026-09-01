@@ -1,21 +1,6 @@
 <!-- markdownlint-disable MD013 MD022 MD032 MD041 -->
 
-# route-publication-contract Specification
-
-## Purpose
-Defines the public route, metadata, redirect, and generated-discovery behavior required to publish the catalog as a trustworthy static web application.
-## Requirements
-### Requirement: Published brand assets match route metadata
-
-The Open Graph card, Apple touch icon, ICO, and SVG favicon SHALL identify the
-current `prompts` product and retain their platform-appropriate dimensions and
-icon sizes. The raster social asset SHALL carry machine-readable title and
-description provenance matching its visible brand copy.
-
-#### Scenario: Publication assets are validated
-
-- **WHEN** the publication contract runs before a web build
-- **THEN** it rejects stale product naming, incorrect social/touch dimensions, an incomplete ICO size set, or favicon palette drift
+## MODIFIED Requirements
 
 ### Requirement: One route inventory drives every publication surface
 
@@ -128,6 +113,8 @@ model.
 - **THEN** `llms-full.txt` retains every field and source in valid Markdown
   instead of publishing a partial prompt-and-definition view
 - **AND** it does not serialize parallel recipe and pattern type chapters
+
+## ADDED Requirements
 
 ### Requirement: Retired recipe and pattern URLs are branded 404s
 

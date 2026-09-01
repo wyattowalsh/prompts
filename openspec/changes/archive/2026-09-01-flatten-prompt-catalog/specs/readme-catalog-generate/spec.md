@@ -1,18 +1,13 @@
 <!-- markdownlint-disable MD013 MD022 MD032 MD041 -->
 
-# readme-catalog-generate Specification
+## RENAMED Requirements
 
-## Purpose
-Defines generated GitHub README catalog emission, copy-path contract, Prompt Index integrity, and committed Takumi chrome hash-check.
-## Requirements
-### Requirement: Canonical README generate is transactional and badge-aware
+- FROM: `### Requirement: Recipe cards do not emit per-card TOC and Top navigation badges`
+- TO: `### Requirement: Prompt cards do not emit per-card TOC and Top navigation badges`
+- FROM: `### Requirement: Prompt Index lists every catalog recipe slug`
+- TO: `### Requirement: Prompt Index lists every catalog prompt slug`
 
-Maintainers SHALL generate `README.md` with `pnpm catalog:readme`. Supported tooling MUST NOT treat `catalog generate readme --check` as a supported freshness gate.
-
-#### Scenario: Maintainer regenerates README
-
-- **WHEN** `pnpm catalog:readme` runs
-- **THEN** it writes the complete badge-aware README from catalog YAML and shell fragments without requiring a separate unsupported low-level check command
+## MODIFIED Requirements
 
 ### Requirement: Prompt cards do not emit per-card TOC and Top navigation badges
 
@@ -74,6 +69,8 @@ size and lanes and MUST NOT report recipe vs pattern counts.
   `catalog/index.yaml`
 - **AND** it does not require 48 recipe anchors or 43 pattern notes
 
+## ADDED Requirements
+
 ### Requirement: Prompt Library is the only generated catalog chapter
 
 README generation SHALL emit one Prompt Library grouped by the eight lanes. Each
@@ -93,12 +90,3 @@ catalog chapter.
 - **WHEN** `pnpm catalog:readme` writes `README.md`
 - **THEN** the output has no `## Pattern Notes` heading and no pattern-section
   chapter
-
-### Requirement: Takumi README chrome is hash-checked committed PNGs
-
-The repository SHALL pin `takumi-js@2.9.2` and `@takumi-rs/core@2.9.2` and provide `pnpm catalog:readme-chrome:check` that compares committed `catalog/shell/chrome/dist/{hero,path}-{light,dark}.png` hashes. README Quality MUST NOT require native N-API render when committed bytes match.
-
-#### Scenario: Chrome hashes match
-
-- **WHEN** `pnpm catalog:readme-chrome:check` runs against unchanged committed PNGs
-- **THEN** it exits successfully without rewriting files
