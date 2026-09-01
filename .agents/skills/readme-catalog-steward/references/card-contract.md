@@ -1,55 +1,73 @@
 <!-- markdownlint-disable MD013 -->
 
-# README Recipe And Pattern Contract
+# README Prompt Card Contract
 
-Use this reference when adding or revising a README prompt recipe or supporting
-pattern note.
+Use this reference when adding or revising a README prompt. The catalog has
+**one** prompt type authored at `catalog/items/<slug>.yaml`. Generated README is
+one Prompt Library; the public item URL is `/catalog/<slug>/`. Do not author
+recipes vs patterns as types, and do not apply a separate pattern-note field
+list as a second product. There is no Playbook composer.
 
 ## Required Fields
 
-Every prompt recipe must include:
+Every prompt must include item identity and shared evidence:
 
-- Use for
-- Copy prompt
+- slug (filename stem; globally unique; not a reserved name)
+- title
+- facet (`job` or `method` only)
+- one of the eight lanes
+- blurb (rendered as **Use for**)
+- badge, order
+- sources (clickable)
+- evidence
+- safety/eval checks
+- caveat
+- 1–4 named modes with exactly one default (modes cannot change slug, title,
+  facet, or lane)
+
+When the selected (or default) mode has a paste path, the generated card must
+also include:
+
+- Copy prompt (one default `text` fence)
+- Placeholder table
 - Fill these in
 - Expected output
 - Upgrade when
-- Safety/eval checks
-- Sources
 
-Every pattern note must include the fields that fit its format:
+When that mode has no copyable template, the card must state a template
+omission reason instead of leaving the field implicit.
+
+Optional operational fields appear **only when they have data**. They are
+sections on the same prompt, not a second catalog kind:
 
 - Definition
-- Best use
 - Avoid when
-- Copyable skeleton or prompt recipe link
 - Model/API controls
 - Cost and latency
 - Failure modes
-- Evidence tier
-- Source type
 - Eval required
-- Caveat
-- Clickable sources
+- Related (other canonical slugs; See also)
 
-If a pattern cannot safely provide a copyable skeleton, say why instead of
-leaving the field implicit.
+When a prompt has more than one mode, the README card includes a compact mode
+table (id, label, when-to-use) and still emits **one** default copy fence.
 
 Run the canonical validation block in
-[AGENTS.md § Validation](../../../../AGENTS.md#validation). The recipe contract
-linter enforces required recipe fields plus Prompt Index and Section Map link
-completeness (48 recipe anchors, 21 Section Map navigation anchors).
+[AGENTS.md § Validation](../../../../AGENTS.md#validation). The prompt contract
+linter enforces required paste-path fields plus Prompt Index completeness
+against `catalog/index.yaml` `prompt_slugs` and Section Map navigation
+integrity. Counts are prompts, not a 48-recipe / 43-pattern split. There is no
+Pattern Notes chapter.
 
-Recipe headings are generated HTML `<h4>` blocks with icon-only ShieldCN badges.
+Prompt headings are generated HTML `<h4>` blocks with icon-only ShieldCN badges.
 See [badge-surfaces.md](badge-surfaces.md) for marker blocks and heading-icon
 rules. Do not add **Filled example** walkthrough blocks — placeholder tables and
 hoisted previews are the input contract.
 
-## Placeholder Table (All Recipes)
+## Placeholder Table (Paste-Path Modes)
 
-Every prompt recipe must include a four-column **placeholder table** between
-`Use for:` and `<!-- Copy prompt: -->` so readers can demystify placeholders
-before copying the template:
+Every paste-path mode must include a four-column **placeholder table** between
+`Use for:` (and the optional mode table) and `<!-- Copy prompt: -->` so readers
+can demystify placeholders before copying the template:
 
 `| Placeholder | Req | Example value | Notes |`
 
@@ -63,7 +81,7 @@ Rules:
   for Notes); target ≤72 characters, hard limit 80
 - use `see preview below` in Example value when a multi-line sample is hoisted
   to a visible **Paste preview** block
-- the table must appear in the main recipe body, not only inside a collapsed
+- the table must appear in the main card body, not only inside a collapsed
   `<details>` block
 
 ### Paste Preview Hoist
@@ -82,32 +100,35 @@ Do not hide the only preview inside a collapsed `<details>` block.
 Use `scripts/hoist_paste_preview.py --dry-run` to inspect planned hoists and
 `--apply` for bulk hoist when a preview is still buried in a details block.
 
-`scripts/check_readme_recipes.py` enforces paste-zone tables on all 48 recipes
-via `validate_recipe_paste_zone_table()`, preview visibility via
+`scripts/check_readme_recipes.py` enforces paste-zone tables on paste-path
+modes via `validate_recipe_paste_zone_table()`, preview visibility via
 `validate_paste_preview_visibility()`, and value length via
 `RECIPE_PASTE_ZONE_VALUE_LENGTH`.
 
-## Recipe Layout And Post-Copy Metadata
+## Prompt Layout And Post-Copy Metadata
 
-Every prompt recipe follows this visible structure:
+Every prompt follows this visible structure:
 
-1. Icon-only `<h4>` heading with stable anchor.
-2. `Use for:` one-line job summary.
-3. Four-column placeholder table (no `Paste zones:` label).
-4. Optional visible **Paste preview** when Example value is `see preview below`.
-5. Horizontal rule (`---`) then `<!-- Copy prompt: -->` and fenced `text` template.
-6. Collapsed `<details>` block titled **After copy** with fill pointer, expected
-   output, upgrade path, optional control/evidence note, safety/eval checks, and
-   sources.
-7. Navigation badges, then `---` before the next recipe.
+1. Icon-only `<h4>` heading with stable anchor (`id` = slug).
+2. `Use for:` one-line job or method summary (item `blurb`).
+3. Compact mode table when `modes.length > 1`.
+4. Four-column placeholder table when the default mode has a paste path (no
+   `Paste zones:` label).
+5. Optional visible **Paste preview** when Example value is `see preview below`.
+6. Horizontal rule (`---`) then `<!-- Copy prompt: -->` and fenced `text`
+   template for the default mode — or a template-omission reason.
+7. Collapsed `<details>` block titled **After copy** with fill pointer, expected
+   output, upgrade path, safety/eval checks, and sources.
+8. Lane chips live on the lane heading, then `---` before the next prompt.
 
 Post-copy fields stay in canonical order inside the details block. Critical
-safety warnings in pattern notes and section callouts remain visible outside
-collapses.
+safety warnings in agents-lane cards and section callouts remain visible outside
+collapses. Agents-lane cards hoist one `**Safety:**` sentence above the copy
+fence; After-copy still owns the full Safety/eval list.
 
-**Required and enforced** — not optional guidance. Every recipe `Fill these in:`
-block must use the canonical one-line pointer below. Do not duplicate placeholder
-rows as bullets or omit the optional-`none` hint.
+**Required and enforced** on paste-path modes — not optional guidance. Every
+`Fill these in:` block must use the canonical one-line pointer below. Do not
+duplicate placeholder rows as bullets or omit the optional-`none` hint.
 
 ```markdown
 Fill these in:
@@ -141,14 +162,14 @@ boundary and output contract.
 
 ### Class hygiene
 
-Recipe templates must stay class-appropriate (see `scripts/catalog_constants.py`
-`RECIPE_CLASS`):
+Paste-path templates must stay class-appropriate (see
+`scripts/catalog_constants.py` `RECIPE_CLASS`):
 
 | Class | Prefer | Avoid contaminating with |
 | --- | --- | --- |
 | `research` | source grounding, citation checks, missing-evidence stops | tool mutation / side-effect policy |
 | `code` | diffs, tests, failure modes, local verification | panel personas or fake authority |
-| `tools` | tool permissions, approval gates, side-effect classification | only on **Tool-Use Planner**; other tools recipes keep eval/RAG/scanner scope |
+| `tools` | tool permissions, approval gates, side-effect classification | only on **Tool-Use Planner**; other tools prompts keep eval/RAG/scanner scope |
 | `ops` | incident facts, reversibility, blast radius | research literature scans |
 | `reasoning` | private checks, structured critique, uncertainty | long visible chain-of-thought |
 | `editorial` / `extract` / `product` | job-local contracts | unrelated class guardrails |
@@ -162,10 +183,10 @@ packs. Keep durable bullets short, stable, and above task data.
 | Tier | Use When | Caveat |
 | --- | --- | --- |
 | `Strong` | Multiple task-relevant studies, official docs, or repeatable evals support the method | Still require local evals before production use |
-| `Moderate` | One or more credible papers or official docs support the pattern for similar tasks | Call out model and benchmark age |
+| `Moderate` | One or more credible papers or official docs support the method for similar tasks | Call out model and benchmark age |
 | `Emerging` | Promising research exists but evidence is narrow, recent, or model-specific | Keep templates conservative |
 | `Community` | Maintained practitioner use exists without strong task-specific evidence | Label as practice, not proof |
-| `Experimental` | Speculative, high-cost, or fragile pattern with limited support | Require sandbox evals and alternatives |
+| `Experimental` | Speculative, high-cost, or fragile method with limited support | Require sandbox evals and alternatives |
 
 Distinguish "the method has evidence" from "this exact template is proven."
 
@@ -183,25 +204,30 @@ Do not make visible long chain-of-thought the default output. Prefer one of:
 If a source recommends step-by-step reasoning, adapt the README wording to avoid
 requiring hidden deliberation to be printed.
 
-## Recipe Heading And Navigation
+## Prompt Heading And Navigation
 
-- Recipe title uses generated `<h4 id="{slug}">` with icon-only ShieldCN badge
-  (`alt` + `title` = recipe name; badge pill has no label words).
+- Prompt title uses generated `<h4 id="{slug}">` with icon-only ShieldCN badge
+  (`alt` + `title` = prompt name; badge pill has no label words).
 - Category navigation uses `<!-- LANE-CHIPS:{lane}:START/END -->` chip rows.
 - Browse-by-job table lives inside `<!-- JOB-MAP:START/END -->`.
-- After adding or renaming a recipe, update its catalog lane/featured/shortcut
-  metadata and run `pnpm catalog:readme`.
+- After adding or renaming a prompt, update its catalog lane/featured/shortcut
+  metadata in `catalog/items/` and `catalog/index.yaml` (`prompt_slugs` /
+  `featured_prompt_slugs`) and run `pnpm catalog:readme`.
+- Public web URL is `/catalog/<slug>/`. Do not add `/recipes/` or `/patterns/`
+  product routes.
 
-## Recipe And Pattern Review Checklist
+## Prompt Review Checklist
 
-- [ ] The recipe or pattern name and anchor are stable.
-- [ ] Heading icon config exists and icon slug is unique among 48 recipes.
-- [ ] The recipe can be copied without surrounding research prose.
-- [ ] The pattern note states when not to use the method.
+- [ ] The prompt name and anchor are stable; filename stem equals `slug`.
+- [ ] Facet is `job` or `method`; lane is one of the eight lanes.
+- [ ] Heading icon config exists and icon slug is unique among prompts.
+- [ ] A paste-path mode can be copied without surrounding research prose.
+- [ ] Avoid-when, caveat, or template-omission text states when not to use it.
 - [ ] Sources are method-specific, not generic homepages.
 - [ ] Provider/model-specific behavior is caveated.
-- [ ] Cost and latency are not hand-waved.
+- [ ] Cost and latency are not hand-waved when those fields are authored.
 - [ ] Failure modes include injection or source-trust issues where relevant.
-- [ ] Eval required is explicit and realistic.
+- [ ] Eval required is explicit and realistic when authored.
 - [ ] Templates avoid emotional pressure, verbosity inflation, and persona
       theater unless task-specific evidence supports them.
+- [ ] `related` has no missing, duplicate, or self links.

@@ -1,0 +1,261 @@
+version: 1
+kind: playbook-v1-migration
+status: accepted-plan-input
+snapshot:
+  repository: wyattowalsh/prompts
+  setup_base_sha: a6b6037
+  input_counts:
+    recipe: 48
+    pattern: 43
+    total: 91
+result:
+  clustered_members: 56
+  singleton_assets: 35
+  clusters: 23
+  output_counts:
+    recipe: 24
+    pattern: 11
+    playbook: 23
+    total: 58
+public_contract:
+  browse_route: /catalog/
+  detail_template: /catalog/{slug}/
+  retired_typed_indexes:
+    - /recipes/
+    - /patterns/
+  retired_detail_template_by_kind:
+    recipe: /recipes/{slug}/
+    pattern: /patterns/{slug}/
+  expected_retired_route_count: 93
+  catalog_compatibility_redirects: 0
+  catalog_compatibility_aliases: 0
+  retained_functional_redirects:
+    - source: /sources/
+      destination: /explore/?scope=sources
+      rationale: Current route-publication Explore shortcut, not catalog compatibility.
+    - source: /research/
+      destination: /explore/
+      rationale: Current route-publication Explore shortcut, not catalog compatibility.
+lineage_fields:
+  - title
+  - taxonomy
+  - workflow
+  - output_promise
+  - model_api_controls
+  - safety_constraints
+  - caveat
+  - evidence_claims
+  - evidence_tier
+  - eval_requirement
+  - sources
+preservation_requirements:
+  CRC-PLB-101: [supplied-vs-retrieved-evidence, retrieval-diagnostics, multimodal-evidence, poisoning-controls, citations, gaps, uncertainty]
+  CRC-PLB-102: [freshness, multi-document-synthesis, disagreement-first-analysis, decision-impact]
+  CRC-PLB-103: [fixed-length-iterative-density, salient-entities, preserved-and-dropped-details]
+  CRC-PLB-104: [predefined-labels, rationale, confidence, abstention]
+  CRC-PLB-105: [typed-entities, spans-or-evidence, normalization, confidence]
+  CRC-PLB-106: [affect-or-stance, urgency, operational-routing]
+  CRC-PLB-107: [messy-text-extraction, native-schema-enforcement, validation-and-retry, prompt-only-fallback]
+  CRC-PLB-108: [failure-seeded-regressions, adversarial-edges, labels, balanced-variants, review]
+  CRC-PLB-109: [language-neutral-test-design, python-framework-guidance, fixtures, edges, residual-guidance]
+  CRC-PLB-110: [evidence, severity, fixes, validation, audience, accessibility, consistency, interaction]
+  CRC-PLB-111: [relevant-simulated-perspectives, independent-positions, cross-critique, gaps, disagreement, persona-rejection, real-review-triggers]
+  CRC-PLB-112: [short-plan, missing-step-checks, private-reasoning-controls, visible-contract, evidence-caveats]
+  CRC-PLB-113: [governing-abstraction, concrete-answer, evidence-limits, model-api-controls]
+  CRC-PLB-114: [single-claim-verdicts, artifact-audits, verification-questions, source-tool-checks, corrections]
+  CRC-PLB-115: [targeted-enhancement, bounded-critique, external-feedback, change-logs, stop-rules]
+  CRC-PLB-116: [exploit-and-severity-analysis, trust-boundaries, retrieval-tool-effects, mitigation, regressions]
+  CRC-PLB-117: [candidate-ideation, held-out-selection, controlled-iteration, regressions, rollback]
+  CRC-PLB-118: [permitted-calls, argument-validation, prerequisites, approval, effects, stop-conditions, verification]
+  CRC-PLB-119: [durable-record, explicit-criteria, sensitivity, recommendation, revisit-triggers]
+  CRC-PLB-120: [minimal-direct-execution, bounded-context, constraints, output-contract]
+  CRC-PLB-121: [curated-examples, uncertainty-selection, annotation-budgets, labels, formats, edges]
+  CRC-PLB-122: [concise-or-private-draft-controls, cost-and-latency, no-default-long-visible-chain-of-thought]
+  CRC-PLB-123: [branching, pruning, scoring, graph-merging, recombination, revisit, cost, eval]
+exclusions: []
+production_consumers: []
+clusters:
+  - id: CRC-PLB-101
+    title: Evidence-Grounded Answering
+    canonical_slug: evidence-grounded-answering
+    members:
+      - { kind: recipe, slug: source-grounded-answer }
+      - { kind: recipe, slug: rag-answer-contract }
+      - { kind: pattern, slug: rag-citation-grounded-answering }
+      - { kind: pattern, slug: multimodal-evidence-reasoning }
+  - id: CRC-PLB-102
+    title: Research Synthesis
+    canonical_slug: research-synthesis
+    members:
+      - { kind: recipe, slug: web-research-brief }
+      - { kind: recipe, slug: disagreement-map }
+      - { kind: pattern, slug: research-synthesis }
+  - id: CRC-PLB-103
+    title: Dense Summarization
+    canonical_slug: dense-summarization
+    members:
+      - { kind: recipe, slug: dense-summary }
+      - { kind: pattern, slug: chain-of-density-summarization }
+  - id: CRC-PLB-104
+    title: Text Classification
+    canonical_slug: text-classification
+    members:
+      - { kind: recipe, slug: classifier }
+      - { kind: pattern, slug: text-classification }
+  - id: CRC-PLB-105
+    title: Named Entity Extraction
+    canonical_slug: named-entity-extraction
+    members:
+      - { kind: recipe, slug: ner-extractor }
+      - { kind: pattern, slug: ner-named-entity-recognition }
+  - id: CRC-PLB-106
+    title: Sentiment Triage
+    canonical_slug: sentiment-triage
+    members:
+      - { kind: recipe, slug: sentiment-triage }
+      - { kind: pattern, slug: sentiment-analysis }
+  - id: CRC-PLB-107
+    title: Schema-Bound JSON Output
+    canonical_slug: schema-bound-json-output
+    members:
+      - { kind: recipe, slug: json-extractor }
+      - { kind: pattern, slug: structured-outputs-json-schema }
+  - id: CRC-PLB-108
+    title: Synthetic Evaluation Data
+    canonical_slug: synthetic-evaluation-data
+    members:
+      - { kind: recipe, slug: synthetic-edge-cases }
+      - { kind: recipe, slug: eval-set-generator }
+      - { kind: pattern, slug: data-augmentation }
+  - id: CRC-PLB-109
+    title: Unit-Test Authoring
+    canonical_slug: unit-test-authoring
+    members:
+      - { kind: recipe, slug: unit-test-writer }
+      - { kind: pattern, slug: python-unit-test-writer }
+  - id: CRC-PLB-110
+    title: UX Review
+    canonical_slug: ux-review
+    members:
+      - { kind: recipe, slug: ux-review }
+      - { kind: pattern, slug: ux-review-checklist }
+  - id: CRC-PLB-111
+    title: Panel Deliberation
+    canonical_slug: panel-deliberation
+    members:
+      - { kind: recipe, slug: panel-review }
+      - { kind: pattern, slug: panelgpt }
+      - { kind: pattern, slug: expert-panel-discussion }
+  - id: CRC-PLB-112
+    title: Plan-and-Solve
+    canonical_slug: plan-and-solve
+    members:
+      - { kind: recipe, slug: plan-and-solve }
+      - { kind: pattern, slug: plan-and-solve-prompting }
+  - id: CRC-PLB-113
+    title: Step-Back Reasoning
+    canonical_slug: step-back-reasoning
+    members:
+      - { kind: recipe, slug: step-back-answer }
+      - { kind: pattern, slug: step-back-prompting }
+  - id: CRC-PLB-114
+    title: Evidence Verification
+    canonical_slug: evidence-verification
+    members:
+      - { kind: recipe, slug: verification-pass }
+      - { kind: recipe, slug: claim-checker }
+      - { kind: pattern, slug: chain-of-verification }
+  - id: CRC-PLB-115
+    title: Artifact Refinement
+    canonical_slug: artifact-refinement
+    members:
+      - { kind: recipe, slug: self-refine-pass }
+      - { kind: pattern, slug: self-refine }
+      - { kind: pattern, slug: reflexion }
+      - { kind: pattern, slug: quick-enhance }
+  - id: CRC-PLB-116
+    title: Prompt-Injection Defense
+    canonical_slug: prompt-injection-defense
+    members:
+      - { kind: recipe, slug: prompt-injection-scanner }
+      - { kind: pattern, slug: prompt-injection-defense }
+  - id: CRC-PLB-117
+    title: Eval-Driven Prompt Optimization
+    canonical_slug: eval-driven-prompt-optimization
+    members:
+      - { kind: recipe, slug: prompt-optimizer }
+      - { kind: pattern, slug: meta-prompting }
+      - { kind: pattern, slug: eval-driven-prompt-optimization }
+      - { kind: pattern, slug: evaluation-flywheel }
+  - id: CRC-PLB-118
+    title: Tool Action Contract
+    canonical_slug: tool-action-contract
+    members:
+      - { kind: recipe, slug: tool-use-planner }
+      - { kind: pattern, slug: tool-calling-contract }
+  - id: CRC-PLB-119
+    title: Decision Comparison
+    canonical_slug: decision-comparison
+    members:
+      - { kind: recipe, slug: decision-memo }
+      - { kind: recipe, slug: tradeoff-matrix }
+  - id: CRC-PLB-120
+    title: Zero-Shot Prompt Contract
+    canonical_slug: zero-shot-prompt-contract
+    members:
+      - { kind: pattern, slug: direct-zero-shot }
+      - { kind: pattern, slug: structured-zero-shot }
+  - id: CRC-PLB-121
+    title: Few-Shot Example Selection
+    canonical_slug: few-shot-example-selection
+    members:
+      - { kind: pattern, slug: few-shot-prompting }
+      - { kind: pattern, slug: active-prompt }
+  - id: CRC-PLB-122
+    title: Reasoning Draft Control
+    canonical_slug: reasoning-draft-control
+    members:
+      - { kind: pattern, slug: zero-shot-chain-of-thought }
+      - { kind: pattern, slug: chain-of-draft }
+  - id: CRC-PLB-123
+    title: Branching Reasoning Search
+    canonical_slug: branching-reasoning-search
+    members:
+      - { kind: pattern, slug: tree-of-thoughts }
+      - { kind: pattern, slug: graph-of-thoughts }
+singletons:
+  - { kind: recipe, slug: acceptance-criteria-writer, reason: distinct-product-job }
+  - { kind: recipe, slug: prd-drafter, reason: distinct-product-job }
+  - { kind: recipe, slug: user-story-splitter, reason: distinct-product-job }
+  - { kind: recipe, slug: launch-checklist, reason: distinct-product-job }
+  - { kind: recipe, slug: support-macro, reason: distinct-product-job }
+  - { kind: recipe, slug: api-contract-explainer, reason: distinct-engineering-artifact }
+  - { kind: recipe, slug: bug-rca, reason: distinct-engineering-artifact }
+  - { kind: recipe, slug: code-review, reason: distinct-engineering-artifact }
+  - { kind: recipe, slug: pr-description, reason: distinct-engineering-artifact }
+  - { kind: recipe, slug: refactor-planner, reason: distinct-engineering-artifact }
+  - { kind: recipe, slug: citation-matrix, reason: distinct-research-output }
+  - { kind: recipe, slug: executive-brief, reason: distinct-writing-output }
+  - { kind: recipe, slug: faq-generator, reason: distinct-writing-output }
+  - { kind: recipe, slug: literature-scan, reason: distinct-research-output }
+  - { kind: recipe, slug: newsletter-draft, reason: distinct-writing-output }
+  - { kind: recipe, slug: rewrite-with-constraints, reason: distinct-writing-contract }
+  - { kind: recipe, slug: style-transfer-without-examples, reason: distinct-writing-contract }
+  - { kind: recipe, slug: incident-summary, reason: distinct-operations-job }
+  - { kind: recipe, slug: log-triage, reason: distinct-operations-job }
+  - { kind: recipe, slug: meeting-action-extractor, reason: distinct-operations-job }
+  - { kind: recipe, slug: risk-register, reason: distinct-operations-job }
+  - { kind: recipe, slug: runbook-generator, reason: distinct-operations-job }
+  - { kind: recipe, slug: table-normalizer, reason: distinct-data-job }
+  - { kind: recipe, slug: regression-judge, reason: distinct-evaluation-contract }
+  - { kind: pattern, slug: knowledge-base-engineer, reason: distinct-knowledge-output }
+  - { kind: pattern, slug: markmap-generator, reason: distinct-representation-output }
+  - { kind: pattern, slug: context-engineering, reason: distinct-agent-context-method }
+  - { kind: pattern, slug: react, reason: distinct-reasoning-action-method }
+  - { kind: pattern, slug: algorithm-of-thoughts, reason: distinct-control-structure }
+  - { kind: pattern, slug: emotional-persuasion-prompting, reason: distinct-evidence-claim }
+  - { kind: pattern, slug: intentional-analysis, reason: distinct-control-structure }
+  - { kind: pattern, slug: program-of-thoughts, reason: distinct-tool-execution-contract }
+  - { kind: pattern, slug: prompt-chaining, reason: distinct-workflow-composition }
+  - { kind: pattern, slug: self-consistency, reason: distinct-sampling-voting-method }
+  - { kind: pattern, slug: skeleton-of-thought, reason: distinct-outline-expansion-method }

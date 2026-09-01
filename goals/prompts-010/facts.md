@@ -1,0 +1,53 @@
+<!-- markdownlint-disable MD013 MD033 MD041 -->
+
+- The catalog has one prompt type. Recipes and patterns are not types, folders, routes, badges, or search groups.
+- Every prompt is authored as catalog/items/<slug>.yaml. catalog/recipes/ and catalog/patterns/ no longer exist as authoring trees.
+- One item schema validates every prompt. The old recipe-only and pattern-only schemas are not used for authoring.
+- The live site, README, badges, sitemap, robots, and llms files call rows prompts. They do not say recipe or pattern as a type.
+- A prompt owns slug, title, facet, one lane, blurb, shared sources, evidence, safety, and caveat. Modes cannot change slug, title, facet, or lane.
+- Each prompt has 1–4 author-approved named modes and exactly one default. There is no freeform module composer.
+- A mode owns id, label, when-to-use, copyable prompt, placeholders, and optional extra sources. The fill form and copied text follow the selected mode.
+- Facet is job or method only. Merged paste-first prompts are job. A method may still show a copyable template on the same page.
+- Every prompt has one lane from the existing eight-lane set. Pattern sections are gone. Facet is a filter chip on the one index, not a second tree.
+- Optional related lists other canonical slugs. The item page shows See also. Validation fails on missing, duplicate, or self links. related-clusters.ts is not a taxonomy.
+- Two or more current records become one prompt only when they are the same job in different shapes. Neighboring techniques stay separate prompts and may use related.
+- An execute-time merge ledger accounts for every current recipe and pattern exactly once as a merged member or a singleton. Closeout Playbook clusters are candidates only. A proposed merge that does not share job and lane fails validation.
+- Same-job pairs such as plan-and-solve with plan-and-solve-prompting, ux-review with ux-review-checklist, unit-test-writer with python-unit-test-writer, and the panel trio become one prompt with modes. tree-of-thoughts and graph-of-thoughts stay separate.
+- Merged prompts get new canonical slugs. Leftovers whose names still encode the old split (*-checklist, python-*, type-suffix *-prompting) are renamed. Famous already-good slugs such as code-review and tree-of-thoughts stay.
+- Slugs are globally unique, match [a-z0-9]+(-[a-z0-9]+)*, and cannot be reserved names catalog, explore, sources, recipes, patterns, research, or github.
+- Home / is the one prompt index, grouped by lane, with facet and search filters. There is no /recipes/ index, no /patterns/ index, and no /catalog/ browse page.
+- Every prompt detail page is /catalog/<slug>/. Query may include only ?mode=<id>. Pasted values, generated prompts, and open-in-chat payloads never enter the URL.
+- Old /recipes/, /patterns/, /recipes/<slug>/, and /patterns/<slug>/ routes are removed and return the branded 404. There is no redirect table, alias path, compatibility anchor, dual reader, or schema-version adapter.
+- Every prompt uses one page template. Header shows title, lane, facet, and evidence. A mode selector appears when there is more than one mode. Fill, live prompt, copy, and open-in-chat appear when the selected mode has a paste path. Definition, avoid, controls, cost, failure modes, safety, and sources appear only when they have data.
+- README has one Prompt Library: lane-grouped cards, one catalog count, one default copyable prompt per card, and a compact mode table when a prompt has more than one mode. There is no Pattern Notes chapter.
+- Generated badges report prompt catalog size and lanes. They do not report recipe vs pattern counts.
+- Explore remains /explore/: one table of all prompts with no type split, plus the source ledger. /sources/ still lands on Explore.
+- Search, command palette, catalog preview, featured chips, shortcuts, nav, and SEO shells point at / and /catalog/<slug>/ using new slugs. They do not group results as recipes vs patterns.
+- Catalog YAML is the authoring source of truth. README, badges, site-data, SEO/AEO files, route shells, and counts are generated or checked by repository-owned pipelines and are not hand-edited for catalog content.
+- catalog.json and catalog-meta.json emit a single prompts list with lanes, facets, and modes. They do not emit parallel recipes and patterns arrays as the product model.
+- Checkers, OpenSpec, Playwright, Python README tests, and AGENTS validation use one prompt-catalog contract. The 48-recipe, 43-pattern, and typed-route count contracts are gone.
+- A strict OpenSpec change defines the v1 item schema, modes, merge ledger, URLs, generated surfaces, and assurance behavior before implementation.
+- AGENTS.md, DESIGN.md, and the readme-catalog-steward skill describe one prompt catalog, catalog/items/, /catalog/<slug>/, and the unified card contract. They do not instruct agents to author recipes vs patterns as types.
+- Open-in-Chat copies the current prompt in the browser and opens the provider at its base URL. It does not put the prompt, pasted values, or fill state in the provider URL.
+- The serve_dist readiness and SIGTERM timeout that left 9 of 10 browser tests passing is reproduced under the pinned toolchain and eliminated with deterministic lifecycle tests.
+- Component-level tests cover command palette, catalog preview, theme menu, fill/copy, mode switch, and overlay or focus restore using the existing test stack unless evidence requires a new dependency.
+- Every entry in the current sources.yaml manifest is live-fetched and content-checked. Redirects and titles are reviewed. source-refresh.md records the fresh coverage honestly. Source-manifest validation passes.
+- The remaining research queue is re-audited from official docs or primary papers. Catalog text changes only when evidence warrants it. No invented citations, benchmarks, model names, provider behavior, or badge signals.
+- The readme-catalog-steward skill gets supported behavioral-eval assurance plus structural JSON and deterministic tests, with prompt/result provenance and no invented claim of a live run.
+- Cursor Cloud setup guidance is rebuilt from verified portable facts. Insecure or machine-specific guidance is rejected. The workflow is assured in a real current Cursor Cloud environment.
+- Home, item page, Explore, and overlay receive a SOTA visual and UX pass on the flattened IA: hierarchy, spacing, typography, motion, empty states, and mobile. This is not a second product and does not add new catalog kinds.
+- Primary loops keep keyboard operation, visible focus, one heading hierarchy, live status for copy and mode switch, reduced motion, mobile containment, and dialog focus restore. Axe WCAG A/AA runs on home, a prompt detail, Explore, and overlay.
+- A practitioner can open home or README, pick a prompt, switch mode if needed, fill, copy, and see the same catalog on GitHub and the live site.
+- Migration keeps every materially distinct workflow, output promise, safety constraint, caveat, evidence claim, and source from accepted members. Deduping shared guidance is allowed. Dropping a source record must not weaken the surviving prompt.
+- The product has no Playbook type, noun, composer, or module combinatorics.
+- This package is the only live product goal. Closeout, web-design-sota-enrich, catalog research packages, and other sibling goal.md files are not launched. Applicable leftover work is folded in only when it does not revive recipes, patterns, or Playbooks as types.
+- During execute, goals/complete-repository-closeout/ is archived or removed so two goal packages are not live. pc.txt and other unrelated dirty files are not reverted or swept by this setup.
+- CI and the static site do not call live OpenAI, Anthropic, Gemini, or xAI APIs.
+- The root package version is 0.1.0, aligned with @prompts/web and @prompts/catalog-core, and CHANGELOG describes the flattened catalog release.
+- Done requires every applicable command in the AGENTS validation contract, focused regressions, the exact publication build, and an isolated clean-clone validation under Node 24 and pnpm 11.21.0.
+- Accepted work lands as atomic conventional commits on main, staged only by reviewed named paths. No force push, history rewrite, extra branches, or worktrees unless later asked.
+- One non-force push sends the final SHA to origin/main. Every required GitHub Actions check for that SHA finishes successfully with no repository-controlled warning or error. Failures are forward-fixed, revalidated, committed, and pushed again.
+- The final SHA is tagged v0.1.0 and published as a GitHub Release. The tag is not cut during this setup pass.
+- The normal Vercel production path deploys the exact final SHA to prompts.w4w.dev. The production alias identifies that deployment. No manual production settings, domain, secret, billing, access-control, rollback, or redeploy mutation is authorized.
+- After exact-SHA CI and deploy proof, live assurance covers desktop and mobile, light and dark, home browse and search, a job prompt fill/copy/mode switch, a method prompt, Explore, palette and overlay, branded 404 for removed typed routes, accessibility, console and network health, canonicals, security headers, sitemap, robots, and llms artifacts.
+- The goal is done only when the flattened catalog is the product, local and clean-clone gates are green, origin/main equals the final local SHA, required remote checks succeeded, v0.1.0 is tagged, the exact SHA is live on prompts.w4w.dev, and live assurance finds no material defect.

@@ -1,18 +1,18 @@
 ---
 name: readme-catalog-steward
 description: >-
-  Maintains this repo's README prompt catalog: copyable prompt recipes, pattern
-  notes, paste-zone tables, generated ShieldCN badges and icon-only recipe
-  headings, provider-doc freshness, safety/eval hygiene, and GFM polish. Use when
+  Maintains this repo's README prompt catalog: copyable prompts, paste-zone
+  tables, generated ShieldCN badges and icon-only prompt headings,
+  provider-doc freshness, safety/eval hygiene, and GFM polish. Use when
   auditing, enriching, updating, validating, or syncing README.md badge
   surfaces. NOT for running prompts, MCP servers, unrelated docs, or unsupported
   badges.
-argument-hint: "<mode> [section|method|provider]"
+argument-hint: "<mode> [section|slug|provider]"
 license: MIT
 compatibility: "Requires git, rg, Node.js/npm for markdown validation, Python 3 for JSON checks, and live web access for current provider claims."
 metadata:
   author: wyattowalsh
-  version: "1.1.0"
+  version: "1.2.0"
 ---
 
 <!-- markdownlint-disable MD013 -->
@@ -20,20 +20,21 @@ metadata:
 # README Catalog Steward
 
 Maintain `README.md` as a research-backed prompt engineering catalog. Treat the
-README as the product surface and public contract.
+README as the generated product surface and public contract. Author prompts in
+`catalog/items/<slug>.yaml`; do not author recipes vs patterns as types.
 
 ## Dispatch
 
 | `$ARGUMENTS` | Action | Example |
 | --- | --- | --- |
 | Empty | Show mode menu, read `AGENTS.md`, read `README.md`, run `git status --short --branch`, then ask only if intent remains ambiguous | `/readme-catalog-steward` |
-| `audit [section/recipe/pattern]` | Read-only README audit with findings by section, recipe, or pattern note | `/readme-catalog-steward audit Prompt Library` |
+| `audit [section/slug]` | Read-only README audit with findings by section or prompt card | `/readme-catalog-steward audit Prompt Library` |
 | `refresh-sources [provider/method/all]` | Verify current claims from official docs, primary papers, or labeled practitioner/community sources | `/readme-catalog-steward refresh-sources OpenAI` |
-| `add-card <method>` | Add a pattern note after source verification and eval/caveat definition | `/readme-catalog-steward add-card constrained decoding` |
-| `revise-card <method>` | Improve an existing pattern note while preserving useful anchors and contract fields | `/readme-catalog-steward revise-card ReAct` |
+| `add-card <slug-or-title>` | Add a prompt after source verification and eval/caveat definition | `/readme-catalog-steward add-card constrained decoding` |
+| `revise-card <slug-or-title>` | Improve an existing prompt while preserving useful anchors and contract fields | `/readme-catalog-steward revise-card ReAct` |
 | `safety-pass` | Audit prompt injection, tool-use, RAG trust boundaries, refusal, abstention, and high-stakes review language | `/readme-catalog-steward safety-pass` |
-| `gfm-pass` | Improve navigation, alerts, tables, Mermaid, generated badge markers, lane chips, icon-only recipe headings, accessibility, and readability without noise | `/readme-catalog-steward gfm-pass` |
-| `badge-pass` | Audit or regenerate ShieldCN surfaces: hero badges, shortcuts, lanes, lane chips, job map, and 48 recipe heading icons | `/readme-catalog-steward badge-pass` |
+| `gfm-pass` | Improve navigation, alerts, tables, Mermaid, generated badge markers, lane chips, icon-only prompt headings, accessibility, and readability without noise | `/readme-catalog-steward gfm-pass` |
+| `badge-pass` | Audit or regenerate ShieldCN surfaces: hero badges, shortcuts, lanes, lane chips, job map, and icon-only prompt heading icons | `/readme-catalog-steward badge-pass` |
 | `eval-pass` | Improve eval flywheel, regression-set, prompt versioning, and contribution checklist guidance | `/readme-catalog-steward eval-pass` |
 | `validate` | Run the repo README/skill validation commands and report exact failures | `/readme-catalog-steward validate` |
 | Request to run a prompt, create an MCP server, or edit unrelated docs | Refuse this skill path and redirect to the appropriate workflow | `run this prompt` |
@@ -41,7 +42,7 @@ README as the product surface and public contract.
 ## Default Workflow
 
 1. Read `AGENTS.md`.
-2. Read the target README section, recipe, or pattern note before proposing changes.
+2. Read the target README section or prompt card before proposing changes.
 3. Run `git status --short --branch`; preserve unrelated dirty work.
 4. Classify the request using
    [Classification/Gating Logic](#classificationgating-logic).
@@ -92,8 +93,8 @@ Load references selectively; do not load all of them for focused edits.
 
 | File | Content | Read When |
 | --- | --- | --- |
-| `references/card-contract.md` | Recipe and pattern fields, paste-zone contract, heading-icon rules, template hygiene, evidence tiers, and chain-of-thought restrictions | Adding or revising prompt recipes or pattern notes |
-| `references/badge-surfaces.md` | ShieldCN marker blocks, lane chips, job map, icon-only recipe heading badges, generator script, and drift checks | Badge pass, GFM badge chrome, adding recipes with navigation surfaces |
+| `references/card-contract.md` | One prompt card contract, paste-zone rules, heading-icon rules, template hygiene, evidence tiers, and chain-of-thought restrictions | Adding or revising prompts |
+| `references/badge-surfaces.md` | ShieldCN marker blocks, lane chips, job map, icon-only prompt heading badges, generator script, and drift checks | Badge pass, GFM badge chrome, adding prompts with navigation surfaces |
 | `references/source-policy.md` | Source hierarchy, `llms.txt` lookup, provider links, freshness, and stale-claim handling | Refreshing sources or checking current claims |
 | `references/orchestration.md` | Parallel lanes, same-file serialization, review gates, and validation loop | Medium or broad README work |
 
@@ -110,16 +111,17 @@ Load references selectively; do not load all of them for focused edits.
 5. Prefer provider/API controls when they are the real interface: structured
    output, JSON Schema, tools, retrieval settings, reasoning effort, thinking
    controls, and eval metadata.
-6. Keep community patterns labeled `Community` or `Experimental` unless
+6. Keep community methods labeled `Community` or `Experimental` unless
    task-specific evidence supports a stronger tier.
-7. Every added or revised prompt recipe or pattern note must satisfy the README
-   contract fields that apply to its format.
+7. Every added or revised prompt must satisfy the README card contract fields
+   that apply to its paste path and authored operational data. Do not treat
+   recipe vs pattern as types.
 8. Separate durable instructions, trusted context, untrusted input, tool
    permissions, output contract, and validation in templates.
-9. Generate README badges and recipe heading icons through `pnpm catalog:readme`;
-   catalog YAML owns recipe/lane/chip/shortcut/job-map metadata and
+9. Generate README badges and prompt heading icons through `pnpm catalog:readme`;
+   catalog YAML owns prompt/lane/chip/shortcut/job-map metadata and
    `scripts/update_readme_badges.py` owns rendering style only. Do not hand-edit
-   counts, marker blocks, or long ShieldCN URLs. Recipe heading badges are
+   counts, marker blocks, or long ShieldCN URLs. Prompt heading badges are
    **icon-only** (no label words on the pill; use `alt`/`title` for tooltips).
 10. Do not add **Filled example** walkthrough blocks; placeholder tables and
     hoisted previews are the input contract.
@@ -132,11 +134,15 @@ Load references selectively; do not load all of them for focused edits.
     `Match the **placeholder table** above; paste \`none\` for optional zones you
     omit.` — not a shortened table-only line; enforced by
     `validate_fill_these_in_compact()`.
+16. Author in `catalog/items/`. Facet is `job` or `method` only. Modes cannot
+    change slug, title, facet, or lane. There is no Playbook composer.
 
 ## Canonical Vocabulary
 
 Use these canonical terms exactly throughout README stewardship work:
 
+- Public noun: `prompt`. Facet: `job` or `method`. Authoring path:
+  `catalog/items/<slug>.yaml`. Public item URL: `/catalog/<slug>/`.
 - Evidence tiers: `Strong`, `Moderate`, `Emerging`, `Community`,
   `Experimental`.
 - Source types: `official doc`, `primary paper`, `survey`, `standard`,
@@ -144,7 +150,7 @@ Use these canonical terms exactly throughout README stewardship work:
 - Trust zones: `durable instructions`, `trusted context`, `untrusted input`,
   `tool permissions`, `output contract`, `validation`.
 - Badge markers: `BADGES`, `SHORTCUTS`, `LANES`, `LANE-CHIPS`, `JOB-MAP`.
-- Recipe heading surface: icon-only ShieldCN `<h4>` badge (48 recipes).
+- Prompt heading surface: icon-only ShieldCN `<h4>` badge (one per prompt).
 - README actions: `audit`, `refresh-sources`, `add-card`, `revise-card`,
   `safety-pass`, `gfm-pass`, `badge-pass`, `eval-pass`, `validate`.
 - Current-claim wording: `as verified on <date>` or `current docs say`, never
@@ -155,8 +161,8 @@ Use these canonical terms exactly throughout README stewardship work:
 Run the canonical validation block from the repository root:
 [AGENTS.md § Validation](../../../AGENTS.md#validation).
 
-That block includes recipe contract checks (Prompt Index and Section Map
-completeness), paste-zone cell length audit
+That block includes prompt contract checks (Prompt Index against `prompt_slugs`
+and Section Map integrity), paste-zone cell length audit
 (`scripts/audit_paste_zone_cells.py`), unit tests, markdown lint, link checks,
 badge drift (`scripts/update_readme_badges.py --check`), the fail-closed bounded
 badge URL harness and live probe (`pnpm run badges:urls`), `py_compile` with

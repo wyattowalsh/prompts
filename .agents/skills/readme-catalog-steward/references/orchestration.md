@@ -11,10 +11,10 @@ For broad README updates, split independent work before editing:
 | Lane | Output |
 | --- | --- |
 | Official Provider Docs | Current provider guidance, caveats, deprecated claims, source URLs |
-| Prompt Library | Practical quasi-zero-shot recipe coverage, gaps, and copyability issues |
-| Academic Research | Papers to add/remove/demote, evidence tiers, recipe and pattern support |
+| Prompt Library | Practical quasi-zero-shot prompt coverage, gaps, and copyability issues |
+| Academic Research | Papers to add/remove/demote, evidence tiers, and prompt support |
 | Safety and Eval | Prompt injection, tool safety, RAG trust, structured validation, eval plan |
-| GFM and Docs Design | Navigation, alerts, tables, Mermaid, badge markers, lane chips, icon-only recipe headings, accessibility |
+| GFM and Docs Design | Navigation, alerts, tables, Mermaid, badge markers, lane chips, icon-only prompt headings, accessibility |
 | README Audit | Section-by-section issues, broken links, missing fields, stale wording |
 
 Each lane returns source URLs, confidence, target README sections, and explicit
@@ -30,7 +30,7 @@ Do not let multiple agents edit the same file concurrently.
 
 Before finalizing broad README work:
 
-1. Skill recipe/pattern contract review.
+1. Skill prompt card contract review.
 2. Badge-surface review (`scripts/update_readme_badges.py --check`, heading icons unique).
 3. Source-quality review.
 4. Safety/eval review.
@@ -44,7 +44,7 @@ claim its findings were used unless they were actually read.
 ## Validation Loop
 
 1. Run the canonical validation block in
-   [AGENTS.md § Validation](../../../../AGENTS.md#validation) (recipe contract,
+   [AGENTS.md § Validation](../../../../AGENTS.md#validation) (prompt card contract,
    Prompt Index, Section Map, paste-zone audit, unit tests, markdown lint, link
    checks, badge drift, `py_compile`, JSON/YAML syntax, whitespace diff, and the
    bounded badge URL harness plus live probe).

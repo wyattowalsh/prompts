@@ -1,0 +1,24 @@
+topic: complete-repository-closeout-plan
+current_date: 2026-08-21
+time_range: unlimited-foundational-with-current-official-2026-priority
+items:
+  - scope-and-evidence-provenance
+  - decision-and-specification-freeze
+  - dependency-aware-multi-agent-orchestration
+  - file-resource-and-git-ownership
+  - typed-catalog-migration-and-field-lineage
+  - bounded-composer-privacy-and-accessibility
+  - source-freshness-and-claim-support
+  - integrated-and-clean-clone-validation
+  - atomic-direct-main-release-and-remote-drift
+  - github-workflow-check-status-and-warning-assurance
+  - vercel-exact-sha-alias-and-runtime-assurance
+  - cursor-cloud-build-network-secret-and-mcp-assurance
+  - exhaustive-live-and-residual-artifact-closeout
+execution:
+  batch_size: 3
+  items_per_agent: 1
+  output_dir: .audit/complete-repository-closeout/research
+  scheduler_note: >-
+    Use every available worker slot after reserving one coordinator; serialize
+    write-heavy and shared-resource operations and throttle per external host.

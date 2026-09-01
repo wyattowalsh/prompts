@@ -8,21 +8,24 @@ These instructions apply to the entire repository.
 
 This repository maintains a research-backed prompt engineering catalog.
 
-**Authoring SSOT:** the `catalog/` package (`recipes/*.yaml`, `patterns/*.yaml`,
-`index.yaml`, schemas). Catalog YAML is the only place to edit recipe/pattern
-bodies; generated surfaces must not be hand-edited for content.
+**Authoring SSOT:** the `catalog/` package (`items/*.yaml`, `index.yaml`,
+schemas). Catalog YAML is the only place to edit prompt bodies; generated
+surfaces must not be hand-edited for content. Every prompt is
+`catalog/items/<slug>.yaml` under one item schema. `catalog/recipes/` and
+`catalog/patterns/` are not authoring trees. Recipes and patterns are not
+types, folders, routes, badges, or search groups.
 
 **Generated surfaces:**
 
-- `README.md` — GitHub product (compile transactionally with `pnpm catalog:readme`; check with `pnpm catalog:readme:check`)
-- `web/` — Vite/React catalog site (data via `pnpm catalog:site-data`)
+- `README.md` — GitHub product, one Prompt Library (compile transactionally with `pnpm catalog:readme`; check with `pnpm catalog:readme:check`)
+- `web/` — Vite/React catalog site (data via `pnpm catalog:site-data`); public routes are `/` (lane-grouped index) and `/catalog/:slug/` (item page), plus `/explore/`
 
 Fidelity oracles for the original pattern migration live under
 `catalog/oracles/`; they are archival migration evidence, not an equality gate
 for later researched catalog improvements. Source freshness notes live in root
 `source-refresh.md`.
 
-Do not hand-edit recipe or pattern bodies inside `README.md`; edit catalog YAML
+Do not hand-edit prompt bodies inside `README.md`; edit catalog YAML
 and regenerate.
 
 The repository commands own the complete README pipeline, including generated
@@ -39,9 +42,9 @@ ongoing equality gate.
 
 | Surface                  | Owner                            | Commands                                                                                  |
 | ------------------------ | -------------------------------- | ----------------------------------------------------------------------------------------- |
-| Catalog YAML SSOT        | `catalog/`                       | author recipes/patterns only here                                                         |
+| Catalog YAML SSOT        | `catalog/`                       | author prompts in `catalog/items/` only here                                              |
 | Generate + validate      | `packages/catalog-core`          | `pnpm catalog:validate`, `catalog:readme`, `catalog:site-data`, `catalog:site-data:check` |
-| README quality contracts | Python `scripts/*.py` + `tests/` | recipe card/paste-zone/badge/source checks                                                |
+| README quality contracts | Python `scripts/*.py` + `tests/` | prompt card/paste-zone/badge/source checks                                                |
 | Web app                  | `web/` (Vite + React)            | `pnpm web:dev`, `web:typecheck`, `web:test`, `web:test:browser`                           |
 | Deploy artifact          | `web/dist` only                  | Vercel `outputDirectory`; do not revive root `public/` static site                        |
 
@@ -75,34 +78,24 @@ Browser smoke (`pnpm web:test:browser`) allocates one isolated free port in a wr
   JSON Schema, tool definitions, retrieval settings, reasoning effort, thinking
   controls, and eval metadata.
 - BadgeCN/ShieldCN-style badges are allowed only when they add truthful scanning
-  value. Catalog YAML owns recipe/lane/chip/shortcut/job-map metadata; generate
+  value. Catalog YAML owns prompt/lane/chip/shortcut/job-map metadata; generate
   README badges through `pnpm catalog:readme` and do not hand-edit counts. Do not add license, package, release,
   coverage, or download badges unless the repo actually supports the claim.
 
-## README Recipe And Pattern Contract
+## README Prompt Card Contract
 
-Recipes (48 Prompt Library cards) and pattern notes use **different** field sets.
+The catalog has **one** prompt type. Do not author recipes vs patterns as types.
 See `.agents/skills/readme-catalog-steward/references/card-contract.md` for the
-enforced recipe layout. Do not apply the pattern-note field list to recipe cards.
+enforced Prompt Library layout. Facet is `job` or `method` only; it is a filter
+chip, not a second tree. Named modes (1–4, one default) own the paste path.
 
-**Pattern notes** should include fields that fit:
-
-- Definition
-- Best use
-- Avoid when
-- Copyable template
-- Model/API controls
-- Cost and latency
-- Failure modes
-- Evidence tier
-- Source type
-- Eval required
-- Caveat
-- Clickable sources
-
-**Recipes** use: Use for, placeholder/paste-zone table, Copy prompt,
-Fill these in, Expected output, Upgrade when, optional Control/evidence note,
-Safety/eval checks, Sources (see checker + card-contract).
+**Every prompt card** uses: Use for, optional compact mode table when there is
+more than one mode, placeholder/paste-zone table and Copy prompt when the
+selected mode has a paste path (or a template-omission reason when it does not),
+Fill these in, Expected output, Upgrade when, Safety/eval checks, Sources (see
+checker + card-contract). Optional operational fields (definition, avoid when,
+model/API controls, cost and latency, failure modes, eval required, caveat)
+appear when they have data — they are not a second product.
 
 Templates should separate:
 
@@ -136,12 +129,14 @@ Run these before claiming success when touching `README.md`, `AGENTS.md`, the
 repo-local skill, or CI. This block is the single source of truth; other docs
 link here instead of duplicating commands.
 
-`scripts/check_readme_recipes.py --check` enforces the recipe card contract
-and navigation integrity: Prompt Index link completeness (48 recipe anchors)
-and Section Map link completeness (21 navigation anchors). It also enforces
-paste-zone tables, compact `Fill these in` pointers, hoisted paste previews,
-and example-value length limits on all 48 recipes. Post-copy metadata (fill,
-output, upgrade, safety, sources) lives in per-recipe `<details>` blocks.
+`scripts/check_readme_recipes.py --check` enforces the prompt card contract
+and navigation integrity: Prompt Index link completeness against
+`catalog/index.yaml` `prompt_slugs`, and Section Map navigation integrity.
+Counts are prompts (`counts.prompts`), not a 48-recipe / 43-pattern split. It
+also enforces paste-zone tables, compact `Fill these in` pointers, hoisted paste
+previews, and example-value length limits on paste-path modes. Post-copy
+metadata (fill, output, upgrade, safety, sources) lives in per-prompt
+`<details>` blocks.
 
 Paste-zone cell length audits use `scripts/audit_paste_zone_cells.py`.
 
@@ -150,6 +145,7 @@ DOCS=(
   README.md
   AGENTS.md
   DESIGN.md
+  CHANGELOG.md
   $(git ls-files --cached --others --exclude-standard -- \
     CONTRIBUTING.md SECURITY.md CODE_OF_CONDUCT.md)
   .agents/skills/readme-catalog-steward/SKILL.md

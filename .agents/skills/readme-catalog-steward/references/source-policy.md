@@ -37,9 +37,10 @@ maintainers audit the catalog. The generated public site must not publish
 HTML to unpublished repo-local Markdown files should point to GitHub source URLs
 instead of remaining relative site links.
 
-Keep `README.md` as the content source of truth, `DESIGN.md` as the architecture
-map, and `AGENTS.md` as the validation source of truth. Do not duplicate the
-full validation block in generated-site docs.
+Keep `catalog/items/` as the authoring source of truth, `README.md` as the
+generated GitHub surface, `DESIGN.md` as the architecture map, and `AGENTS.md`
+as the validation source of truth. Do not duplicate the full validation block
+in generated-site docs.
 
 ## Official Starting Points
 

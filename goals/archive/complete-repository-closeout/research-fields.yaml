@@ -1,0 +1,34 @@
+fields:
+  provenance:
+    evidence_origin: Live path, harness batch, accepted decision, spec, source, or regression.
+    observed_at: Observation time and source revision or publication date.
+    disposition: Active/excluded state, rationale, and canonical replacement.
+    decision_bundle_version: Hash of accepted facts, ledgers, and OpenSpec contract.
+  orchestration:
+    node_kind: Read, write, join, barrier, assurance, monitor, or manual case.
+    dependencies: Exact expanded predecessor node IDs.
+    authority_ceiling: Allowed and forbidden local/remote side effects.
+    capacity_cost: Thread, CPU, memory, port, output lock, API rate, and token demand.
+    resource_keys: Exact file leases and non-file shared locks.
+    retry_class: Inspect-first, transient retry, forward-fix epoch, or external blocker.
+  migration:
+    semantic_lineage: Source field or workflow to destination field, mode, module, or reviewed omission.
+    consumer_impact: Schema, CLI, README, site data, web, route, SEO, browser, docs, and deploy surfaces.
+    negative_invariants: Retired sources/routes/aliases/adapters and other forbidden artifacts.
+  validation:
+    toolchain_fingerprint: Runtime, package manager, browser, CLI, OS, lockfile, and environment state.
+    proof_receipt: Command, cwd, exit, attempt, duration, artifact, tree/SHA, and evidence layer.
+    warning_error_taxonomy: Check annotation, log warning, console/network/build/runtime category.
+    commit_green_contract: Commit group, named paths, parent, and focused/integrated gates.
+  remote:
+    remote_identity_chain: Local SHA, origin SHA, check SHA, deployment SHA/ID/URL, and alias.
+    monitor_budget: Settling time, poll/backoff, terminal states, and escalation owner.
+    cloud_identity: Cursor environment/version, Build/run ID, repo SHA, egress, and setup logs.
+    secret_data_lifecycle: Secret type/scope/injection/retention, prohibited sinks, and redacted proof.
+    mcp_assurance: Transport, endpoint, authentication, egress, scope, auth event, and smoke call.
+  closeout:
+    manual_case: Viewport, theme, input mode, route, actions, visible/a11y/privacy/network result.
+    residual_artifact: Identifier, owner, keep/commit/trash/close disposition, and recovery method.
+    evidence_expiry: Immutable exact-SHA, current remote state, bounded runtime, or time-sensitive docs.
+    blocked_external_owner: Missing permission/state, safe checks exhausted, owner, and resume condition.
+uncertain: []

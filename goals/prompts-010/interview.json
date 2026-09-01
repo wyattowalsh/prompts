@@ -1,0 +1,370 @@
+{
+  "stage": "interview",
+  "title": "prompts 0.1.0 — flat prompt catalog",
+  "goalSlug": "prompts-010",
+  "questions": [
+    {
+      "id": "package-ratify",
+      "prompt": "Ratify the grilled 0.1.0 package?",
+      "description": "One prompt type (not recipes vs patterns, no Playbook noun). Named modes on one slug; shared identity; mode-owned paste path. Strict same-job merges only. One eight-lane vocabulary; facet is job|method. New slugs for merges and type-suffixed leftovers; keep famous good slugs. Home is the index; items at /catalog/<slug>/; old typed URLs 404. Authoring is catalog/items/*.yaml. One item page template and one README Prompt Library. Explore stays as the data/sources surface. Optional YAML related. 1234++ means flatten + release-blocking quality + closeout leftovers minus Playbooks + SOTA visual on the new IA, executed completely, no fifth product. This package supersedes closeout and is the only live product goal. Public noun is prompt. Ship is live v0.1.0. This setup pass only writes goals/prompts-010/; unrelated dirty files stay.",
+      "answerMode": "single-custom",
+      "recommendedAnswer": "Accept the grilled package (recommended).",
+      "recommendedOptionIds": ["accept"],
+      "options": [
+        {
+          "id": "accept",
+          "label": "Accept grilled package"
+        },
+        {
+          "id": "accept-tweak",
+          "label": "Accept with notes (describe tweaks)"
+        }
+      ],
+      "required": true
+    },
+    {
+      "id": "catalog-shape",
+      "prompt": "Confirm the catalog shape (in unless you uncheck)?",
+      "description": "These become the v1 item contract. Uncheck or add a custom correction if a lock should change.",
+      "answerMode": "multi-custom",
+      "recommendedAnswer": "All listed catalog-shape locks.",
+      "recommendedOptionIds": [
+        "one-item-schema",
+        "named-modes",
+        "shared-identity-mode-paste",
+        "facet-job-or-method",
+        "items-directory",
+        "public-noun-prompt",
+        "one-lane-vocabulary",
+        "yaml-related"
+      ],
+      "options": [
+        {
+          "id": "one-item-schema",
+          "label": "One item schema; recipes and patterns are not types"
+        },
+        {
+          "id": "named-modes",
+          "label": "1–4 author-approved modes per prompt; exactly one default; no freeform composer"
+        },
+        {
+          "id": "shared-identity-mode-paste",
+          "label": "Item owns slug/title/facet/lane/blurb/shared sources/evidence/safety; modes own paste path"
+        },
+        {
+          "id": "facet-job-or-method",
+          "label": "Facet is job or method only (no both); merged paste-first rows are job"
+        },
+        {
+          "id": "items-directory",
+          "label": "Authoring is catalog/items/*.yaml; recipes/ and patterns/ directories go away"
+        },
+        {
+          "id": "public-noun-prompt",
+          "label": "Public noun is prompt; files stay items/"
+        },
+        {
+          "id": "one-lane-vocabulary",
+          "label": "One eight-lane set for every prompt; pattern sections die; facet is a chip"
+        },
+        {
+          "id": "yaml-related",
+          "label": "Optional YAML related slugs; See also on the item page; no TS cluster taxonomy"
+        }
+      ],
+      "required": true
+    },
+    {
+      "id": "merge-and-urls",
+      "prompt": "Confirm merge rule and public URLs?",
+      "description": "Strict variants only: same job, different shape. Closeout’s 23 Playbook clusters are a candidate list, not membership. 3++ slugs: mint for merges and type-suffixed leftovers; keep code-review, tree-of-thoughts, and other already-good names.",
+      "answerMode": "multi-custom",
+      "recommendedAnswer": "All listed merge and URL locks.",
+      "recommendedOptionIds": [
+        "strict-variants",
+        "editorial-merge-map",
+        "mint-merge-slugs",
+        "rename-type-suffixes",
+        "keep-famous-slugs",
+        "home-is-index",
+        "catalog-slug-detail",
+        "clean-404"
+      ],
+      "options": [
+        {
+          "id": "strict-variants",
+          "label": "Merge only same-job shapes (not neighboring techniques)"
+        },
+        {
+          "id": "editorial-merge-map",
+          "label": "Execute-time editorial merge map; fail if a pair does not share title/lane/job"
+        },
+        {
+          "id": "mint-merge-slugs",
+          "label": "Merged prompts get new canonical slugs (not inherited recipe filenames)"
+        },
+        {
+          "id": "rename-type-suffixes",
+          "label": "Rename leftovers that still encode the old split (*-prompting as type suffix, *-checklist, python-*)"
+        },
+        {
+          "id": "keep-famous-slugs",
+          "label": "Keep already-good famous slugs (code-review, tree-of-thoughts, …)"
+        },
+        {
+          "id": "home-is-index",
+          "label": "Home / is the one lane-grouped prompt index"
+        },
+        {
+          "id": "catalog-slug-detail",
+          "label": "Item pages are /catalog/<slug>/; /recipes/ and /patterns/ are not product routes"
+        },
+        {
+          "id": "clean-404",
+          "label": "Clean break: old typed URLs 404; no redirect table, aliases, or dual readers"
+        }
+      ],
+      "required": true
+    },
+    {
+      "id": "product-surfaces",
+      "prompt": "Confirm generated and app surfaces?",
+      "description": "GitHub and the site must match. Generation stays one-way from catalog YAML.",
+      "answerMode": "multi-custom",
+      "recommendedAnswer": "All listed surface locks.",
+      "recommendedOptionIds": [
+        "one-page-template",
+        "one-readme-library",
+        "explore-stays",
+        "palette-search-flatten",
+        "generate-not-hand-edit",
+        "openspec-v1",
+        "share-mode-query-only"
+      ],
+      "options": [
+        {
+          "id": "one-page-template",
+          "label": "One item page template; sections only when data exists; fill/copy when the mode has a paste path"
+        },
+        {
+          "id": "one-readme-library",
+          "label": "One Prompt Library: lane-grouped cards, one count, one default copy block, compact mode table"
+        },
+        {
+          "id": "explore-stays",
+          "label": "Explore stays: all-prompts table (no type split) plus source ledger; /sources/ still lands there"
+        },
+        {
+          "id": "palette-search-flatten",
+          "label": "Search, palette, preview, featured chips, and shortcuts flatten to prompts and new slugs"
+        },
+        {
+          "id": "generate-not-hand-edit",
+          "label": "README, badges, site-data, SEO/AEO, route shells, and counts stay generated — not hand-edited for content"
+        },
+        {
+          "id": "openspec-v1",
+          "label": "A strict OpenSpec change defines the v1 item/mode/URL/generated-surface contract before implementation"
+        },
+        {
+          "id": "share-mode-query-only",
+          "label": "Share URLs may include ?mode=<id> only; never pasted values, prompts, or open-in-chat payloads"
+        }
+      ],
+      "required": true
+    },
+    {
+      "id": "scope-in",
+      "prompt": "What is in 0.1.0 besides the flatten?",
+      "description": "1234++ = do these completely. Intensity, not a fifth product. Playbook/composer stays out even when stealing closeout leftovers.",
+      "answerMode": "multi-custom",
+      "recommendedAnswer": "Flatten plus quality plus applicable closeout leftovers plus SOTA visual on the new IA.",
+      "recommendedOptionIds": [
+        "flatten-ssot-ia",
+        "open-in-chat-privacy",
+        "playwright-lifecycle",
+        "overlay-interaction-tests",
+        "source-manifest-refetch",
+        "research-queue-reaudit",
+        "steward-eval-assurance",
+        "cursor-cloud-guidance",
+        "visual-sota-new-ia",
+        "ci-count-contracts"
+      ],
+      "options": [
+        {
+          "id": "flatten-ssot-ia",
+          "label": "Flatten SSOT, generators, README, web IA, tests, CI contracts"
+        },
+        {
+          "id": "open-in-chat-privacy",
+          "label": "Open-in-Chat must not put prompts or pasted values in provider URLs"
+        },
+        {
+          "id": "playwright-lifecycle",
+          "label": "Eliminate serve_dist / SIGTERM lifecycle flake with deterministic tests"
+        },
+        {
+          "id": "overlay-interaction-tests",
+          "label": "Component-level tests: palette, preview, theme menu, fill/copy, overlay/focus"
+        },
+        {
+          "id": "source-manifest-refetch",
+          "label": "Live-fetch and content-check every sources.yaml entry; refresh source-refresh.md"
+        },
+        {
+          "id": "research-queue-reaudit",
+          "label": "Re-audit remaining research queue from official docs/primary papers; change catalog only with evidence"
+        },
+        {
+          "id": "steward-eval-assurance",
+          "label": "readme-catalog-steward behavioral-eval assurance (no invented live-run claims)"
+        },
+        {
+          "id": "cursor-cloud-guidance",
+          "label": "Rebuild Cursor Cloud setup guidance from verified portable facts; assure in a real current environment"
+        },
+        {
+          "id": "visual-sota-new-ia",
+          "label": "SOTA visual/UX pass on the flattened IA (home, item, explore, overlay) — not a second product"
+        },
+        {
+          "id": "ci-count-contracts",
+          "label": "Replace 48-recipe / 43-pattern / typed-route count contracts with one prompt catalog contract"
+        }
+      ],
+      "required": true
+    },
+    {
+      "id": "scope-out",
+      "prompt": "Confirm hard out-of-scope?",
+      "description": "Must not ship under this goal even though 0.1.0 is maximal on the in-list.",
+      "answerMode": "multi-custom",
+      "recommendedAnswer": "All hard outs listed.",
+      "recommendedOptionIds": [
+        "no-playbook-noun",
+        "no-composer",
+        "no-redirects-adapters",
+        "no-dual-folders",
+        "no-sibling-launches",
+        "no-fifth-product",
+        "no-live-provider-apis",
+        "no-invented-catalog",
+        "leave-unrelated-dirt",
+        "no-force-push-worktrees"
+      ],
+      "options": [
+        {
+          "id": "no-playbook-noun",
+          "label": "No Playbook type/noun"
+        },
+        {
+          "id": "no-composer",
+          "label": "No bounded module composer / combinatorics"
+        },
+        {
+          "id": "no-redirects-adapters",
+          "label": "No redirects, aliases, dual readers, or schema-version adapters"
+        },
+        {
+          "id": "no-dual-folders",
+          "label": "No keeping catalog/recipes/ and catalog/patterns/ as authoring trees"
+        },
+        {
+          "id": "no-sibling-launches",
+          "label": "Do not launch closeout, web-design-sota-enrich, or other sibling goal.md files"
+        },
+        {
+          "id": "no-fifth-product",
+          "label": "No extra product theme beyond complete 1234"
+        },
+        {
+          "id": "no-live-provider-apis",
+          "label": "No live OpenAI/Anthropic/Gemini/xAI calls in CI or the static site"
+        },
+        {
+          "id": "no-invented-catalog",
+          "label": "No invented citations, benchmarks, model claims, or badge signals"
+        },
+        {
+          "id": "leave-unrelated-dirt",
+          "label": "Do not revert/stash/sweep unrelated dirty files in this setup pass"
+        },
+        {
+          "id": "no-force-push-worktrees",
+          "label": "No force push, history rewrite, extra branches, or worktrees unless later asked"
+        }
+      ],
+      "required": true
+    },
+    {
+      "id": "ship",
+      "prompt": "What does shipping 0.1.0 mean?",
+      "description": "Root package.json currently has no version; web and catalog-core already say 0.1.0. This setup pass does not commit, tag, or push.",
+      "answerMode": "single-custom",
+      "recommendedAnswer": "Live release: atomic conventional commits on main, push origin/main, tag v0.1.0, GitHub Release, Vercel production of that SHA on prompts.w4w.dev, required CI green, live desktop/mobile/light/dark assurance (recommended).",
+      "recommendedOptionIds": ["live-release"],
+      "options": [
+        {
+          "id": "repo-complete",
+          "label": "Repo-complete only (no tag/push/production in done)"
+        },
+        {
+          "id": "tagged-artifact",
+          "label": "Tagged v0.1.0 + GitHub Release; push/deploy later"
+        },
+        {
+          "id": "live-release",
+          "label": "Live release: main + push + tag v0.1.0 + GitHub Release + Vercel production + CI + live assurance"
+        }
+      ],
+      "required": true
+    },
+    {
+      "id": "success-feel",
+      "prompt": "What should done feel like for a practitioner?",
+      "description": "One-sentence product bar for the flattened catalog.",
+      "answerMode": "single-custom",
+      "recommendedAnswer": "One prompt catalog: open the site or README, pick a prompt, switch mode if needed, fill, copy, and trust GitHub and the live site are the same catalog (recommended).",
+      "recommendedOptionIds": ["one-catalog-copy-trust"],
+      "options": [
+        {
+          "id": "one-catalog-copy-trust",
+          "label": "One catalog: pick → mode → fill → copy; GitHub and site match"
+        },
+        {
+          "id": "showcase-first",
+          "label": "Wowed by first screen, then copy"
+        },
+        {
+          "id": "readme-first",
+          "label": "GitHub README is the primary product; site is a mirror"
+        }
+      ],
+      "required": true
+    },
+    {
+      "id": "quality-bar",
+      "prompt": "Accessibility and visual bar for the SOTA pass?",
+      "description": "Visual redesign is in-scope on the new IA. ++ is intensity of 1234, not extra themes.",
+      "answerMode": "single-custom",
+      "recommendedAnswer": "SOTA visual on home/item/explore/overlay; no a11y regression; keyboard excellence on search, palette, fill/copy, mode switch, and overlay restore; axe WCAG A/AA on primary routes (recommended).",
+      "recommendedOptionIds": ["sota-plus-a11y"],
+      "options": [
+        {
+          "id": "visual-only",
+          "label": "Visual SOTA; a11y is no-regression only"
+        },
+        {
+          "id": "sota-plus-a11y",
+          "label": "Visual SOTA + keyboard excellence + axe A/AA on primary routes"
+        },
+        {
+          "id": "wcag-strict-ci",
+          "label": "Treat full WCAG AA as fail-closed CI on every route"
+        }
+      ],
+      "required": true
+    }
+  ]
+}

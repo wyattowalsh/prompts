@@ -2,13 +2,13 @@
 
 # README Badge Surfaces
 
-Use this reference when adding recipes, changing navigation chrome, or auditing
+Use this reference when adding prompts, changing navigation chrome, or auditing
 ShieldCN badge rows in `README.md`.
 
 ## Generator Script
 
-All generated badge blocks and recipe heading icons flow through
-`scripts/update_readme_badges.py`, but catalog YAML owns recipe, lane, featured
+All generated badge blocks and prompt heading icons flow through
+`scripts/update_readme_badges.py`, but catalog YAML owns prompt, lane, featured
 chip, shortcut, and job-map metadata. Do not hand-edit counts, marker
 boundaries, or long ShieldCN URLs inside generated regions.
 
@@ -27,19 +27,19 @@ changed URL and its generated surface before claiming completion.
 
 | Marker | Purpose |
 | --- | --- |
-| `<!-- BADGES:START/END -->` | Hero badge row: prompt/pattern counts, zero-shot, evidence, safety, providers, GitHub stats |
-| `<!-- SHORTCUTS:START/END -->` | Copy shortcuts to high-traffic recipes |
+| `<!-- BADGES:START/END -->` | Hero badge row: prompt catalog size, zero-shot, evidence, safety, providers, GitHub stats |
+| `<!-- SHORTCUTS:START/END -->` | Copy shortcuts to high-traffic prompts |
 | `<!-- LANES:START/END -->` | Lane family jump badges (Research, Writing, Coding, …) |
-| `<!-- LANE-CHIPS:{lane}:START/END -->` | Per-lane recipe chip rows under each `###` category |
+| `<!-- LANE-CHIPS:{lane}:START/END -->` | Per-lane prompt chip rows under each `###` category |
 | `<!-- JOB-MAP:START/END -->` | Collapsed browse-by-job HTML table with lane-tinted rows |
 
 Preserve marker comments exactly. Edit curated badge ownership in
-`catalog/index.yaml` and per-recipe visual metadata in
-`catalog/recipes/*.yaml`, then regenerate through `pnpm catalog:readme`.
+`catalog/index.yaml` and per-prompt visual metadata in
+`catalog/items/*.yaml`, then regenerate through `pnpm catalog:readme`.
 
-## Recipe Heading Icons (48 Recipes)
+## Prompt Heading Icons
 
-Prompt recipes use **HTML headings**, not markdown `####`, with **icon-only**
+Prompts use **HTML headings**, not markdown `####`, with **icon-only**
 ShieldCN badges inline left of the title:
 
 ```html
@@ -54,24 +54,24 @@ ShieldCN badges inline left of the title:
 Rules:
 
 - **Icon-only** — URL path is `/-{color}.svg` with `label=` empty; no words on
-  the badge pill. Recipe name stays in heading text; `alt` and `title` carry the
+  the badge pill. Prompt name stays in heading text; `alt` and `title` carry the
   tooltip.
 - **Generated** — `apply_recipe_heading_badges()` rewrites bare `#### Name` or
   stale `<h4>` blocks when the script runs.
-- **Unique icons** — each of 48 recipes must have a distinct `ri:` logo slug.
+- **Unique icons** — each prompt must have a distinct `ri:` logo slug.
   Duplicates fail script startup.
-- **Catalog owned** — color, logo, and chip label come from each recipe's
-  validated `badge` object, including recipes that are not featured lane chips.
+- **Catalog owned** — color, logo, and chip label come from each prompt's
+  validated `badge` object, including prompts that are not featured lane chips.
 - **Stable anchors** — `id` slug must match Prompt Index and Section Map links.
-  `scripts/check_readme_recipes.py` parses recipe names from `####` or `<h4>`.
+  `scripts/check_readme_recipes.py` parses prompt names from `####` or `<h4>`.
 
-### Adding a New Recipe Heading
+### Adding a New Prompt Heading
 
-1. Add the recipe to the correct lane's `recipe_slugs` in `catalog/index.yaml`.
-2. Add it to that lane's `featured_recipe_slugs` only when it should appear in
+1. Add the prompt to the correct lane's `prompt_slugs` in `catalog/index.yaml`.
+2. Add it to that lane's `featured_prompt_slugs` only when it should appear in
    the compact chip row.
-3. Set the recipe `badge` color, unique logo, and short `chip_label` in its
-   catalog YAML.
+3. Set the prompt `badge` color, unique logo, and short `chip_label` in its
+   `catalog/items/<slug>.yaml`.
 4. Run `pnpm catalog:readme` to emit the job-map link, optional chip, and `<h4>`.
 5. Run full validation from [AGENTS.md § Validation](../../../../AGENTS.md#validation).
 
@@ -80,7 +80,7 @@ Rules:
 | Surface | Label text | Role |
 | --- | --- | --- |
 | Lane chips | Short words (`Grounded`, `Review`, `JSON`) | Quick jump within a category |
-| Recipe headings | Icon-only pill | Visual identity at scan depth |
+| Prompt headings | Icon-only pill | Visual identity at scan depth |
 | Shortcuts | Short words | Hero-level copy shortcuts |
 
 Do not duplicate lane chip labels on heading badges; headings are icon-only.
@@ -95,7 +95,8 @@ Match existing params in `COMMON_STATIC_PARAMS`, `LANE_CHIP_PARAMS`, and
 ## Review Checklist
 
 - [ ] Marker blocks have exactly one START/END pair each.
-- [ ] Recipe count badges match actual `####` / `<h4>` recipe headings.
-- [ ] All 48 heading badge URLs return SVG 200 responses after changes.
+- [ ] Prompt count badges match actual `####` / `<h4>` prompt headings and
+      `counts.prompts`.
+- [ ] Heading badge URLs return SVG 200 responses after changes.
 - [ ] No hand-edited ShieldCN URLs inside generated blocks.
 - [ ] Prompt Index and Section Map anchors still resolve after heading changes.

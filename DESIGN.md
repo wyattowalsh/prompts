@@ -6,15 +6,17 @@
 
 ### Goals
 
-- Treat the **`catalog/` package** as the authoring SSOT for recipes,
-  patterns, lanes, and sources.
-- **Generate** GitHub Flavored Markdown `README.md` from catalog data;
-  keep it committed and drift-checked in CI.
-- Keep recipe, lane, featured-chip, shortcut, and job-map metadata in catalog
+- Treat the **`catalog/` package** as the authoring SSOT for prompts
+  (`catalog/items/*.yaml`), lanes, and sources. One item schema validates every
+  prompt. Facet is `job` or `method` only.
+- **Generate** GitHub Flavored Markdown `README.md` from catalog data as one
+  Prompt Library; keep it committed and drift-checked in CI.
+- Keep prompt, lane, featured-chip, shortcut, and job-map metadata in catalog
   YAML; the badge postprocessor consumes a validated snapshot and owns style,
   not a second content map.
 - Ship a **Vite + React** site under `web/` that consumes generated
-  `web/src/data/catalog.json` (multi-route recipes/patterns, share/copy chrome).
+  `web/src/data/catalog.json` (home index, `/catalog/<slug>/` details, Explore,
+  copy chrome).
 - Present the site as the **ultimate prompt-engineering guide/catalog**:
   premium technical register, scan-first hierarchy, trustworthy chrome.
 - Use **Tailwind CSS v4 (CSS-first)** + **shadcn/ui-style primitives** (Radix
@@ -24,7 +26,10 @@
 
 ### Non-goals
 
-- Hand-editing recipe bodies in `README.md`.
+- Hand-editing prompt bodies in `README.md`.
+- Recipe or pattern as product types, folders, badges, or search groups.
+- Product routes under `/recipes/` or `/patterns/` (those URLs 404; they do not
+  301). A `/catalog/` browse page. Playbooks, composers, or module combinatorics.
 - Invented SEO schema (FAQPage, SearchAction, AggregateRating) without
   matching UI.
 - Analytics event capture, a report pipeline, or pre-widened CSP for
@@ -33,11 +38,12 @@
 - Hosting LLM proxies or user accounts on the static site.
 - Pagefind / dual markdown-it static builder (removed).
 - Charts, 3D, or heavy global client state frameworks.
+- Putting prompt text, pasted values, or fill state in Open-in-Chat URLs.
 
 ## Design thesis
 
 This is a **product/tool catalog** for practitioners who land, search/browse,
-open a recipe or pattern, fill placeholders, copy, and leave with high trust.
+open a prompt, fill placeholders, copy, and leave with high trust.
 It should feel like the **definitive PE workspace**—not a quiet GitHub clone
 and not a flashy SaaS marketing page. Visual richness is **rich but subtly
 quiet**: selective depth and surface wash only where the scan path stays clear.
@@ -50,11 +56,8 @@ quiet**: selective depth and surface wash only where the scan path stays clear.
 - App-wide **command palette** (⌘K / Ctrl+K; `/` opens palette off-home)
 - **Theme menu**: single control → Light / Dark / System (Menu Button keyboard;
   persisted via `prompts-theme`)
-- **Related-paradigm hub** (UI config only): groups related recipe/pattern
-  slugs without merging catalog YAML (pilot: panel-review + panelgpt +
-  expert-panel-discussion). Secondary to the paste path — renders **after**
-  the recipe workspace (or pattern primary content), not between CTAs and fill.
-  See `web/src/lib/related-clusters.ts`.
+- **See also** from catalog YAML `related` (canonical slugs only). Not a
+  `related-clusters.ts` taxonomy and not a merge of catalog items.
 - Distinctive type: **DM Sans** + **IBM Plex Mono** for prompts (Fontsource self-host)
 - Electric research blue primary with multi-lane accents
 - Client **document titles** via `useDocumentMeta` (SPA baseline; static emit stays truthful)
@@ -66,7 +69,7 @@ quiet**: selective depth and surface wash only where the scan path stays clear.
 3. **Clarity** — Clear focus, predictable sticky header offset.
 4. **Motion restraint** — Premium micro-transitions only; hard
    `prefers-reduced-motion` respect; no decorative animation loops.
-5. **Balanced density** — Airier hero/landing; denser indexes and recipe
+5. **Balanced density** — Airier hero/landing; denser indexes and prompt
    workspaces.
 
 ### Minimal landing + icons
@@ -91,9 +94,9 @@ quiet**: selective depth and surface wash only where the scan path stays clear.
 | `cn` helper     | `web/src/lib/utils.ts` (clsx + tailwind-merge)                                                                                                                                                                                   |
 | Primitives      | `web/src/components/ui/*` (Button, Badge, CopyableBlock via cva)                                                                                                                                                                 |
 | Theme           | `web/public/theme-init.js` (pre-paint, CSP-safe) + `web/src/lib/theme.ts` + `theme-provider.tsx` + `theme-toggle.tsx`                                                                                                            |
-| Related hub     | `web/src/lib/related-clusters.ts` + `features/related/RelatedHub.tsx` (no catalog merge)                                                                                                                                         |
+| See also        | Item-page links from YAML `related` (validation fails on missing, duplicate, or self slugs)                                                                                                                                      |
 | Document meta   | One route descriptor inventory + static shell emitter + `web/src/hooks/useDocumentMeta.ts`                                                                                                                                       |
-| Command palette | `cmdk` **Command.Dialog** (`CommandPalette.tsx`, lazy from `App`) + `lib/command-index.ts`                                                                                                                                       |
+| Command palette | Radix Dialog + `cmdk` `Command` (`CommandPalette.tsx`, lazy from `App`) + `lib/command-index.ts`                                                                                                                                 |
 | Fonts           | self-hosted **Fontsource** DM Sans + IBM Plex Mono (no Google CDN)                                                                                                                                                               |
 | Radix           | `@radix-ui/react-dialog` (command palette and catalog preview) + `@radix-ui/react-slot` (Button)                                                                                                                                 |
 | Code split      | Route-level `React.lazy` pages; Vite `manualChunks` only for router/icons/catalog data/meta. Dialog and command dependencies follow their dynamic imports and stay out of initial preload. **Do not** split `react`/`react-dom`. |
@@ -153,7 +156,7 @@ Semantic colors are CSS variables on `:root` / `.dark`, exposed to Tailwind via
 - Sticky header with Catalog / Explore / GitHub + Search (palette) + theme toggle
 - Main content shell; home gets slightly looser bottom padding
 - Skip link targets `#main-content` with `tabindex="-1"`
-- Footer: catalog counts + keyboard hints
+- Footer: prompt catalog counts + keyboard hints
 
 ## Components
 
@@ -169,9 +172,10 @@ Semantic colors are CSS variables on `:root` / `.dark`, exposed to Tailwind via
 
 ### Command palette
 
-- `cmdk` **Command.Dialog** (Radix Dialog composition); code-split via
+- Radix Dialog wrapping `cmdk` `Command` (not `Command.Dialog`); code-split via
   `React.lazy` from `App` and loaded only on explicit invocation
-- Groups: Pages / Recipes / Patterns (Pages includes Explore; no per-URL source spam)
+- Groups: Pages / Prompts (Pages includes Explore; no per-URL source spam; no
+  recipe vs pattern groups)
 - Global ⌘K / Ctrl+K owned by `App` (so cold open works before chunk load);
   Escape closes; `/` opens palette off-home when not in editable fields
 - Home still uses `/` to focus the in-page search field
@@ -182,48 +186,61 @@ Semantic colors are CSS variables on `:root` / `.dark`, exposed to Tailwind via
 - CVA variants; primary / outline / ghost; copy success shows “Copied”
 - CopyableBlock preserves `aria-label` and `data-copy-state` for smoke tests
 
-### Recipe workspace
+### Prompt workspace
 
-- Sticky **Recipe actions** group (accessible name preserved for Playwright)
-- Fill form + live prompt column; Open-in-chat remains available
-- Open-in-chat links warn that filled prompts enter third-party URL query strings,
-  preserve Unicode within a 4,096-character final encoded URL budget using the
-  supported browser's standards-complete `Intl.Segmenter` (failing closed when
-  unavailable), and use
-  uniform local circle-and-initial cues instead of official provider artwork
-- Small provider labels/recipe calls to action use contrast-safe foreground
+- Sticky **prompt actions** group on `/catalog/<slug>/`
+- Mode selector when the prompt has more than one named mode; fill form + live
+  prompt column when the selected mode has a paste path
+- Open-in-Chat copies the current filled prompt, then opens the provider
+  `homeUrl` with no prompt, paste, or fill state in the query. Shareable catalog
+  URLs may include only `?mode=<id>`. Uniform local circle-and-initial cues
+  instead of official provider artwork
+- Small provider labels and prompt calls to action use contrast-safe foreground
   tokens; focus-visible indicators use the shared `--ring` token
+- Header shows title, lane, facet, and evidence. Definition, avoid, controls,
+  cost, failure modes, safety, sources, and See also appear only when they have
+  data
 
 ### Catalog preview
 
-- Conditionally imported Radix Dialog with focus containment, inert background,
-  Escape/overlay dismissal, and opener focus restoration
+- Conditionally imported Radix Dialog with focus containment, `aria-hidden` on
+  `#root` (only the pending overlay sets `inert`), Escape/overlay dismissal,
+  and opener focus restoration
 
 ### Catalog home filtering
 
-- Filter changes expose one concise atomic polite count status
+- Home `/` is the one prompt index, grouped by lane, with facet and search
+  filters
+- Filter changes expose one concise atomic polite count status (prompt totals,
+  not recipe vs pattern counts)
 - The complete dynamic results container is not a live region, avoiding
   repeated announcements of every matching card
 
 ### Data explorer
 
-- Unified sources/recipes/patterns surface at `/explore/`
+- Unified prompts-and-sources surface at `/explore/` (one prompt table, no type
+  split, plus the source ledger)
 - Shareable normalized `scope` and `q` URL state with history restoration
 - Listbox keyboard navigation and live result counts
 - Source identity is rendered locally; no third-party favicon requests
 
 ## Routes and publication
 
-One validated descriptor inventory emits 95 canonical page shells: `/`,
-`/explore/`, recipe/pattern indexes, and 91 detail routes. Each shell has
-route-specific escaped title, description, canonical, Open Graph, and Twitter
-metadata. `/sources/` permanently redirects to `/explore/?scope=sources` and
-`/research/` to `/explore/`; neither is indexed. Unknown hard requests receive
-the standalone noindex `404.html`, while unknown client navigation renders a
-visible noindex Not Found view. `robots.txt`, `llms.txt`, and the sitemap contain
-only canonical content; the sitemap omits unverifiable build-date `lastmod`
-values. `llms-full.txt` serializes every public recipe and pattern field from
-catalog YAML, including nested fence text. Publication builds run with
+One validated descriptor inventory emits canonical page shells for `/`,
+`/explore/`, and `/catalog/<slug>/` per prompt. Each shell has route-specific
+escaped title, description, canonical, Open Graph, and Twitter metadata.
+`/sources/` permanently redirects to `/explore/?scope=sources` and `/research/`
+to `/explore/`; neither is indexed. `/recipes/`, `/patterns/`,
+`/recipes/<slug>/`, and `/patterns/<slug>/` are absent from the inventory,
+sitemap, and shells and return the branded HTTP 404 (no 301, alias, or
+compatibility table). There is no `/catalog/` browse page. Unknown hard
+requests receive the standalone noindex `404.html`, while unknown client
+navigation renders a visible noindex Not Found view. `robots.txt`, `llms.txt`,
+and the sitemap contain only canonical content; the sitemap omits unverifiable
+build-date `lastmod` values. `llms-full.txt` serializes every public prompt
+field from catalog YAML, including nested fence text, modes, and related slugs.
+Site-data emits `{ meta, prompts, lanes }` without parallel `recipes` /
+`patterns` product arrays. Publication builds run with
 `WEB_PUBLICATION_BUILD=1` (or a production/Vercel runtime signal) and accept
 only a stable public HTTPS root origin from `WEB_BASE_URL` or
 `VERCEL_PROJECT_PRODUCTION_URL`; deployment-specific preview URLs, special-use
@@ -240,6 +257,7 @@ DNS names, non-public IPs, and local/path-prefixed bases fail the build.
 - Landmarks: header, `nav[aria-label=Site]`, main, footer
 - Icon-only controls have `aria-label`
 - Keyboard: tab order, palette, search `/`, copy buttons
+- Copy and mode switch expose a live status for assistive technology
 
 ## Proof / quality
 
@@ -258,6 +276,6 @@ Smoke-critical accessible names:
 
 - Heading “prompts” (catalog meta title)
 - Navigation “Site”
-- Group “Recipe actions”
+- Prompt workspace actions group
 - Button “Copy prompt”
 - Status matching `/copied/i`
