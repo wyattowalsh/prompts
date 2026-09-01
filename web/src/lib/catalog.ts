@@ -26,12 +26,9 @@ export type PromptMode = {
   sources?: SourceRef[];
 };
 
-export type PromptFacet = "job" | "method";
-
 export type Prompt = {
   slug: string;
   title: string;
-  facet: PromptFacet;
   lane: string;
   blurb: string;
   order: number;
@@ -118,7 +115,6 @@ export function searchCatalog(query: string): Prompt[] {
       prompt.title,
       prompt.blurb,
       prompt.slug,
-      prompt.facet,
       prompt.lane,
       prompt.definition ?? "",
       prompt.avoid_when ?? ""

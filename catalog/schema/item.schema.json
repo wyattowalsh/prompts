@@ -8,7 +8,6 @@
   "required": [
     "slug",
     "title",
-    "facet",
     "lane",
     "blurb",
     "badge",
@@ -26,7 +25,6 @@
       "minLength": 1,
       "pattern": "^(?!\\s)[^\\r\\n\\u2028\\u2029]*\\S$"
     },
-    "facet": { "type": "string", "enum": ["job", "method"] },
     "lane": { "$ref": "#/$defs/lane" },
     "blurb": { "type": "string", "minLength": 1 },
     "badge": {

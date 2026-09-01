@@ -1,6 +1,5 @@
 slug: named-entity-extraction
 title: Named Entity Extraction
-facet: job
 lane: data
 blurb: extract entities with spans and normalization
 order: 40

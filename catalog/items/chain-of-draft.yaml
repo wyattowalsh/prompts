@@ -1,6 +1,5 @@
 slug: chain-of-draft
 title: Chain-of-Draft
-facet: method
 lane: reasoning
 blurb: use very short internal draft notes instead of verbose reasoning.
 order: 130

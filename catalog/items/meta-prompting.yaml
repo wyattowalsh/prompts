@@ -1,6 +1,5 @@
 slug: meta-prompting
 title: Meta-Prompting
-facet: method
 lane: agents
 blurb: ask a model to draft or improve prompt candidates for a target task.
 order: 60

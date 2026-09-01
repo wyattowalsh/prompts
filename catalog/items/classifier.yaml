@@ -1,6 +1,5 @@
 slug: classifier
 title: Classifier
-facet: job
 lane: data
 blurb: assign labels with rationales and abstentions
 order: 30

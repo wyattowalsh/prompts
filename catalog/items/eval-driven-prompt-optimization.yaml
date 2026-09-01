@@ -1,6 +1,5 @@
 slug: eval-driven-prompt-optimization
 title: Eval-Driven Prompt Optimization
-facet: method
 lane: agents
 blurb: generate, test, and select prompt variants using a held-out eval set.
 order: 70

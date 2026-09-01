@@ -21,7 +21,6 @@ function minimalPrompt(overrides = {}) {
   return {
     slug: "sample",
     title: "Sample",
-    facet: "job",
     lane: "research",
     blurb: blurb ?? use_for ?? "test use",
     badge: { color: "2563EB", logo: "ri:RiTestLine", chip_label: "S" },

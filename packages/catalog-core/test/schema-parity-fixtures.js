@@ -11,7 +11,6 @@ function variant(base, mutate) {
 export const baseItem = {
   slug: "sample-item",
   title: "Sample Item",
-  facet: "job",
   lane: "research",
   blurb: "exercise schema parity",
   order: 1,
@@ -95,7 +94,6 @@ export const parityFixtures = {
       {
         name: "method fields and template omission",
         value: variant(baseItem, (value) => {
-          value.facet = "method";
           value.definition = "Definition";
           value.avoid_when = "Avoid";
           value.model_api_controls = "Controls";
@@ -193,9 +191,9 @@ export const parityFixtures = {
         })
       },
       {
-        name: "facet is not job or method",
+        name: "unknown facet field is rejected",
         value: variant(baseItem, (value) => {
-          value.facet = "recipe";
+          value.facet = "job";
         })
       },
       {

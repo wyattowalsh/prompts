@@ -1,6 +1,5 @@
 slug: react
 title: ReAct
-facet: method
 lane: agents
 blurb: interleave reasoning-oriented decisions with real actions against tools or environments.
 order: 20

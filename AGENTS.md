@@ -86,8 +86,8 @@ Browser smoke (`pnpm web:test:browser`) allocates one isolated free port in a wr
 
 The catalog has **one** prompt type. Do not author recipes vs patterns as types.
 See `.agents/skills/readme-catalog-steward/references/card-contract.md` for the
-enforced Prompt Library layout. Facet is `job` or `method` only; it is a filter
-chip, not a second tree. Named modes (1–4, one default) own the paste path.
+enforced Prompt Library layout. There is no job/method facet; lane and search
+are the only index filters. Named modes (1–4, one default) own the paste path.
 
 **Every prompt card** uses: Use for, optional compact mode table when there is
 more than one mode, placeholder/paste-zone table and Copy prompt when the

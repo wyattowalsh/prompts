@@ -134,15 +134,15 @@ Load references selectively; do not load all of them for focused edits.
     `Match the **placeholder table** above; paste \`none\` for optional zones you
     omit.` — not a shortened table-only line; enforced by
     `validate_fill_these_in_compact()`.
-16. Author in `catalog/items/`. Facet is `job` or `method` only. Modes cannot
-    change slug, title, facet, or lane. There is no Playbook composer.
+16. Author in `catalog/items/`. There is no job/method facet. Modes cannot
+    change slug, title, or lane. There is no Playbook composer.
 
 ## Canonical Vocabulary
 
 Use these canonical terms exactly throughout README stewardship work:
 
-- Public noun: `prompt`. Facet: `job` or `method`. Authoring path:
-  `catalog/items/<slug>.yaml`. Public item URL: `/catalog/<slug>/`.
+- Public noun: `prompt`. Authoring path: `catalog/items/<slug>.yaml`. Public
+  item URL: `/catalog/<slug>/`. There is no job/method facet.
 - Evidence tiers: `Strong`, `Moderate`, `Emerging`, `Community`,
   `Experimental`.
 - Source types: `official doc`, `primary paper`, `survey`, `standard`,

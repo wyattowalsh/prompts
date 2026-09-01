@@ -1,6 +1,5 @@
 slug: prompt-injection-scanner
 title: Prompt-Injection Scanner
-facet: job
 lane: agents
 blurb: audit a prompt or workflow for injection paths
 order: 30

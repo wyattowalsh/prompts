@@ -3,8 +3,6 @@
  * Keeps list membership testable without mounting the SPA.
  */
 
-export type PromptFacet = "job" | "method";
-
 /** Absolute in-app path for a prompt detail page (trailing slash). */
 export function promptDetailHref(slug: string): string {
   return `/catalog/${slug}/`;
@@ -15,7 +13,6 @@ export type PromptIndexInput = {
   title: string;
   blurb: string;
   lane: string;
-  facet?: PromptFacet;
   order?: number;
 };
 
@@ -24,15 +21,12 @@ export type PromptIndexEntry = {
   title: string;
   blurb: string;
   lane: string;
-  facet?: PromptFacet;
   href: string;
 };
 
 export type BuildLandingPromptIndexOptions = {
   /** When set, only prompts in this lane key are included. */
   lane?: string | null;
-  /** When set, only prompts with this facet are included. */
-  facet?: PromptFacet | null;
 };
 
 /** Resolve a shareable lane filter without letting unknown URL values empty the catalog. */
@@ -44,32 +38,22 @@ export function resolvePromptLaneFilter(
   return lane && laneKeys.includes(lane) ? lane : null;
 }
 
-export function resolvePromptFacetFilter(rawFacet: string | null | undefined): PromptFacet | null {
-  return rawFacet === "job" || rawFacet === "method" ? rawFacet : null;
-}
-
 /**
  * Build the full (or filtered) prompt index for the landing page.
- * Empty/whitespace lane or facet means all matching prompts — no artificial truncation.
+ * Empty/whitespace lane means all matching prompts — no artificial truncation.
  */
 export function buildLandingPromptIndex(
   prompts: readonly PromptIndexInput[],
   options: BuildLandingPromptIndexOptions = {}
 ): PromptIndexEntry[] {
   const lane = options.lane?.trim() || null;
-  const facet = options.facet ?? null;
-  const list = prompts.filter((prompt) => {
-    if (lane && prompt.lane !== lane) return false;
-    if (facet && prompt.facet !== facet) return false;
-    return true;
-  });
+  const list = lane ? prompts.filter((prompt) => prompt.lane === lane) : prompts.slice();
 
   return list.map((prompt) => ({
     slug: prompt.slug,
     title: prompt.title,
     blurb: prompt.blurb,
     lane: prompt.lane,
-    facet: prompt.facet,
     href: promptDetailHref(prompt.slug)
   }));
 }

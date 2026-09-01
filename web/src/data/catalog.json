@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "generated_at": "2026-09-01T06:03:22.274Z",
+  "generated_at": "2026-09-01T07:06:00.698Z",
   "meta": {
     "title": "prompts",
     "description": "Research-backed prompt catalog: model/API controls, safety checks, eval guidance, and source-grounded templates for practical AI workflows.",
@@ -248,7 +248,6 @@
     {
       "slug": "acceptance-criteria-writer",
       "title": "Acceptance Criteria Writer",
-      "facet": "job",
       "lane": "product",
       "blurb": "convert requirements into testable criteria",
       "order": 30,
@@ -312,7 +311,6 @@
     {
       "slug": "active-prompt",
       "title": "Active-Prompt",
-      "facet": "method",
       "lane": "reasoning",
       "blurb": "select uncertain examples, annotate them, and use them as task-specific demonstrations.",
       "order": 100,
@@ -369,7 +367,6 @@
     {
       "slug": "algorithm-of-thoughts",
       "title": "Algorithm-of-Thoughts",
-      "facet": "method",
       "lane": "reasoning",
       "blurb": "guide solving with an explicit algorithmic search strategy.",
       "order": 150,
@@ -421,7 +418,6 @@
     {
       "slug": "api-contract-explainer",
       "title": "API Contract Explainer",
-      "facet": "job",
       "lane": "coding",
       "blurb": "explain an interface for implementers",
       "order": 60,
@@ -495,7 +491,6 @@
     {
       "slug": "bug-rca",
       "title": "Bug RCA",
-      "facet": "job",
       "lane": "coding",
       "blurb": "explain a failure from logs, code, and observed behavior",
       "order": 20,
@@ -560,7 +555,6 @@
     {
       "slug": "chain-of-density-summarization",
       "title": "Chain-of-Density Summarization",
-      "facet": "method",
       "lane": "writing",
       "blurb": "iteratively add missing salient entities to a fixed-length summary.",
       "order": 60,
@@ -611,7 +605,6 @@
     {
       "slug": "chain-of-draft",
       "title": "Chain-of-Draft",
-      "facet": "method",
       "lane": "reasoning",
       "blurb": "use very short internal draft notes instead of verbose reasoning.",
       "order": 130,
@@ -674,7 +667,6 @@
     {
       "slug": "chain-of-verification",
       "title": "Chain-of-Verification",
-      "facet": "method",
       "lane": "reasoning",
       "blurb": "draft, generate verification questions, check them against sources or tools, then revise.",
       "order": 200,
@@ -747,7 +739,6 @@
     {
       "slug": "citation-matrix",
       "title": "Citation Matrix",
-      "facet": "job",
       "lane": "research",
       "blurb": "convert sources into a structured evidence table",
       "order": 50,
@@ -814,7 +805,6 @@
     {
       "slug": "claim-checker",
       "title": "Claim Checker",
-      "facet": "job",
       "lane": "research",
       "blurb": "test a claim against provided evidence",
       "order": 40,
@@ -892,7 +882,6 @@
     {
       "slug": "classifier",
       "title": "Classifier",
-      "facet": "job",
       "lane": "data",
       "blurb": "assign labels with rationales and abstentions",
       "order": 30,
@@ -956,7 +945,6 @@
     {
       "slug": "code-review",
       "title": "Code Review",
-      "facet": "job",
       "lane": "coding",
       "blurb": "find correctness and maintainability issues first",
       "order": 10,
@@ -1018,7 +1006,6 @@
     {
       "slug": "context-engineering",
       "title": "Context Engineering",
-      "facet": "method",
       "lane": "agents",
       "blurb": "design the full context supplied to the model: durable instructions, retrieved evidence, memory, tools, examples, constraints, and output state.",
       "order": 90,
@@ -1131,7 +1118,6 @@
     {
       "slug": "critique-revise",
       "title": "Self-Refine",
-      "facet": "job",
       "lane": "reasoning",
       "blurb": "improve a draft with a bounded critique loop",
       "order": 40,
@@ -1229,7 +1215,6 @@
     {
       "slug": "data-augmentation",
       "title": "Data Augmentation",
-      "facet": "method",
       "lane": "data",
       "blurb": "generate controlled variants for training, testing, or robustness checks.",
       "order": 70,
@@ -1303,7 +1288,6 @@
     {
       "slug": "decision-memo",
       "title": "Decision Memo",
-      "facet": "job",
       "lane": "operations",
       "blurb": "turn options into a decision record",
       "order": 50,
@@ -1369,7 +1353,6 @@
     {
       "slug": "dense-summary",
       "title": "Dense Summary",
-      "facet": "job",
       "lane": "writing",
       "blurb": "compress a source while preserving entities and facts",
       "order": 40,
@@ -1432,7 +1415,6 @@
     {
       "slug": "direct-zero-shot",
       "title": "Direct Zero-Shot",
-      "facet": "method",
       "lane": "reasoning",
       "blurb": "ask directly for the task without examples.",
       "order": 70,
@@ -1517,7 +1499,6 @@
     {
       "slug": "disagreement-map",
       "title": "Disagreement Map",
-      "facet": "job",
       "lane": "research",
       "blurb": "surface conflicts across sources instead of averaging them away",
       "order": 60,
@@ -1579,7 +1560,6 @@
     {
       "slug": "emotional-persuasion-prompting",
       "title": "Emotional Persuasion Prompting",
-      "facet": "method",
       "lane": "reasoning",
       "blurb": "add emotional framing or stakes to a prompt.",
       "order": 210,
@@ -1635,7 +1615,6 @@
     {
       "slug": "eval-driven-prompt-optimization",
       "title": "Eval-Driven Prompt Optimization",
-      "facet": "method",
       "lane": "agents",
       "blurb": "generate, test, and select prompt variants using a held-out eval set.",
       "order": 70,
@@ -1730,7 +1709,6 @@
     {
       "slug": "eval-set-generator",
       "title": "Eval-Set Generator",
-      "facet": "job",
       "lane": "agents",
       "blurb": "turn failures into reusable prompt tests",
       "order": 40,
@@ -1801,7 +1779,6 @@
     {
       "slug": "evaluation-flywheel",
       "title": "Evaluation Flywheel",
-      "facet": "method",
       "lane": "agents",
       "blurb": "improve prompts through fixed eval cases, measured failures, controlled changes, and regression checks.",
       "order": 60,
@@ -1905,7 +1882,6 @@
     {
       "slug": "executive-brief",
       "title": "Executive Brief",
-      "facet": "job",
       "lane": "writing",
       "blurb": "summarize messy material for a busy decision maker",
       "order": 10,
@@ -1969,7 +1945,6 @@
     {
       "slug": "faq-generator",
       "title": "FAQ Generator",
-      "facet": "job",
       "lane": "writing",
       "blurb": "turn a document into practical Q&A",
       "order": 50,
@@ -2033,7 +2008,6 @@
     {
       "slug": "few-shot-prompting",
       "title": "Few-Shot Prompting",
-      "facet": "method",
       "lane": "reasoning",
       "blurb": "provide input-output examples so the model can infer style, labels, or edge behavior.",
       "order": 90,
@@ -2116,7 +2090,6 @@
     {
       "slug": "graph-of-thoughts",
       "title": "Graph-of-Thoughts",
-      "facet": "method",
       "lane": "reasoning",
       "blurb": "model intermediate ideas as graph nodes that can be merged, compared, and revisited.",
       "order": 170,
@@ -2171,7 +2144,6 @@
     {
       "slug": "incident-summary",
       "title": "Incident Summary",
-      "facet": "job",
       "lane": "operations",
       "blurb": "turn incident notes into an operator-ready summary",
       "order": 10,
@@ -2237,7 +2209,6 @@
     {
       "slug": "intentional-analysis",
       "title": "Intentional Analysis",
-      "facet": "method",
       "lane": "reasoning",
       "blurb": "explicitly identify the user's likely goal and deliverable before solving.",
       "order": 120,
@@ -2285,7 +2256,6 @@
     {
       "slug": "json-extractor",
       "title": "JSON Extractor",
-      "facet": "job",
       "lane": "data",
       "blurb": "extract structured JSON from messy text",
       "order": 10,
@@ -2366,7 +2336,6 @@
     {
       "slug": "knowledge-base-engineer",
       "title": "Knowledge Base Engineer",
-      "facet": "method",
       "lane": "research",
       "blurb": "produce source-grounded knowledge-base entries with sections, diagrams, update notes, and open questions.",
       "order": 70,
@@ -2429,7 +2398,6 @@
     {
       "slug": "launch-checklist",
       "title": "Launch Checklist",
-      "facet": "job",
       "lane": "product",
       "blurb": "produce a release checklist from a change summary",
       "order": 40,
@@ -2493,7 +2461,6 @@
     {
       "slug": "literature-scan",
       "title": "Literature Scan",
-      "facet": "job",
       "lane": "research",
       "blurb": "triage papers before a deeper review",
       "order": 30,
@@ -2555,7 +2522,6 @@
     {
       "slug": "log-triage",
       "title": "Log Triage",
-      "facet": "job",
       "lane": "operations",
       "blurb": "summarize logs without treating logs as instructions",
       "order": 30,
@@ -2621,7 +2587,6 @@
     {
       "slug": "markmap-generator",
       "title": "Markmap Generator",
-      "facet": "method",
       "lane": "writing",
       "blurb": "produce a hierarchical Markdown mind map for Markmap or similar visualization tools.",
       "order": 80,
@@ -2673,7 +2638,6 @@
     {
       "slug": "meeting-action-extractor",
       "title": "Meeting Action Extractor",
-      "facet": "job",
       "lane": "operations",
       "blurb": "extract decisions and actions from notes",
       "order": 60,
@@ -2739,7 +2703,6 @@
     {
       "slug": "meta-prompting",
       "title": "Meta-Prompting",
-      "facet": "method",
       "lane": "agents",
       "blurb": "ask a model to draft or improve prompt candidates for a target task.",
       "order": 60,
@@ -2816,7 +2779,6 @@
     {
       "slug": "multimodal-evidence-reasoning",
       "title": "Multimodal Evidence Reasoning",
-      "facet": "method",
       "lane": "research",
       "blurb": "combine visual and textual evidence for a source-grounded answer.",
       "order": 110,
@@ -2884,7 +2846,6 @@
     {
       "slug": "named-entity-extraction",
       "title": "Named Entity Extraction",
-      "facet": "job",
       "lane": "data",
       "blurb": "extract entities with spans and normalization",
       "order": 40,
@@ -2988,7 +2949,6 @@
     {
       "slug": "newsletter-draft",
       "title": "Newsletter Draft",
-      "facet": "job",
       "lane": "writing",
       "blurb": "turn notes into a concise publishable issue",
       "order": 60,
@@ -3052,7 +3012,6 @@
     {
       "slug": "plan-then-solve",
       "title": "Plan-and-Solve",
-      "facet": "job",
       "lane": "reasoning",
       "blurb": "solve multi-step tasks with a visible plan but private reasoning",
       "order": 10,
@@ -3152,7 +3111,6 @@
     {
       "slug": "pr-description",
       "title": "PR Description",
-      "facet": "job",
       "lane": "coding",
       "blurb": "turn a diff into a useful pull request description",
       "order": 50,
@@ -3217,7 +3175,6 @@
     {
       "slug": "prd-drafter",
       "title": "PRD Drafter",
-      "facet": "job",
       "lane": "product",
       "blurb": "turn a product idea into a scoped requirements doc",
       "order": 10,
@@ -3281,7 +3238,6 @@
     {
       "slug": "program-of-thoughts",
       "title": "Program-of-Thoughts",
-      "facet": "method",
       "lane": "reasoning",
       "blurb": "translate computable subproblems into code or symbolic operations and use checked results.",
       "order": 180,
@@ -3345,7 +3301,6 @@
     {
       "slug": "prompt-chaining",
       "title": "Prompt Chaining",
-      "facet": "method",
       "lane": "agents",
       "blurb": "split a workflow into staged prompts with explicit handoff artifacts.",
       "order": 50,
@@ -3427,7 +3382,6 @@
     {
       "slug": "prompt-injection-defense",
       "title": "Prompt Injection Defense",
-      "facet": "method",
       "lane": "agents",
       "blurb": "design prompts and workflows so untrusted text cannot override durable instructions or authorize unsafe actions.",
       "order": 120,
@@ -3518,7 +3472,6 @@
     {
       "slug": "prompt-injection-scanner",
       "title": "Prompt-Injection Scanner",
-      "facet": "job",
       "lane": "agents",
       "blurb": "audit a prompt or workflow for injection paths",
       "order": 30,
@@ -3599,7 +3552,6 @@
     {
       "slug": "prompt-optimizer",
       "title": "Prompt Optimizer",
-      "facet": "job",
       "lane": "agents",
       "blurb": "revise a prompt using failures, not vibes",
       "order": 60,
@@ -3687,7 +3639,6 @@
     {
       "slug": "quick-enhance",
       "title": "Quick Enhance",
-      "facet": "method",
       "lane": "writing",
       "blurb": "ask for targeted improvement of an existing artifact.",
       "order": 100,
@@ -3747,7 +3698,6 @@
     {
       "slug": "rag-answer-contract",
       "title": "RAG Answer Contract",
-      "facet": "job",
       "lane": "agents",
       "blurb": "define a grounded answer interface for retrieval",
       "order": 20,
@@ -3841,7 +3791,6 @@
     {
       "slug": "rag-citation-grounded-answering",
       "title": "RAG / Citation-Grounded Answering",
-      "facet": "method",
       "lane": "agents",
       "blurb": "answer from retrieved or provided sources with source IDs, citation checks, and missing-evidence behavior.",
       "order": 100,
@@ -3931,7 +3880,6 @@
     {
       "slug": "react",
       "title": "ReAct",
-      "facet": "method",
       "lane": "agents",
       "blurb": "interleave reasoning-oriented decisions with real actions against tools or environments.",
       "order": 20,
@@ -4006,7 +3954,6 @@
     {
       "slug": "refactor-planner",
       "title": "Refactor Planner",
-      "facet": "job",
       "lane": "coding",
       "blurb": "plan a scoped refactor before changing code",
       "order": 40,
@@ -4071,7 +4018,6 @@
     {
       "slug": "reflexion",
       "title": "Reflexion",
-      "facet": "method",
       "lane": "agents",
       "blurb": "use concrete feedback from previous attempts to improve later attempts.",
       "order": 50,
@@ -4127,7 +4073,6 @@
     {
       "slug": "regression-judge",
       "title": "Regression Judge",
-      "facet": "job",
       "lane": "agents",
       "blurb": "judge outputs against a rubric",
       "order": 50,
@@ -4203,7 +4148,6 @@
     {
       "slug": "research-synthesis",
       "title": "Research Synthesis",
-      "facet": "method",
       "lane": "research",
       "blurb": "combine multiple sources into a structured synthesis.",
       "order": 50,
@@ -4274,7 +4218,6 @@
     {
       "slug": "rewrite-with-constraints",
       "title": "Rewrite With Constraints",
-      "facet": "job",
       "lane": "writing",
       "blurb": "rewrite text while preserving meaning and hard requirements",
       "order": 20,
@@ -4338,7 +4281,6 @@
     {
       "slug": "risk-register",
       "title": "Risk Register",
-      "facet": "job",
       "lane": "operations",
       "blurb": "convert plans or incidents into tracked risks",
       "order": 40,
@@ -4414,7 +4356,6 @@
     {
       "slug": "runbook-generator",
       "title": "Runbook Generator",
-      "facet": "job",
       "lane": "operations",
       "blurb": "create a safe operational runbook",
       "order": 20,
@@ -4480,7 +4421,6 @@
     {
       "slug": "self-consistency",
       "title": "Self-Consistency",
-      "facet": "method",
       "lane": "reasoning",
       "blurb": "sample multiple solution attempts and choose the answer with strongest agreement.",
       "order": 190,
@@ -4540,7 +4480,6 @@
     {
       "slug": "sentiment-analysis",
       "title": "Sentiment Analysis",
-      "facet": "method",
       "lane": "data",
       "blurb": "classify text by sentiment, tone, or affective stance.",
       "order": 55,
@@ -4595,7 +4534,6 @@
     {
       "slug": "sentiment-triage",
       "title": "Sentiment Triage",
-      "facet": "job",
       "lane": "data",
       "blurb": "classify sentiment for support or product feedback",
       "order": 50,
@@ -4659,7 +4597,6 @@
     {
       "slug": "simulated-panel",
       "title": "Simulated Panel",
-      "facet": "job",
       "lane": "reasoning",
       "blurb": "collect task-relevant perspectives without fake authority",
       "order": 50,
@@ -4828,7 +4765,6 @@
     {
       "slug": "skeleton-of-thought",
       "title": "Skeleton-of-Thought",
-      "facet": "method",
       "lane": "reasoning",
       "blurb": "generate a compact outline, then expand separable sections.",
       "order": 140,
@@ -4888,7 +4824,6 @@
     {
       "slug": "source-grounded-answer",
       "title": "Source-Grounded Answer",
-      "facet": "job",
       "lane": "research",
       "blurb": "answer a question from supplied sources without drifting into unsupported claims",
       "order": 10,
@@ -4965,7 +4900,6 @@
     {
       "slug": "step-back-reasoning",
       "title": "Step-Back Reasoning",
-      "facet": "job",
       "lane": "reasoning",
       "blurb": "generalize before solving a narrow problem",
       "order": 20,
@@ -5065,7 +4999,6 @@
     {
       "slug": "structured-outputs-json-schema",
       "title": "Structured Outputs / JSON Schema",
-      "facet": "method",
       "lane": "data",
       "blurb": "use provider-enforced structured output, JSON Schema, or tool schemas so downstream code can parse reliably.",
       "order": 15,
@@ -5151,7 +5084,6 @@
     {
       "slug": "structured-zero-shot",
       "title": "Structured Zero-Shot",
-      "facet": "method",
       "lane": "reasoning",
       "blurb": "direct prompting plus explicit context boundaries, constraints, and output contract.",
       "order": 80,
@@ -5250,7 +5182,6 @@
     {
       "slug": "style-transfer-without-examples",
       "title": "Style Transfer Without Examples",
-      "facet": "job",
       "lane": "writing",
       "blurb": "apply a style brief without requiring examples",
       "order": 30,
@@ -5314,7 +5245,6 @@
     {
       "slug": "support-macro",
       "title": "Support Macro",
-      "facet": "job",
       "lane": "product",
       "blurb": "draft a support response that is accurate and constrained",
       "order": 60,
@@ -5378,7 +5308,6 @@
     {
       "slug": "synthetic-edge-cases",
       "title": "Synthetic Edge Cases",
-      "facet": "job",
       "lane": "data",
       "blurb": "generate test inputs that break brittle prompts",
       "order": 60,
@@ -5442,7 +5371,6 @@
     {
       "slug": "table-normalizer",
       "title": "Table Normalizer",
-      "facet": "job",
       "lane": "data",
       "blurb": "normalize inconsistent rows into a clean table",
       "order": 20,
@@ -5507,7 +5435,6 @@
     {
       "slug": "text-classification",
       "title": "Text Classification",
-      "facet": "method",
       "lane": "data",
       "blurb": "map text into predefined labels.",
       "order": 35,
@@ -5593,7 +5520,6 @@
     {
       "slug": "tool-calling-contract",
       "title": "Tool Calling Contract",
-      "facet": "method",
       "lane": "agents",
       "blurb": "specify when and how a model may call tools, with validated arguments and side-effect controls.",
       "order": 110,
@@ -5679,7 +5605,6 @@
     {
       "slug": "tool-use-planner",
       "title": "Tool-Use Planner",
-      "facet": "job",
       "lane": "agents",
       "blurb": "plan tool calls before an agent acts",
       "order": 10,
@@ -5773,7 +5698,6 @@
     {
       "slug": "tradeoff-matrix",
       "title": "Tradeoff Matrix",
-      "facet": "job",
       "lane": "reasoning",
       "blurb": "compare options with explicit criteria",
       "order": 60,
@@ -5837,7 +5761,6 @@
     {
       "slug": "tree-of-thoughts",
       "title": "Tree-of-Thoughts",
-      "facet": "method",
       "lane": "reasoning",
       "blurb": "explore multiple candidate reasoning paths and choose among them.",
       "order": 160,
@@ -5902,7 +5825,6 @@
     {
       "slug": "unit-test-authoring",
       "title": "Unit Test Authoring",
-      "facet": "job",
       "lane": "coding",
       "blurb": "write focused tests for known behavior",
       "order": 30,
@@ -6001,7 +5923,6 @@
     {
       "slug": "usability-review",
       "title": "Usability Review",
-      "facet": "job",
       "lane": "product",
       "blurb": "review a screen or flow for usability issues",
       "order": 50,
@@ -6107,7 +6028,6 @@
     {
       "slug": "user-story-splitter",
       "title": "User Story Splitter",
-      "facet": "job",
       "lane": "product",
       "blurb": "split a feature into implementable stories",
       "order": 20,
@@ -6171,7 +6091,6 @@
     {
       "slug": "verification-pass",
       "title": "Verification Pass",
-      "facet": "job",
       "lane": "reasoning",
       "blurb": "audit an answer before it is used",
       "order": 30,
@@ -6247,7 +6166,6 @@
     {
       "slug": "web-research-brief",
       "title": "Web Research Brief",
-      "facet": "job",
       "lane": "research",
       "blurb": "turn live research notes into a decision-ready brief",
       "order": 20,
@@ -6317,7 +6235,6 @@
     {
       "slug": "zero-shot-chain-of-thought",
       "title": "Zero-Shot Chain-of-Thought",
-      "facet": "method",
       "lane": "reasoning",
       "blurb": "elicit intermediate reasoning for a reasoning task without examples.",
       "order": 110,

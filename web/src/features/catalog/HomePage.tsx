@@ -18,7 +18,7 @@ import {
 import { Badge } from "../../components/ui/Badge";
 import { Button } from "../../components/ui/Button";
 import { useDocumentMeta } from "../../hooks/useDocumentMeta";
-import { catalog, searchCatalog, type PromptFacet } from "../../lib/catalog";
+import { catalog, searchCatalog } from "../../lib/catalog";
 import { laneIcon } from "../../lib/lane-icons";
 import {
   buildLandingPromptIndex,
@@ -42,7 +42,6 @@ type HomePageProps = {
 export function HomePage({ onPreviewIntentChange, onPreviewNavigate }: HomePageProps) {
   const [query, setQuery] = useState("");
   const [laneFilter, setLaneFilter] = useState<string | null>(null);
-  const [facetFilter, setFacetFilter] = useState<PromptFacet | null>(null);
   const [preview, setPreview] = useState<CatalogPreviewTarget | null>(null);
   const [previewLoadFailed, setPreviewLoadFailed] = useState(false);
   const searchRef = useRef<HTMLInputElement>(null);
@@ -50,11 +49,10 @@ export function HomePage({ onPreviewIntentChange, onPreviewNavigate }: HomePageP
   const searched = useMemo(() => searchCatalog(query), [query]);
   const results = useMemo(() => {
     return searched.filter((prompt) => {
-      if (facetFilter && prompt.facet !== facetFilter) return false;
       if (laneFilter && prompt.lane !== laneFilter) return false;
       return true;
     });
-  }, [facetFilter, laneFilter, searched]);
+  }, [laneFilter, searched]);
   const openPreview = useCallback(
     (target: CatalogPreviewTarget) => {
       previewReturnFocusRef.current =
@@ -95,8 +93,8 @@ export function HomePage({ onPreviewIntentChange, onPreviewNavigate }: HomePageP
   useDocumentMeta("prompts", catalog.meta.description);
 
   const landingEntries = useMemo(
-    () => buildLandingPromptIndex(catalog.prompts, { lane: laneFilter, facet: facetFilter }),
-    [facetFilter, laneFilter]
+    () => buildLandingPromptIndex(catalog.prompts, { lane: laneFilter }),
+    [laneFilter]
   );
 
   const laneGroups = useMemo(
@@ -112,7 +110,6 @@ export function HomePage({ onPreviewIntentChange, onPreviewNavigate }: HomePageP
         title: prompt.title,
         blurb: prompt.blurb,
         lane: prompt.lane,
-        facet: prompt.facet,
         href: promptDetailHref(prompt.slug)
       })),
     [results]
@@ -125,26 +122,14 @@ export function HomePage({ onPreviewIntentChange, onPreviewNavigate }: HomePageP
     : laneTitle
       ? `${visibleCount} prompt${visibleCount === 1 ? "" : "s"} in ${laneTitle}.`
       : `${visibleCount} prompt${visibleCount === 1 ? "" : "s"}.`;
-  const facetCounts = useMemo(
-    () => ({
-      job: catalog.prompts.filter((prompt) => prompt.facet === "job").length,
-      method: catalog.prompts.filter((prompt) => prompt.facet === "method").length
-    }),
-    []
-  );
   const laneCounts = useMemo(() => {
     const counts = new Map<string, number>();
     for (const prompt of catalog.prompts) {
-      if (facetFilter && prompt.facet !== facetFilter) continue;
       counts.set(prompt.lane, (counts.get(prompt.lane) ?? 0) + 1);
     }
     return counts;
-  }, [facetFilter]);
-  const allLaneCount = facetFilter
-    ? facetFilter === "job"
-      ? facetCounts.job
-      : facetCounts.method
-    : catalog.counts.prompts;
+  }, []);
+  const allLaneCount = catalog.counts.prompts;
 
   useEffect(() => {
     if (preview) return;
@@ -237,35 +222,6 @@ export function HomePage({ onPreviewIntentChange, onPreviewNavigate }: HomePageP
         <p className="sr-only" role="status" aria-live="polite" aria-atomic="true">
           {catalogCountStatus}
         </p>
-        <div className="filter-bar" role="group" aria-label="Filter by facet">
-          <button
-            type="button"
-            className={`chip${facetFilter === null ? " is-active" : ""}`}
-            onClick={() => setFacetFilter(null)}
-            aria-pressed={facetFilter === null}
-          >
-            All
-            <span className="chip-count">{catalog.counts.prompts}</span>
-          </button>
-          <button
-            type="button"
-            className={`chip${facetFilter === "job" ? " is-active" : ""}`}
-            onClick={() => setFacetFilter("job")}
-            aria-pressed={facetFilter === "job"}
-          >
-            Job
-            <span className="chip-count">{facetCounts.job}</span>
-          </button>
-          <button
-            type="button"
-            className={`chip${facetFilter === "method" ? " is-active" : ""}`}
-            onClick={() => setFacetFilter("method")}
-            aria-pressed={facetFilter === "method"}
-          >
-            Method
-            <span className="chip-count">{facetCounts.method}</span>
-          </button>
-        </div>
         <div className="filter-bar" role="group" aria-label="Filter by lane">
           <button
             type="button"

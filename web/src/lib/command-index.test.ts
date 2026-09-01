@@ -20,7 +20,6 @@ type CatalogShape = {
     title: string;
     blurb: string;
     lane: string;
-    facet: string;
     sources: Array<{ title: string; url: string }>;
   }>;
   counts: { prompts: number };

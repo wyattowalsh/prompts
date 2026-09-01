@@ -1,6 +1,5 @@
 slug: tool-calling-contract
 title: Tool Calling Contract
-facet: method
 lane: agents
 blurb: >-
   specify when and how a model may call tools, with validated arguments and

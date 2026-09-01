@@ -1,6 +1,5 @@
 slug: tree-of-thoughts
 title: Tree-of-Thoughts
-facet: method
 lane: reasoning
 blurb: Explore multiple intermediate reasoning branches, evaluate them, and search toward a better final answer.
 order: 80

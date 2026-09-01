@@ -1,6 +1,5 @@
 slug: chain-of-verification
 title: Chain-of-Verification
-facet: method
 lane: reasoning
 blurb: >-
   draft, generate verification questions, check them against sources or tools, then

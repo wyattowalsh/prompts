@@ -1,6 +1,5 @@
 slug: structured-outputs-json-schema
 title: Structured Outputs / JSON Schema
-facet: method
 lane: data
 blurb: >-
   use provider-enforced structured output, JSON Schema, or tool schemas so downstream

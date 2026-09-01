@@ -1,6 +1,5 @@
 slug: prompt-injection-defense
 title: Prompt Injection Defense
-facet: method
 lane: agents
 blurb: >-
   design prompts and workflows so untrusted text cannot override durable

@@ -1,6 +1,5 @@
 slug: few-shot-prompting
 title: Few-Shot Prompting
-facet: method
 lane: reasoning
 blurb: provide input-output examples so the model can infer style, labels, or edge behavior.
 order: 90

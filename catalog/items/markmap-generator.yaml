@@ -1,6 +1,5 @@
 slug: markmap-generator
 title: "Markmap Generator"
-facet: method
 lane: writing
 blurb: "produce a hierarchical Markdown mind map for Markmap or similar visualization tools."
 order: 80

@@ -1,6 +1,5 @@
 slug: rag-citation-grounded-answering
 title: RAG / Citation-Grounded Answering
-facet: method
 lane: agents
 blurb: >-
   answer from retrieved or provided sources with source IDs, citation checks,

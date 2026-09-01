@@ -8,9 +8,7 @@ Defines the flattened prompt catalog product: one item type in `catalog/items/`,
 one schema, named modes, job-or-method facet, eight lanes, optional related
 links, strict merge-ledger accounting, slug policy, and a single prompt-catalog
 count contract.
-
 ## Requirements
-
 ### Requirement: Catalog authoring is one prompt type under catalog/items
 
 Every prompt SHALL be authored as `catalog/items/<slug>.yaml`. The public noun
@@ -18,7 +16,8 @@ MUST be prompt. Recipes and patterns MUST NOT be types, folders, routes, badges,
 or search groups after migrate. `catalog/recipes/` and `catalog/patterns/` MUST
 NOT remain as authoring trees. Recipe-only and pattern-only schemas MUST NOT be
 used for authoring. Production loaders MUST NOT read those retired trees as a
-fallback while `catalog/items/` exists.
+fallback while `catalog/items/` exists. Job vs method MUST NOT be a catalog
+level: there is no `facet` field.
 
 #### Scenario: A maintainer adds a prompt
 
@@ -26,6 +25,7 @@ fallback while `catalog/items/` exists.
 - **THEN** it is a YAML file under `catalog/items/` whose filename stem equals
   its `slug`
 - **AND** it is not placed under `catalog/recipes/` or `catalog/patterns/`
+- **AND** it does not declare `facet`
 
 #### Scenario: Dual authoring trees are absent after migrate
 
@@ -36,21 +36,21 @@ fallback while `catalog/items/` exists.
 ### Requirement: One item schema owns identity; modes cannot change it
 
 One item schema SHALL validate every prompt. The item MUST own `slug`, `title`,
-`facet`, one `lane`, `blurb`, shared `sources`, evidence, safety, and caveat,
-plus shared presentation fields needed for generation (`badge`, `order`). Modes
-MUST NOT change slug, title, facet, or lane. Optional method fields
-(`definition`, `avoid_when`, `model_api_controls`, `cost_latency`,
-`failure_modes`, `eval_required`) MAY appear when they have data. Optional
-`related` MAY list other canonical slugs.
+one `lane`, `blurb`, shared `sources`, evidence, safety, and caveat, plus shared
+presentation fields needed for generation (`badge`, `order`). Modes MUST NOT
+change slug, title, or lane. Optional operational fields (`definition`,
+`avoid_when`, `model_api_controls`, `cost_latency`, `failure_modes`,
+`eval_required`) MAY appear when they have data. Optional `related` MAY list
+other canonical slugs. The schema MUST NOT require or accept `facet`.
 
 #### Scenario: A mode tries to retitle the prompt
 
-- **WHEN** a mode record includes a conflicting title, slug, facet, or lane
+- **WHEN** a mode record includes a conflicting title, slug, or lane
 - **THEN** validation rejects the item
 
 #### Scenario: Method fields are omitted on a paste-first job
 
-- **WHEN** a job prompt has no definition or cost fields
+- **WHEN** a prompt has no definition or cost fields
 - **THEN** validation accepts the item and generated pages omit those empty
   sections
 
@@ -78,23 +78,6 @@ There MUST NOT be a freeform module composer or Playbook combinatorics UI.
 - **WHEN** an item has no modes, more than four modes, no default, or more than
   one default
 - **THEN** validation rejects it
-
-### Requirement: Facet is job or method only
-
-`facet` SHALL be `job` or `method` only. Merged paste-first prompts MUST be
-`job`. A method prompt MAY still show a copyable template on the same page.
-Facet MUST be a filter chip on the one home index, not a second tree.
-
-#### Scenario: An item sets facet to recipe or pattern
-
-- **WHEN** `facet` is any value other than `job` or `method`
-- **THEN** validation rejects it
-
-#### Scenario: Home filters by facet
-
-- **WHEN** a user selects the method chip on `/`
-- **THEN** the index shows method prompts in the eight-lane grouping without
-  navigating to a second catalog tree
 
 ### Requirement: Every prompt has one of eight lanes
 
@@ -212,3 +195,4 @@ recipe vs pattern counts.
 - **WHEN** README badges and the Prompt Library heading are generated
 - **THEN** they show prompt catalog size and lanes without a Patterns count or
   Pattern Notes chapter
+

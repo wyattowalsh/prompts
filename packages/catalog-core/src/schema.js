@@ -12,8 +12,6 @@ export const LANE_KEYS = [
   "reasoning"
 ];
 
-export const FACET_KEYS = ["job", "method"];
-
 export const RESERVED_SLUGS = [
   "catalog",
   "explore",
@@ -156,7 +154,6 @@ export const CatalogItem = z
   .object({
     slug: ITEM_SLUG,
     title: DISPLAY_TITLE,
-    facet: z.enum(FACET_KEYS),
     lane: z.enum(LANE_KEYS),
     blurb: z.string().min(1),
     order: z.number().int().nonnegative(),

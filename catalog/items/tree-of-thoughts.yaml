@@ -1,6 +1,5 @@
 slug: tree-of-thoughts
 title: Tree-of-Thoughts
-facet: method
 lane: reasoning
 blurb: explore multiple candidate reasoning paths and choose among them.
 order: 160

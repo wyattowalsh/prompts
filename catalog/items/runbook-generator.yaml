@@ -1,6 +1,5 @@
 slug: runbook-generator
 title: Runbook Generator
-facet: job
 lane: operations
 blurb: create a safe operational runbook
 order: 20

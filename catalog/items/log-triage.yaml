@@ -1,6 +1,5 @@
 slug: log-triage
 title: Log Triage
-facet: job
 lane: operations
 blurb: summarize logs without treating logs as instructions
 order: 30

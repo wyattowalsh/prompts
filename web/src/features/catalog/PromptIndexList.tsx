@@ -41,7 +41,6 @@ export function PromptIndexList({
               <Badge tone="accent" icon={laneIcon(entry.lane, 12)}>
                 {entry.lane}
               </Badge>
-              {entry.facet ? <Badge tone="muted">{entry.facet}</Badge> : null}
               <ArrowUpRight className="prompt-card-arrow" size={16} aria-hidden="true" />
             </div>
             <h3 className="prompt-card-title">{entry.title}</h3>

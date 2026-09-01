@@ -1,6 +1,5 @@
 slug: rag-answer-contract
 title: RAG Answer Contract
-facet: job
 lane: agents
 blurb: define a grounded answer interface for retrieval
 order: 20

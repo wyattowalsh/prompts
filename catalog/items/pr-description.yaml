@@ -1,6 +1,5 @@
 slug: pr-description
 title: PR Description
-facet: job
 lane: coding
 blurb: turn a diff into a useful pull request description
 order: 50

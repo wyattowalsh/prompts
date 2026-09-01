@@ -1,6 +1,5 @@
 slug: data-augmentation
 title: Data Augmentation
-facet: method
 lane: data
 blurb: generate controlled variants for training, testing, or robustness checks.
 order: 70

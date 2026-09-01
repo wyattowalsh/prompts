@@ -1,6 +1,5 @@
 slug: self-consistency
 title: Self-Consistency
-facet: method
 lane: reasoning
 blurb: sample multiple solution attempts and choose the answer with strongest agreement.
 order: 190

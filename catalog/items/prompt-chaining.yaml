@@ -1,6 +1,5 @@
 slug: prompt-chaining
 title: Prompt Chaining
-facet: method
 lane: agents
 blurb: split a workflow into staged prompts with explicit handoff artifacts.
 order: 50

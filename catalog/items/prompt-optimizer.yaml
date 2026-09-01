@@ -1,6 +1,5 @@
 slug: prompt-optimizer
 title: Prompt Optimizer
-facet: job
 lane: agents
 blurb: revise a prompt using failures, not vibes
 order: 60

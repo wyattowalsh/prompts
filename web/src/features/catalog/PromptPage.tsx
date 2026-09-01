@@ -149,7 +149,6 @@ export function PromptPage() {
           <Badge tone="accent" icon={laneIcon(current.lane, 13)}>
             {current.lane}
           </Badge>
-          <Badge tone="muted">{current.facet}</Badge>
           {isFilled && hasPastePath ? <Badge tone="success">Filled</Badge> : null}
         </div>
         <h1>{current.title}</h1>

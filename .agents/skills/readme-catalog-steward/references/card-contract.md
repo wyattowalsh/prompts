@@ -14,7 +14,6 @@ Every prompt must include item identity and shared evidence:
 
 - slug (filename stem; globally unique; not a reserved name)
 - title
-- facet (`job` or `method` only)
 - one of the eight lanes
 - blurb (rendered as **Use for**)
 - badge, order
@@ -23,7 +22,7 @@ Every prompt must include item identity and shared evidence:
 - safety/eval checks
 - caveat
 - 1–4 named modes with exactly one default (modes cannot change slug, title,
-  facet, or lane)
+  or lane)
 
 When the selected (or default) mode has a paste path, the generated card must
 also include:
@@ -110,7 +109,7 @@ modes via `validate_recipe_paste_zone_table()`, preview visibility via
 Every prompt follows this visible structure:
 
 1. Icon-only `<h4>` heading with stable anchor (`id` = slug).
-2. `Use for:` one-line job or method summary (item `blurb`).
+2. `Use for:` one-line summary (item `blurb`).
 3. Compact mode table when `modes.length > 1`.
 4. Four-column placeholder table when the default mode has a paste path (no
    `Paste zones:` label).
@@ -219,7 +218,7 @@ requiring hidden deliberation to be printed.
 ## Prompt Review Checklist
 
 - [ ] The prompt name and anchor are stable; filename stem equals `slug`.
-- [ ] Facet is `job` or `method`; lane is one of the eight lanes.
+- [ ] Lane is one of the eight lanes. There is no job/method facet.
 - [ ] Heading icon config exists and icon slug is unique among prompts.
 - [ ] A paste-path mode can be copied without surrounding research prose.
 - [ ] Avoid-when, caveat, or template-omission text states when not to use it.

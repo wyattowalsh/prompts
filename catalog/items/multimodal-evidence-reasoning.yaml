@@ -1,6 +1,5 @@
 slug: multimodal-evidence-reasoning
 title: "Multimodal Evidence Reasoning"
-facet: method
 lane: research
 blurb: combine visual and textual evidence for a source-grounded answer.
 order: 110

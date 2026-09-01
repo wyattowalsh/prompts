@@ -1,6 +1,5 @@
 slug: graph-of-thoughts
 title: Graph-of-Thoughts
-facet: method
 lane: reasoning
 blurb: model intermediate ideas as graph nodes that can be merged, compared, and revisited.
 order: 170

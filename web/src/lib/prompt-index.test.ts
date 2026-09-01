@@ -13,7 +13,6 @@ import {
   groupPromptsByLane,
   landingIndexSlugSet,
   promptDetailHref,
-  resolvePromptFacetFilter,
   resolvePromptLaneFilter
 } from "./prompt-index.ts";
 
@@ -23,7 +22,6 @@ type CatalogShape = {
     title: string;
     blurb: string;
     lane: string;
-    facet: "job" | "method";
     order?: number;
   }>;
   lanes: Array<{ key: string; title: string; order?: number; prompt_slugs: string[] }>;
@@ -76,22 +74,6 @@ test("lane filter subsets without inventing slugs", () => {
   assert.equal(filtered.length, expected.size);
   for (const entry of filtered) {
     assert.equal(entry.lane, lane.key);
-    assert.ok(expected.has(entry.slug));
-  }
-});
-
-test("facet filter subsets jobs without inventing slugs", () => {
-  assert.equal(resolvePromptFacetFilter("job"), "job");
-  assert.equal(resolvePromptFacetFilter("method"), "method");
-  assert.equal(resolvePromptFacetFilter("recipe"), null);
-
-  const filtered = buildLandingPromptIndex(data.prompts, { facet: "job" });
-  const expected = new Set(
-    data.prompts.filter((prompt) => prompt.facet === "job").map((prompt) => prompt.slug)
-  );
-  assert.equal(filtered.length, expected.size);
-  for (const entry of filtered) {
-    assert.equal(entry.facet, "job");
     assert.ok(expected.has(entry.slug));
   }
 });

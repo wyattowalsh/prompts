@@ -45,7 +45,6 @@ type ExplorerItem = (
       href: string;
       external: false;
       lane: string;
-      facet: string;
     }
 ) & { searchTerms: readonly string[] };
 
@@ -89,8 +88,7 @@ function allPrompts(): ExplorerItem[] {
     href: promptDetailHref(prompt.slug),
     external: false as const,
     lane: prompt.lane,
-    facet: prompt.facet,
-    searchTerms: [prompt.slug, prompt.lane, prompt.facet, laneTitles.get(prompt.lane) ?? ""]
+    searchTerms: [prompt.slug, prompt.lane, laneTitles.get(prompt.lane) ?? ""]
   }));
 }
 
@@ -283,7 +281,7 @@ export function DataExplorerPage() {
                 focusItemAt(Math.max(currentIndex, 0));
               }
             }}
-            placeholder="Filter by title, URL, lane, facet…"
+            placeholder="Filter by title, URL, lane…"
             autoComplete="off"
           />
         </label>
@@ -408,7 +406,7 @@ export function DataExplorerPage() {
               ) : null}
               {selected.kind === "prompt" ? (
                 <p className="muted meta-line">
-                  Lane: {selected.lane} · Facet: {selected.facet}
+                  Lane: {selected.lane}
                 </p>
               ) : null}
             </div>

@@ -1,6 +1,5 @@
 slug: dense-summary
 title: "Dense Summary"
-facet: job
 lane: writing
 blurb: "compress a source while preserving entities and facts"
 order: 40

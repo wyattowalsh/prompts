@@ -1,6 +1,5 @@
 slug: refactor-planner
 title: Refactor Planner
-facet: job
 lane: coding
 blurb: plan a scoped refactor before changing code
 order: 40

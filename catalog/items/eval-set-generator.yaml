@@ -1,6 +1,5 @@
 slug: eval-set-generator
 title: Eval-Set Generator
-facet: job
 lane: agents
 blurb: turn failures into reusable prompt tests
 order: 40

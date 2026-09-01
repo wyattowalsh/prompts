@@ -1,6 +1,5 @@
 slug: sentiment-analysis
 title: Sentiment Analysis
-facet: method
 lane: data
 blurb: classify text by sentiment, tone, or affective stance.
 order: 55

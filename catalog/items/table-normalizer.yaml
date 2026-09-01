@@ -1,6 +1,5 @@
 slug: table-normalizer
 title: Table Normalizer
-facet: job
 lane: data
 blurb: normalize inconsistent rows into a clean table
 order: 20

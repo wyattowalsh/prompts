@@ -1,6 +1,5 @@
 slug: context-engineering
 title: Context Engineering
-facet: method
 lane: agents
 blurb: >-
   design the full context supplied to the model: durable instructions, retrieved

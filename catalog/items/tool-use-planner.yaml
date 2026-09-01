@@ -1,6 +1,5 @@
 slug: tool-use-planner
 title: Tool-Use Planner
-facet: job
 lane: agents
 blurb: plan tool calls before an agent acts
 order: 10

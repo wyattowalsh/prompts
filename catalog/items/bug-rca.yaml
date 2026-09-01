@@ -1,6 +1,5 @@
 slug: bug-rca
 title: Bug RCA
-facet: job
 lane: coding
 blurb: explain a failure from logs, code, and observed behavior
 order: 20

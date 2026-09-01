@@ -1,6 +1,5 @@
 slug: structured-zero-shot
 title: Structured Zero-Shot
-facet: method
 lane: reasoning
 blurb: direct prompting plus explicit context boundaries, constraints, and output contract.
 order: 80

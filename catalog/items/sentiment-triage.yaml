@@ -1,6 +1,5 @@
 slug: sentiment-triage
 title: Sentiment Triage
-facet: job
 lane: data
 blurb: classify sentiment for support or product feedback
 order: 50

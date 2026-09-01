@@ -87,7 +87,6 @@ export function CatalogPreviewModal({
                     <Badge tone="accent" icon={laneIcon(prompt.lane, 12)}>
                       {prompt.lane}
                     </Badge>
-                    <Badge tone="muted">{prompt.facet}</Badge>
                   </>
                 ) : (
                   <Badge tone="muted">Not found</Badge>

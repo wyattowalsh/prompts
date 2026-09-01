@@ -1,6 +1,5 @@
 slug: evaluation-flywheel
 title: Evaluation Flywheel
-facet: method
 lane: agents
 blurb: >-
   improve prompts through fixed eval cases, measured failures, controlled

@@ -1,6 +1,5 @@
 slug: synthetic-edge-cases
 title: Synthetic Edge Cases
-facet: job
 lane: data
 blurb: generate test inputs that break brittle prompts
 order: 60

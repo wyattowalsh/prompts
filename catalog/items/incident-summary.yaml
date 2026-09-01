@@ -1,6 +1,5 @@
 slug: incident-summary
 title: Incident Summary
-facet: job
 lane: operations
 blurb: turn incident notes into an operator-ready summary
 order: 10

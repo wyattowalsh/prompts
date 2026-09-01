@@ -1,6 +1,5 @@
 slug: direct-zero-shot
 title: Direct Zero-Shot
-facet: method
 lane: reasoning
 blurb: ask directly for the task without examples.
 order: 70

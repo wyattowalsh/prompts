@@ -17,7 +17,6 @@ function samplePrompt(overrides = {}) {
   return {
     slug: "sample",
     title: "Sample",
-    facet: "job",
     lane: "research",
     blurb: "test",
     order: 1,

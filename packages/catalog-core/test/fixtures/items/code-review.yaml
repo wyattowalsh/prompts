@@ -1,6 +1,5 @@
 slug: code-review
 title: Code Review
-facet: job
 lane: coding
 blurb: review a code change for defects, risks, and test gaps before merge
 order: 10

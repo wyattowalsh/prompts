@@ -1,6 +1,5 @@
 slug: chain-of-density-summarization
 title: "Chain-of-Density Summarization"
-facet: method
 lane: writing
 blurb: "iteratively add missing salient entities to a fixed-length summary."
 order: 60

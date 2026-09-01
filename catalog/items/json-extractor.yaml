@@ -1,6 +1,5 @@
 slug: json-extractor
 title: JSON Extractor
-facet: job
 lane: data
 blurb: extract structured JSON from messy text
 order: 10

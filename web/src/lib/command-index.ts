@@ -9,7 +9,6 @@ export type CommandCatalog = {
     title: string;
     blurb: string;
     lane: string;
-    facet: string;
     sources: Array<{ title: string; url: string }>;
   }>;
   counts: { prompts: number };
@@ -51,7 +50,7 @@ export function buildCommandIndexFromCatalog(data: CommandCatalog): CommandItem[
     subtitle: prompt.blurb,
     href: `/catalog/${prompt.slug}/`,
     group: "Prompts" as const,
-    keywords: [prompt.title, prompt.slug, prompt.lane, prompt.blurb, prompt.facet]
+    keywords: [prompt.title, prompt.slug, prompt.lane, prompt.blurb]
       .join(" ")
       .toLowerCase()
   }));

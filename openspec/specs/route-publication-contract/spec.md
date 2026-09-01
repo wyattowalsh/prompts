@@ -100,12 +100,11 @@ URLs.
 
 The artifact described as the full Markdown export SHALL serialize every public
 prompt field from the catalog source of truth, including the selected mode's
-placeholders, post-copy guidance, safety checks, optional method operational
-fields, templates or omission reasons, modes, related slugs, and clickable
-sources. Content containing Markdown fence delimiters MUST remain structurally
-valid. Site-data MUST emit a single `prompts` list with lanes, facets, and
-modes and MUST NOT emit parallel `recipes` and `patterns` arrays as the product
-model.
+placeholders, post-copy guidance, safety checks, optional operational fields,
+templates or omission reasons, modes, related slugs, and clickable sources.
+Content containing Markdown fence delimiters MUST remain structurally valid.
+Site-data MUST emit a single `prompts` list with lanes and modes and MUST NOT
+emit `facet` or parallel `recipes` and `patterns` arrays as the product model.
 
 #### Scenario: Production discovery artifacts are emitted
 
@@ -149,3 +148,4 @@ MUST 404 when `<slug>` is not a published prompt.
 
 - **WHEN** a client requests `/catalog/`
 - **THEN** the host returns HTTP 404 rather than an index of prompts
+

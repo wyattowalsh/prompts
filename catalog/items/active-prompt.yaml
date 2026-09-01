@@ -1,6 +1,5 @@
 slug: active-prompt
 title: Active-Prompt
-facet: method
 lane: reasoning
 blurb: >-
   select uncertain examples, annotate them, and use them as task-specific

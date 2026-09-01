@@ -1,6 +1,5 @@
 slug: zero-shot-chain-of-thought
 title: Zero-Shot Chain-of-Thought
-facet: method
 lane: reasoning
 blurb: elicit intermediate reasoning for a reasoning task without examples.
 order: 110

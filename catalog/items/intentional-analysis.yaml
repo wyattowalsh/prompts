@@ -1,6 +1,5 @@
 slug: intentional-analysis
 title: Intentional Analysis
-facet: method
 lane: reasoning
 blurb: explicitly identify the user's likely goal and deliverable before solving.
 order: 120

@@ -1,6 +1,5 @@
 slug: text-classification
 title: Text Classification
-facet: method
 lane: data
 blurb: map text into predefined labels.
 order: 35

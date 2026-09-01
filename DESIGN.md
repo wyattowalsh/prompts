@@ -8,7 +8,7 @@
 
 - Treat the **`catalog/` package** as the authoring SSOT for prompts
   (`catalog/items/*.yaml`), lanes, and sources. One item schema validates every
-  prompt. Facet is `job` or `method` only.
+  prompt. There is no job/method facet.
 - **Generate** GitHub Flavored Markdown `README.md` from catalog data as one
   Prompt Library; keep it committed and drift-checked in CI.
 - Keep prompt, lane, featured-chip, shortcut, and job-map metadata in catalog
@@ -197,7 +197,7 @@ Semantic colors are CSS variables on `:root` / `.dark`, exposed to Tailwind via
   instead of official provider artwork
 - Small provider labels and prompt calls to action use contrast-safe foreground
   tokens; focus-visible indicators use the shared `--ring` token
-- Header shows title, lane, facet, and evidence. Definition, avoid, controls,
+- Header shows title, lane, and evidence. Definition, avoid, controls,
   cost, failure modes, safety, sources, and See also appear only when they have
   data
 
@@ -209,8 +209,7 @@ Semantic colors are CSS variables on `:root` / `.dark`, exposed to Tailwind via
 
 ### Catalog home filtering
 
-- Home `/` is the one prompt index, grouped by lane, with facet and search
-  filters
+- Home `/` is the one prompt index, grouped by lane, with search filters
 - Filter changes expose one concise atomic polite count status (prompt totals,
   not recipe vs pattern counts)
 - The complete dynamic results container is not a live region, avoiding

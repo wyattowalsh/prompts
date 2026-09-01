@@ -549,24 +549,17 @@ test("a pending or rejected detail chunk never retains metadata from the previou
   }
 });
 
-test("home facet and lane filters subset the prompt index", async ({ page }) => {
+test("home lane filters subset the prompt index", async ({ page }) => {
   await gotoHome(page);
   const allCount = await page.locator("[data-prompt-slug]").count();
   expect(allCount).toBeGreaterThan(1);
-  await page
-    .getByRole("group", { name: "Filter by facet" })
-    .getByRole("button", { name: /^Job/ })
-    .click();
-  const jobCount = await page.locator("[data-prompt-slug]").count();
-  expect(jobCount).toBeGreaterThan(0);
-  expect(jobCount).toBeLessThan(allCount);
   await page
     .getByRole("group", { name: "Filter by lane" })
     .getByRole("button", { name: /^Coding/ })
     .click();
   const codingCount = await page.locator("[data-prompt-slug]").count();
   expect(codingCount).toBeGreaterThan(0);
-  expect(codingCount).toBeLessThanOrEqual(jobCount);
+  expect(codingCount).toBeLessThan(allCount);
 });
 
 test("representative catalog states have no WCAG A or AA accessibility violations", async ({
