@@ -404,4 +404,3 @@ non-provider endpoints already owned by those checkers.
   enumerated for provider API clients
 - **THEN** they contain no live OpenAI, Anthropic, Gemini, or xAI chat or
   completions requests
-

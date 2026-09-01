@@ -195,4 +195,3 @@ recipe vs pattern counts.
 - **WHEN** README badges and the Prompt Library heading are generated
 - **THEN** they show prompt catalog size and lanes without a Patterns count or
   Pattern Notes chapter
-

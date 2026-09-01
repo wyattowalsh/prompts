@@ -148,4 +148,3 @@ MUST 404 when `<slug>` is not a published prompt.
 
 - **WHEN** a client requests `/catalog/`
 - **THEN** the host returns HTTP 404 rather than an index of prompts
-
