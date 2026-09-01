@@ -1,7 +1,7 @@
 import { readdir, readFile } from "node:fs/promises";
 import { join } from "node:path";
 import yaml from "./yaml-cjs.js";
-import { CatalogIndex, Pattern, Recipe } from "./schema.js";
+import { CatalogIndex, CatalogItem } from "./schema.js";
 
 async function readYaml(path) {
   const text = await readFile(path, "utf8");
@@ -13,7 +13,12 @@ async function loadYamlDir(dir, parse) {
   try {
     names = await readdir(dir);
   } catch (error) {
-    if (error?.code === "ENOENT") return [];
+    if (error?.code === "ENOENT") {
+      throw new Error(
+        `${dir}: catalog items directory is required; recipes/ and patterns/ are not loaded`,
+        { cause: error }
+      );
+    }
     throw error;
   }
   const files = names.filter((name) => name.endsWith(".yaml") || name.endsWith(".yml")).sort();
@@ -39,15 +44,12 @@ export async function loadCatalogPackage(root) {
   const indexRaw = await readYaml(indexPath);
   const index = CatalogIndex.parse(indexRaw);
 
-  const recipes = await loadYamlDir(join(root, "recipes"), (raw) => Recipe.parse(raw));
-  const patterns = await loadYamlDir(join(root, "patterns"), (raw) => Pattern.parse(raw));
+  const prompts = await loadYamlDir(join(root, "items"), (raw) => CatalogItem.parse(raw));
 
   return {
     root,
     index,
-    recipes: recipes.map((entry) => entry.record),
-    patterns: patterns.map((entry) => entry.record),
-    recipeFiles: recipes,
-    patternFiles: patterns
+    prompts: prompts.map((entry) => entry.record),
+    promptFiles: prompts
   };
 }

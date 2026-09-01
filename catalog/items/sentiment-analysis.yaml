@@ -1,0 +1,54 @@
+slug: sentiment-analysis
+title: Sentiment Analysis
+facet: method
+lane: data
+blurb: classify text by sentiment, tone, or affective stance.
+order: 55
+badge:
+  logo: ri:RiChatSmile2Line
+  color: "F59E0B"
+  chip_label: Sentiment
+evidence: Moderate; official docs plus survey.
+safety:
+  - Do not use sentiment scores for high-stakes decisions when sarcasm, mixed affect, or cultural context dominate.
+  - Quote evidence from the input rather than inferring unsupported affect.
+caveat: sentiment transfer is brittle across domains and cultures.
+definition: |
+  classify text by sentiment, tone, or affective stance.
+avoid_when: |
+  sarcasm, mixed sentiment, cultural context, or high-stakes decisions dominate.
+model_api_controls: |
+  structured output, domain examples, uncertainty threshold.
+cost_latency: low.
+failure_modes: |
+  sarcasm, cultural context, overconfident affect inference.
+eval_required: true
+related:
+  - sentiment-triage
+sources:
+  - title: Microsoft Foundry prompt engineering
+    url: https://learn.microsoft.com/en-us/azure/foundry/openai/concepts/prompt-engineering
+  - title: The Prompt Report
+    url: https://arxiv.org/abs/2406.06608
+modes:
+  - id: template
+    label: Method template
+    default: true
+    when_to_use: customer feedback, review summaries, social listening.
+    placeholders:
+      - name: text
+        required: true
+        example: Love the new dashboard but exports still fail every morning.
+        notes: Text to analyze
+    prompt: |
+      Analyze sentiment for the input.
+
+      Return:
+      - sentiment: positive | neutral | negative | mixed | uncertain
+      - confidence: low | medium | high
+      - evidence: one short quote or phrase from the input
+
+      Input:
+      <input>
+      {text}
+      </input>

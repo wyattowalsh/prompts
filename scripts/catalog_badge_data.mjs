@@ -18,15 +18,15 @@ export async function buildCatalogBadgeData(catalogRoot, { expectFullCounts = tr
     );
   }
 
-  const recipeBySlug = new Map(pkg.recipes.map((recipe) => [recipe.slug, recipe]));
-  const recipeBadgeData = (slug) => {
-    const recipe = recipeBySlug.get(slug);
-    if (!recipe) throw new Error(`catalog badge data references missing recipe ${slug}`);
+  const promptBySlug = new Map(pkg.prompts.map((prompt) => [prompt.slug, prompt]));
+  const promptBadgeData = (slug) => {
+    const prompt = promptBySlug.get(slug);
+    if (!prompt) throw new Error(`catalog badge data references missing prompt ${slug}`);
     return {
-      slug: recipe.slug,
-      title: recipe.title,
-      lane: recipe.lane,
-      badge: { ...recipe.badge }
+      slug: prompt.slug,
+      title: prompt.title,
+      lane: prompt.lane,
+      badge: { ...prompt.badge }
     };
   };
 
@@ -39,12 +39,12 @@ export async function buildCatalogBadgeData(catalogRoot, { expectFullCounts = tr
         title: lane.title,
         color: lane.color,
         badge: { ...lane.badge },
-        recipes: lane.recipe_slugs.map(recipeBadgeData),
-        featured_recipes: lane.featured_recipe_slugs.map(recipeBadgeData)
+        prompts: lane.prompt_slugs.map(promptBadgeData),
+        featured_prompts: lane.featured_prompt_slugs.map(promptBadgeData)
       })),
     shortcuts: pkg.index.readme.shortcuts.map((shortcut) => ({
       label: shortcut.label,
-      recipe: recipeBadgeData(shortcut.recipe_slug)
+      prompt: promptBadgeData(shortcut.prompt_slug)
     }))
   };
 }

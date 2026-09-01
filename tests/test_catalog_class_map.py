@@ -20,12 +20,16 @@ class CatalogClassMapTest(unittest.TestCase):
     def test_recipe_class_covers_all_golden_recipes(self) -> None:
         result = checker.run(README)
         self.assertTrue(result["ok"], msg=result.get("errors"))
-        recipe_names = {recipe["name"] for recipe in result["recipes"]}
-        self.assertEqual(recipe_names, set(catalog_constants.RECIPE_CLASS))
-        self.assertEqual(len(catalog_constants.RECIPE_CLASS), catalog_constants.RECIPE_COUNT)
+        categories = {prompt["category"] for prompt in result["prompts"]}
+        self.assertTrue(categories)
+        self.assertTrue(categories.issubset(catalog_constants.LANE_CLASS))
+        self.assertEqual(
+            set(catalog_constants.LANE_CLASS),
+            set(catalog_constants.PROMPT_LIBRARY_CATEGORIES),
+        )
 
     def test_strict_validation_classes_are_known(self) -> None:
-        known = set(catalog_constants.RECIPE_CLASS.values())
+        known = set(catalog_constants.LANE_CLASS.values())
         self.assertTrue(catalog_constants.STRICT_VALIDATION_CLASSES.issubset(known))
         self.assertEqual(
             set(catalog_constants.CLASS_SIGNAL_PATTERNS),
@@ -40,8 +44,8 @@ class CatalogClassMapTest(unittest.TestCase):
     def test_strict_class_signal_missing_fails(self) -> None:
         """A code-class recipe with signals stripped should fail STRICT lint."""
         original = README.read_text(encoding="utf-8")
-        # Use Unit Test Writer (code class): wipe fence body tokens with nonsense.
-        anchor = '<h4 id="unit-test-writer">'
+        # Use Unit Test Authoring (code class): wipe fence body tokens with nonsense.
+        anchor = '<h4 id="unit-test-authoring">'
         idx = original.find(anchor)
         self.assertGreater(idx, 0)
         segment = original[idx : idx + 3500]

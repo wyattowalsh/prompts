@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Audit paste-zone Example value cell lengths across README recipes."""
+"""Audit paste-zone Example value cell lengths across README prompts."""
 
 from __future__ import annotations
 
@@ -47,6 +47,7 @@ def audit_readme(readme: Path) -> dict[str, object]:
             rows.append(
                 {
                     "recipe": recipe.name,
+                    "prompt": recipe.name,
                     "placeholder": placeholder,
                     "length": length,
                     "status": status,
@@ -57,7 +58,7 @@ def audit_readme(readme: Path) -> dict[str, object]:
         "readme": str(readme),
         "ok": over_error == 0 and not errors,
         "counts": {
-            "recipes": len(recipes),
+            "prompts": len(recipes),
             "cells": len(rows),
             "warn": over_warn,
             "error": over_error,
@@ -70,7 +71,7 @@ def audit_readme(readme: Path) -> dict[str, object]:
 def print_report(result: dict[str, object]) -> None:
     counts = result["counts"]
     print(
-        f"Paste-zone cell audit: {counts['cells']} cells across {counts['recipes']} recipes "
+        f"Paste-zone cell audit: {counts['cells']} cells across {counts['prompts']} prompts "
         f"({counts['warn']} warn >{WARN_LENGTH}, {counts['error']} error >{ERROR_LENGTH})."
     )
     for diagnostic in result["parse_errors"]:
@@ -101,9 +102,6 @@ def main() -> int:
     if args.check and not result["ok"]:
         return 1
     counts = result["counts"]
-    if args.check and counts["recipes"] != 48:
-        print(f"error: {args.readme}: expected 48 recipes, found {counts['recipes']}", file=sys.stderr)
-        return 1
     if args.strict_warn and counts["warn"] > 0:
         return 1
     return 0

@@ -1,0 +1,1882 @@
+# Merge ledger for goals/prompts-010 (flatten-prompt-catalog).
+# Archival execute-time provenance. Production loaders must not read this file.
+# Catalog YAML is not edited in this pass.
+version: 1
+kind: flatten-prompt-catalog-merge-ledger
+status: accepted
+purpose: >-
+  Execute-time archival provenance for the 0.1.0 flatten. Production loaders, generators, and routes
+  must not read this file or retired source ids.
+snapshot:
+  recipes: 48
+  patterns: 43
+  source_files: 91
+result:
+  prompts: 83
+  merged_groups: 7
+  merged_source_files: 15
+  singletons: 76
+rules:
+  merge: same job in different shapes AND shared lane AND shared title stem
+  facet: job or method only; merged paste-first prompts are job
+  modes: 1-4 named modes per prompt; exactly one default; modes own the paste path
+  playbook: no Playbook kind, noun, or composer; closeout 23 clusters are candidates only
+  slugs: >-
+    mint new canonical slugs for merges; rename type-suffix leftovers (*-checklist, python-*, split
+    *-prompting); keep famous slugs code-review and tree-of-thoughts; never use reserved names
+reserved_slugs:
+  - catalog
+  - explore
+  - sources
+  - recipes
+  - patterns
+  - research
+  - github
+famous_slugs_kept:
+  - code-review
+  - tree-of-thoughts
+required_merges:
+  - canonical_slug: plan-then-solve
+    sources:
+      - catalog/recipes/plan-and-solve.yaml
+      - catalog/patterns/plan-and-solve-prompting.yaml
+  - canonical_slug: usability-review
+    sources:
+      - catalog/recipes/ux-review.yaml
+      - catalog/patterns/ux-review-checklist.yaml
+  - canonical_slug: unit-test-authoring
+    sources:
+      - catalog/recipes/unit-test-writer.yaml
+      - catalog/patterns/python-unit-test-writer.yaml
+  - canonical_slug: simulated-panel
+    sources:
+      - catalog/recipes/panel-review.yaml
+      - catalog/patterns/panelgpt.yaml
+      - catalog/patterns/expert-panel-discussion.yaml
+required_non_merges:
+  - slugs:
+      - tree-of-thoughts
+      - graph-of-thoughts
+    reason: Neighboring branching-search techniques stay two prompts and may use related.
+closeout_candidates:
+  - id: CRC-PLB-101
+    proposed: evidence-grounded-answering
+    members: >-
+      source-grounded-answer, rag-answer-contract, rag-citation-grounded-answering,
+      multimodal-evidence-reasoning
+    decision: reject
+    reason: >-
+      Cross-lane cluster (research vs agents). Supplied-source answering, RAG contracts, and
+      multimodal evidence are neighboring jobs, not one job.
+  - id: CRC-PLB-102
+    proposed: research-synthesis
+    members: web-research-brief, disagreement-map, research-synthesis
+    decision: reject
+    reason: Three distinct research jobs (brief, disagreement map, synthesis method).
+  - id: CRC-PLB-103
+    proposed: dense-summarization
+    members: dense-summary, chain-of-density-summarization
+    decision: reject
+    reason: >-
+      Neighboring: writing job vs named Chain-of-Density iterative algorithm. Stay separate; may use
+      related.
+  - id: CRC-PLB-104
+    proposed: text-classification
+    members: classifier, text-classification
+    decision: reject
+    reason: >-
+      Same data lane, but titles do not share a stem (Classifier vs Text Classification).
+      Fail-closed on the title/lane/job test.
+  - id: CRC-PLB-105
+    proposed: named-entity-extraction
+    members: ner-extractor, ner-named-entity-recognition
+    decision: keep-pair
+    reason: 'Independent same-job pair: shared NER title stem, data lane, extraction contract.'
+  - id: CRC-PLB-106
+    proposed: sentiment-triage
+    members: sentiment-triage, sentiment-analysis
+    decision: reject
+    reason: Operational triage/routing vs general sentiment analysis are different jobs.
+  - id: CRC-PLB-107
+    proposed: schema-bound-json-output
+    members: json-extractor, structured-outputs-json-schema
+    decision: reject
+    reason: Messy-text extraction vs provider-enforced schema are different jobs.
+  - id: CRC-PLB-108
+    proposed: synthetic-evaluation-data
+    members: synthetic-edge-cases, eval-set-generator, data-augmentation
+    decision: reject
+    reason: Cross-lane (data vs agents) and mixed jobs (edge cases, eval sets, augmentation).
+  - id: CRC-PLB-109
+    proposed: unit-test-authoring
+    members: unit-test-writer, python-unit-test-writer
+    decision: keep-required
+    reason: Required same-job pair.
+  - id: CRC-PLB-110
+    proposed: ux-review
+    members: ux-review, ux-review-checklist
+    decision: keep-required
+    reason: Required same-job pair. Canonical slug minted as usability-review.
+  - id: CRC-PLB-111
+    proposed: panel-deliberation
+    members: panel-review, panelgpt, expert-panel-discussion
+    decision: keep-required
+    reason: Required same-job trio. Canonical slug minted as simulated-panel.
+  - id: CRC-PLB-112
+    proposed: plan-and-solve
+    members: plan-and-solve, plan-and-solve-prompting
+    decision: keep-required
+    reason: Required same-job pair. Canonical slug minted as plan-then-solve.
+  - id: CRC-PLB-113
+    proposed: step-back-reasoning
+    members: step-back-answer, step-back-prompting
+    decision: keep-pair
+    reason: Independent same-job 1:1; also retires a type-suffix *-prompting leftover.
+  - id: CRC-PLB-114
+    proposed: evidence-verification
+    members: verification-pass, claim-checker, chain-of-verification
+    decision: reject
+    reason: Cross-lane (reasoning vs research). Verification pass, claim checker, and CoVe stay separate.
+  - id: CRC-PLB-115
+    proposed: artifact-refinement
+    members: self-refine-pass, self-refine, reflexion, quick-enhance
+    decision: keep-pair-only
+    reason: >-
+      Keep only Self-Refine Pass + Self-Refine. Reject Reflexion and Quick Enhance as neighboring
+      techniques.
+  - id: CRC-PLB-116
+    proposed: prompt-injection-defense
+    members: prompt-injection-scanner, prompt-injection-defense
+    decision: reject
+    reason: Audit-scanner vs design-defense are different jobs.
+  - id: CRC-PLB-117
+    proposed: eval-driven-prompt-optimization
+    members: prompt-optimizer, meta-prompting, eval-driven-prompt-optimization, evaluation-flywheel
+    decision: reject
+    reason: Mega-cluster of neighboring optimizer, meta-prompt, eval-driven, and flywheel methods.
+  - id: CRC-PLB-118
+    proposed: tool-action-contract
+    members: tool-use-planner, tool-calling-contract
+    decision: reject
+    reason: Plan-before-acting vs tool-calling contract are neighboring agent jobs.
+  - id: CRC-PLB-119
+    proposed: decision-comparison
+    members: decision-memo, tradeoff-matrix
+    decision: reject
+    reason: Cross-lane (operations vs reasoning). Durable memo vs criteria matrix are different jobs.
+  - id: CRC-PLB-120
+    proposed: zero-shot-prompt-contract
+    members: direct-zero-shot, structured-zero-shot
+    decision: reject
+    reason: Two neighboring zero-shot methods, not one job.
+  - id: CRC-PLB-121
+    proposed: few-shot-example-selection
+    members: few-shot-prompting, active-prompt
+    decision: reject
+    reason: Neighboring example-selection methods.
+  - id: CRC-PLB-122
+    proposed: reasoning-draft-control
+    members: zero-shot-chain-of-thought, chain-of-draft
+    decision: reject
+    reason: Neighboring draft-control methods.
+  - id: CRC-PLB-123
+    proposed: branching-reasoning-search
+    members: tree-of-thoughts, graph-of-thoughts
+    decision: reject-required-non-merge
+    reason: Required non-merge. Neighboring branching-search techniques stay two prompts.
+lanes:
+  - research
+  - writing
+  - coding
+  - data
+  - product
+  - operations
+  - agents
+  - reasoning
+prompts:
+  - disposition: singleton
+    canonical_slug: citation-matrix
+    lane: research
+    facet: job
+    default_mode: paste
+    mode_ids:
+      - paste
+    modes:
+      - id: paste
+        label: Paste job
+        default: true
+        source_path: catalog/recipes/citation-matrix.yaml
+        source_kind: recipe
+        retired_slug: citation-matrix
+    source_paths:
+      - catalog/recipes/citation-matrix.yaml
+    slug_action: keep
+    famous_slug: false
+    reason: Distinct research job. Neighboring techniques stay separate.
+  - disposition: singleton
+    canonical_slug: claim-checker
+    lane: research
+    facet: job
+    default_mode: paste
+    mode_ids:
+      - paste
+    modes:
+      - id: paste
+        label: Paste job
+        default: true
+        source_path: catalog/recipes/claim-checker.yaml
+        source_kind: recipe
+        retired_slug: claim-checker
+    source_paths:
+      - catalog/recipes/claim-checker.yaml
+    slug_action: keep
+    famous_slug: false
+    reason: Distinct research job. Neighboring techniques stay separate.
+  - disposition: singleton
+    canonical_slug: disagreement-map
+    lane: research
+    facet: job
+    default_mode: paste
+    mode_ids:
+      - paste
+    modes:
+      - id: paste
+        label: Paste job
+        default: true
+        source_path: catalog/recipes/disagreement-map.yaml
+        source_kind: recipe
+        retired_slug: disagreement-map
+    source_paths:
+      - catalog/recipes/disagreement-map.yaml
+    slug_action: keep
+    famous_slug: false
+    reason: Distinct research job. Neighboring techniques stay separate.
+  - disposition: singleton
+    canonical_slug: knowledge-base-engineer
+    lane: research
+    facet: method
+    default_mode: template
+    mode_ids:
+      - template
+    modes:
+      - id: template
+        label: Method template
+        default: true
+        source_path: catalog/patterns/knowledge-base-engineer.yaml
+        source_kind: pattern
+        retired_slug: knowledge-base-engineer
+    source_paths:
+      - catalog/patterns/knowledge-base-engineer.yaml
+    slug_action: keep
+    famous_slug: false
+    reason: Distinct research method. Former pattern section mapped onto one of the eight lanes.
+  - disposition: singleton
+    canonical_slug: literature-scan
+    lane: research
+    facet: job
+    default_mode: paste
+    mode_ids:
+      - paste
+    modes:
+      - id: paste
+        label: Paste job
+        default: true
+        source_path: catalog/recipes/literature-scan.yaml
+        source_kind: recipe
+        retired_slug: literature-scan
+    source_paths:
+      - catalog/recipes/literature-scan.yaml
+    slug_action: keep
+    famous_slug: false
+    reason: Distinct research job. Neighboring techniques stay separate.
+  - disposition: singleton
+    canonical_slug: multimodal-evidence-reasoning
+    lane: research
+    facet: method
+    default_mode: template
+    mode_ids:
+      - template
+    modes:
+      - id: template
+        label: Method template
+        default: true
+        source_path: catalog/patterns/multimodal-evidence-reasoning.yaml
+        source_kind: pattern
+        retired_slug: multimodal-evidence-reasoning
+    source_paths:
+      - catalog/patterns/multimodal-evidence-reasoning.yaml
+    slug_action: keep
+    famous_slug: false
+    reason: Distinct research method. Former pattern section mapped onto one of the eight lanes.
+  - disposition: singleton
+    canonical_slug: research-synthesis
+    lane: research
+    facet: method
+    default_mode: template
+    mode_ids:
+      - template
+    modes:
+      - id: template
+        label: Method template
+        default: true
+        source_path: catalog/patterns/research-synthesis.yaml
+        source_kind: pattern
+        retired_slug: research-synthesis
+    source_paths:
+      - catalog/patterns/research-synthesis.yaml
+    slug_action: keep
+    famous_slug: false
+    reason: Distinct research method. Former pattern section mapped onto one of the eight lanes.
+  - disposition: singleton
+    canonical_slug: source-grounded-answer
+    lane: research
+    facet: job
+    default_mode: paste
+    mode_ids:
+      - paste
+    modes:
+      - id: paste
+        label: Paste job
+        default: true
+        source_path: catalog/recipes/source-grounded-answer.yaml
+        source_kind: recipe
+        retired_slug: source-grounded-answer
+    source_paths:
+      - catalog/recipes/source-grounded-answer.yaml
+    slug_action: keep
+    famous_slug: false
+    reason: Distinct research job. Neighboring techniques stay separate.
+  - disposition: singleton
+    canonical_slug: web-research-brief
+    lane: research
+    facet: job
+    default_mode: paste
+    mode_ids:
+      - paste
+    modes:
+      - id: paste
+        label: Paste job
+        default: true
+        source_path: catalog/recipes/web-research-brief.yaml
+        source_kind: recipe
+        retired_slug: web-research-brief
+    source_paths:
+      - catalog/recipes/web-research-brief.yaml
+    slug_action: keep
+    famous_slug: false
+    reason: Distinct research job. Neighboring techniques stay separate.
+  - disposition: singleton
+    canonical_slug: chain-of-density-summarization
+    lane: writing
+    facet: method
+    default_mode: template
+    mode_ids:
+      - template
+    modes:
+      - id: template
+        label: Method template
+        default: true
+        source_path: catalog/patterns/chain-of-density-summarization.yaml
+        source_kind: pattern
+        retired_slug: chain-of-density-summarization
+    source_paths:
+      - catalog/patterns/chain-of-density-summarization.yaml
+    slug_action: keep
+    famous_slug: false
+    reason: >-
+      Neighbor of dense-summary: Chain-of-Density is a named iterative algorithm, not the same
+      writing job. Stay separate.
+  - disposition: singleton
+    canonical_slug: dense-summary
+    lane: writing
+    facet: job
+    default_mode: paste
+    mode_ids:
+      - paste
+    modes:
+      - id: paste
+        label: Paste job
+        default: true
+        source_path: catalog/recipes/dense-summary.yaml
+        source_kind: recipe
+        retired_slug: dense-summary
+    source_paths:
+      - catalog/recipes/dense-summary.yaml
+    slug_action: keep
+    famous_slug: false
+    reason: Distinct writing job. Neighboring techniques stay separate.
+  - disposition: singleton
+    canonical_slug: executive-brief
+    lane: writing
+    facet: job
+    default_mode: paste
+    mode_ids:
+      - paste
+    modes:
+      - id: paste
+        label: Paste job
+        default: true
+        source_path: catalog/recipes/executive-brief.yaml
+        source_kind: recipe
+        retired_slug: executive-brief
+    source_paths:
+      - catalog/recipes/executive-brief.yaml
+    slug_action: keep
+    famous_slug: false
+    reason: Distinct writing job. Neighboring techniques stay separate.
+  - disposition: singleton
+    canonical_slug: faq-generator
+    lane: writing
+    facet: job
+    default_mode: paste
+    mode_ids:
+      - paste
+    modes:
+      - id: paste
+        label: Paste job
+        default: true
+        source_path: catalog/recipes/faq-generator.yaml
+        source_kind: recipe
+        retired_slug: faq-generator
+    source_paths:
+      - catalog/recipes/faq-generator.yaml
+    slug_action: keep
+    famous_slug: false
+    reason: Distinct writing job. Neighboring techniques stay separate.
+  - disposition: singleton
+    canonical_slug: markmap-generator
+    lane: writing
+    facet: method
+    default_mode: template
+    mode_ids:
+      - template
+    modes:
+      - id: template
+        label: Method template
+        default: true
+        source_path: catalog/patterns/markmap-generator.yaml
+        source_kind: pattern
+        retired_slug: markmap-generator
+    source_paths:
+      - catalog/patterns/markmap-generator.yaml
+    slug_action: keep
+    famous_slug: false
+    reason: Distinct writing method. Former pattern section mapped onto one of the eight lanes.
+  - disposition: singleton
+    canonical_slug: newsletter-draft
+    lane: writing
+    facet: job
+    default_mode: paste
+    mode_ids:
+      - paste
+    modes:
+      - id: paste
+        label: Paste job
+        default: true
+        source_path: catalog/recipes/newsletter-draft.yaml
+        source_kind: recipe
+        retired_slug: newsletter-draft
+    source_paths:
+      - catalog/recipes/newsletter-draft.yaml
+    slug_action: keep
+    famous_slug: false
+    reason: Distinct writing job. Neighboring techniques stay separate.
+  - disposition: singleton
+    canonical_slug: quick-enhance
+    lane: writing
+    facet: method
+    default_mode: template
+    mode_ids:
+      - template
+    modes:
+      - id: template
+        label: Method template
+        default: true
+        source_path: catalog/patterns/quick-enhance.yaml
+        source_kind: pattern
+        retired_slug: quick-enhance
+    source_paths:
+      - catalog/patterns/quick-enhance.yaml
+    slug_action: keep
+    famous_slug: false
+    reason: 'Neighbor of critique-revise: general polish is not the same job as bounded self-refine.'
+  - disposition: singleton
+    canonical_slug: rewrite-with-constraints
+    lane: writing
+    facet: job
+    default_mode: paste
+    mode_ids:
+      - paste
+    modes:
+      - id: paste
+        label: Paste job
+        default: true
+        source_path: catalog/recipes/rewrite-with-constraints.yaml
+        source_kind: recipe
+        retired_slug: rewrite-with-constraints
+    source_paths:
+      - catalog/recipes/rewrite-with-constraints.yaml
+    slug_action: keep
+    famous_slug: false
+    reason: Distinct writing job. Neighboring techniques stay separate.
+  - disposition: singleton
+    canonical_slug: style-transfer-without-examples
+    lane: writing
+    facet: job
+    default_mode: paste
+    mode_ids:
+      - paste
+    modes:
+      - id: paste
+        label: Paste job
+        default: true
+        source_path: catalog/recipes/style-transfer-without-examples.yaml
+        source_kind: recipe
+        retired_slug: style-transfer-without-examples
+    source_paths:
+      - catalog/recipes/style-transfer-without-examples.yaml
+    slug_action: keep
+    famous_slug: false
+    reason: Distinct writing job. Neighboring techniques stay separate.
+  - disposition: merged
+    canonical_slug: unit-test-authoring
+    lane: coding
+    facet: job
+    default_mode: general
+    mode_ids:
+      - general
+      - python
+    modes:
+      - id: general
+        label: General
+        default: true
+        source_path: catalog/recipes/unit-test-writer.yaml
+        source_kind: recipe
+        retired_slug: unit-test-writer
+      - id: python
+        label: Python
+        default: false
+        source_path: catalog/patterns/python-unit-test-writer.yaml
+        source_kind: pattern
+        retired_slug: python-unit-test-writer
+    source_paths:
+      - catalog/recipes/unit-test-writer.yaml
+      - catalog/patterns/python-unit-test-writer.yaml
+    required_merge: true
+    closeout_candidate: CRC-PLB-109
+    slug_action: mint-merge
+    reason: >-
+      Required same-job pair: language-neutral Unit Test Writer and Python Unit Test Writer are the
+      same test-authoring job in different shapes. Minted slug; do not inherit unit-test-writer or
+      the python-* leftover.
+  - disposition: singleton
+    canonical_slug: api-contract-explainer
+    lane: coding
+    facet: job
+    default_mode: paste
+    mode_ids:
+      - paste
+    modes:
+      - id: paste
+        label: Paste job
+        default: true
+        source_path: catalog/recipes/api-contract-explainer.yaml
+        source_kind: recipe
+        retired_slug: api-contract-explainer
+    source_paths:
+      - catalog/recipes/api-contract-explainer.yaml
+    slug_action: keep
+    famous_slug: false
+    reason: Distinct coding job. Neighboring techniques stay separate.
+  - disposition: singleton
+    canonical_slug: bug-rca
+    lane: coding
+    facet: job
+    default_mode: paste
+    mode_ids:
+      - paste
+    modes:
+      - id: paste
+        label: Paste job
+        default: true
+        source_path: catalog/recipes/bug-rca.yaml
+        source_kind: recipe
+        retired_slug: bug-rca
+    source_paths:
+      - catalog/recipes/bug-rca.yaml
+    slug_action: keep
+    famous_slug: false
+    reason: Distinct coding job. Neighboring techniques stay separate.
+  - disposition: singleton
+    canonical_slug: code-review
+    lane: coding
+    facet: job
+    default_mode: paste
+    mode_ids:
+      - paste
+    modes:
+      - id: paste
+        label: Paste job
+        default: true
+        source_path: catalog/recipes/code-review.yaml
+        source_kind: recipe
+        retired_slug: code-review
+    source_paths:
+      - catalog/recipes/code-review.yaml
+    slug_action: keep
+    famous_slug: true
+    reason: Famous already-good slug kept. Distinct coding review job; not merged.
+  - disposition: singleton
+    canonical_slug: pr-description
+    lane: coding
+    facet: job
+    default_mode: paste
+    mode_ids:
+      - paste
+    modes:
+      - id: paste
+        label: Paste job
+        default: true
+        source_path: catalog/recipes/pr-description.yaml
+        source_kind: recipe
+        retired_slug: pr-description
+    source_paths:
+      - catalog/recipes/pr-description.yaml
+    slug_action: keep
+    famous_slug: false
+    reason: Distinct coding job. Neighboring techniques stay separate.
+  - disposition: singleton
+    canonical_slug: refactor-planner
+    lane: coding
+    facet: job
+    default_mode: paste
+    mode_ids:
+      - paste
+    modes:
+      - id: paste
+        label: Paste job
+        default: true
+        source_path: catalog/recipes/refactor-planner.yaml
+        source_kind: recipe
+        retired_slug: refactor-planner
+    source_paths:
+      - catalog/recipes/refactor-planner.yaml
+    slug_action: keep
+    famous_slug: false
+    reason: Distinct coding job. Neighboring techniques stay separate.
+  - disposition: merged
+    canonical_slug: named-entity-extraction
+    lane: data
+    facet: job
+    default_mode: paste
+    mode_ids:
+      - paste
+      - method
+    modes:
+      - id: paste
+        label: Paste job
+        default: true
+        source_path: catalog/recipes/ner-extractor.yaml
+        source_kind: recipe
+        retired_slug: ner-extractor
+      - id: method
+        label: Method template
+        default: false
+        source_path: catalog/patterns/ner-named-entity-recognition.yaml
+        source_kind: pattern
+        retired_slug: ner-named-entity-recognition
+    source_paths:
+      - catalog/recipes/ner-extractor.yaml
+      - catalog/patterns/ner-named-entity-recognition.yaml
+    required_merge: false
+    closeout_candidate: CRC-PLB-105
+    slug_action: mint-merge
+    reason: >-
+      Same-job pair: NER Extractor and NER Named Entity Recognition share the NER title stem, data
+      lane, and the typed-span extraction contract. Minted slug; do not inherit ner-extractor.
+  - disposition: singleton
+    canonical_slug: classifier
+    lane: data
+    facet: job
+    default_mode: paste
+    mode_ids:
+      - paste
+    modes:
+      - id: paste
+        label: Paste job
+        default: true
+        source_path: catalog/recipes/classifier.yaml
+        source_kind: recipe
+        retired_slug: classifier
+    source_paths:
+      - catalog/recipes/classifier.yaml
+    slug_action: keep
+    famous_slug: false
+    reason: Distinct data job. Neighboring techniques stay separate.
+  - disposition: singleton
+    canonical_slug: data-augmentation
+    lane: data
+    facet: method
+    default_mode: template
+    mode_ids:
+      - template
+    modes:
+      - id: template
+        label: Method template
+        default: true
+        source_path: catalog/patterns/data-augmentation.yaml
+        source_kind: pattern
+        retired_slug: data-augmentation
+    source_paths:
+      - catalog/patterns/data-augmentation.yaml
+    slug_action: keep
+    famous_slug: false
+    reason: Distinct data method. Former pattern section mapped onto one of the eight lanes.
+  - disposition: singleton
+    canonical_slug: json-extractor
+    lane: data
+    facet: job
+    default_mode: paste
+    mode_ids:
+      - paste
+    modes:
+      - id: paste
+        label: Paste job
+        default: true
+        source_path: catalog/recipes/json-extractor.yaml
+        source_kind: recipe
+        retired_slug: json-extractor
+    source_paths:
+      - catalog/recipes/json-extractor.yaml
+    slug_action: keep
+    famous_slug: false
+    reason: Distinct data job. Neighboring techniques stay separate.
+  - disposition: singleton
+    canonical_slug: sentiment-analysis
+    lane: data
+    facet: method
+    default_mode: template
+    mode_ids:
+      - template
+    modes:
+      - id: template
+        label: Method template
+        default: true
+        source_path: catalog/patterns/sentiment-analysis.yaml
+        source_kind: pattern
+        retired_slug: sentiment-analysis
+    source_paths:
+      - catalog/patterns/sentiment-analysis.yaml
+    slug_action: keep
+    famous_slug: false
+    reason: >-
+      Neighbor of sentiment-triage: analysis vs operational triage are different jobs. Stay
+      separate.
+  - disposition: singleton
+    canonical_slug: sentiment-triage
+    lane: data
+    facet: job
+    default_mode: paste
+    mode_ids:
+      - paste
+    modes:
+      - id: paste
+        label: Paste job
+        default: true
+        source_path: catalog/recipes/sentiment-triage.yaml
+        source_kind: recipe
+        retired_slug: sentiment-triage
+    source_paths:
+      - catalog/recipes/sentiment-triage.yaml
+    slug_action: keep
+    famous_slug: false
+    reason: Distinct data job. Neighboring techniques stay separate.
+  - disposition: singleton
+    canonical_slug: structured-outputs-json-schema
+    lane: data
+    facet: method
+    default_mode: template
+    mode_ids:
+      - template
+    modes:
+      - id: template
+        label: Method template
+        default: true
+        source_path: catalog/patterns/structured-outputs-json-schema.yaml
+        source_kind: pattern
+        retired_slug: structured-outputs-json-schema
+    source_paths:
+      - catalog/patterns/structured-outputs-json-schema.yaml
+    slug_action: keep
+    famous_slug: false
+    reason: Distinct data method. Former pattern section mapped onto one of the eight lanes.
+  - disposition: singleton
+    canonical_slug: synthetic-edge-cases
+    lane: data
+    facet: job
+    default_mode: paste
+    mode_ids:
+      - paste
+    modes:
+      - id: paste
+        label: Paste job
+        default: true
+        source_path: catalog/recipes/synthetic-edge-cases.yaml
+        source_kind: recipe
+        retired_slug: synthetic-edge-cases
+    source_paths:
+      - catalog/recipes/synthetic-edge-cases.yaml
+    slug_action: keep
+    famous_slug: false
+    reason: Distinct data job. Neighboring techniques stay separate.
+  - disposition: singleton
+    canonical_slug: table-normalizer
+    lane: data
+    facet: job
+    default_mode: paste
+    mode_ids:
+      - paste
+    modes:
+      - id: paste
+        label: Paste job
+        default: true
+        source_path: catalog/recipes/table-normalizer.yaml
+        source_kind: recipe
+        retired_slug: table-normalizer
+    source_paths:
+      - catalog/recipes/table-normalizer.yaml
+    slug_action: keep
+    famous_slug: false
+    reason: Distinct data job. Neighboring techniques stay separate.
+  - disposition: singleton
+    canonical_slug: text-classification
+    lane: data
+    facet: method
+    default_mode: template
+    mode_ids:
+      - template
+    modes:
+      - id: template
+        label: Method template
+        default: true
+        source_path: catalog/patterns/text-classification.yaml
+        source_kind: pattern
+        retired_slug: text-classification
+    source_paths:
+      - catalog/patterns/text-classification.yaml
+    slug_action: keep
+    famous_slug: false
+    reason: >-
+      Neighbor of classifier: same lane, but titles do not share a stem (Classifier vs Text
+      Classification). Stay separate; may use related.
+  - disposition: merged
+    canonical_slug: usability-review
+    lane: product
+    facet: job
+    default_mode: paste
+    mode_ids:
+      - paste
+      - checklist
+    modes:
+      - id: paste
+        label: Paste job
+        default: true
+        source_path: catalog/recipes/ux-review.yaml
+        source_kind: recipe
+        retired_slug: ux-review
+      - id: checklist
+        label: Checklist
+        default: false
+        source_path: catalog/patterns/ux-review-checklist.yaml
+        source_kind: pattern
+        retired_slug: ux-review-checklist
+    source_paths:
+      - catalog/recipes/ux-review.yaml
+      - catalog/patterns/ux-review-checklist.yaml
+    required_merge: true
+    closeout_candidate: CRC-PLB-110
+    slug_action: mint-merge
+    reason: >-
+      Required same-job pair: UX Review paste job and UX Review Checklist method share title stem,
+      product lane, and the interface-review contract. Minted slug; do not inherit ux-review or the
+      *-checklist leftover.
+  - disposition: singleton
+    canonical_slug: acceptance-criteria-writer
+    lane: product
+    facet: job
+    default_mode: paste
+    mode_ids:
+      - paste
+    modes:
+      - id: paste
+        label: Paste job
+        default: true
+        source_path: catalog/recipes/acceptance-criteria-writer.yaml
+        source_kind: recipe
+        retired_slug: acceptance-criteria-writer
+    source_paths:
+      - catalog/recipes/acceptance-criteria-writer.yaml
+    slug_action: keep
+    famous_slug: false
+    reason: Distinct product job. Neighboring techniques stay separate.
+  - disposition: singleton
+    canonical_slug: launch-checklist
+    lane: product
+    facet: job
+    default_mode: paste
+    mode_ids:
+      - paste
+    modes:
+      - id: paste
+        label: Paste job
+        default: true
+        source_path: catalog/recipes/launch-checklist.yaml
+        source_kind: recipe
+        retired_slug: launch-checklist
+    source_paths:
+      - catalog/recipes/launch-checklist.yaml
+    slug_action: keep
+    famous_slug: false
+    reason: >-
+      Distinct product launch job. The word checklist is the deliverable, not a recipe/pattern type
+      suffix.
+  - disposition: singleton
+    canonical_slug: prd-drafter
+    lane: product
+    facet: job
+    default_mode: paste
+    mode_ids:
+      - paste
+    modes:
+      - id: paste
+        label: Paste job
+        default: true
+        source_path: catalog/recipes/prd-drafter.yaml
+        source_kind: recipe
+        retired_slug: prd-drafter
+    source_paths:
+      - catalog/recipes/prd-drafter.yaml
+    slug_action: keep
+    famous_slug: false
+    reason: Distinct product job. Neighboring techniques stay separate.
+  - disposition: singleton
+    canonical_slug: support-macro
+    lane: product
+    facet: job
+    default_mode: paste
+    mode_ids:
+      - paste
+    modes:
+      - id: paste
+        label: Paste job
+        default: true
+        source_path: catalog/recipes/support-macro.yaml
+        source_kind: recipe
+        retired_slug: support-macro
+    source_paths:
+      - catalog/recipes/support-macro.yaml
+    slug_action: keep
+    famous_slug: false
+    reason: Distinct product job. Neighboring techniques stay separate.
+  - disposition: singleton
+    canonical_slug: user-story-splitter
+    lane: product
+    facet: job
+    default_mode: paste
+    mode_ids:
+      - paste
+    modes:
+      - id: paste
+        label: Paste job
+        default: true
+        source_path: catalog/recipes/user-story-splitter.yaml
+        source_kind: recipe
+        retired_slug: user-story-splitter
+    source_paths:
+      - catalog/recipes/user-story-splitter.yaml
+    slug_action: keep
+    famous_slug: false
+    reason: Distinct product job. Neighboring techniques stay separate.
+  - disposition: singleton
+    canonical_slug: decision-memo
+    lane: operations
+    facet: job
+    default_mode: paste
+    mode_ids:
+      - paste
+    modes:
+      - id: paste
+        label: Paste job
+        default: true
+        source_path: catalog/recipes/decision-memo.yaml
+        source_kind: recipe
+        retired_slug: decision-memo
+    source_paths:
+      - catalog/recipes/decision-memo.yaml
+    slug_action: keep
+    famous_slug: false
+    reason: Distinct operations job. Neighboring techniques stay separate.
+  - disposition: singleton
+    canonical_slug: incident-summary
+    lane: operations
+    facet: job
+    default_mode: paste
+    mode_ids:
+      - paste
+    modes:
+      - id: paste
+        label: Paste job
+        default: true
+        source_path: catalog/recipes/incident-summary.yaml
+        source_kind: recipe
+        retired_slug: incident-summary
+    source_paths:
+      - catalog/recipes/incident-summary.yaml
+    slug_action: keep
+    famous_slug: false
+    reason: Distinct operations job. Neighboring techniques stay separate.
+  - disposition: singleton
+    canonical_slug: log-triage
+    lane: operations
+    facet: job
+    default_mode: paste
+    mode_ids:
+      - paste
+    modes:
+      - id: paste
+        label: Paste job
+        default: true
+        source_path: catalog/recipes/log-triage.yaml
+        source_kind: recipe
+        retired_slug: log-triage
+    source_paths:
+      - catalog/recipes/log-triage.yaml
+    slug_action: keep
+    famous_slug: false
+    reason: Distinct operations job. Neighboring techniques stay separate.
+  - disposition: singleton
+    canonical_slug: meeting-action-extractor
+    lane: operations
+    facet: job
+    default_mode: paste
+    mode_ids:
+      - paste
+    modes:
+      - id: paste
+        label: Paste job
+        default: true
+        source_path: catalog/recipes/meeting-action-extractor.yaml
+        source_kind: recipe
+        retired_slug: meeting-action-extractor
+    source_paths:
+      - catalog/recipes/meeting-action-extractor.yaml
+    slug_action: keep
+    famous_slug: false
+    reason: Distinct operations job. Neighboring techniques stay separate.
+  - disposition: singleton
+    canonical_slug: risk-register
+    lane: operations
+    facet: job
+    default_mode: paste
+    mode_ids:
+      - paste
+    modes:
+      - id: paste
+        label: Paste job
+        default: true
+        source_path: catalog/recipes/risk-register.yaml
+        source_kind: recipe
+        retired_slug: risk-register
+    source_paths:
+      - catalog/recipes/risk-register.yaml
+    slug_action: keep
+    famous_slug: false
+    reason: Distinct operations job. Neighboring techniques stay separate.
+  - disposition: singleton
+    canonical_slug: runbook-generator
+    lane: operations
+    facet: job
+    default_mode: paste
+    mode_ids:
+      - paste
+    modes:
+      - id: paste
+        label: Paste job
+        default: true
+        source_path: catalog/recipes/runbook-generator.yaml
+        source_kind: recipe
+        retired_slug: runbook-generator
+    source_paths:
+      - catalog/recipes/runbook-generator.yaml
+    slug_action: keep
+    famous_slug: false
+    reason: Distinct operations job. Neighboring techniques stay separate.
+  - disposition: singleton
+    canonical_slug: context-engineering
+    lane: agents
+    facet: method
+    default_mode: template
+    mode_ids:
+      - template
+    modes:
+      - id: template
+        label: Method template
+        default: true
+        source_path: catalog/patterns/context-engineering.yaml
+        source_kind: pattern
+        retired_slug: context-engineering
+    source_paths:
+      - catalog/patterns/context-engineering.yaml
+    slug_action: keep
+    famous_slug: false
+    reason: Distinct agents method. Former pattern section mapped onto one of the eight lanes.
+  - disposition: singleton
+    canonical_slug: eval-driven-prompt-optimization
+    lane: agents
+    facet: method
+    default_mode: template
+    mode_ids:
+      - template
+    modes:
+      - id: template
+        label: Method template
+        default: true
+        source_path: catalog/patterns/eval-driven-prompt-optimization.yaml
+        source_kind: pattern
+        retired_slug: eval-driven-prompt-optimization
+    source_paths:
+      - catalog/patterns/eval-driven-prompt-optimization.yaml
+    slug_action: keep
+    famous_slug: false
+    reason: Distinct agents method. Former pattern section mapped onto one of the eight lanes.
+  - disposition: singleton
+    canonical_slug: eval-set-generator
+    lane: agents
+    facet: job
+    default_mode: paste
+    mode_ids:
+      - paste
+    modes:
+      - id: paste
+        label: Paste job
+        default: true
+        source_path: catalog/recipes/eval-set-generator.yaml
+        source_kind: recipe
+        retired_slug: eval-set-generator
+    source_paths:
+      - catalog/recipes/eval-set-generator.yaml
+    slug_action: keep
+    famous_slug: false
+    reason: Distinct agents job. Neighboring techniques stay separate.
+  - disposition: singleton
+    canonical_slug: evaluation-flywheel
+    lane: agents
+    facet: method
+    default_mode: template
+    mode_ids:
+      - template
+    modes:
+      - id: template
+        label: Method template
+        default: true
+        source_path: catalog/patterns/evaluation-flywheel.yaml
+        source_kind: pattern
+        retired_slug: evaluation-flywheel
+    source_paths:
+      - catalog/patterns/evaluation-flywheel.yaml
+    slug_action: keep
+    famous_slug: false
+    reason: Distinct agents method. Former pattern section mapped onto one of the eight lanes.
+  - disposition: singleton
+    canonical_slug: meta-prompting
+    lane: agents
+    facet: method
+    default_mode: template
+    mode_ids:
+      - template
+    modes:
+      - id: template
+        label: Method template
+        default: true
+        source_path: catalog/patterns/meta-prompting.yaml
+        source_kind: pattern
+        retired_slug: meta-prompting
+    source_paths:
+      - catalog/patterns/meta-prompting.yaml
+    slug_action: keep
+    famous_slug: false
+    reason: >-
+      Method name, not a recipe/pattern type-suffix leftover (no counterpart recipe). Keep the
+      already-good slug.
+  - disposition: singleton
+    canonical_slug: prompt-chaining
+    lane: agents
+    facet: method
+    default_mode: template
+    mode_ids:
+      - template
+    modes:
+      - id: template
+        label: Method template
+        default: true
+        source_path: catalog/patterns/prompt-chaining.yaml
+        source_kind: pattern
+        retired_slug: prompt-chaining
+    source_paths:
+      - catalog/patterns/prompt-chaining.yaml
+    slug_action: keep
+    famous_slug: false
+    reason: Distinct agents method. Former pattern section mapped onto one of the eight lanes.
+  - disposition: singleton
+    canonical_slug: prompt-injection-defense
+    lane: agents
+    facet: method
+    default_mode: template
+    mode_ids:
+      - template
+    modes:
+      - id: template
+        label: Method template
+        default: true
+        source_path: catalog/patterns/prompt-injection-defense.yaml
+        source_kind: pattern
+        retired_slug: prompt-injection-defense
+    source_paths:
+      - catalog/patterns/prompt-injection-defense.yaml
+    slug_action: keep
+    famous_slug: false
+    reason: 'Neighbor of prompt-injection-scanner: design-defense vs audit-scanner are different jobs.'
+  - disposition: singleton
+    canonical_slug: prompt-injection-scanner
+    lane: agents
+    facet: job
+    default_mode: paste
+    mode_ids:
+      - paste
+    modes:
+      - id: paste
+        label: Paste job
+        default: true
+        source_path: catalog/recipes/prompt-injection-scanner.yaml
+        source_kind: recipe
+        retired_slug: prompt-injection-scanner
+    source_paths:
+      - catalog/recipes/prompt-injection-scanner.yaml
+    slug_action: keep
+    famous_slug: false
+    reason: Distinct agents job. Neighboring techniques stay separate.
+  - disposition: singleton
+    canonical_slug: prompt-optimizer
+    lane: agents
+    facet: job
+    default_mode: paste
+    mode_ids:
+      - paste
+    modes:
+      - id: paste
+        label: Paste job
+        default: true
+        source_path: catalog/recipes/prompt-optimizer.yaml
+        source_kind: recipe
+        retired_slug: prompt-optimizer
+    source_paths:
+      - catalog/recipes/prompt-optimizer.yaml
+    slug_action: keep
+    famous_slug: false
+    reason: Distinct agents job. Neighboring techniques stay separate.
+  - disposition: singleton
+    canonical_slug: rag-answer-contract
+    lane: agents
+    facet: job
+    default_mode: paste
+    mode_ids:
+      - paste
+    modes:
+      - id: paste
+        label: Paste job
+        default: true
+        source_path: catalog/recipes/rag-answer-contract.yaml
+        source_kind: recipe
+        retired_slug: rag-answer-contract
+    source_paths:
+      - catalog/recipes/rag-answer-contract.yaml
+    slug_action: keep
+    famous_slug: false
+    reason: Distinct agents job. Neighboring techniques stay separate.
+  - disposition: singleton
+    canonical_slug: rag-citation-grounded-answering
+    lane: agents
+    facet: method
+    default_mode: template
+    mode_ids:
+      - template
+    modes:
+      - id: template
+        label: Method template
+        default: true
+        source_path: catalog/patterns/rag-citation-grounded-answering.yaml
+        source_kind: pattern
+        retired_slug: rag-citation-grounded-answering
+    source_paths:
+      - catalog/patterns/rag-citation-grounded-answering.yaml
+    slug_action: keep
+    famous_slug: false
+    reason: >-
+      Neighbor of rag-answer-contract; source-grounded-answer is research-lane (cross-lane). Stay
+      separate.
+  - disposition: singleton
+    canonical_slug: react
+    lane: agents
+    facet: method
+    default_mode: template
+    mode_ids:
+      - template
+    modes:
+      - id: template
+        label: Method template
+        default: true
+        source_path: catalog/patterns/react.yaml
+        source_kind: pattern
+        retired_slug: react
+    source_paths:
+      - catalog/patterns/react.yaml
+    slug_action: keep
+    famous_slug: false
+    reason: Distinct agents method. Former pattern section mapped onto one of the eight lanes.
+  - disposition: singleton
+    canonical_slug: reflexion
+    lane: agents
+    facet: method
+    default_mode: template
+    mode_ids:
+      - template
+    modes:
+      - id: template
+        label: Method template
+        default: true
+        source_path: catalog/patterns/reflexion.yaml
+        source_kind: pattern
+        retired_slug: reflexion
+    source_paths:
+      - catalog/patterns/reflexion.yaml
+    slug_action: keep
+    famous_slug: false
+    reason: >-
+      Neighbor of critique-revise: external-feedback agent loops are not the same job as bounded
+      self-refine.
+  - disposition: singleton
+    canonical_slug: regression-judge
+    lane: agents
+    facet: job
+    default_mode: paste
+    mode_ids:
+      - paste
+    modes:
+      - id: paste
+        label: Paste job
+        default: true
+        source_path: catalog/recipes/regression-judge.yaml
+        source_kind: recipe
+        retired_slug: regression-judge
+    source_paths:
+      - catalog/recipes/regression-judge.yaml
+    slug_action: keep
+    famous_slug: false
+    reason: Distinct agents job. Neighboring techniques stay separate.
+  - disposition: singleton
+    canonical_slug: tool-calling-contract
+    lane: agents
+    facet: method
+    default_mode: template
+    mode_ids:
+      - template
+    modes:
+      - id: template
+        label: Method template
+        default: true
+        source_path: catalog/patterns/tool-calling-contract.yaml
+        source_kind: pattern
+        retired_slug: tool-calling-contract
+    source_paths:
+      - catalog/patterns/tool-calling-contract.yaml
+    slug_action: keep
+    famous_slug: false
+    reason: Distinct agents method. Former pattern section mapped onto one of the eight lanes.
+  - disposition: singleton
+    canonical_slug: tool-use-planner
+    lane: agents
+    facet: job
+    default_mode: paste
+    mode_ids:
+      - paste
+    modes:
+      - id: paste
+        label: Paste job
+        default: true
+        source_path: catalog/recipes/tool-use-planner.yaml
+        source_kind: recipe
+        retired_slug: tool-use-planner
+    source_paths:
+      - catalog/recipes/tool-use-planner.yaml
+    slug_action: keep
+    famous_slug: false
+    reason: Distinct agents job. Neighboring techniques stay separate.
+  - disposition: merged
+    canonical_slug: critique-revise
+    lane: reasoning
+    facet: job
+    default_mode: paste
+    mode_ids:
+      - paste
+      - method
+    modes:
+      - id: paste
+        label: Paste job
+        default: true
+        source_path: catalog/recipes/self-refine-pass.yaml
+        source_kind: recipe
+        retired_slug: self-refine-pass
+      - id: method
+        label: Method template
+        default: false
+        source_path: catalog/patterns/self-refine.yaml
+        source_kind: pattern
+        retired_slug: self-refine
+    source_paths:
+      - catalog/recipes/self-refine-pass.yaml
+      - catalog/patterns/self-refine.yaml
+    required_merge: false
+    closeout_candidate: CRC-PLB-115
+    slug_action: mint-merge
+    reason: >-
+      Same-job pair only: Self-Refine Pass and Self-Refine share title stem, reasoning lane, and the
+      bounded critique-revise contract. Reflexion and Quick Enhance stay neighboring singletons.
+  - disposition: merged
+    canonical_slug: plan-then-solve
+    lane: reasoning
+    facet: job
+    default_mode: paste
+    mode_ids:
+      - paste
+      - method
+    modes:
+      - id: paste
+        label: Paste job
+        default: true
+        source_path: catalog/recipes/plan-and-solve.yaml
+        source_kind: recipe
+        retired_slug: plan-and-solve
+      - id: method
+        label: Method template
+        default: false
+        source_path: catalog/patterns/plan-and-solve-prompting.yaml
+        source_kind: pattern
+        retired_slug: plan-and-solve-prompting
+    source_paths:
+      - catalog/recipes/plan-and-solve.yaml
+      - catalog/patterns/plan-and-solve-prompting.yaml
+    required_merge: true
+    closeout_candidate: CRC-PLB-112
+    slug_action: mint-merge
+    reason: >-
+      Required same-job pair: Plan-and-Solve paste job and Plan-and-Solve Prompting method share
+      title stem, reasoning lane, and the plan-then-execute contract. Minted slug; do not inherit
+      plan-and-solve.
+  - disposition: merged
+    canonical_slug: simulated-panel
+    lane: reasoning
+    facet: job
+    default_mode: review
+    mode_ids:
+      - review
+      - panelgpt
+      - discussion
+    modes:
+      - id: review
+        label: Panel Review
+        default: true
+        source_path: catalog/recipes/panel-review.yaml
+        source_kind: recipe
+        retired_slug: panel-review
+      - id: panelgpt
+        label: PanelGPT
+        default: false
+        source_path: catalog/patterns/panelgpt.yaml
+        source_kind: pattern
+        retired_slug: panelgpt
+      - id: discussion
+        label: Expert Panel Discussion
+        default: false
+        source_path: catalog/patterns/expert-panel-discussion.yaml
+        source_kind: pattern
+        retired_slug: expert-panel-discussion
+    source_paths:
+      - catalog/recipes/panel-review.yaml
+      - catalog/patterns/panelgpt.yaml
+      - catalog/patterns/expert-panel-discussion.yaml
+    required_merge: true
+    closeout_candidate: CRC-PLB-111
+    slug_action: mint-merge
+    reason: >-
+      Required same-job trio: Panel Review, PanelGPT, and Expert Panel Discussion are one
+      simulated-panel job in three shapes. Minted slug; do not inherit panel-review.
+  - disposition: merged
+    canonical_slug: step-back-reasoning
+    lane: reasoning
+    facet: job
+    default_mode: paste
+    mode_ids:
+      - paste
+      - method
+    modes:
+      - id: paste
+        label: Paste job
+        default: true
+        source_path: catalog/recipes/step-back-answer.yaml
+        source_kind: recipe
+        retired_slug: step-back-answer
+      - id: method
+        label: Method template
+        default: false
+        source_path: catalog/patterns/step-back-prompting.yaml
+        source_kind: pattern
+        retired_slug: step-back-prompting
+    source_paths:
+      - catalog/recipes/step-back-answer.yaml
+      - catalog/patterns/step-back-prompting.yaml
+    required_merge: false
+    closeout_candidate: CRC-PLB-113
+    slug_action: mint-merge
+    reason: >-
+      Same-job 1:1 with the plan-and-solve class: Step-Back Answer and Step-Back Prompting share
+      title stem, reasoning lane, and the abstract-then-answer contract. Minted slug also retires
+      the *-prompting type suffix.
+  - disposition: singleton
+    canonical_slug: active-prompt
+    lane: reasoning
+    facet: method
+    default_mode: template
+    mode_ids:
+      - template
+    modes:
+      - id: template
+        label: Method template
+        default: true
+        source_path: catalog/patterns/active-prompt.yaml
+        source_kind: pattern
+        retired_slug: active-prompt
+    source_paths:
+      - catalog/patterns/active-prompt.yaml
+    slug_action: keep
+    famous_slug: false
+    reason: Distinct reasoning method. Former pattern section mapped onto one of the eight lanes.
+  - disposition: singleton
+    canonical_slug: algorithm-of-thoughts
+    lane: reasoning
+    facet: method
+    default_mode: template
+    mode_ids:
+      - template
+    modes:
+      - id: template
+        label: Method template
+        default: true
+        source_path: catalog/patterns/algorithm-of-thoughts.yaml
+        source_kind: pattern
+        retired_slug: algorithm-of-thoughts
+    source_paths:
+      - catalog/patterns/algorithm-of-thoughts.yaml
+    slug_action: keep
+    famous_slug: false
+    reason: Distinct reasoning method. Former pattern section mapped onto one of the eight lanes.
+  - disposition: singleton
+    canonical_slug: chain-of-draft
+    lane: reasoning
+    facet: method
+    default_mode: template
+    mode_ids:
+      - template
+    modes:
+      - id: template
+        label: Method template
+        default: true
+        source_path: catalog/patterns/chain-of-draft.yaml
+        source_kind: pattern
+        retired_slug: chain-of-draft
+    source_paths:
+      - catalog/patterns/chain-of-draft.yaml
+    slug_action: keep
+    famous_slug: false
+    reason: Distinct reasoning method. Former pattern section mapped onto one of the eight lanes.
+  - disposition: singleton
+    canonical_slug: chain-of-verification
+    lane: reasoning
+    facet: method
+    default_mode: template
+    mode_ids:
+      - template
+    modes:
+      - id: template
+        label: Method template
+        default: true
+        source_path: catalog/patterns/chain-of-verification.yaml
+        source_kind: pattern
+        retired_slug: chain-of-verification
+    source_paths:
+      - catalog/patterns/chain-of-verification.yaml
+    slug_action: keep
+    famous_slug: false
+    reason: Neighbor of verification-pass; claim-checker is research-lane (cross-lane). Stay separate.
+  - disposition: singleton
+    canonical_slug: direct-zero-shot
+    lane: reasoning
+    facet: method
+    default_mode: template
+    mode_ids:
+      - template
+    modes:
+      - id: template
+        label: Method template
+        default: true
+        source_path: catalog/patterns/direct-zero-shot.yaml
+        source_kind: pattern
+        retired_slug: direct-zero-shot
+    source_paths:
+      - catalog/patterns/direct-zero-shot.yaml
+    slug_action: keep
+    famous_slug: false
+    reason: Distinct reasoning method. Former pattern section mapped onto one of the eight lanes.
+  - disposition: singleton
+    canonical_slug: emotional-persuasion-prompting
+    lane: reasoning
+    facet: method
+    default_mode: template
+    mode_ids:
+      - template
+    modes:
+      - id: template
+        label: Method template
+        default: true
+        source_path: catalog/patterns/emotional-persuasion-prompting.yaml
+        source_kind: pattern
+        retired_slug: emotional-persuasion-prompting
+    source_paths:
+      - catalog/patterns/emotional-persuasion-prompting.yaml
+    slug_action: keep
+    famous_slug: false
+    reason: >-
+      Method name, not a recipe/pattern type-suffix leftover (no counterpart recipe). Keep the
+      already-good slug.
+  - disposition: singleton
+    canonical_slug: few-shot-prompting
+    lane: reasoning
+    facet: method
+    default_mode: template
+    mode_ids:
+      - template
+    modes:
+      - id: template
+        label: Method template
+        default: true
+        source_path: catalog/patterns/few-shot-prompting.yaml
+        source_kind: pattern
+        retired_slug: few-shot-prompting
+    source_paths:
+      - catalog/patterns/few-shot-prompting.yaml
+    slug_action: keep
+    famous_slug: false
+    reason: >-
+      Method name, not a recipe/pattern type-suffix leftover (no counterpart recipe). Keep the
+      already-good slug.
+  - disposition: singleton
+    canonical_slug: graph-of-thoughts
+    lane: reasoning
+    facet: method
+    default_mode: template
+    mode_ids:
+      - template
+    modes:
+      - id: template
+        label: Method template
+        default: true
+        source_path: catalog/patterns/graph-of-thoughts.yaml
+        source_kind: pattern
+        retired_slug: graph-of-thoughts
+    source_paths:
+      - catalog/patterns/graph-of-thoughts.yaml
+    slug_action: keep
+    famous_slug: false
+    reason: Required non-merge versus tree-of-thoughts. Neighboring graph search stays a separate method.
+  - disposition: singleton
+    canonical_slug: intentional-analysis
+    lane: reasoning
+    facet: method
+    default_mode: template
+    mode_ids:
+      - template
+    modes:
+      - id: template
+        label: Method template
+        default: true
+        source_path: catalog/patterns/intentional-analysis.yaml
+        source_kind: pattern
+        retired_slug: intentional-analysis
+    source_paths:
+      - catalog/patterns/intentional-analysis.yaml
+    slug_action: keep
+    famous_slug: false
+    reason: Distinct reasoning method. Former pattern section mapped onto one of the eight lanes.
+  - disposition: singleton
+    canonical_slug: program-of-thoughts
+    lane: reasoning
+    facet: method
+    default_mode: template
+    mode_ids:
+      - template
+    modes:
+      - id: template
+        label: Method template
+        default: true
+        source_path: catalog/patterns/program-of-thoughts.yaml
+        source_kind: pattern
+        retired_slug: program-of-thoughts
+    source_paths:
+      - catalog/patterns/program-of-thoughts.yaml
+    slug_action: keep
+    famous_slug: false
+    reason: Distinct reasoning method. Former pattern section mapped onto one of the eight lanes.
+  - disposition: singleton
+    canonical_slug: self-consistency
+    lane: reasoning
+    facet: method
+    default_mode: template
+    mode_ids:
+      - template
+    modes:
+      - id: template
+        label: Method template
+        default: true
+        source_path: catalog/patterns/self-consistency.yaml
+        source_kind: pattern
+        retired_slug: self-consistency
+    source_paths:
+      - catalog/patterns/self-consistency.yaml
+    slug_action: keep
+    famous_slug: false
+    reason: Distinct reasoning method. Former pattern section mapped onto one of the eight lanes.
+  - disposition: singleton
+    canonical_slug: skeleton-of-thought
+    lane: reasoning
+    facet: method
+    default_mode: template
+    mode_ids:
+      - template
+    modes:
+      - id: template
+        label: Method template
+        default: true
+        source_path: catalog/patterns/skeleton-of-thought.yaml
+        source_kind: pattern
+        retired_slug: skeleton-of-thought
+    source_paths:
+      - catalog/patterns/skeleton-of-thought.yaml
+    slug_action: keep
+    famous_slug: false
+    reason: Distinct reasoning method. Former pattern section mapped onto one of the eight lanes.
+  - disposition: singleton
+    canonical_slug: structured-zero-shot
+    lane: reasoning
+    facet: method
+    default_mode: template
+    mode_ids:
+      - template
+    modes:
+      - id: template
+        label: Method template
+        default: true
+        source_path: catalog/patterns/structured-zero-shot.yaml
+        source_kind: pattern
+        retired_slug: structured-zero-shot
+    source_paths:
+      - catalog/patterns/structured-zero-shot.yaml
+    slug_action: keep
+    famous_slug: false
+    reason: Distinct reasoning method. Former pattern section mapped onto one of the eight lanes.
+  - disposition: singleton
+    canonical_slug: tradeoff-matrix
+    lane: reasoning
+    facet: job
+    default_mode: paste
+    mode_ids:
+      - paste
+    modes:
+      - id: paste
+        label: Paste job
+        default: true
+        source_path: catalog/recipes/tradeoff-matrix.yaml
+        source_kind: recipe
+        retired_slug: tradeoff-matrix
+    source_paths:
+      - catalog/recipes/tradeoff-matrix.yaml
+    slug_action: keep
+    famous_slug: false
+    reason: Distinct reasoning job. Neighboring techniques stay separate.
+  - disposition: singleton
+    canonical_slug: tree-of-thoughts
+    lane: reasoning
+    facet: method
+    default_mode: template
+    mode_ids:
+      - template
+    modes:
+      - id: template
+        label: Method template
+        default: true
+        source_path: catalog/patterns/tree-of-thoughts.yaml
+        source_kind: pattern
+        retired_slug: tree-of-thoughts
+    source_paths:
+      - catalog/patterns/tree-of-thoughts.yaml
+    slug_action: keep
+    famous_slug: true
+    reason: >-
+      Famous already-good slug kept. Required non-merge versus graph-of-thoughts; neighboring
+      branching-search techniques stay separate.
+  - disposition: singleton
+    canonical_slug: verification-pass
+    lane: reasoning
+    facet: job
+    default_mode: paste
+    mode_ids:
+      - paste
+    modes:
+      - id: paste
+        label: Paste job
+        default: true
+        source_path: catalog/recipes/verification-pass.yaml
+        source_kind: recipe
+        retired_slug: verification-pass
+    source_paths:
+      - catalog/recipes/verification-pass.yaml
+    slug_action: keep
+    famous_slug: false
+    reason: Distinct reasoning job. Neighboring techniques stay separate.
+  - disposition: singleton
+    canonical_slug: zero-shot-chain-of-thought
+    lane: reasoning
+    facet: method
+    default_mode: template
+    mode_ids:
+      - template
+    modes:
+      - id: template
+        label: Method template
+        default: true
+        source_path: catalog/patterns/zero-shot-chain-of-thought.yaml
+        source_kind: pattern
+        retired_slug: zero-shot-chain-of-thought
+    source_paths:
+      - catalog/patterns/zero-shot-chain-of-thought.yaml
+    slug_action: keep
+    famous_slug: false
+    reason: Distinct reasoning method. Former pattern section mapped onto one of the eight lanes.

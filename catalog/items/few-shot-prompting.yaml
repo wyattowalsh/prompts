@@ -1,0 +1,91 @@
+slug: few-shot-prompting
+title: Few-Shot Prompting
+facet: method
+lane: reasoning
+blurb: provide input-output examples so the model can infer style, labels, or edge behavior.
+order: 90
+badge:
+  logo: ri:RiApps2Line
+  color: 8B5CF6
+  chip_label: Few-shot
+evidence: Strong; primary paper plus official docs.
+safety:
+  - Examples must be representative, current, and measured against held-out cases.
+  - Do not leak test cases into the demonstration pool.
+caveat: >-
+  Examples improve behavior only when representative, current, and measured against
+  held-out cases. Few-shot is not a substitute for schema validation or retrieval when
+  facts change.
+definition: provide input-output examples so the model can infer style, labels, or edge behavior.
+avoid_when: examples are noisy, biased, outdated, or unlike the target task.
+model_api_controls: >-
+  Keep examples in the same modality and schema as the final request. Prefer
+  host-enforced
+
+  structured outputs when the label or field set is machine-consumed. Pair exemplar sets
+  with
+
+  regression cases (official eval practice) rather than vibes; use prompt caching only
+  when the
+
+  shared prefix is stable and privacy-safe.
+cost_latency: low to moderate, depending on example count.
+failure_modes: >-
+  example leakage, order sensitivity, overfitting, encoded bias, demos that contradict
+  the
+
+  durable safety or output contract, untested label sets.
+eval_required: true
+related:
+  - active-prompt
+sources:
+  - title: Language Models are Few-Shot Learners
+    url: https://arxiv.org/abs/2005.14165
+  - title: OpenAI prompt engineering
+    url: https://developers.openai.com/api/docs/guides/prompt-engineering
+  - title: OpenAI prompting guide
+    url: https://developers.openai.com/api/docs/guides/prompting
+  - title: Anthropic Claude prompting best practices
+    url: >-
+      https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices
+  - title: Google Gemini prompting strategies
+    url: https://ai.google.dev/gemini-api/docs/prompting-strategies
+  - title: The Prompt Report
+    url: https://arxiv.org/abs/2406.06608
+modes:
+  - id: template
+    label: Method template
+    default: true
+    when_to_use: >-
+      classification labels, house style, tricky edge cases, and formats hard to
+      describe concisely.
+    placeholders:
+      - name: example_input
+        required: true
+        example: Invoice 30 days overdue, customer still active
+        notes: Demonstration input
+      - name: example_output
+        required: true
+        example: 'label: collections'
+        notes: Demonstration output
+      - name: input
+        required: true
+        example: Pasted user text or document excerpt
+        notes: Untrusted input
+    prompt: |
+      Learn the pattern from the examples, then complete the final item.
+
+      Example 1
+      Input: {example_input}
+      Output: {example_output}
+
+      Example 2
+      Input: {example_input}
+      Output: {example_output}
+
+      Final item:
+      <input>
+      {input}
+      </input>
+
+      Output:

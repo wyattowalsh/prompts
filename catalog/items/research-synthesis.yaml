@@ -1,0 +1,70 @@
+slug: research-synthesis
+title: "Research Synthesis"
+facet: method
+lane: research
+blurb: combine multiple sources into a structured synthesis.
+order: 50
+badge:
+  logo: ri:RiPagesLine
+  color: "0284C7"
+  chip_label: Synthesis
+evidence: Moderate; RAG, verification, and context research.
+safety:
+  - Separate sourced findings from inference.
+  - Preserve disagreements and uncertainty.
+  - Cite source IDs for every factual claim.
+  - Do not include facts absent from the sources.
+caveat: source quality and citation validation matter more than persona.
+definition: combine multiple sources into a structured synthesis.
+avoid_when: source reliability is unknown or "omit nothing" is more important than relevance.
+model_api_controls: retrieval, citation checker, source-quality labels.
+cost_latency: moderate to high.
+failure_modes: flattening disagreements, blended claims, weak source triage.
+eval_required: true
+sources:
+  - title: Chain-of-Verification
+    url: https://arxiv.org/abs/2309.11495
+  - title: "Retrieval-Augmented Generation"
+    url: https://arxiv.org/abs/2005.11401
+  - title: "Lost in the Middle"
+    url: https://arxiv.org/abs/2307.03172
+  - title: "Retrieval Augmented Generation Evaluation"
+    url: https://arxiv.org/abs/2504.14891
+  - title: "OpenAI citation formatting"
+    url: https://developers.openai.com/api/docs/guides/citation-formatting
+modes:
+  - id: template
+    label: Method template
+    default: true
+    when_to_use: literature notes, market scans, RCA reports, multi-document summaries.
+    placeholders:
+      - name: reports
+        required: true
+        example: "Report A: RAG cheaper <50k. Report B: fine-tune faster."
+        notes: "Source reports to synthesize; cite source IDs"
+    prompt: |
+      Synthesize the provided reports.
+
+      Rules:
+      - Separate sourced findings from inference.
+      - Preserve disagreements and uncertainty.
+      - Cite source IDs for every factual claim.
+      - Do not include facts absent from the sources.
+
+      Reports:
+      <sources>
+      {reports}
+      </sources>
+
+      Output:
+      - Summary
+      - Findings
+      - Disagreements
+      - Evidence gaps
+      - Recommended next checks
+    after_copy:
+      fill_pointer: match_placeholder_table
+      expected_output: Summary; Findings; Disagreements; Evidence gaps; Recommended next checks.
+      upgrade_when: >-
+        source reliability is unknown or "omit nothing" is more important than
+        relevance.

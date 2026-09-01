@@ -1,0 +1,77 @@
+slug: text-classification
+title: Text Classification
+facet: method
+lane: data
+blurb: map text into predefined labels.
+order: 35
+badge:
+  logo: ri:RiTagsLine
+  color: "CA8A04"
+  chip_label: Labels
+evidence: Moderate; official docs plus survey.
+safety:
+  - Do not invent labels outside the supplied set.
+  - Return uncertain when no label fits.
+  - Do not apply overlapping labels when policy judgment is unspecified.
+caveat: exact prompt performance is corpus-specific.
+definition: map text into predefined labels.
+avoid_when: labels overlap or policy judgment is unspecified.
+model_api_controls: |
+  structured output, confidence calibration, label examples.
+cost_latency: low.
+failure_modes: |
+  label ambiguity, overconfidence, domain drift.
+eval_required: true
+related:
+  - classifier
+sources:
+  - title: Microsoft Foundry prompt engineering
+    url: https://learn.microsoft.com/en-us/azure/foundry/openai/concepts/prompt-engineering
+  - title: The Prompt Report
+    url: https://arxiv.org/abs/2406.06608
+modes:
+  - id: template
+    label: Method template
+    default: true
+    when_to_use: routing, tagging, moderation triage, topic classification.
+    placeholders:
+      - name: label_a
+        required: true
+        example: billing
+        notes: First allowed label
+      - name: definition_a
+        required: true
+        example: payment or invoice issues
+        notes: Short definition for label_a
+      - name: label_b
+        required: true
+        example: bug
+        notes: Second allowed label
+      - name: definition_b
+        required: true
+        example: product defect reports
+        notes: Short definition for label_b
+      - name: text
+        required: true
+        example: Cancel my subscription immediately
+        notes: Text to classify
+      - name: schema
+        required: true
+        example: label; confidence; short rationale
+        notes: Output contract
+    prompt: |
+      Classify the input into exactly one label.
+
+      Labels:
+      - {label_a}: {definition_a}
+      - {label_b}: {definition_b}
+
+      If no label fits, return "uncertain" and explain why briefly.
+
+      Input:
+      <input>
+      {text}
+      </input>
+
+      Output contract:
+      {schema}

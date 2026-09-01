@@ -1,0 +1,60 @@
+slug: program-of-thoughts
+title: Program-of-Thoughts
+facet: method
+lane: reasoning
+blurb: >-
+  translate computable subproblems into code or symbolic operations and use checked
+  results.
+order: 180
+badge:
+  logo: ri:RiTerminalBoxLine
+  color: 8B5CF6
+  chip_label: PoT
+evidence: Strong when code can actually run; primary research plus tool docs.
+safety:
+  - Generating code without executing or checking it is not validation.
+  - Do not execute generated code unsafely.
+caveat: generating code without executing or checking it is not validation.
+definition: >-
+  translate computable subproblems into code or symbolic operations and use checked
+  results.
+avoid_when: code execution is unavailable or unsafe.
+model_api_controls: sandbox, code execution, filesystem/network limits, test runner.
+cost_latency: moderate plus tool execution.
+failure_modes: generated code bugs, unsafe execution, bad problem translation.
+eval_required: true
+sources:
+  - title: Program of Thoughts Prompting
+    url: https://arxiv.org/abs/2211.12588
+  - title: PAL
+    url: https://arxiv.org/abs/2211.10435
+  - title: OpenAI tools
+    url: https://developers.openai.com/api/docs/guides/tools
+  - title: OpenAI Code Interpreter
+    url: https://developers.openai.com/api/docs/guides/tools-code-interpreter
+  - title: Google Gemini code execution
+    url: https://ai.google.dev/gemini-api/docs/code-execution
+modes:
+  - id: template
+    label: Method template
+    default: true
+    when_to_use: math, data analysis, algorithms, deterministic computation.
+    placeholders:
+      - name: problem
+        required: true
+        example: Train A 9:00 at 60mph; Train B 10:00 at 90mph — when meet?
+        notes: Problem to solve
+    prompt: |
+      Problem:
+      <input>
+      {problem}
+      </input>
+
+      Translate only the computable part into code or symbolic operations.
+      Run or inspect the computation in a safe environment.
+      Use the computed result to answer.
+
+      Return:
+      - final answer
+      - computation summary
+      - validation result

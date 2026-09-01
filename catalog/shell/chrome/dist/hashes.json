@@ -11,13 +11,13 @@
     "@takumi-rs/core": "2.9.2"
   },
   "files": {
-    "hero-light.png": "d877842ed5f8e66271bea58238432095cf4d62875523757b74d1273ee1de248c",
-    "hero-dark.png": "c7d40500f051e72d0e159e2083d75dc5c39151ff84d9f4c3e87d38a5d5439ea7",
+    "hero-light.png": "fe1f63e565d44401d08b164c9857914ad20efbccd73bd00d63fb58bfe8e58c04",
+    "hero-dark.png": "09d1e71a0555962b2ee0edb5c0f85722efeeab1f548fe6e08d7f20365834e418",
     "path-light.png": "277b978032b2c9e960759b48ee6627a5a3d44cc2faad3554fb4449db0c9dad49",
     "path-dark.png": "497d3b9b318a2de88d5c68e9ace4650c9592a6d4df5c9d3b52ace04e52fbc49a"
   },
   "alt": {
-    "hero": "Prompt Library: research-backed recipes you copy, adapt, and verify.",
+    "hero": "Prompt Library: research-backed prompts you copy, adapt, and verify.",
     "path": "Fill the placeholder table, copy the text template, then verify safety and sources."
   }
 }

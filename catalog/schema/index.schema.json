@@ -5,7 +5,7 @@
   "title": "Catalog index",
   "type": "object",
   "additionalProperties": false,
-  "required": ["version", "meta", "lanes", "pattern_sections", "readme"],
+  "required": ["version", "meta", "counts", "lanes", "readme"],
   "properties": {
     "version": { "type": "integer", "const": 1 },
     "meta": {
@@ -30,9 +30,9 @@
     "counts": {
       "type": "object",
       "additionalProperties": false,
+      "required": ["prompts"],
       "properties": {
-        "recipes": { "type": "integer" },
-        "patterns": { "type": "integer" }
+        "prompts": { "type": "integer" }
       }
     },
     "lanes": {
@@ -47,8 +47,8 @@
           "color",
           "badge",
           "order",
-          "recipe_slugs",
-          "featured_recipe_slugs"
+          "prompt_slugs",
+          "featured_prompt_slugs"
         ],
         "properties": {
           "key": {
@@ -77,51 +77,15 @@
             }
           },
           "order": { "type": "integer" },
-          "recipe_slugs": {
+          "prompt_slugs": {
             "type": "array",
             "uniqueItems": true,
-            "items": {
-              "type": "string",
-              "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
-            }
+            "items": { "$ref": "#/$defs/promptSlug" }
           },
-          "featured_recipe_slugs": {
+          "featured_prompt_slugs": {
             "type": "array",
             "uniqueItems": true,
-            "items": {
-              "type": "string",
-              "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
-            }
-          }
-        }
-      }
-    },
-    "pattern_sections": {
-      "type": "array",
-      "uniqueBy": "key",
-      "items": {
-        "type": "object",
-        "additionalProperties": false,
-        "required": ["key", "title", "order", "pattern_slugs"],
-        "properties": {
-          "key": {
-            "type": "string",
-            "enum": [
-              "core-prompt-construction",
-              "reasoning-and-search",
-              "verification-and-iteration",
-              "task-and-workflow-snippets"
-            ]
-          },
-          "title": { "type": "string" },
-          "order": { "type": "integer" },
-          "pattern_slugs": {
-            "type": "array",
-            "uniqueItems": true,
-            "items": {
-              "type": "string",
-              "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
-            }
+            "items": { "$ref": "#/$defs/promptSlug" }
           }
         }
       }
@@ -134,16 +98,13 @@
         "shortcuts": {
           "type": "array",
           "minItems": 1,
-          "uniqueBy": "recipe_slug",
+          "uniqueBy": "prompt_slug",
           "items": {
             "type": "object",
             "additionalProperties": false,
-            "required": ["recipe_slug", "label"],
+            "required": ["prompt_slug", "label"],
             "properties": {
-              "recipe_slug": {
-                "type": "string",
-                "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
-              },
+              "prompt_slug": { "$ref": "#/$defs/promptSlug" },
               "label": { "type": "string", "minLength": 1 }
             }
           }
@@ -163,6 +124,23 @@
           "order": { "type": "integer" },
           "include_in_readme": { "type": "boolean" }
         }
+      }
+    }
+  },
+  "$defs": {
+    "promptSlug": {
+      "type": "string",
+      "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$",
+      "not": {
+        "enum": [
+          "catalog",
+          "explore",
+          "sources",
+          "recipes",
+          "patterns",
+          "research",
+          "github"
+        ]
       }
     }
   }

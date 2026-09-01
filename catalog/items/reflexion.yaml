@@ -1,0 +1,54 @@
+slug: reflexion
+title: Reflexion
+facet: method
+lane: agents
+blurb: use concrete feedback from previous attempts to improve later attempts.
+order: 50
+badge:
+  logo: ri:RiHistoryLine
+  color: "38BDF8"
+  chip_label: Reflexion
+evidence: Moderate. Primary research plus survey.
+safety:
+  - Reflection must cite external observations (tests, tools, logs), not model self-belief.
+  - Treat tool logs and test output as untrusted data until validated.
+caveat: >-
+  Reflection must cite external observations (tests, tools, logs), not model
+  self-belief. Without a reliable feedback signal and an eval gate, the loop is
+  theater.
+definition: use concrete feedback from previous attempts to improve later attempts.
+avoid_when: there is no reliable feedback signal.
+model_api_controls: >-
+  Bound memory scope, retry budget, and tool permissions. Treat tool logs and
+  test output as untrusted data until validated. Version prompt/model/tool state
+  between attempts. Gate promotion of a revised strategy with regression evals
+  (official evaluation best practices / trace grading surfaces)—do not promote
+  on self-praise alone.
+cost_latency: high for full loops.
+failure_modes: >-
+  unsupported introspection, repeating mistakes, stale memory, treating model
+  self-critique as observation, unbounded retries without an eval stop rule.
+eval_required: true
+related:
+  - critique-revise
+sources:
+  - title: Reflexion
+    url: https://arxiv.org/abs/2303.11366
+  - title: OpenAI evaluation best practices
+    url: https://developers.openai.com/api/docs/guides/evaluation-best-practices
+  - title: OpenAI trace grading
+    url: https://developers.openai.com/api/docs/guides/trace-grading
+  - title: The Prompt Report
+    url: https://arxiv.org/abs/2406.06608
+modes:
+  - id: template
+    label: Method template
+    default: true
+    when_to_use: Agent tasks, coding loops, and workflows with observable failures.
+    placeholders: []
+    prompt: |
+      Attempt the task.
+      Record concrete failure evidence from tests, logs, tool output, or user feedback.
+      Create a revised strategy.
+      Retry only the parts affected by the failure.
+      Preserve the prompt/model/tool versions used.

@@ -1,0 +1,55 @@
+slug: quick-enhance
+title: "Quick Enhance"
+facet: method
+lane: writing
+blurb: "ask for targeted improvement of an existing artifact."
+order: 100
+badge:
+  logo: ri:RiMagicLine
+  color: "A21CAF"
+  chip_label: Enhance
+evidence: "Community. workflow pattern plus official-doc support for structure."
+safety:
+  - "Keep behavior unchanged unless stated."
+  - "Preserve public interfaces."
+  - "Make the smallest change that satisfies the goal."
+  - "List validation performed."
+caveat: "scope and validation discipline matter more than the enhancement wording."
+definition: "ask for targeted improvement of an existing artifact."
+avoid_when: "the prompt asks for broad improvement without scope, tests, or constraints."
+model_api_controls: "diff tools, tests, lints, review checklist."
+cost_latency: "low to moderate."
+failure_modes: "unnecessary rewrites, scope creep, unverified claims."
+eval_required: true
+sources:
+  - title: "OpenAI prompt engineering"
+    url: https://developers.openai.com/api/docs/guides/prompt-engineering
+  - title: "OpenAI evaluation best practices"
+    url: https://developers.openai.com/api/docs/guides/evaluation-best-practices
+modes:
+  - id: template
+    label: "Method template"
+    default: true
+    when_to_use: "focused rewrites, refactors, bug fixes, and polishing with explicit criteria."
+    placeholders:
+      - name: goal
+        required: true
+        example: "Tighten the opening paragraph without changing claims"
+        notes: "Improvement goal"
+      - name: artifact
+        required: true
+        example: "The system might experience issues from time to time."
+        notes: "Artifact to improve"
+    prompt: |
+      Improve the artifact below for {goal}.
+
+      Constraints:
+      - Keep behavior unchanged unless stated.
+      - Preserve public interfaces.
+      - Make the smallest change that satisfies the goal.
+      - List validation performed.
+
+      Artifact:
+      <artifact>
+      {artifact}
+      </artifact>

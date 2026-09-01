@@ -7,12 +7,9 @@ export function emitSiteData(pkg) {
     generated_at: new Date().toISOString(),
     meta: pkg.index.meta,
     lanes: pkg.index.lanes,
-    pattern_sections: pkg.index.pattern_sections,
-    recipes: pkg.recipes,
-    patterns: pkg.patterns,
+    prompts: pkg.prompts,
     counts: {
-      recipes: pkg.recipes.length,
-      patterns: pkg.patterns.length
+      prompts: pkg.prompts.length
     }
   };
   return full;
@@ -20,7 +17,7 @@ export function emitSiteData(pkg) {
 
 /**
  * Shell-sized slice for App chrome (title, counts, nav structure).
- * Keeps full recipe/pattern bodies out of the entry module graph.
+ * Keeps full prompt bodies out of the entry module graph.
  * @param {ReturnType<typeof emitSiteData>} site
  */
 export function emitSiteMeta(site) {
@@ -29,7 +26,6 @@ export function emitSiteMeta(site) {
     generated_at: site.generated_at,
     meta: site.meta,
     lanes: site.lanes,
-    pattern_sections: site.pattern_sections,
     counts: site.counts
   };
 }

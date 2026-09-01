@@ -9,7 +9,7 @@ import test from "node:test";
 const testDir = dirname(fileURLToPath(import.meta.url));
 const cliPath = resolve(testDir, "../bin/catalog.mjs");
 const repositoryRoot = resolve(testDir, "../../..");
-const fixturesRoot = join(repositoryRoot, "catalog/fixtures");
+const fixturesRoot = resolve(testDir, "fixtures");
 const shellDir = join(repositoryRoot, "catalog/shell");
 
 function runCli(args) {

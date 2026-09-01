@@ -1,0 +1,48 @@
+slug: chain-of-density-summarization
+title: "Chain-of-Density Summarization"
+facet: method
+lane: writing
+blurb: "iteratively add missing salient entities to a fixed-length summary."
+order: 60
+badge:
+  logo: ri:RiLayersLine
+  color: "6D28D9"
+  chip_label: Density
+evidence: "Moderate. primary research."
+safety:
+  - "Do not invent entities absent from the source."
+  - "Preserve readability and source fidelity during density passes."
+caveat: "density is not the same as usefulness."
+definition: "iteratively add missing salient entities to a fixed-length summary."
+avoid_when: "readability matters more than density."
+model_api_controls: "summary length cap, citation checker, readability rubric."
+cost_latency: moderate.
+failure_modes: "over-dense summaries, entity hallucination."
+eval_required: true
+related:
+  - dense-summary
+sources:
+  - title: "Chain of Density"
+    url: https://arxiv.org/abs/2309.04269
+modes:
+  - id: template
+    label: "Method template"
+    default: true
+    when_to_use: "entity-rich summaries where first drafts are sparse."
+    placeholders:
+      - name: source
+        required: true
+        example: "Sprint retro: export p95 4.2s (target 2s); owner Pat; nginx blocked."
+        notes: "Document or notes to densify"
+    prompt: |
+      Write a concise summary.
+      Then perform two density passes:
+      1. Identify missing salient entities.
+      2. Rewrite the same-length summary to include them.
+
+      Preserve readability and source fidelity.
+
+      Source:
+      <source>
+      {source}
+      </source>

@@ -48,17 +48,15 @@ def _mini_readme_template_lines() -> list[str]:
             "",
             "#### Source-Grounded Answer",
             "",
-            "Research recipe body.",
+            "Research prompt body.",
             "",
             "#### Code Review",
             "",
-            "Coding recipe body.",
+            "Coding prompt body.",
             "",
-            "## Pattern Notes",
+            "## How To Adapt Prompts",
             "",
-            "#### Chain of Thought",
-            "",
-            "Pattern body.",
+            "Adapt body.",
         ]
     )
     return lines
@@ -86,9 +84,10 @@ class NodeExecutableTest(unittest.TestCase):
 
 class CatalogBadgeDataTest(unittest.TestCase):
     def test_catalog_owns_all_recipe_heading_metadata(self) -> None:
-        recipes = badges.catalog_recipes(_catalog_data())
-        self.assertEqual(len(recipes), 48)
-        self.assertEqual(len({recipe["badge"]["logo"] for recipe in recipes}), 48)
+        prompts = badges.catalog_prompts(_catalog_data())
+        self.assertEqual(len(prompts), sum(len(lane["prompts"]) for lane in _catalog_data()["lanes"]))
+        self.assertEqual(len({prompt["badge"]["logo"] for prompt in prompts}), len(prompts))
+        self.assertGreater(len(prompts), 0)
         self.assertNotIn("RECIPE_HEADING_BADGE_OVERRIDES", vars(badges))
         self.assertNotIn("LANE_CHIP_SECTIONS", vars(badges))
         self.assertNotIn("JOB_MAP_ROWS", vars(badges))
@@ -96,14 +95,17 @@ class CatalogBadgeDataTest(unittest.TestCase):
     def test_catalog_owns_featured_chips_shortcuts_and_job_map(self) -> None:
         data = _catalog_data()
         self.assertEqual(len(data["lanes"]), 8)
-        self.assertTrue(all(len(lane["featured_recipes"]) == 4 for lane in data["lanes"]))
+        self.assertTrue(all(len(lane["featured_prompts"]) == 4 for lane in data["lanes"]))
         self.assertEqual(len(data["shortcuts"]), 6)
-        self.assertEqual(sum(len(lane["recipes"]) for lane in data["lanes"]), 48)
+        self.assertEqual(
+            sum(len(lane["prompts"]) for lane in data["lanes"]),
+            len(badges.catalog_prompts(data)),
+        )
 
 
 class RecipeHeadingBadgeUrlTest(unittest.TestCase):
     def test_recipe_heading_badge_url_icon_only_shape(self) -> None:
-        sample = badges.catalog_recipes(_catalog_data())[0]
+        sample = badges.catalog_prompts(_catalog_data())[0]
         url = badges.recipe_heading_badge_url(sample)
         parsed = urlparse(url)
         query = parse_qs(parsed.query, keep_blank_values=True)
@@ -114,16 +116,16 @@ class RecipeHeadingBadgeUrlTest(unittest.TestCase):
         self.assertTrue(query["logo"][0].startswith("ri:"))
 
     def test_recipe_heading_badge_urls_use_ri_logos_for_all_recipes(self) -> None:
-        for recipe in badges.catalog_recipes(_catalog_data()):
-            query = parse_qs(urlparse(badges.recipe_heading_badge_url(recipe)).query)
-            self.assertTrue(query["logo"][0].startswith("ri:"), msg=recipe["title"])
+        for prompt in badges.catalog_prompts(_catalog_data()):
+            query = parse_qs(urlparse(badges.recipe_heading_badge_url(prompt)).query)
+            self.assertTrue(query["logo"][0].startswith("ri:"), msg=prompt["title"])
 
 
 class RenderRecipeHeadingTest(unittest.TestCase):
     def test_render_recipe_heading_html_contract(self) -> None:
         recipe = next(
             item
-            for item in badges.catalog_recipes(_catalog_data())
+            for item in badges.catalog_prompts(_catalog_data())
             if item["title"] == "Source-Grounded Answer"
         )
         rendered = badges.render_recipe_heading(recipe)
@@ -148,7 +150,7 @@ class RenderCatalogSurfacesTest(unittest.TestCase):
     def test_lane_chip_uses_catalog_recipe_badge_metadata(self) -> None:
         research = _catalog_data()["lanes"][0]
         block = badges.render_lane_chip_block(research)
-        recipe = research["featured_recipes"][0]
+        recipe = research["featured_prompts"][0]
         self.assertIn(recipe["badge"]["chip_label"], block)
         self.assertIn(recipe["badge"]["color"], block)
         self.assertIn(recipe["badge"]["logo"], block)
@@ -190,13 +192,13 @@ class ApplyRecipeHeadingBadgesTest(unittest.TestCase):
                 "",
                 "Body.",
                 "",
-                "## Pattern Notes",
+                "## How To Adapt Prompts",
             ]
         ) + "\n"
         updated = badges.apply_recipe_heading_badges(markdown, _catalog_data())
         recipe = next(
             item
-            for item in badges.catalog_recipes(_catalog_data())
+            for item in badges.catalog_prompts(_catalog_data())
             if item["title"] == "Source-Grounded Answer"
         )
         self.assertNotIn("#### Source-Grounded Answer", updated)
@@ -211,7 +213,7 @@ class ApplyRecipeHeadingBadgesTest(unittest.TestCase):
                 "",
                 "Body.",
                 "",
-                "## Pattern Notes",
+                "## How To Adapt Prompts",
             ]
         ) + "\n"
         once = badges.apply_recipe_heading_badges(markdown, _catalog_data())
@@ -251,7 +253,7 @@ class ReplaceBadgesCheckTest(unittest.TestCase):
 class GoldenHeadingUrlFixtureTest(unittest.TestCase):
     def test_golden_heading_urls_match_catalog_generated_urls(self) -> None:
         golden_urls = json.loads(GOLDEN_URLS_PATH.read_text(encoding="utf-8"))
-        by_name = {recipe["title"]: recipe for recipe in badges.catalog_recipes(_catalog_data())}
+        by_name = {recipe["title"]: recipe for recipe in badges.catalog_prompts(_catalog_data())}
         self.assertEqual(set(golden_urls), {"Source-Grounded Answer", "Code Review", "JSON Extractor"})
 
         for name, expected_url in golden_urls.items():

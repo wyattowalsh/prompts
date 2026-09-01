@@ -7,6 +7,7 @@ import argparse
 import re
 from pathlib import Path
 
+import catalog_constants
 import check_readme_recipes as checker
 
 FILL_CANONICAL_POINTER = (
@@ -218,8 +219,8 @@ def transform_readme(markdown: str) -> str:
     start, end = section
     errors: list[checker.Diagnostic] = []
     recipes = checker.parse_recipes(lines, errors)
-    if len(recipes) != 48:
-        raise SystemExit(f"Expected 48 recipes, found {len(recipes)}")
+    if len(recipes) != catalog_constants.PROMPT_COUNT:
+        raise SystemExit(f"Expected {catalog_constants.PROMPT_COUNT} prompts, found {len(recipes)}")
 
     recipe_ranges = [(recipe.start, recipe.end) for recipe in recipes]
     transformed_chunks: dict[int, list[str]] = {}

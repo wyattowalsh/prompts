@@ -1,0 +1,81 @@
+slug: prompt-chaining
+title: Prompt Chaining
+facet: method
+lane: agents
+blurb: split a workflow into staged prompts with explicit handoff artifacts.
+order: 50
+badge:
+  logo: ri:RiGitCommitLine
+  color: "14B8A6"
+  chip_label: Chaining
+evidence: Moderate. Primary paper plus eval practice.
+safety:
+  - Keep each stage output visible and auditable.
+  - Prompt text alone does not create isolation between stages.
+caveat: >-
+  Chains are only safer when each stage has an enforceable contract and a check
+  that can stop the pipeline. Prompt text alone does not create isolation
+  between stages.
+definition: split a workflow into staged prompts with explicit handoff artifacts.
+avoid_when: stages are tightly coupled or early errors cannot be detected.
+model_api_controls: >-
+  Use separate calls with host-enforced schemas (structured outputs / tool args)
+  per stage when outputs feed software. Persist stage artifacts and provenance
+  in workflow state; do not rely on a single long context alone. Pair stage
+  gates with eval cases (official evaluation practice) and reject advancement
+  when Stage N fails its contract.
+cost_latency: moderate.
+failure_modes: >-
+  error propagation, hidden state drift, missing provenance, silent stage
+  failure, treating intermediate model prose as trusted observations.
+eval_required: true
+sources:
+  - title: PromptChainer
+    url: https://arxiv.org/abs/2203.06566
+  - title: OpenAI structured outputs
+    url: https://developers.openai.com/api/docs/guides/structured-outputs
+  - title: OpenAI evaluation best practices
+    url: https://developers.openai.com/api/docs/guides/evaluation-best-practices
+  - title: Anthropic prompt engineering overview
+    url: https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/overview
+  - title: The Prompt Report
+    url: https://arxiv.org/abs/2406.06608
+modes:
+  - id: template
+    label: Method template
+    default: true
+    when_to_use: Extract-rank-draft-check workflows and tasks with separable phases.
+    placeholders:
+      - name: goal
+        required: true
+        example: Extract facts, draft an answer, then check citations
+        notes: Workflow goal
+      - name: facts_to_extract
+        required: true
+        example: Decision, date, source ID, uncertainty
+        notes: Stage 1 output contract
+      - name: artifact_to_create
+        required: true
+        example: Customer-facing answer with citations
+        notes: Stage 2 output contract
+      - name: criteria
+        required: true
+        example: Fail if any claim lacks a source ID
+        notes: Stage 3 validation
+    prompt: |
+      Workflow goal:
+      {goal}
+
+      Stage 1 output contract:
+      {facts_to_extract}
+
+      Stage 2 output contract:
+      {artifact_to_create}
+
+      Stage 3 validation:
+      {criteria}
+
+      Rules:
+      - Keep each stage output visible and auditable.
+      - Do not use Stage 2 until Stage 1 satisfies its contract.
+      - Preserve source IDs and uncertainty across stages.

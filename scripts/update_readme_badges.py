@@ -53,14 +53,6 @@ CORE_BADGES = [
         "alt": "Prompt library: {prompt_count} prompts",
     },
     {
-        "label": "{pattern_count} Patterns",
-        "color": "38BDF8",
-        "logo": "gitbook",
-        "logoColor": "7DD3FC",
-        "href": "#pattern-notes",
-        "alt": "Pattern notes: {pattern_count} techniques",
-    },
-    {
         "label": "Zero Shot",
         "color": "818CF8",
         "logo": "ri:RiSparkling2Line",
@@ -307,17 +299,17 @@ def count_headings(markdown: str, section: str) -> int:
     return count
 
 
-def catalog_recipes(catalog_data: dict[str, object]) -> list[dict[str, object]]:
-    recipes: list[dict[str, object]] = []
+def catalog_prompts(catalog_data: dict[str, object]) -> list[dict[str, object]]:
+    prompts: list[dict[str, object]] = []
     for lane in catalog_data["lanes"]:
-        recipes.extend(lane["recipes"])
-    logos = [recipe["badge"]["logo"] for recipe in recipes]
+        prompts.extend(lane["prompts"])
+    logos = [prompt["badge"]["logo"] for prompt in prompts]
     duplicates = sorted({logo for logo in logos if logos.count(logo) > 1})
     if duplicates:
         raise SystemExit(
-            f"Recipe heading badge icons must be unique; duplicates: {', '.join(duplicates)}"
+            f"Prompt heading badge icons must be unique; duplicates: {', '.join(duplicates)}"
         )
-    return recipes
+    return prompts
 
 
 # Named fills 67E8F9 / EAB308 are YAML identity. Live split=false SVGs paint
@@ -363,7 +355,7 @@ def render_recipe_heading(recipe: dict[str, object]) -> str:
 
 
 def apply_recipe_heading_badges(markdown: str, catalog_data: dict[str, object]) -> str:
-    badges_by_name = {recipe["title"]: recipe for recipe in catalog_recipes(catalog_data)}
+    badges_by_name = {prompt["title"]: prompt for prompt in catalog_prompts(catalog_data)}
     lines = markdown.splitlines()
     in_prompt_library = False
     in_fence = False
@@ -517,13 +509,10 @@ def github_heading_anchor(title: str) -> str:
 
 def render_badge_block(markdown: str, catalog_data: dict[str, object]) -> str:
     prompt_count = count_headings(markdown, "Prompt Library")
-    pattern_count = count_headings(markdown, "Pattern Notes")
     if prompt_count == 0:
-        raise SystemExit("Could not count prompt recipes in README.md")
-    if pattern_count == 0:
-        raise SystemExit("Could not count pattern notes in README.md")
+        raise SystemExit("Could not count prompts in README.md")
 
-    counts = {"prompt_count": prompt_count, "pattern_count": pattern_count}
+    counts = {"prompt_count": prompt_count}
     owner, repo = repo_slug(str(catalog_data["repository_url"]))
     rows: list[str] = [START, '<p align="center">']
     for badge in CORE_BADGES:
@@ -558,9 +547,9 @@ def render_job_map_block(catalog_data: dict[str, object]) -> str:
             f"#{anchor}", f"{lane['title']} lane", src, indent="      "
         )
         recipe_links = " · ".join(
-            f'<a href="#{escape(str(recipe["slug"]), quote=True)}">'
-            f'{escape(str(recipe["title"]))}</a>'
-            for recipe in lane["recipes"]
+            f'<a href="#{escape(str(prompt["slug"]), quote=True)}">'
+            f'{escape(str(prompt["title"]))}</a>'
+            for prompt in lane["prompts"]
         )
         rows.extend(
             [
@@ -582,10 +571,10 @@ def render_lane_chip_block(lane: dict[str, object]) -> str:
     start = f"<!-- LANE-CHIPS:{key}:START -->"
     end = f"<!-- LANE-CHIPS:{key}:END -->"
     rows: list[str] = [start, '<p align="left">']
-    for recipe in lane["featured_recipes"]:
+    for prompt in lane["featured_prompts"]:
         rows.append(
             image_link(
-                f"#{recipe['slug']}", str(recipe["title"]), chip_badge_url(recipe), indent="  "
+                f"#{prompt['slug']}", str(prompt["title"]), chip_badge_url(prompt), indent="  "
             )
         )
     rows.extend(["</p>", end])
@@ -620,16 +609,16 @@ def render_lane_block(catalog_data: dict[str, object]) -> str:
 def render_shortcut_block(catalog_data: dict[str, object]) -> str:
     rows: list[str] = [SHORTCUTS_START, '<p align="center">']
     for shortcut in catalog_data["shortcuts"]:
-        recipe = shortcut["recipe"]
+        prompt = shortcut["prompt"]
         badge = {
             "label": shortcut["label"],
-            "color": recipe["badge"]["color"],
-            "logo": recipe["badge"]["logo"],
+            "color": prompt["badge"]["color"],
+            "logo": prompt["badge"]["logo"],
         }
         rows.append(
             image_link(
-                f"#{recipe['slug']}",
-                f"Copy shortcut: {recipe['title']}",
+                f"#{prompt['slug']}",
+                f"Copy shortcut: {prompt['title']}",
                 compact_static_badge_url(badge, {}, "default"),
                 indent="  ",
             )

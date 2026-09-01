@@ -58,7 +58,7 @@ export function Hero({ theme }) {
             color: t.muted
           }}
         >
-          Research-backed recipes · copy · adapt · verify
+          Research-backed prompts · copy · adapt · verify
         </div>
       </div>
     </div>

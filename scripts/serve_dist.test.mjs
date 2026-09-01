@@ -1,7 +1,8 @@
 import assert from "node:assert/strict";
-import { once } from "node:events";
+import { once, EventEmitter } from "node:events";
 import { mkdir, mkdtemp, rm, symlink, writeFile } from "node:fs/promises";
 import { request } from "node:http";
+import { connect } from "node:net";
 import { tmpdir } from "node:os";
 import { dirname, join } from "node:path";
 import { spawn } from "node:child_process";
@@ -10,6 +11,7 @@ import { after, before, describe, it } from "node:test";
 import {
   DIST_SERVER_PROVENANCE_HEADER,
   DIST_SERVER_PROVENANCE_VALUE,
+  installCliShutdownHandlers,
   startDistServer
 } from "./serve_dist.mjs";
 
@@ -243,27 +245,155 @@ describe("dist static server", () => {
   });
 
   it("handles SIGTERM through the CLI shutdown path", async () => {
-    const child = spawn(process.execPath, [scriptPath], {
-      env: {
-        ...process.env,
-        PLAYWRIGHT_DIST_ROOT: distRoot,
-        PLAYWRIGHT_WEB_SERVER_HOST: "127.0.0.1",
-        PLAYWRIGHT_WEB_SERVER_PORT: "0"
-      },
-      stdio: ["ignore", "pipe", "pipe"]
-    });
-
+    const { child, port } = await spawnDistCli(distRoot);
     try {
-      const port = await listeningPort(child);
       assert.equal((await httpRequest(port, "/")).status, 200);
-      const exited = once(child, "exit");
-      child.kill("SIGTERM");
-      const [code, signal] = await exited;
-      assert.equal(code, 0);
-      assert.equal(signal, null);
+      const elapsed = await sigtermExitMs(child);
+      assert.ok(elapsed < 800, `SIGTERM exit took ${elapsed}ms`);
       await assert.rejects(httpRequest(port, "/"), /ECONNREFUSED/u);
     } finally {
       if (child.exitCode === null && child.signalCode === null) child.kill("SIGKILL");
     }
   });
+
+  it("exits on SIGTERM while a keep-alive client is still connected", async () => {
+    const { child, port } = await spawnDistCli(distRoot);
+    const socket = await keepAliveGet(port);
+    try {
+      const elapsed = await sigtermExitMs(child);
+      assert.ok(elapsed < 800, `keep-alive SIGTERM exit took ${elapsed}ms`);
+      await assert.rejects(httpRequest(port, "/"), /ECONNREFUSED/u);
+    } finally {
+      socket.destroy();
+      if (child.exitCode === null && child.signalCode === null) child.kill("SIGKILL");
+    }
+  });
+
+  it("closes keep-alive clients without waiting for a grace period", async () => {
+    const disposable = await startDistServer({
+      root: distRoot,
+      host: "127.0.0.1",
+      port: 0,
+      gracePeriodMs: 0
+    });
+    const socket = await keepAliveGet(disposable.port);
+    try {
+      const started = Date.now();
+      await disposable.close();
+      const elapsed = Date.now() - started;
+      assert.ok(elapsed < 400, `close took ${elapsed}ms`);
+      await assert.rejects(httpRequest(disposable.port, "/"), /ECONNREFUSED/u);
+    } finally {
+      socket.destroy();
+    }
+  });
+
+  it("starts and closes fifty isolated listeners without leaks", async () => {
+    for (let cycle = 0; cycle < 50; cycle += 1) {
+      const disposable = await startDistServer({
+        root: distRoot,
+        host: "127.0.0.1",
+        port: 0,
+        gracePeriodMs: 0
+      });
+      assert.equal((await httpRequest(disposable.port, "/")).status, 200);
+      await disposable.close();
+      await assert.rejects(httpRequest(disposable.port, "/"), /ECONNREFUSED/u);
+    }
+  });
+
+  it("survives repeated CLI SIGTERM start/stop cycles", async () => {
+    for (let cycle = 0; cycle < 20; cycle += 1) {
+      const { child, port } = await spawnDistCli(distRoot);
+      try {
+        assert.equal((await httpRequest(port, "/")).status, 200);
+        const elapsed = await sigtermExitMs(child);
+        assert.ok(elapsed < 800, `cycle ${cycle} SIGTERM exit took ${elapsed}ms`);
+      } finally {
+        if (child.exitCode === null && child.signalCode === null) child.kill("SIGKILL");
+      }
+    }
+  });
 });
+
+describe("CLI shutdown handlers", () => {
+  it("removes leftover signal listeners and exits once after SIGTERM", async () => {
+    const signalSource = new EventEmitter();
+    let closed = 0;
+    const exits = [];
+    const { shutdown } = installCliShutdownHandlers({
+      close: async () => {
+        closed += 1;
+      },
+      exitProcess: (code) => exits.push(code),
+      signalSource
+    });
+
+    signalSource.emit("SIGTERM");
+    signalSource.emit("SIGINT");
+    await shutdown();
+
+    assert.equal(closed, 1);
+    assert.deepEqual(exits, [0]);
+    assert.equal(signalSource.listenerCount("SIGINT"), 0);
+    assert.equal(signalSource.listenerCount("SIGTERM"), 0);
+  });
+
+  it("exits nonzero when close fails and still drops listeners", async () => {
+    const signalSource = new EventEmitter();
+    const exits = [];
+    const logged = [];
+    const originalError = console.error;
+    console.error = (...args) => logged.push(args);
+    try {
+      const { shutdown } = installCliShutdownHandlers({
+        close: async () => {
+          throw new Error("close failed");
+        },
+        exitProcess: (code) => exits.push(code),
+        signalSource
+      });
+
+      await shutdown();
+      assert.deepEqual(exits, [1]);
+      assert.equal(logged.length, 1);
+      assert.equal(signalSource.listenerCount("SIGTERM"), 0);
+    } finally {
+      console.error = originalError;
+    }
+  });
+});
+
+function spawnDistCli(distRoot) {
+  const child = spawn(process.execPath, [scriptPath], {
+    env: {
+      ...process.env,
+      PLAYWRIGHT_DIST_ROOT: distRoot,
+      PLAYWRIGHT_WEB_SERVER_HOST: "127.0.0.1",
+      PLAYWRIGHT_WEB_SERVER_PORT: "0"
+    },
+    stdio: ["ignore", "pipe", "pipe"]
+  });
+  return listeningPort(child).then((port) => ({ child, port }));
+}
+
+async function sigtermExitMs(child) {
+  const exited = once(child, "exit");
+  const started = Date.now();
+  child.kill("SIGTERM");
+  const [code, signal] = await exited;
+  assert.equal(code, 0);
+  assert.equal(signal, null);
+  return Date.now() - started;
+}
+
+function keepAliveGet(port) {
+  return new Promise((resolveKeepAlive, rejectKeepAlive) => {
+    const socket = connect({ host: "127.0.0.1", port });
+    socket.once("error", rejectKeepAlive);
+    socket.once("connect", () => {
+      socket.write("GET / HTTP/1.1\r\nHost: 127.0.0.1\r\nConnection: keep-alive\r\n\r\n");
+    });
+    socket.once("data", () => resolveKeepAlive(socket));
+  });
+}

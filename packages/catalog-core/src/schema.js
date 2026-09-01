@@ -12,22 +12,16 @@ export const LANE_KEYS = [
   "reasoning"
 ];
 
-export const RECIPE_CLASSES = [
-  "research",
-  "editorial",
-  "code",
-  "extract",
-  "product",
-  "ops",
-  "tools",
-  "reasoning"
-];
+export const FACET_KEYS = ["job", "method"];
 
-export const PATTERN_SECTIONS = [
-  "core-prompt-construction",
-  "reasoning-and-search",
-  "verification-and-iteration",
-  "task-and-workflow-snippets"
+export const RESERVED_SLUGS = [
+  "catalog",
+  "explore",
+  "sources",
+  "recipes",
+  "patterns",
+  "research",
+  "github"
 ];
 
 export const PLACEHOLDER_NAME = z
@@ -35,6 +29,9 @@ export const PLACEHOLDER_NAME = z
   .regex(/^[a-z][a-z0-9_]*$/, "placeholder name must be lowercase snake_case");
 
 const SLUG = z.string().regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/);
+const ITEM_SLUG = SLUG.refine((value) => !RESERVED_SLUGS.includes(value), {
+  message: "slug must not be a reserved catalog path"
+});
 const HEX_COLOR = z.string().regex(/^[0-9A-Fa-f]{6}$/);
 const DISPLAY_TITLE = z
   .string()
@@ -111,36 +108,37 @@ export const Placeholder = z
     }
   });
 
-export const Recipe = z
+export const CatalogMode = z
   .object({
-    slug: SLUG,
-    title: DISPLAY_TITLE,
-    lane: z.enum(LANE_KEYS),
-    class: z.enum(RECIPE_CLASSES),
-    order: z.number().int().nonnegative(),
-    badge: z
-      .object({
-        logo: z.string().min(1),
-        color: HEX_COLOR,
-        chip_label: z.string().min(1)
-      })
-      .strict(),
-    use_for: z.string().min(1),
-    placeholders: z.array(Placeholder).min(1),
-    prompt: z.string().min(1),
+    id: SLUG,
+    label: z.string().min(1),
+    default: z.boolean(),
+    when_to_use: z.string().min(1),
+    prompt: z.string().optional(),
+    template_omission_reason: z.string().optional(),
+    placeholders: z.array(Placeholder),
     after_copy: z
       .object({
         fill_pointer: z.literal("match_placeholder_table"),
         expected_output: z.string().min(1),
-        upgrade_when: z.string().min(1),
-        control_evidence_note: z.string().nullable().optional(),
-        safety_eval_checks: z.array(z.string().min(1)).min(1)
+        upgrade_when: z.string().min(1)
       })
-      .strict(),
-    sources: z.array(SourceRef).min(1)
+      .strict()
+      .optional(),
+    sources: z.array(SourceRef).min(1).optional()
   })
   .strict()
   .superRefine((value, ctx) => {
+    const hasPrompt = Boolean(value.prompt?.trim());
+    const hasOmissionReason = Boolean(value.template_omission_reason?.trim());
+    if (hasPrompt === hasOmissionReason) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: "exactly one non-empty prompt or template_omission_reason is required",
+        path: ["prompt"]
+      });
+    }
+
     const seen = new Set();
     value.placeholders.forEach((placeholder, index) => {
       if (seen.has(placeholder.name)) {
@@ -154,35 +152,72 @@ export const Recipe = z
     });
   });
 
-export const Pattern = z
+export const CatalogItem = z
   .object({
-    slug: SLUG,
-    title: z.string().min(1),
-    section: z.enum(PATTERN_SECTIONS),
+    slug: ITEM_SLUG,
+    title: DISPLAY_TITLE,
+    facet: z.enum(FACET_KEYS),
+    lane: z.enum(LANE_KEYS),
+    blurb: z.string().min(1),
     order: z.number().int().nonnegative(),
-    definition: z.string().min(1),
-    best_use: z.string().min(1),
-    avoid_when: z.string().min(1),
-    template: z.string().nullable().optional(),
-    template_omission_reason: z.string().nullable().optional(),
-    model_api_controls: z.string().min(1),
-    cost_latency: z.string().min(1),
-    failure_modes: z.string().min(1),
-    evidence_tier: z.string().min(1),
-    source_type: z.string().min(1),
-    eval_required: z.boolean(),
+    badge: z
+      .object({
+        logo: z.string().min(1),
+        color: HEX_COLOR,
+        chip_label: z.string().min(1)
+      })
+      .strict(),
+    sources: z.array(SourceRef).min(1),
+    evidence: z.string().min(1),
+    safety: z.array(z.string().min(1)).min(1),
     caveat: z.string().min(1),
-    sources: z.array(SourceRef).min(1)
+    definition: z.string().min(1).optional(),
+    avoid_when: z.string().min(1).optional(),
+    model_api_controls: z.string().min(1).optional(),
+    cost_latency: z.string().min(1).optional(),
+    failure_modes: z.string().min(1).optional(),
+    eval_required: z.boolean().optional(),
+    related: z.array(ITEM_SLUG).min(1).optional(),
+    modes: z.array(CatalogMode).min(1).max(4)
   })
   .strict()
   .superRefine((value, ctx) => {
-    const hasTemplate = Boolean(value.template?.trim());
-    const hasOmissionReason = Boolean(value.template_omission_reason?.trim());
-    if (hasTemplate === hasOmissionReason) {
+    const addDuplicateIssues = (items, path, label) => {
+      const seen = new Set();
+      items.forEach((item, index) => {
+        if (seen.has(item)) {
+          ctx.addIssue({
+            code: z.ZodIssueCode.custom,
+            message: `${label} must be unique: ${item}`,
+            path: [...path, index]
+          });
+        }
+        seen.add(item);
+      });
+    };
+
+    if (value.related) {
+      addDuplicateIssues(value.related, ["related"], "related slug");
+    }
+
+    const modeIds = new Set();
+    let defaultCount = 0;
+    value.modes.forEach((mode, index) => {
+      if (modeIds.has(mode.id)) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          message: `mode id must be unique: ${mode.id}`,
+          path: ["modes", index, "id"]
+        });
+      }
+      modeIds.add(mode.id);
+      if (mode.default) defaultCount += 1;
+    });
+    if (defaultCount !== 1) {
       ctx.addIssue({
         code: z.ZodIssueCode.custom,
-        message: "exactly one non-empty template or template_omission_reason is required",
-        path: ["template"]
+        message: "exactly one mode must be default",
+        path: ["modes"]
       });
     }
   });
@@ -200,11 +235,9 @@ export const CatalogIndex = z
       .strict(),
     counts: z
       .object({
-        recipes: z.number().int().optional(),
-        patterns: z.number().int().optional()
+        prompts: z.number().int()
       })
-      .strict()
-      .optional(),
+      .strict(),
     lanes: z.array(
       z
         .object({
@@ -219,18 +252,8 @@ export const CatalogIndex = z
             })
             .strict(),
           order: z.number().int(),
-          recipe_slugs: z.array(SLUG),
-          featured_recipe_slugs: z.array(SLUG)
-        })
-        .strict()
-    ),
-    pattern_sections: z.array(
-      z
-        .object({
-          key: z.enum(PATTERN_SECTIONS),
-          title: z.string(),
-          order: z.number().int(),
-          pattern_slugs: z.array(SLUG)
+          prompt_slugs: z.array(ITEM_SLUG),
+          featured_prompt_slugs: z.array(ITEM_SLUG)
         })
         .strict()
     ),
@@ -240,7 +263,7 @@ export const CatalogIndex = z
           .array(
             z
               .object({
-                recipe_slug: SLUG,
+                prompt_slug: ITEM_SLUG,
                 label: z.string().min(1)
               })
               .strict()
@@ -285,31 +308,19 @@ export const CatalogIndex = z
     );
     value.lanes.forEach((lane, laneIndex) => {
       addDuplicateIssues(
-        lane.recipe_slugs,
-        ["lanes", laneIndex, "recipe_slugs"],
-        "recipe membership"
+        lane.prompt_slugs,
+        ["lanes", laneIndex, "prompt_slugs"],
+        "prompt membership"
       );
       addDuplicateIssues(
-        lane.featured_recipe_slugs,
-        ["lanes", laneIndex, "featured_recipe_slugs"],
-        "featured recipe membership"
+        lane.featured_prompt_slugs,
+        ["lanes", laneIndex, "featured_prompt_slugs"],
+        "featured prompt membership"
       );
     });
     addDuplicateIssues(
-      value.pattern_sections.map((section) => section.key),
-      ["pattern_sections"],
-      "pattern section key"
-    );
-    value.pattern_sections.forEach((section, sectionIndex) => {
-      addDuplicateIssues(
-        section.pattern_slugs,
-        ["pattern_sections", sectionIndex, "pattern_slugs"],
-        "pattern membership"
-      );
-    });
-    addDuplicateIssues(
-      value.readme.shortcuts.map((shortcut) => shortcut.recipe_slug),
+      value.readme.shortcuts.map((shortcut) => shortcut.prompt_slug),
       ["readme", "shortcuts"],
-      "README shortcut recipe"
+      "README shortcut prompt"
     );
   });

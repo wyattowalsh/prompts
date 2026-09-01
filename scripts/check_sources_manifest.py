@@ -128,6 +128,8 @@ def validate_entries(entries: list[dict[str, str]]) -> list[str]:
             replacement_url = urlparse(replacement)
             if replacement_url.scheme != "https" or not replacement_url.netloc:
                 errors.append(f"{label}: replacement_url must be 'none' or absolute https URL")
+        elif entry["status"] in {"redirected", "replaced"}:
+            errors.append(f"{label}: {entry['status']} requires a replacement_url")
 
     return errors
 

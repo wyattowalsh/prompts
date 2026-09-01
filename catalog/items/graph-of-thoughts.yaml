@@ -1,0 +1,55 @@
+slug: graph-of-thoughts
+title: Graph-of-Thoughts
+facet: method
+lane: reasoning
+blurb: model intermediate ideas as graph nodes that can be merged, compared, and revisited.
+order: 170
+badge:
+  logo: ri:RiShareLine
+  color: 8B5CF6
+  chip_label: GoT
+evidence: Emerging; primary research.
+safety:
+  - Graph management is more reliable outside a single prompt.
+  - Prefer provider reasoning/thinking controls for single-path jobs.
+caveat: graph management is more reliable outside a single prompt.
+definition: model intermediate ideas as graph nodes that can be merged, compared, and revisited.
+avoid_when: the task is linear or small.
+model_api_controls: >-
+  use structured data or code for graph state when reliability matters. Prefer provider
+  reasoning/thinking controls for single-path jobs; reserve graph search for multi-path
+  synthesis with evals.
+cost_latency: high.
+failure_modes: |-
+  graph bloat, weak conflict resolution, hidden dependency errors.
+   Overusing graph search when API reasoning controls would suffice.
+eval_required: true
+related:
+  - tree-of-thoughts
+sources:
+  - title: Graph of Thoughts
+    url: https://arxiv.org/abs/2308.09687
+  - title: OpenAI reasoning guide
+    url: https://developers.openai.com/api/docs/guides/reasoning
+modes:
+  - id: template
+    label: Method template
+    default: true
+    when_to_use: >-
+      synthesis, multi-document reasoning, and tasks where independent strands
+      recombine.
+    placeholders:
+      - name: task
+        required: true
+        example: Merge three incident notes into one causal account
+        notes: Synthesis task with recombinable strands
+    prompt: |
+      Task:
+      <input>
+      {task}
+      </input>
+
+      Create idea nodes for major claims or solution parts.
+      For each node, list evidence and dependencies.
+      Merge compatible nodes, resolve conflicts, and produce the final answer.
+      Return a concise graph summary, not a hidden reasoning transcript.

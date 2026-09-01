@@ -1,11 +1,44 @@
-"""Shared catalog cardinality and recipe classification constants."""
+"""Shared catalog cardinality and prompt classification constants."""
 
 from __future__ import annotations
 
-RECIPE_COUNT = 48
-PATTERN_NOTE_COUNT = 43
-SECTION_MAP_COUNT = 21
+import re
+from functools import lru_cache
+from pathlib import Path
 
+DEFAULT_INDEX_PATH = Path(__file__).resolve().parent.parent / "catalog" / "index.yaml"
+
+_COUNTS_PROMPTS_RE = re.compile(r"^  prompts:\s+(\d+)\s*$")
+_PROMPT_SLUGS_HEADER_RE = re.compile(r"^    prompt_slugs:\s*$")
+_PROMPT_SLUG_ITEM_RE = re.compile(r"^      - ([a-z0-9]+(?:-[a-z0-9]+)*)$")
+
+SECTION_MAP_PARENT_HEADINGS = (
+    "Start Here",
+    "Prompt Library",
+    "How To Adapt Prompts",
+    "Provider Controls",
+    "Safety, Evals, And Trust Boundaries",
+    "Pattern Selection Matrix",
+    "Contributing Prompts",
+    "Bibliography",
+)
+
+PROMPT_LIBRARY_CATEGORIES = (
+    "Research",
+    "Writing",
+    "Coding",
+    "Data",
+    "Product",
+    "Operations",
+    "Agent and Tool Workflows",
+    "Reasoning",
+)
+
+SECTION_MAP_COUNT = len(SECTION_MAP_PARENT_HEADINGS) + len(PROMPT_LIBRARY_CATEGORIES)
+
+# High-risk job titles that historically carried a Control/evidence note.
+# Generated README cards currently omit the note; checkers validate format only
+# when a note is present.
 CONTROL_NOTE_RECIPES = frozenset(
     {
         "Source-Grounded Answer",
@@ -14,77 +47,91 @@ CONTROL_NOTE_RECIPES = frozenset(
         "Claim Checker",
         "JSON Extractor",
         "Classifier",
-        "NER Extractor",
+        "Named Entity Extraction",
         "Tool-Use Planner",
         "RAG Answer Contract",
         "Prompt-Injection Scanner",
         "Eval-Set Generator",
         "Regression Judge",
         "Prompt Optimizer",
-        "Panel Review",
+        "Simulated Panel",
     }
 )
 
-# Recipe class map for trust-boundary / validation lint (W3).
-RECIPE_CLASS: dict[str, str] = {
-    "Source-Grounded Answer": "research",
-    "Web Research Brief": "research",
-    "Literature Scan": "research",
-    "Claim Checker": "research",
-    "Citation Matrix": "research",
-    "Disagreement Map": "research",
-    "Executive Brief": "editorial",
-    "Rewrite With Constraints": "editorial",
-    "Style Transfer Without Examples": "editorial",
-    "Dense Summary": "editorial",
-    "FAQ Generator": "editorial",
-    "Newsletter Draft": "editorial",
-    "Code Review": "code",
-    "Bug RCA": "code",
-    "Unit Test Writer": "code",
-    "Refactor Planner": "code",
-    "PR Description": "code",
-    "API Contract Explainer": "code",
-    "JSON Extractor": "extract",
-    "Table Normalizer": "extract",
-    "Classifier": "extract",
-    "NER Extractor": "extract",
-    "Sentiment Triage": "extract",
-    "Synthetic Edge Cases": "extract",
-    "PRD Drafter": "product",
-    "User Story Splitter": "product",
-    "Acceptance Criteria Writer": "product",
-    "Launch Checklist": "product",
-    "UX Review": "product",
-    "Support Macro": "product",
-    "Incident Summary": "ops",
-    "Runbook Generator": "ops",
-    "Log Triage": "ops",
-    "Risk Register": "ops",
-    "Decision Memo": "ops",
-    "Meeting Action Extractor": "ops",
-    "Tool-Use Planner": "tools",
-    "RAG Answer Contract": "tools",
-    "Prompt-Injection Scanner": "tools",
-    "Eval-Set Generator": "tools",
-    "Regression Judge": "tools",
-    "Prompt Optimizer": "tools",
-    "Plan-and-Solve": "reasoning",
-    "Step-Back Answer": "reasoning",
-    "Verification Pass": "reasoning",
-    "Self-Refine Pass": "reasoning",
-    "Panel Review": "reasoning",
-    "Tradeoff Matrix": "reasoning",
+# Lane heading → trust-boundary class for STRICT copy-prompt lint.
+LANE_CLASS: dict[str, str] = {
+    "Research": "research",
+    "Writing": "editorial",
+    "Coding": "code",
+    "Data": "extract",
+    "Product": "product",
+    "Operations": "ops",
+    "Agent and Tool Workflows": "tools",
+    "Reasoning": "reasoning",
 }
 
-# High-risk classes that should not rely solely on generic "trusted context" validation.
 STRICT_VALIDATION_CLASSES = frozenset({"research", "code", "tools", "ops"})
 
-# Case-insensitive class signals required somewhere in the copy-prompt haystack
-# (Job / durable / paste zones / validation / output — not Sources bibliography).
 CLASS_SIGNAL_PATTERNS: dict[str, str] = {
     "research": r"evidence|citation|source|missing|ground|claim",
     "code": r"test|fail|diff|verify|bug|lint|repro|patch",
     "tools": r"permission|retriev|eval|inject|tool|optim|metric|judge|failure|side effect|approv",
     "ops": r"risk|incident|reverse|blast|rollback|approval|severity|mitigat|owner|action",
 }
+
+
+@lru_cache(maxsize=8)
+def load_index_catalog(index_path: str) -> tuple[int, tuple[str, ...]]:
+    """Return ``(counts.prompts, prompt_slugs)`` from catalog/index.yaml without PyYAML."""
+    path = Path(index_path)
+    slugs: list[str] = []
+    count: int | None = None
+    in_prompt_slugs = False
+    in_counts = False
+    lineno = 0
+    for lineno, raw in enumerate(path.read_text(encoding="utf-8").splitlines(), start=1):
+        if raw.startswith("counts:"):
+            in_counts = True
+            in_prompt_slugs = False
+            continue
+        if in_counts:
+            match = _COUNTS_PROMPTS_RE.match(raw)
+            if match:
+                count = int(match.group(1))
+                in_counts = False
+                continue
+            if raw and not raw.startswith(" "):
+                in_counts = False
+        if _PROMPT_SLUGS_HEADER_RE.match(raw):
+            in_prompt_slugs = True
+            continue
+        if not in_prompt_slugs:
+            continue
+        item = _PROMPT_SLUG_ITEM_RE.match(raw)
+        if item:
+            slugs.append(item.group(1))
+            continue
+        in_prompt_slugs = False
+    if not slugs:
+        raise ValueError(f"{path}:{lineno}: no prompt_slugs entries found")
+    if count is None:
+        count = len(slugs)
+    return count, tuple(slugs)
+
+
+def load_index_prompt_slugs(index_path: Path | str | None = None) -> list[str]:
+    """Return lane-concatenated ``prompt_slugs`` from catalog/index.yaml."""
+    path = Path(index_path) if index_path is not None else DEFAULT_INDEX_PATH
+    _count, slugs = load_index_catalog(str(path))
+    return list(slugs)
+
+
+def load_prompt_count(index_path: Path | str | None = None) -> int:
+    """Return ``counts.prompts`` from catalog/index.yaml (falls back to slug length)."""
+    path = Path(index_path) if index_path is not None else DEFAULT_INDEX_PATH
+    count, _slugs = load_index_catalog(str(path))
+    return count
+
+
+PROMPT_COUNT = load_prompt_count()
+PROMPT_SLUGS = tuple(load_index_prompt_slugs())

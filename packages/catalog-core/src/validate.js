@@ -1,4 +1,4 @@
-import { LANE_KEYS, PATTERN_SECTIONS } from "./schema.js";
+import { LANE_KEYS } from "./schema.js";
 
 const PLACEHOLDER_IN_PROMPT = /\{([a-z][a-z0-9_]*)\}/g;
 
@@ -8,102 +8,77 @@ const PLACEHOLDER_IN_PROMPT = /\{([a-z][a-z0-9_]*)\}/g;
  */
 export function validateCatalogPackage(pkg, opts = {}) {
   const errors = [];
-  const { index, recipes, patterns } = pkg;
+  const { index, prompts = [] } = pkg;
   const expectFull = opts.expectFullCounts === true;
 
-  const recipeBySlug = new Map();
-  const recipeLogoOwners = new Map();
-  const recipeTitleOwners = new Map();
-  for (const recipe of recipes) {
-    if (recipeBySlug.has(recipe.slug)) {
-      errors.push({ code: "DUPLICATE_SLUG", message: `Duplicate recipe slug ${recipe.slug}` });
+  const promptBySlug = new Map();
+  const promptLogoOwners = new Map();
+  const promptTitleOwners = new Map();
+  for (const prompt of prompts) {
+    if (promptBySlug.has(prompt.slug)) {
+      errors.push({ code: "DUPLICATE_SLUG", message: `Duplicate prompt slug ${prompt.slug}` });
     }
-    recipeBySlug.set(recipe.slug, recipe);
-    const logoOwners = recipeLogoOwners.get(recipe.badge?.logo) ?? [];
-    logoOwners.push(recipe.slug);
-    recipeLogoOwners.set(recipe.badge?.logo, logoOwners);
-    const titleOwners = recipeTitleOwners.get(recipe.title) ?? [];
-    titleOwners.push(recipe.slug);
-    recipeTitleOwners.set(recipe.title, titleOwners);
+    promptBySlug.set(prompt.slug, prompt);
+    const logoOwners = promptLogoOwners.get(prompt.badge?.logo) ?? [];
+    logoOwners.push(prompt.slug);
+    promptLogoOwners.set(prompt.badge?.logo, logoOwners);
+    const titleOwners = promptTitleOwners.get(prompt.title) ?? [];
+    titleOwners.push(prompt.slug);
+    promptTitleOwners.set(prompt.title, titleOwners);
   }
 
-  for (const [logo, owners] of recipeLogoOwners) {
+  for (const [logo, owners] of promptLogoOwners) {
     if (logo && owners.length > 1) {
       errors.push({
-        code: "DUPLICATE_RECIPE_BADGE_LOGO",
-        message: `recipe badge logo ${logo} is shared by: ${owners.join(", ")}`
+        code: "DUPLICATE_PROMPT_BADGE_LOGO",
+        message: `prompt badge logo ${logo} is shared by: ${owners.join(", ")}`
       });
     }
   }
-  for (const [title, owners] of recipeTitleOwners) {
+  for (const [title, owners] of promptTitleOwners) {
     if (owners.length > 1) {
       errors.push({
-        code: "DUPLICATE_RECIPE_TITLE",
-        message: `recipe title ${JSON.stringify(title)} is shared by: ${owners.join(", ")}`
+        code: "DUPLICATE_PROMPT_TITLE",
+        message: `prompt title ${JSON.stringify(title)} is shared by: ${owners.join(", ")}`
       });
     }
   }
 
-  const patternBySlug = new Map();
-  for (const pattern of patterns) {
-    if (patternBySlug.has(pattern.slug)) {
-      errors.push({ code: "DUPLICATE_SLUG", message: `Duplicate pattern slug ${pattern.slug}` });
-    }
-    patternBySlug.set(pattern.slug, pattern);
+  if (index.counts?.prompts != null && index.counts.prompts !== prompts.length) {
+    errors.push({
+      code: "COUNTS_MISMATCH",
+      message: `index.counts.prompts=${index.counts.prompts} but loaded ${prompts.length}`
+    });
   }
 
   if (expectFull) {
-    if (recipes.length !== 48) {
+    if (index.counts?.prompts == null) {
       errors.push({
-        code: "RECIPE_COUNT",
-        message: `Expected 48 recipes, found ${recipes.length}`
+        code: "PROMPT_COUNT",
+        message: "Full catalog index is missing counts.prompts"
       });
-    }
-    if (patterns.length !== 43) {
+    } else if (index.counts.prompts !== prompts.length) {
       errors.push({
-        code: "PATTERN_NOTE_COUNT",
-        message: `Expected 43 patterns, found ${patterns.length}`
+        code: "PROMPT_COUNT",
+        message: `Expected ${index.counts.prompts} prompts, found ${prompts.length}`
       });
     }
 
-    const laneKeys = new Set(index.lanes.map((lane) => lane.key));
-    const missingLaneKeys = LANE_KEYS.filter((key) => !laneKeys.has(key));
+    const presentLaneKeys = new Set((index.lanes ?? []).map((lane) => lane.key));
+    const missingLaneKeys = LANE_KEYS.filter((key) => !presentLaneKeys.has(key));
     if (missingLaneKeys.length > 0) {
       errors.push({
         code: "INDEX_MISSING_LANE_KEYS",
         message: `Full catalog index is missing lane keys: ${missingLaneKeys.join(", ")}`
       });
     }
-
-    const sectionKeys = new Set(index.pattern_sections.map((section) => section.key));
-    const missingSectionKeys = PATTERN_SECTIONS.filter((key) => !sectionKeys.has(key));
-    if (missingSectionKeys.length > 0) {
-      errors.push({
-        code: "INDEX_MISSING_PATTERN_SECTION_KEYS",
-        message: `Full catalog index is missing pattern section keys: ${missingSectionKeys.join(", ")}`
-      });
-    }
   }
 
-  if (index.counts?.recipes != null && index.counts.recipes !== recipes.length) {
-    errors.push({
-      code: "COUNTS_MISMATCH",
-      message: `index.counts.recipes=${index.counts.recipes} but loaded ${recipes.length}`
-    });
-  }
-  if (index.counts?.patterns != null && index.counts.patterns !== patterns.length) {
-    errors.push({
-      code: "COUNTS_MISMATCH",
-      message: `index.counts.patterns=${index.counts.patterns} but loaded ${patterns.length}`
-    });
-  }
-
-  const indexRecipeSlugs = index.lanes.flatMap((lane) => lane.recipe_slugs);
-  const indexPatternSlugs = index.pattern_sections.flatMap((section) => section.pattern_slugs);
+  const indexPromptSlugs = (index.lanes ?? []).flatMap((lane) => lane.prompt_slugs ?? []);
 
   const laneKeys = new Set();
   const duplicateLaneKeys = new Set();
-  for (const lane of index.lanes) {
+  for (const lane of index.lanes ?? []) {
     if (!LANE_KEYS.includes(lane.key)) {
       errors.push({
         code: "INDEX_INVALID_LANE_KEY",
@@ -120,49 +95,30 @@ export function validateCatalogPackage(pkg, opts = {}) {
     });
   }
 
-  const patternSectionKeys = new Set();
-  const duplicatePatternSectionKeys = new Set();
-  for (const section of index.pattern_sections) {
-    if (!PATTERN_SECTIONS.includes(section.key)) {
-      errors.push({
-        code: "INDEX_INVALID_PATTERN_SECTION_KEY",
-        message: `index.pattern_sections contains unsupported key ${section.key}`
-      });
-    }
-    if (patternSectionKeys.has(section.key)) duplicatePatternSectionKeys.add(section.key);
-    patternSectionKeys.add(section.key);
-  }
-  for (const key of duplicatePatternSectionKeys) {
-    errors.push({
-      code: "INDEX_DUPLICATE_PATTERN_SECTION_KEY",
-      message: `index.pattern_sections contains duplicate key ${key}`
-    });
-  }
-
-  const recipeIndexOwners = new Map();
-  for (const lane of index.lanes) {
-    for (const slug of lane.recipe_slugs) {
-      const owners = recipeIndexOwners.get(slug) ?? [];
+  const promptIndexOwners = new Map();
+  for (const lane of index.lanes ?? []) {
+    for (const slug of lane.prompt_slugs ?? []) {
+      const owners = promptIndexOwners.get(slug) ?? [];
       owners.push(lane.key);
-      recipeIndexOwners.set(slug, owners);
+      promptIndexOwners.set(slug, owners);
     }
   }
-  for (const [slug, owners] of recipeIndexOwners) {
+  for (const [slug, owners] of promptIndexOwners) {
     if (owners.length > 1) {
       errors.push({
-        code: "INDEX_DUPLICATE_RECIPE",
-        message: `recipe ${slug} listed multiple times in index.lanes: ${owners.join(", ")}`
+        code: "INDEX_DUPLICATE_PROMPT",
+        message: `prompt ${slug} listed multiple times in index.lanes: ${owners.join(", ")}`
       });
     }
   }
 
-  for (const lane of index.lanes) {
-    const members = new Set(lane.recipe_slugs);
-    for (const slug of lane.featured_recipe_slugs ?? []) {
+  for (const lane of index.lanes ?? []) {
+    const members = new Set(lane.prompt_slugs ?? []);
+    for (const slug of lane.featured_prompt_slugs ?? []) {
       if (!members.has(slug)) {
         errors.push({
-          code: "INDEX_FEATURED_RECIPE_NOT_IN_LANE",
-          message: `featured recipe ${slug} is not listed in index lane ${lane.key}`
+          code: "INDEX_FEATURED_PROMPT_NOT_IN_LANE",
+          message: `featured prompt ${slug} is not listed in index lane ${lane.key}`
         });
       }
     }
@@ -170,13 +126,13 @@ export function validateCatalogPackage(pkg, opts = {}) {
 
   const shortcutOwners = new Map();
   for (const shortcut of index.readme?.shortcuts ?? []) {
-    const owners = shortcutOwners.get(shortcut.recipe_slug) ?? [];
+    const owners = shortcutOwners.get(shortcut.prompt_slug) ?? [];
     owners.push(shortcut.label);
-    shortcutOwners.set(shortcut.recipe_slug, owners);
-    if (!recipeBySlug.has(shortcut.recipe_slug)) {
+    shortcutOwners.set(shortcut.prompt_slug, owners);
+    if (!promptBySlug.has(shortcut.prompt_slug)) {
       errors.push({
-        code: "README_SHORTCUT_MISSING_RECIPE",
-        message: `README shortcut references missing recipe ${shortcut.recipe_slug}`
+        code: "README_SHORTCUT_MISSING_PROMPT",
+        message: `README shortcut references missing prompt ${shortcut.prompt_slug}`
       });
     }
   }
@@ -184,126 +140,142 @@ export function validateCatalogPackage(pkg, opts = {}) {
     if (labels.length > 1) {
       errors.push({
         code: "README_DUPLICATE_SHORTCUT",
-        message: `README shortcut recipe ${slug} is listed multiple times`
+        message: `README shortcut prompt ${slug} is listed multiple times`
       });
     }
   }
 
-  const patternIndexOwners = new Map();
-  for (const section of index.pattern_sections) {
-    for (const slug of section.pattern_slugs) {
-      const owners = patternIndexOwners.get(slug) ?? [];
-      owners.push(section.key);
-      patternIndexOwners.set(slug, owners);
+  for (const slug of indexPromptSlugs) {
+    if (!promptBySlug.has(slug)) {
+      errors.push({
+        code: "INDEX_MISSING_PROMPT",
+        message: `index references missing prompt ${slug}`
+      });
     }
   }
-  for (const [slug, owners] of patternIndexOwners) {
-    if (owners.length > 1) {
+  for (const slug of promptBySlug.keys()) {
+    if (!indexPromptSlugs.includes(slug)) {
       errors.push({
-        code: "INDEX_DUPLICATE_PATTERN",
-        message: `pattern ${slug} listed multiple times in index.pattern_sections: ${owners.join(", ")}`
+        code: "INDEX_ORPHAN_PROMPT",
+        message: `prompt ${slug} not listed in index.lanes`
       });
     }
   }
 
-  for (const slug of indexRecipeSlugs) {
-    if (!recipeBySlug.has(slug)) {
-      errors.push({
-        code: "INDEX_MISSING_RECIPE",
-        message: `index references missing recipe ${slug}`
-      });
-    }
-  }
-  for (const slug of recipeBySlug.keys()) {
-    if (!indexRecipeSlugs.includes(slug)) {
-      errors.push({
-        code: "INDEX_ORPHAN_RECIPE",
-        message: `recipe ${slug} not listed in index.lanes`
-      });
-    }
-  }
-
-  for (const slug of indexPatternSlugs) {
-    if (!patternBySlug.has(slug)) {
-      errors.push({
-        code: "INDEX_MISSING_PATTERN",
-        message: `index references missing pattern ${slug}`
-      });
-    }
-  }
-  for (const slug of patternBySlug.keys()) {
-    if (!indexPatternSlugs.includes(slug)) {
-      errors.push({
-        code: "INDEX_ORPHAN_PATTERN",
-        message: `pattern ${slug} not listed in index.pattern_sections`
-      });
-    }
-  }
-
-  for (const recipe of recipes) {
-    const placeholderNames = new Set();
-    for (const placeholder of recipe.placeholders) {
-      if (placeholderNames.has(placeholder.name)) {
+  for (const prompt of prompts) {
+    const relatedSeen = new Set();
+    for (const relatedSlug of prompt.related ?? []) {
+      if (relatedSlug === prompt.slug) {
         errors.push({
-          code: "DUPLICATE_PLACEHOLDER",
-          message: `recipe ${recipe.slug}: placeholder {${placeholder.name}} is declared multiple times`,
-          recipe: recipe.slug
+          code: "RELATED_SELF",
+          message: `prompt ${prompt.slug}: related lists its own slug`,
+          prompt: prompt.slug
+        });
+      } else if (!promptBySlug.has(relatedSlug)) {
+        errors.push({
+          code: "RELATED_MISSING",
+          message: `prompt ${prompt.slug}: related references missing prompt ${relatedSlug}`,
+          prompt: prompt.slug
         });
       }
-      placeholderNames.add(placeholder.name);
-    }
-
-    const declared = new Set(recipe.placeholders.map((item) => item.name));
-    const used = new Set();
-    for (const match of recipe.prompt.matchAll(PLACEHOLDER_IN_PROMPT)) {
-      used.add(match[1]);
-    }
-    for (const name of used) {
-      if (!declared.has(name)) {
+      if (relatedSeen.has(relatedSlug)) {
         errors.push({
-          code: "UNDECLARED_PLACEHOLDER",
-          message: `recipe ${recipe.slug}: prompt uses {${name}} not in placeholders`,
-          recipe: recipe.slug
+          code: "RELATED_DUPLICATE",
+          message: `prompt ${prompt.slug}: related lists ${relatedSlug} more than once`,
+          prompt: prompt.slug
         });
       }
+      relatedSeen.add(relatedSlug);
     }
-    for (const name of declared) {
-      if (!used.has(name)) {
+
+    const modeIds = new Set();
+    let defaultCount = 0;
+    for (const mode of prompt.modes ?? []) {
+      if (modeIds.has(mode.id)) {
         errors.push({
-          code: "UNUSED_PLACEHOLDER",
-          message: `recipe ${recipe.slug}: placeholder {${name}} unused in prompt`,
-          recipe: recipe.slug
+          code: "DUPLICATE_MODE_ID",
+          message: `prompt ${prompt.slug}: mode id ${mode.id} is declared multiple times`,
+          prompt: prompt.slug
         });
+      }
+      modeIds.add(mode.id);
+      if (mode.default) defaultCount += 1;
+
+      const hasPrompt = Boolean(mode.prompt?.trim());
+      const hasOmissionReason = Boolean(mode.template_omission_reason?.trim());
+      if (hasPrompt === hasOmissionReason) {
+        errors.push({
+          code: "MODE_TEMPLATE_CONTRACT",
+          message: `prompt ${prompt.slug} mode ${mode.id}: exactly one non-empty prompt or template_omission_reason is required`,
+          prompt: prompt.slug,
+          mode: mode.id
+        });
+      }
+
+      const placeholderNames = new Set();
+      for (const placeholder of mode.placeholders ?? []) {
+        if (placeholderNames.has(placeholder.name)) {
+          errors.push({
+            code: "DUPLICATE_PLACEHOLDER",
+            message: `prompt ${prompt.slug} mode ${mode.id}: placeholder {${placeholder.name}} is declared multiple times`,
+            prompt: prompt.slug,
+            mode: mode.id
+          });
+        }
+        placeholderNames.add(placeholder.name);
+      }
+
+      if (hasPrompt) {
+        const declared = new Set((mode.placeholders ?? []).map((item) => item.name));
+        const used = new Set();
+        for (const match of mode.prompt.matchAll(PLACEHOLDER_IN_PROMPT)) {
+          used.add(match[1]);
+        }
+        for (const name of used) {
+          if (!declared.has(name)) {
+            errors.push({
+              code: "UNDECLARED_PLACEHOLDER",
+              message: `prompt ${prompt.slug} mode ${mode.id}: prompt uses {${name}} not in placeholders`,
+              prompt: prompt.slug,
+              mode: mode.id
+            });
+          }
+        }
+        for (const name of declared) {
+          if (!used.has(name)) {
+            errors.push({
+              code: "UNUSED_PLACEHOLDER",
+              message: `prompt ${prompt.slug} mode ${mode.id}: placeholder {${name}} unused in prompt`,
+              prompt: prompt.slug,
+              mode: mode.id
+            });
+          }
+        }
       }
     }
 
-    const lane = recipeIndexOwners.get(recipe.slug)?.[0];
-    if (lane && lane !== recipe.lane) {
+    const modeCount = prompt.modes?.length ?? 0;
+    if (modeCount < 1 || modeCount > 4) {
+      errors.push({
+        code: "MODE_COUNT",
+        message: `prompt ${prompt.slug}: expected 1–4 modes, found ${modeCount}`,
+        prompt: prompt.slug
+      });
+    }
+    if (defaultCount !== 1) {
+      errors.push({
+        code: "MODE_DEFAULT_COUNT",
+        message: `prompt ${prompt.slug}: expected exactly one default mode, found ${defaultCount}`,
+        prompt: prompt.slug
+      });
+    }
+
+    const lane = promptIndexOwners.get(prompt.slug)?.[0];
+    if (lane && lane !== prompt.lane) {
       errors.push({
         code: "LANE_MISMATCH",
-        message: `recipe ${recipe.slug}: lane ${recipe.lane} != index lane ${lane}`,
-        recipe: recipe.slug
-      });
-    }
-  }
-
-  for (const pattern of patterns) {
-    const hasTemplate = Boolean(pattern.template?.trim());
-    const hasOmissionReason = Boolean(pattern.template_omission_reason?.trim());
-    if (hasTemplate === hasOmissionReason) {
-      errors.push({
-        code: "PATTERN_TEMPLATE_CONTRACT",
-        message: `pattern ${pattern.slug}: exactly one non-empty template or template_omission_reason is required`,
-        pattern: pattern.slug
-      });
-    }
-
-    const section = patternIndexOwners.get(pattern.slug)?.[0];
-    if (section && section !== pattern.section) {
-      errors.push({
-        code: "PATTERN_SECTION_MISMATCH",
-        message: `pattern ${pattern.slug}: section ${pattern.section} != index section ${section}`,
-        pattern: pattern.slug
+        message: `prompt ${prompt.slug}: lane ${prompt.lane} != index lane ${lane}`,
+        prompt: prompt.slug
       });
     }
   }
@@ -312,8 +284,7 @@ export function validateCatalogPackage(pkg, opts = {}) {
     ok: errors.length === 0,
     errors,
     summary: {
-      recipes: recipes.length,
-      patterns: patterns.length
+      prompts: prompts.length
     }
   };
 }

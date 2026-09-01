@@ -52,8 +52,8 @@ export async function createCatalogJsonSchemaValidators(schemaDirectory) {
     validate: uniqueBy
   });
 
-  const [indexSchema, recipeSchema, patternSchema] = await Promise.all(
-    ["index.schema.json", "recipe.schema.json", "pattern.schema.json"].map(async (name) =>
+  const [indexSchema, itemSchema] = await Promise.all(
+    ["index.schema.json", "item.schema.json"].map(async (name) =>
       JSON.parse(await readFile(join(schemaDirectory, name), "utf8"))
     )
   );
@@ -61,7 +61,6 @@ export async function createCatalogJsonSchemaValidators(schemaDirectory) {
   return {
     ajv,
     index: ajv.compile(indexSchema),
-    recipe: ajv.compile(recipeSchema),
-    pattern: ajv.compile(patternSchema)
+    item: ajv.compile(itemSchema)
   };
 }

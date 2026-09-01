@@ -3,6 +3,8 @@
 # Keep machine-checkable by scripts/check_sources_manifest.py.
 # Dates are UTC ISO dates. last_checked is inventory-refresh date; re-verify for 'latest model' claims.
 # Coverage: 124 unique external README sources (badge hosts excluded).
+# 2026-09-01 prompts-010 leftovers: live-fetched all 124 URLs (HTTP 200 after
+# redirects). last_checked remains the 2026-08-04 inventory-refresh date.
 
 - id: anthropic-about-claude-model-deprecations
   owner: Anthropic
@@ -18,21 +20,21 @@
   owner: Anthropic
   url: https://platform.claude.com/docs/en/about-claude/models/introducing-claude-fable-5-and-claude-mythos-5
   source_type: official doc
-  status: checked
+  status: redirected
   last_checked: 2026-08-04
   claim_scope: External source cited in the catalog (README refs ~1).
-  replacement_url: none
-  notes: Verify live before latest/current model or API claims. Prefer this over secondary blogs.
+  replacement_url: https://platform.claude.com/docs/en/models/fable-5/introducing-claude-fable-5-and-claude-mythos-5
+  notes: Live 2026-09-01 HTTP 307 to the models/fable-5 docs path. Title "Introducing Claude Fable 5 and Claude Mythos 5 - Claude Platform Docs". Keep the cited URL for README coverage.
 
 - id: anthropic-about-claude-models-overview
   owner: Anthropic
   url: https://platform.claude.com/docs/en/about-claude/models/overview
   source_type: official doc
-  status: checked
+  status: redirected
   last_checked: 2026-08-04
   claim_scope: External source cited in the catalog (README refs ~1).
-  replacement_url: none
-  notes: Verify live before latest/current model or API claims. Prefer this over secondary blogs.
+  replacement_url: https://platform.claude.com/docs/en/models/overview
+  notes: Live 2026-09-01 HTTP 307 to /docs/en/models/overview. Title "Models overview - Claude Platform Docs". Keep the cited URL for README coverage.
 
 - id: anthropic-agents-and-tools-tool-use-manage-tool-context
   owner: Anthropic
@@ -368,11 +370,11 @@
   owner: OpenAI
   url: https://developers.openai.com/api/docs/guides/prompt-guidance
   source_type: official doc
-  status: checked
+  status: replaced
   last_checked: 2026-08-04
   claim_scope: Official prompting guidance.
-  replacement_url: none
-  notes: Verify live before latest/current model or API claims. Prefer this over secondary blogs.
+  replacement_url: https://developers.openai.com/api/docs/guides/latest-model
+  notes: Live 2026-09-01 HTTP 301 onto openai-latest-model (title "Model guidance | OpenAI API"). Do not retarget this id's url; that would duplicate openai-latest-model. Catalog claims still citing prompt-guidance need a research-queue follow-up.
 
 - id: openai-api-prompting
   owner: OpenAI
@@ -648,21 +650,21 @@
   owner: NIST
   url: https://www.nist.gov/itl/ai-risk-management-framework/ai-rmf-playbook
   source_type: standard
-  status: checked
+  status: redirected
   last_checked: 2026-08-04
   claim_scope: AI risk management or generative AI governance.
-  replacement_url: none
-  notes: Safety or governance standard. Prefer primary page over stale mirrors.
+  replacement_url: https://www.nist.gov/itl/ai-risk-management-framework/nist-ai-rmf-playbook
+  notes: Live 2026-09-01 HTTP 301 to /nist-ai-rmf-playbook. Title "NIST AI RMF Playbook | NIST". Keep the cited URL for README coverage.
 
 - id: nist-data-publications-agentdojo-inspect
   owner: NIST
   url: https://www.nist.gov/data-publications/agentdojo-inspect
   source_type: standard
-  status: checked
+  status: redirected
   last_checked: 2026-08-04
   claim_scope: AI risk management or generative AI governance.
-  replacement_url: none
-  notes: Safety or governance standard. Prefer primary page over stale mirrors.
+  replacement_url: https://data.nist.gov/pdr/lps/ark:/88434/mds2-3690
+  notes: Live 2026-09-01 HTTP 303 then 307 onto the NIST PDR landing titled PDR AgentDojo-Inspect. Keep the cited URL for README coverage.
 
 - id: nist-genai-profile
   owner: NIST
@@ -728,11 +730,11 @@
   owner: OWASP
   url: https://genai.owasp.org/resource/owasp-top-10-for-agentic-applications/
   source_type: standard
-  status: checked
+  status: redirected
   last_checked: 2026-08-04
   claim_scope: Safety, injection defense, or adversarial technique reference.
-  replacement_url: none
-  notes: OWASP Top 10 for Agentic Applications 2026, as verified on 2026-08-16. Inventory date stays 2026-08-04 with the rest of the manifest.
+  replacement_url: https://genai.owasp.org/resource/owasp-top-10-for-agentic-applications-for-2026/
+  notes: Live 2026-09-01 HTTP 301 to the 2026 resource URL. Title "OWASP Top 10 for Agentic Applications for 2026 - OWASP Gen AI Security Project". Keep the cited URL for README coverage. Inventory date stays 2026-08-04.
 
 - id: owasp-llm-top-10
   owner: OWASP

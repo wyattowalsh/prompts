@@ -1,0 +1,45 @@
+slug: markmap-generator
+title: "Markmap Generator"
+facet: method
+lane: writing
+blurb: "produce a hierarchical Markdown mind map for Markmap or similar visualization tools."
+order: 80
+badge:
+  logo: ri:RiOrganizationChart
+  color: "7E22CE"
+  chip_label: Markmap
+evidence: "Community. community workflow plus documentation practice."
+safety:
+  - "Do not invent related topics absent from the context."
+  - "Validate generated syntax before publishing."
+caveat: "visual organization is not evidence."
+definition: "produce a hierarchical Markdown mind map for Markmap or similar visualization tools."
+avoid_when: "formal proof, precise citations, or high source fidelity is required."
+model_api_controls: "markdown renderer, syntax check, source IDs."
+cost_latency: low.
+failure_modes: "overbroad maps, unsupported associations, invalid nesting."
+eval_required: true
+sources:
+  - title: "GitHub basic writing and formatting syntax"
+    url: https://docs.github.com/en/get-started/writing-on-github/getting-started-with-writing-and-formatting-on-github/basic-writing-and-formatting-syntax
+  - title: "The Prompt Report"
+    url: https://arxiv.org/abs/2406.06608
+modes:
+  - id: template
+    label: "Method template"
+    default: true
+    when_to_use: "outlines, concept maps, planning artifacts."
+    placeholders:
+      - name: topic
+        required: true
+        example: "Incident response runbook structure"
+        notes: "Subject of the mind map"
+    prompt: |
+      Create a Markmap-compatible outline for {topic}.
+
+      Rules:
+      - Use Markdown headings and nested bullets.
+      - Keep labels short.
+      - Include source IDs for factual claims when sources are provided.
+      - Do not invent related topics absent from the context.
+      - Validate generated syntax before publishing.

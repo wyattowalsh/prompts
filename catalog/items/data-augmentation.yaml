@@ -1,0 +1,69 @@
+slug: data-augmentation
+title: Data Augmentation
+facet: method
+lane: data
+blurb: generate controlled variants for training, testing, or robustness checks.
+order: 70
+badge:
+  logo: ri:RiFileCopyLine
+  color: "D97706"
+  chip_label: Augment
+evidence: Moderate; survey plus official docs.
+safety:
+  - Do not treat generated data as ground truth without review.
+  - Reject variants that change the label or introduce unsupported facts.
+  - Review synthetic data for privacy leakage.
+caveat: synthetic data must be reviewed and measured.
+definition: |
+  generate controlled variants for training, testing, or robustness checks.
+avoid_when: generated data would be treated as ground truth.
+model_api_controls: |
+  sampling settings, deduplication, human review, privacy review.
+cost_latency: moderate.
+failure_modes: |
+  label leakage, semantic drift, low diversity, privacy leakage.
+eval_required: true
+related:
+  - synthetic-edge-cases
+sources:
+  - title: The Prompt Report
+    url: https://arxiv.org/abs/2406.06608
+  - title: Microsoft Foundry prompt engineering
+    url: https://learn.microsoft.com/en-us/azure/foundry/openai/concepts/prompt-engineering
+modes:
+  - id: template
+    label: Method template
+    default: true
+    when_to_use: paraphrases, edge cases, synthetic tests, class-balanced examples with review.
+    placeholders:
+      - name: n
+        required: true
+        example: "8"
+        notes: Number of variants
+      - name: invariant
+        required: true
+        example: original label and stated facts
+        notes: What must stay true
+      - name: dimension
+        required: true
+        example: paraphrase and formatting
+        notes: What to vary
+      - name: input
+        required: true
+        example: Cancel my subscription immediately
+        notes: Seed text
+    prompt: |
+      Generate {n} diverse variants of the input.
+
+      Preserve:
+      - {invariant}
+
+      Vary:
+      - {dimension}
+
+      Reject variants that change the label or introduce unsupported facts.
+
+      Input:
+      <input>
+      {input}
+      </input>

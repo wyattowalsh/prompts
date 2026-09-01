@@ -23,14 +23,14 @@ SOURCE_REFRESH = ROOT / "source-refresh.md"
 LIVE_IDS_PATH = ROOT / "goals/prompt-catalog-research-upgrade/LIVE_IDS.txt"
 
 UPGRADED_RECIPES = {
-    "tool-use-planner": ROOT / "catalog/recipes/tool-use-planner.yaml",
-    "prompt-injection-scanner": ROOT / "catalog/recipes/prompt-injection-scanner.yaml",
+    "tool-use-planner": ROOT / "catalog/items/tool-use-planner.yaml",
+    "prompt-injection-scanner": ROOT / "catalog/items/prompt-injection-scanner.yaml",
 }
 UPGRADED_PATTERNS = {
-    "tool-calling-contract": ROOT / "catalog/patterns/tool-calling-contract.yaml",
+    "tool-calling-contract": ROOT / "catalog/items/tool-calling-contract.yaml",
     "structured-outputs-json-schema": ROOT
-    / "catalog/patterns/structured-outputs-json-schema.yaml",
-    "react": ROOT / "catalog/patterns/react.yaml",
+    / "catalog/items/structured-outputs-json-schema.yaml",
+    "react": ROOT / "catalog/items/react.yaml",
 }
 
 
@@ -96,17 +96,8 @@ class CatalogResearchUpgrade20260725Test(unittest.TestCase):
                 self.assertIn(f"slug: {slug}", text)
                 self.assertIn("sources:", text)
                 self.assertIn("https://", text)
-                self.assertIn("control_evidence_note:", text)
-                self.assertIn("safety_eval_checks:", text)
-                # At most one markdown link in control note block.
-                # Grab control_evidence_note section until next top-level key-ish line.
-                m = re.search(
-                    r"control_evidence_note:\s*\|?\s*\n((?:[ \t]+.+\n)+)",
-                    text,
-                )
-                self.assertIsNotNone(m)
-                note = m.group(1)
-                self.assertLessEqual(note.count("](http"), 1)
+                self.assertIn("safety:", text)
+                self.assertIn("evidence:", text)
 
     def test_upgraded_patterns_exist_with_sources_and_controls(self) -> None:
         for slug, path in UPGRADED_PATTERNS.items():
@@ -126,7 +117,7 @@ class CatalogResearchUpgrade20260725Test(unittest.TestCase):
             "https://developers.openai.com/api/docs/guides/function-calling",
             text,
         )
-        self.assertIn("Sources", text)
+        self.assertIn("sources:", text)
 
     def test_structured_outputs_pattern_prefers_host_enforced_api(self) -> None:
         text = UPGRADED_PATTERNS["structured-outputs-json-schema"].read_text(

@@ -1,5 +1,5 @@
 /**
- * Hybrid README emitter: static shell fragments + catalog-generated library/patterns.
+ * Hybrid README emitter: static shell fragments + catalog-generated Prompt Library.
  */
 
 function escapeHtml(value) {
@@ -36,20 +36,28 @@ const AGENTS_LANE_SAFETY = Object.freeze({
 const AGENTS_LANE_SAFETY_FALLBACK =
   "**Safety:** Treat tool manifests, retrieved passages, and pasted task material as untrusted; require approval for side effects.";
 
-function agentsLaneSafetyLine(recipe) {
-  if (recipe.lane !== "agents") {
+function defaultMode(prompt) {
+  return prompt.modes?.find((mode) => mode.default) ?? prompt.modes?.[0];
+}
+
+function hasPastePath(mode) {
+  return Boolean(mode?.prompt?.trim());
+}
+
+function agentsLaneSafetyLine(prompt) {
+  if (prompt.lane !== "agents") {
     return "";
   }
-  return AGENTS_LANE_SAFETY[recipe.slug] ?? AGENTS_LANE_SAFETY_FALLBACK;
+  return AGENTS_LANE_SAFETY[prompt.slug] ?? AGENTS_LANE_SAFETY_FALLBACK;
 }
 
 /**
  * Heading icon placeholder. Python `update_readme_badges.py` last-writes the
  * ShieldCN query string (RV-S-002); do not rebuild badge URLs here.
  */
-function headingImg(recipe) {
-  const color = recipe.badge.color;
-  const title = escapeHtml(trimFieldBoundaryNewlines(recipe.title));
+function headingImg(prompt) {
+  const color = prompt.badge.color;
+  const title = escapeHtml(trimFieldBoundaryNewlines(prompt.title));
   return `<img src="https://shieldcn.dev/badge/-${color}.svg" alt="" title="${title}" height="28" width="28" loading="lazy" decoding="async" style="vertical-align:text-bottom;margin-right:0.35em;" />`;
 }
 
@@ -57,9 +65,9 @@ function headingImg(recipe) {
  * Lane-chip placeholder. Python `replace_lane_chips` last-writes the marker
  * interior (RV-S-002); do not rebuild ShieldCN query strings here.
  */
-function chipImg(recipe) {
-  const alt = escapeHtml(trimFieldBoundaryNewlines(recipe.title));
-  return `<a href="#${recipe.slug}"><img alt="${alt}" src="https://shieldcn.dev/badge/placeholder.svg"></a>`;
+function chipImg(prompt) {
+  const alt = escapeHtml(trimFieldBoundaryNewlines(prompt.title));
+  return `<a href="#${prompt.slug}"><img alt="${alt}" src="https://shieldcn.dev/badge/placeholder.svg"></a>`;
 }
 
 function formatExample(example) {
@@ -108,6 +116,14 @@ function escapeMarkdownLinkDestination(value) {
   );
 }
 
+function catalogItemUrl(pkg, slug) {
+  const base = pkg?.index?.meta?.web_base_url_default;
+  if (typeof base === "string" && base.length > 0) {
+    return `${base.replace(/\/+$/u, "")}/catalog/${slug}/`;
+  }
+  return `/catalog/${slug}/`;
+}
+
 function emitPlaceholderTable(placeholders) {
   const rows = placeholders.map((ph) => {
     const example = escapeMarkdownTableCell(formatExample(ph.example));
@@ -153,66 +169,93 @@ function emitSafetyLine(checks) {
   return checks.map(trimFieldBoundaryNewlines).join("; ");
 }
 
-export function emitRecipeCard(recipe) {
+function emitModeTable(prompt, itemUrl) {
+  if (!prompt.modes || prompt.modes.length <= 1) return "";
+  const rows = prompt.modes.map((mode) => {
+    const idCell = mode.default ? `\`${mode.id}\` (default)` : `\`${mode.id}\``;
+    return `| ${idCell} | ${escapeMarkdownTableCell(mode.label)} | ${escapeMarkdownTableCell(mode.when_to_use)} |`;
+  });
+  const parts = ["| Mode | Label | When to use |", "| --- | --- | --- |", ...rows];
+  if (itemUrl) {
+    parts.push("");
+    parts.push(
+      `Other modes: [${escapeMarkdownLinkText(prompt.title)}](${escapeMarkdownLinkDestination(itemUrl)})`
+    );
+  }
+  return parts.join("\n");
+}
+
+export function emitPromptCard(prompt, options = {}) {
+  const mode = options.mode ?? defaultMode(prompt);
+  const placeholders = mode?.placeholders ?? [];
+  const pastePath = hasPastePath(mode);
   const parts = [];
-  parts.push(`<h4 id="${recipe.slug}">`);
-  parts.push(`  ${headingImg(recipe)}`);
-  parts.push(`  ${trimFieldBoundaryNewlines(recipe.title)}`);
+  parts.push(`<h4 id="${prompt.slug}">`);
+  parts.push(`  ${headingImg(prompt)}`);
+  parts.push(`  ${trimFieldBoundaryNewlines(prompt.title)}`);
   parts.push(`</h4>`);
   parts.push("");
-  parts.push(`Use for: ${trimFieldBoundaryNewlines(recipe.use_for)}`);
+  parts.push(`Use for: ${trimFieldBoundaryNewlines(prompt.blurb)}`);
   parts.push("");
-  parts.push(emitPlaceholderTable(recipe.placeholders));
-  parts.push("");
-  const previews = emitPreviews(recipe.placeholders);
-  if (previews) {
-    parts.push(previews);
+  const modeTable = emitModeTable(prompt, options.itemUrl);
+  if (modeTable) {
+    parts.push(modeTable);
     parts.push("");
   }
-  parts.push("---");
-  parts.push(ABOVE_FENCE_NONE);
-  const safety = agentsLaneSafetyLine(recipe);
-  if (safety) {
+  if (pastePath) {
+    parts.push(emitPlaceholderTable(placeholders));
     parts.push("");
-    parts.push(safety);
+    const previews = emitPreviews(placeholders);
+    if (previews) {
+      parts.push(previews);
+      parts.push("");
+    }
+    parts.push("---");
+    parts.push(ABOVE_FENCE_NONE);
+    const safety = agentsLaneSafetyLine(prompt);
+    if (safety) {
+      parts.push("");
+      parts.push(safety);
+    }
+    parts.push("");
+    parts.push("<!-- Copy prompt: -->");
+    parts.push("");
+    parts.push("```text");
+    parts.push(stripOneTerminalLineBreak(mode.prompt));
+    parts.push("```");
+    parts.push("");
+  } else if (mode?.template_omission_reason?.trim()) {
+    parts.push(`Copyable template: ${trimFieldBoundaryNewlines(mode.template_omission_reason)}`);
+    parts.push("");
   }
-  parts.push("");
-  parts.push("<!-- Copy prompt: -->");
-  parts.push("");
-  parts.push("```text");
-  parts.push(stripOneTerminalLineBreak(recipe.prompt));
-  parts.push("```");
-  parts.push("");
   parts.push("<details>");
   parts.push(
     "<summary><strong>After copy</strong> — fill · output · upgrade · safety · sources</summary>"
   );
   parts.push("");
-  parts.push("Fill these in:");
-  parts.push("");
-  parts.push("Match the **placeholder table** above; paste `none` for optional zones you omit.");
-  parts.push("");
-  parts.push("Expected output:");
-  parts.push("");
-  parts.push(trimFieldBoundaryNewlines(recipe.after_copy.expected_output));
-  parts.push("");
-  parts.push("Upgrade when:");
-  parts.push("");
-  parts.push(trimFieldBoundaryNewlines(recipe.after_copy.upgrade_when));
-  parts.push("");
-  if (recipe.after_copy.control_evidence_note) {
-    parts.push(
-      `Control/evidence note: ${trimFieldBoundaryNewlines(recipe.after_copy.control_evidence_note)}`
-    );
+  if (pastePath) {
+    parts.push("Fill these in:");
+    parts.push("");
+    parts.push("Match the **placeholder table** above; paste `none` for optional zones you omit.");
+    parts.push("");
+  }
+  if (mode?.after_copy) {
+    parts.push("Expected output:");
+    parts.push("");
+    parts.push(trimFieldBoundaryNewlines(mode.after_copy.expected_output));
+    parts.push("");
+    parts.push("Upgrade when:");
+    parts.push("");
+    parts.push(trimFieldBoundaryNewlines(mode.after_copy.upgrade_when));
     parts.push("");
   }
   parts.push("Safety/eval checks:");
   parts.push("");
-  parts.push(emitSafetyLine(recipe.after_copy.safety_eval_checks));
+  parts.push(emitSafetyLine(prompt.safety ?? []));
   parts.push("");
   parts.push("Sources:");
   parts.push("");
-  parts.push(emitSourcesLine(recipe.sources));
+  parts.push(emitSourcesLine([...(prompt.sources ?? []), ...(mode?.sources ?? [])]));
   parts.push("");
   parts.push("</details>");
   parts.push("");
@@ -241,78 +284,31 @@ function laneAnchor(lane) {
 }
 
 export function emitPromptLibrary(pkg) {
-  const { recipes, index } = pkg;
-  const bySlug = new Map(recipes.map((r) => [r.slug, r]));
+  const { prompts, index } = pkg;
+  const bySlug = new Map((prompts ?? []).map((prompt) => [prompt.slug, prompt]));
   const out = [];
   out.push("## Prompt Library");
   out.push("");
 
-  for (const lane of [...index.lanes].sort((a, b) => a.order - b.order)) {
+  for (const lane of [...(index.lanes ?? [])].sort((a, b) => a.order - b.order)) {
     out.push(`### ${laneKeyToHeading(lane)}`);
     out.push("");
     out.push(`<!-- LANE-CHIPS:${lane.key}:START -->`);
     out.push('<p align="left">');
-    const chips = (lane.featured_recipe_slugs ?? lane.recipe_slugs)
+    const chips = (lane.featured_prompt_slugs ?? lane.prompt_slugs ?? [])
       .map((slug) => bySlug.get(slug))
       .filter(Boolean)
-      .map((recipe) => `  ${chipImg(recipe)}`)
+      .map((prompt) => `  ${chipImg(prompt)}`)
       .join("\n");
     out.push(chips);
     out.push("</p>");
     out.push(`<!-- LANE-CHIPS:${lane.key}:END -->`);
     out.push("");
 
-    for (const slug of lane.recipe_slugs) {
-      const recipe = bySlug.get(slug);
-      if (!recipe) continue;
-      out.push(emitRecipeCard(recipe));
-    }
-  }
-  return out.join("\n").replace(/\n+$/, "\n");
-}
-
-export function emitPatternNotes(pkg) {
-  const { patterns, index } = pkg;
-  const bySlug = new Map(patterns.map((p) => [p.slug, p]));
-  const out = [];
-  out.push("## Pattern Notes");
-  out.push("");
-
-  for (const section of [...index.pattern_sections].sort((a, b) => a.order - b.order)) {
-    out.push(`### ${trimFieldBoundaryNewlines(section.title)}`);
-    out.push("");
-    for (const slug of section.pattern_slugs) {
-      const pattern = bySlug.get(slug);
-      if (!pattern) continue;
-      out.push(`#### ${trimFieldBoundaryNewlines(pattern.title)}`);
-      out.push("");
-      out.push(`- **Definition**: ${trimFieldBoundaryNewlines(pattern.definition)}`);
-      out.push(`- **Best use**: ${trimFieldBoundaryNewlines(pattern.best_use)}`);
-      out.push(`- **Avoid when**: ${trimFieldBoundaryNewlines(pattern.avoid_when)}`);
-      if (pattern.template) {
-        out.push(`- **Copyable template**:`);
-        out.push("");
-        out.push("```text");
-        out.push(stripOneTerminalLineBreak(pattern.template));
-        out.push("```");
-        // Blank line after fence so MD031/MD032 pass (fence then list).
-        out.push("");
-      } else if (pattern.template_omission_reason) {
-        out.push(
-          `- **Copyable template**: ${trimFieldBoundaryNewlines(pattern.template_omission_reason)}`
-        );
-      }
-      out.push(
-        `- **Model/API controls**: ${trimFieldBoundaryNewlines(pattern.model_api_controls)}`
-      );
-      out.push(`- **Cost and latency**: ${trimFieldBoundaryNewlines(pattern.cost_latency)}`);
-      out.push(`- **Failure modes**: ${trimFieldBoundaryNewlines(pattern.failure_modes)}`);
-      out.push(`- **Evidence tier**: ${trimFieldBoundaryNewlines(pattern.evidence_tier)}`);
-      out.push(`- **Source type**: ${trimFieldBoundaryNewlines(pattern.source_type)}`);
-      out.push(`- **Eval required**: ${pattern.eval_required ? "yes" : "no"}`);
-      out.push(`- **Caveat**: ${trimFieldBoundaryNewlines(pattern.caveat)}`);
-      out.push(`- **Sources**: ${emitSourcesLine(pattern.sources)}`);
-      out.push("");
+    for (const slug of lane.prompt_slugs ?? []) {
+      const prompt = bySlug.get(slug);
+      if (!prompt) continue;
+      out.push(emitPromptCard(prompt, { itemUrl: catalogItemUrl(pkg, slug) }));
     }
   }
   return out.join("\n").replace(/\n+$/, "\n");
@@ -321,13 +317,67 @@ export function emitPatternNotes(pkg) {
 /**
  * @param {{ preamble: string, middle: string, post: string }} shell
  */
+function emitPromptIndex(pkg) {
+  const bySlug = new Map((pkg.prompts ?? []).map((prompt) => [prompt.slug, prompt]));
+  const lanes = [...(pkg.index.lanes ?? [])].sort((a, b) => a.order - b.order);
+  const headerColors = {
+    research: { bg: "#172554", fg: "#93c5fd" },
+    writing: { bg: "#3b0764", fg: "#d8b4fe" },
+    coding: { bg: "#14532d", fg: "#86efac" },
+    data: { bg: "#713f12", fg: "#fde047" },
+    product: { bg: "#500724", fg: "#f9a8d4" },
+    operations: { bg: "#431407", fg: "#fdba74" },
+    agents: { bg: "#164e63", fg: "#67e8f9" },
+    reasoning: { bg: "#2e1065", fg: "#c4b5fd" }
+  };
+  const cell = (lane) => {
+    const links = (lane.prompt_slugs ?? [])
+      .map((slug) => bySlug.get(slug))
+      .filter(Boolean)
+      .map(
+        (prompt, index) =>
+          `<kbd>${String(index + 1).padStart(2, "0")}</kbd> <a href="#${prompt.slug}">${escapeHtml(prompt.title)}</a>`
+      )
+      .join("<br>");
+    return `<td valign="top">${links}</td>`;
+  };
+  const row = (slice) => {
+    const heads = slice
+      .map((lane) => {
+        const tone = headerColors[lane.key] ?? { bg: "#111827", fg: "#e5e7eb" };
+        return `<th style="background-color:${tone.bg};color:${tone.fg}">${escapeHtml(lane.title)}</th>`;
+      })
+      .join("");
+    const cells = slice.map((lane) => cell(lane)).join("");
+    return `  <tr>\n    ${heads}\n  </tr>\n  <tr>\n    ${cells}\n  </tr>`;
+  };
+  const top = lanes.slice(0, 4);
+  const bottom = lanes.slice(4);
+  return `<table>\n${row(top)}\n${row(bottom)}\n</table>`;
+}
+
+function applyShellCatalog(fragment, pkg) {
+  const count = String(pkg.prompts?.length ?? pkg.index.counts?.prompts ?? 0);
+  let next = fragment.replaceAll("<!-- PROMPT-COUNT -->", count);
+  const indexStart = "<!-- PROMPT-INDEX:START -->";
+  const indexEnd = "<!-- PROMPT-INDEX:END -->";
+  const start = next.indexOf(indexStart);
+  const end = next.indexOf(indexEnd);
+  if (start >= 0 && end > start) {
+    next = `${next.slice(0, start)}${indexStart}\n${emitPromptIndex(pkg)}\n${indexEnd}${next.slice(end + indexEnd.length)}`;
+  }
+  return next;
+}
+
 export function emitReadmeFromPackage(pkg, shell) {
   if (!shell?.preamble || !shell?.middle || !shell?.post) {
     throw new Error("shell must include preamble, middle, and post fragments");
   }
   const library = emitPromptLibrary(pkg);
-  const patternNotes = emitPatternNotes(pkg);
-  const joined = [shell.preamble, library, shell.middle, patternNotes, shell.post]
+  const preamble = applyShellCatalog(shell.preamble, pkg);
+  const middle = applyShellCatalog(shell.middle, pkg);
+  const post = applyShellCatalog(shell.post, pkg);
+  const joined = [preamble, library, middle, post]
     .map((fragment) => fragment.replace(/^\n+|\n+$/gu, ""))
     .join("\n\n");
   return `${joined}\n`;

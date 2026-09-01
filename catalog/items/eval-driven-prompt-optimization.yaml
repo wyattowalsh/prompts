@@ -1,0 +1,89 @@
+slug: eval-driven-prompt-optimization
+title: Eval-Driven Prompt Optimization
+facet: method
+lane: agents
+blurb: generate, test, and select prompt variants using a held-out eval set.
+order: 70
+badge:
+  logo: ri:RiLineChartLine
+  color: "0284C7"
+  chip_label: Eval-Driven
+evidence: Moderate. Primary papers plus framework research.
+safety:
+  - Never select prompt variants by vibe alone.
+  - Automatic prompt search is not a substitute for representative evals.
+caveat: automatic prompt search is not a substitute for representative evals.
+definition: generate, test, and select prompt variants using a held-out eval set.
+avoid_when: there is no stable task definition or eval set.
+model_api_controls: >-
+  track model snapshot, decoding, reasoning effort, schema version, and tool
+  definitions. Prefer provider eval platforms and fixed regression sets; never
+  select prompt variants by vibe alone.
+cost_latency: high upfront; lower regression risk later.
+failure_modes: overfitting, benchmark leakage, optimizing the wrong metric.
+eval_required: true
+related:
+  - evaluation-flywheel
+  - prompt-optimizer
+sources:
+  - title: OPRO
+    url: https://arxiv.org/abs/2309.03409
+  - title: DSPy
+    url: https://arxiv.org/abs/2310.03714
+  - title: OpenAI Cookbook eval flywheel
+    url: https://github.com/openai/openai-cookbook/blob/main/examples/evaluation/Building_resilient_prompts_using_an_evaluation_flywheel.md
+  - title: OpenAI evaluation best practices
+    url: https://developers.openai.com/api/docs/guides/evaluation-best-practices
+modes:
+  - id: template
+    label: Method template
+    default: true
+    when_to_use: >-
+      Production prompts, routers, classifiers, extraction tasks, and prompts
+      with measurable outcomes.
+    placeholders:
+      - name: task
+        required: true
+        example: Improve the support-ticket classifier prompt
+        notes: Optimization task
+      - name: instruction_wording
+        required: true
+        example: Try a shorter instruction that names abstain rules
+        notes: Candidate instruction wording
+      - name: examples
+        required: true
+        example: Two labeled tickets, billing vs outage
+        notes: Candidate examples
+      - name: output_contract
+        required: true
+        example: JSON label, evidence, and abstain fields
+        notes: Candidate output contract
+      - name: reasoning_tool_schema_controls
+        required: true
+        example: schema required; no tools; low reasoning effort
+        notes: Reasoning, tool, or schema controls
+      - name: held_out_cases_with_expected_behavior
+        required: true
+        example: see_preview_below
+        notes: Held-out eval cases with expected behavior
+        preview: |
+          Case 1: billing ticket -> label billing, cite amount
+          Case 2: missing price -> abstain
+    prompt: |
+      Optimization task:
+      {task}
+
+      Candidate prompt dimensions:
+      - {instruction_wording}
+      - {examples}
+      - {output_contract}
+      - {reasoning_tool_schema_controls}
+
+      Eval set:
+      <cases>
+      {held_out_cases_with_expected_behavior}
+      </cases>
+
+      Selection rule:
+      Choose the smallest prompt that improves the target metric without regressing
+      safety, refusal, parser validity, or latency constraints.

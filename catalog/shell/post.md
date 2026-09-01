@@ -1,8 +1,8 @@
-## Contributing Prompt Recipes
+## Contributing Prompts
 
-Recipes earn their place by usefulness and evidence, not novelty. README checks validate documentation quality, not runtime model behavior.
+Prompts earn their place by usefulness and evidence, not novelty. README checks validate documentation quality, not runtime model behavior.
 
-Before adding or changing a recipe or pattern note:
+Before adding or changing a prompt:
 
 - [ ] Name task type, user, and output consumer.
 - [ ] Define success criteria and failure cases before editing.
@@ -24,7 +24,7 @@ Validation: run the block in [AGENTS.md § Validation](AGENTS.md#validation).
 - [ ] Heading anchors resolve on GitHub.
 - [ ] Alerts and Mermaid render in light and dark themes.
 - [ ] Critical safety warnings stay visible outside collapses.
-- [ ] Every recipe has a copyable template; every pattern note links a recipe or skeleton.
+- [ ] Every job prompt has a copyable template; method prompts include a template or an omission reason.
 
 </details>
 

@@ -18,7 +18,7 @@ export const CHROME_WIDTH = 1280;
 export const CHROME_HEIGHT = 360;
 export const CHROME_DEVICE_PIXEL_RATIO = 2;
 export const CHROME_ALT = Object.freeze({
-  hero: "Prompt Library: research-backed recipes you copy, adapt, and verify.",
+  hero: "Prompt Library: research-backed prompts you copy, adapt, and verify.",
   path: "Fill the placeholder table, copy the text template, then verify safety and sources."
 });
 

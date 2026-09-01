@@ -1,6 +1,6 @@
 ## How To Adapt Prompts
 
-Treat recipes as interfaces, not magic phrases.
+Treat prompts as interfaces, not magic phrases.
 
 1. Keep the task concrete; durable instructions before context.
 2. Separate trusted context and untrusted input in delimited blocks.
@@ -15,7 +15,7 @@ Treat recipes as interfaces, not magic phrases.
 
 ```mermaid
 flowchart LR
-    A["Pick the closest recipe"] --> B["Fill trusted context and untrusted input"]
+    A["Pick the closest prompt"] --> B["Fill trusted context and untrusted input"]
     B --> C{"Will software consume the output?"}
     C -- "yes" --> D["Add schema or tool contract"]
     C -- "no" --> E["Ask for answer, checks, and uncertainty"]
@@ -27,7 +27,7 @@ flowchart LR
 
 </details>
 
-Text equivalent of the escalation flow: pick the closest recipe; fill trusted context and untrusted input; if software will consume the output, add a schema or tool contract then run parser and regression evals; otherwise ask for the answer, checks, and uncertainty, and add evals when the workflow is reusable or high-stakes.
+Text equivalent of the escalation flow: pick the closest prompt; fill trusted context and untrusted input; if software will consume the output, add a schema or tool contract then run parser and regression evals; otherwise ask for the answer, checks, and uncertainty, and add evals when the workflow is reusable or high-stakes.
 
 <p align="right">
   <a href="#table-of-contents"><img alt="Table of contents" src="https://shieldcn.dev/badge/TOC-6366F1.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiListCheck&logoColor=f8fafc"></a>
@@ -38,7 +38,7 @@ Text equivalent of the escalation flow: pick the closest recipe; fill trusted co
 
 ## Provider Controls
 
-Provider badges link to docs, not endorsements. Verify model-specific controls in the same pass when a recipe depends on them.
+Provider badges link to docs, not endorsements. Verify model-specific controls in the same pass when a prompt depends on them.
 
 | Provider | Check first | Prompt implication |
 | --- | --- | --- |
@@ -48,7 +48,7 @@ Provider badges link to docs, not endorsements. Verify model-specific controls i
 | Perplexity | [Search API](https://docs.perplexity.ai/docs/search/quickstart), [Search endpoint](https://docs.perplexity.ai/api-reference/search-post), [Agent API](https://docs.perplexity.ai/docs/agent-api/quickstart), [Agent web search](https://docs.perplexity.ai/docs/agent-api/tools/web-search) | Search workflows where citations and freshness matter; verify filters, citation fields, and API options live. |
 | Grok / xAI | [Overview](https://docs.x.ai/overview), [structured outputs](https://docs.x.ai/developers/model-capabilities/text/structured-outputs), [function calling](https://docs.x.ai/developers/tools/function-calling), [web search](https://docs.x.ai/developers/tools/web-search), [reasoning](https://docs.x.ai/developers/model-capabilities/text/reasoning) | Verify behavior live; do not assume OpenAI-compatible parity. |
 | Microsoft / Azure AI Foundry | [Prompt engineering](https://learn.microsoft.com/en-us/azure/foundry/openai/concepts/prompt-engineering), [structured outputs](https://learn.microsoft.com/en-us/azure/foundry/openai/how-to/structured-outputs), [run evaluations](https://learn.microsoft.com/en-us/azure/foundry/how-to/evaluate-generative-ai-app), [Prompt Shields](https://learn.microsoft.com/en-us/azure/foundry/openai/concepts/content-filter-prompt-shields) | Treat safety system messages, structured outputs, evaluations, guardrails, and prompt shields as controls around the prompt. |
-| Artificial Analysis | [Artificial Analysis](https://artificialanalysis.ai/) | Benchmark context for model selection — not recipe evidence. |
+| Artificial Analysis | [Artificial Analysis](https://artificialanalysis.ai/) | Benchmark context for model selection — not prompt evidence. |
 
 <p align="right">
   <a href="#table-of-contents"><img alt="Table of contents" src="https://shieldcn.dev/badge/TOC-6366F1.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiListCheck&logoColor=f8fafc"></a>
@@ -118,16 +118,16 @@ Provider badges link to docs, not endorsements. Verify model-specific controls i
 | Need | Start with | Escalate to | Avoid |
 | --- | --- | --- | --- |
 | Simple answer or transformation | [Direct Zero-Shot](#direct-zero-shot) | [Structured Zero-Shot](#structured-zero-shot) | Long CoT or generic personas |
-| Strict machine-readable output | [Structured Outputs](#structured-outputs--json-schema) | Tool/function schema plus parser tests | Prompt-only JSON with no validation |
+| Strict machine-readable output | [Structured Outputs](#structured-outputs-json-schema) | Tool/function schema plus parser tests | Prompt-only JSON with no validation |
 | New label set or style | [Few-Shot Prompting](#few-shot-prompting) | [Active-Prompt](#active-prompt), [Eval-Driven Prompt Optimization](#eval-driven-prompt-optimization) | Unreviewed examples |
-| Current/private knowledge | [RAG / Citation-Grounded Answering](#rag--citation-grounded-answering) | [Context Engineering](#context-engineering), evals | Relying on model memory |
+| Current/private knowledge | [RAG / Citation-Grounded Answering](#rag-citation-grounded-answering) | [Context Engineering](#context-engineering), evals | Relying on model memory |
 | Untrusted retrieved content | [Prompt Injection Defense](#prompt-injection-defense) | Tool allowlists and human review | Letting sources rewrite instructions |
 | Tool/API action | [Tool Calling Contract](#tool-calling-contract) | [ReAct](#react) with guardrails | Simulated tools or unchecked side effects |
-| Multi-step reasoning | [Plan-and-Solve](#plan-and-solve-prompting) | [Self-Consistency](#self-consistency), [Program-of-Thoughts](#program-of-thoughts) | Public long CoT by default |
+| Multi-step reasoning | [Plan-and-Solve](#plan-then-solve) | [Self-Consistency](#self-consistency), [Program-of-Thoughts](#program-of-thoughts) | Public long CoT by default |
 | Factual answer | RAG plus structured output | [Chain-of-Verification](#chain-of-verification) | Unsupported self-critique |
-| Creative/editorial revision | [Self-Refine](#self-refine) | Human review loop | Infinite self-review |
+| Creative/editorial revision | [Self-Refine](#critique-revise) | Human review loop | Infinite self-review |
 | Hard combinatorial search | [Tree-of-Thoughts](#tree-of-thoughts) | [Graph-of-Thoughts](#graph-of-thoughts), external solver | High-cost search on easy tasks |
-| Ambiguous user intent | [Intentional Analysis](#intentional-analysis) | Clarifying question, [Step-Back](#step-back-prompting) | Inventing hidden intent |
+| Ambiguous user intent | [Intentional Analysis](#intentional-analysis) | Clarifying question, [Step-Back](#step-back-reasoning) | Inventing hidden intent |
 | High-stakes decision | Structured prompt plus review path | Domain expert and documented eval | Treating model output as authority |
 
 <p align="right">

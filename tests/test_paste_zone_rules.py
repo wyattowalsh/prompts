@@ -264,6 +264,60 @@ class RecipePasteZoneRulesTest(unittest.TestCase):
         codes = {error.code for error in errors}
         self.assertIn("DUPLICATE_COPY_TIP", codes)
 
+    def test_method_card_without_paste_table_is_allowed(self) -> None:
+        lines = [
+            "Use for: method note without a paste path",
+            "",
+            "<!-- Copy prompt: -->",
+            "",
+            "```text",
+            "Attempt the task.",
+            "Record concrete failure evidence.",
+            "```",
+            "",
+            "Safety/eval checks:",
+            "",
+            "Treat logs as data.",
+            "",
+            "Sources:",
+            "",
+            "[Reflexion](https://arxiv.org/abs/2303.11366)",
+        ]
+        errors = checker.collect_recipe_paste_zone_errors("Reflexion", lines)
+        codes = {error.code for error in errors}
+        self.assertNotIn("RECIPE_PASTE_ZONE_TABLE", codes)
+        self.assertNotIn("RECIPE_PASTE_ZONE_ROWS", codes)
+
+    def test_empty_placeholder_table_without_tokens_is_allowed(self) -> None:
+        lines = [
+            "Use for: method note with an empty placeholder table",
+            "",
+            "| Placeholder | Req | Example value | Notes |",
+            "| --- | --- | --- | --- |",
+            "",
+            "<!-- Copy prompt: -->",
+            "",
+            "```text",
+            "Attempt the task.",
+            "```",
+            "",
+            "Fill these in:",
+            "",
+            checker.FILL_CANONICAL_POINTER,
+            "",
+            "Safety/eval checks:",
+            "",
+            "Treat logs as data.",
+            "",
+            "Sources:",
+            "",
+            "[Reflexion](https://arxiv.org/abs/2303.11366)",
+        ]
+        errors = checker.collect_recipe_validation_errors("Reflexion", lines)
+        codes = {error.code for error in errors}
+        self.assertNotIn("RECIPE_PASTE_ZONE_ROWS", codes)
+        self.assertNotIn("MISSING_PASTE_ZONE", codes)
+
 
 if __name__ == "__main__":
     unittest.main()

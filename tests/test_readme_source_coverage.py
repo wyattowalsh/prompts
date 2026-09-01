@@ -28,6 +28,9 @@ REPO_META_PREFIXES = (
     "https://github.com/wyattowalsh/prompts",
     "https://github.com/wyattowalsh/prompts/",
 )
+CATALOG_ITEM_URL_RE = re.compile(
+    r"^https://prompts\.w4w\.dev/catalog/[a-z0-9]+(?:-[a-z0-9]+)*/?$"
+)
 
 
 def _normalize_url(raw: str) -> str:
@@ -79,6 +82,8 @@ def extract_readme_external_urls(text: str) -> set[str]:
         if _is_badge_or_asset_host(parsed.netloc):
             continue
         if _is_repo_meta(url):
+            continue
+        if CATALOG_ITEM_URL_RE.match(url):
             continue
         found.add(url)
     return found

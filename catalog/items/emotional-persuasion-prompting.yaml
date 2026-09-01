@@ -1,0 +1,53 @@
+slug: emotional-persuasion-prompting
+title: Emotional Persuasion Prompting
+facet: method
+lane: reasoning
+blurb: add emotional framing or stakes to a prompt.
+order: 210
+badge:
+  logo: ri:RiHeartPulseLine
+  color: 8B5CF6
+  chip_label: Emotion
+evidence: Experimental; primary paper plus caveat studies.
+safety:
+  - >-
+    Do not add emotional pressure unless a task-specific evaluation shows it improves
+    this task without increasing manipulation or bias risk.
+  - >-
+    Avoid safety-sensitive, bias-sensitive, or user-facing tasks where emotional
+    pressure would be manipulative.
+caveat: prefer clear goals and criteria over emotional pressure.
+definition: add emotional framing or stakes to a prompt.
+avoid_when: >-
+  task is safety-sensitive, bias-sensitive, user-facing, or emotional pressure would be
+  manipulative.
+model_api_controls: tone/style settings where available.
+cost_latency: low.
+failure_modes: manipulation, bias amplification, brittle gains.
+eval_required: true
+sources:
+  - title: EmotionPrompt
+    url: https://arxiv.org/abs/2307.11760
+  - title: On Second Thought, Let's Not Think Step by Step
+    url: https://arxiv.org/abs/2212.08061
+  - title: Prompting Science Report 1
+    url: https://arxiv.org/abs/2503.04818
+modes:
+  - id: template
+    label: Method template
+    default: true
+    when_to_use: >-
+      controlled experiments where an eval can measure whether tone helps a specific
+      task.
+    placeholders:
+      - name: task
+        required: true
+        example: Summarize the incident without assigning blame
+        notes: Task to complete
+    prompt: |
+      Use a professional, context-appropriate tone.
+      Do not add emotional pressure unless a task-specific evaluation shows it
+      improves this task without increasing manipulation or bias risk.
+
+      Task:
+      {task}

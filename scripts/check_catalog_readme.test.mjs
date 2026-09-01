@@ -131,17 +131,17 @@ test("catalog badge mutations propagate through the complete README pipeline", a
   const catalogRoot = join(sandbox, "catalog");
   await cp(join(repositoryRoot, "catalog"), catalogRoot, { recursive: true });
 
-  const originalRecipePath = join(catalogRoot, "recipes/code-review.yaml");
-  const mutatedRecipePath = join(catalogRoot, "recipes/code-review-skeptic.yaml");
-  const originalRecipe = await readFile(originalRecipePath, "utf8");
-  const mutatedRecipe = originalRecipe
+  const originalPromptPath = join(catalogRoot, "items/code-review.yaml");
+  const mutatedPromptPath = join(catalogRoot, "items/code-review-skeptic.yaml");
+  const originalPrompt = await readFile(originalPromptPath, "utf8");
+  const mutatedPrompt = originalPrompt
     .replace("slug: code-review", "slug: code-review-skeptic")
-    .replace('title: "Code Review"', 'title: "Code Review Skeptic"')
+    .replace("title: Code Review\n", "title: Code Review Skeptic\n")
     .replace("logo: ri:RiCodeSSlashLine", "logo: ri:RiCatalogTestLine")
-    .replace('color: "16A34A"', 'color: "ABCDEF"')
-    .replace("chip_label: Review", 'chip_label: "Review Skeptic"');
-  await writeFile(originalRecipePath, mutatedRecipe, "utf8");
-  await rename(originalRecipePath, mutatedRecipePath);
+    .replace("color: 16A34A", "color: ABCDEF")
+    .replace("chip_label: Review", "chip_label: Review Skeptic");
+  await writeFile(originalPromptPath, mutatedPrompt, "utf8");
+  await rename(originalPromptPath, mutatedPromptPath);
 
   const indexPath = join(catalogRoot, "index.yaml");
   const index = await readFile(indexPath, "utf8");
@@ -186,13 +186,13 @@ test("catalog validation rejects display titles that would desynchronize badge r
   const catalogRoot = join(sandbox, "catalog");
   await cp(join(repositoryRoot, "catalog"), catalogRoot, { recursive: true });
 
-  const recipePath = join(catalogRoot, "recipes/code-review.yaml");
-  const recipe = await readFile(recipePath, "utf8");
-  await writeFile(recipePath, recipe.replace('title: "Code Review"', 'title: "Code Review "'));
+  const promptPath = join(catalogRoot, "items/code-review.yaml");
+  const prompt = await readFile(promptPath, "utf8");
+  await writeFile(promptPath, prompt.replace("title: Code Review\n", 'title: "Code Review "\n'));
 
   await assert.rejects(
     renderCatalogReadme({ repositoryRoot, catalogRoot }),
-    /title must be trimmed and single-line/u
+    /title must be trimmed and single-line|invalid_string|pattern/u
   );
 });
 

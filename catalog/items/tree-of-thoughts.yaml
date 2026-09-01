@@ -1,0 +1,68 @@
+slug: tree-of-thoughts
+title: Tree-of-Thoughts
+facet: method
+lane: reasoning
+blurb: explore multiple candidate reasoning paths and choose among them.
+order: 160
+badge:
+  logo: ri:RiGitBranchLine
+  color: 8B5CF6
+  chip_label: ToT
+evidence: Moderate; primary research plus survey.
+safety:
+  - Single-prompt Tree-of-Thoughts is not the full algorithm.
+  - >-
+    Do not treat Tree-of-Thoughts as a substitute for provider thinking/reasoning
+    controls on single-pass jobs.
+caveat: single-prompt ToT is not the full algorithm.
+definition: explore multiple candidate reasoning paths and choose among them.
+avoid_when: direct answering is sufficient or branching cost is too high.
+model_api_controls: >-
+  Use sampling, external scoring, or multi-call orchestration for genuine search. Do not
+  treat ToT as a substitute for provider thinking/reasoning controls on single-pass
+  jobs; ToT is deliberate multi-path search with cost tradeoffs.
+cost_latency: >-
+  high — branching multi-call search is much more expensive than single-pass provider
+  reasoning controls.
+failure_modes: >-
+  expensive exploration, weak self-evaluation, missed paths, using ToT when a
+  reasoning-control single pass would suffice.
+eval_required: true
+related:
+  - graph-of-thoughts
+sources:
+  - title: Tree of Thoughts
+    url: https://arxiv.org/abs/2305.10601
+  - title: The Prompt Report
+    url: https://arxiv.org/abs/2406.06608
+  - title: OpenAI reasoning guide
+    url: https://developers.openai.com/api/docs/guides/reasoning
+modes:
+  - id: template
+    label: Method template
+    default: true
+    when_to_use: puzzles, planning, creative problem solving, and branching tasks.
+    placeholders:
+      - name: problem
+        required: true
+        example: Place 8 queens so none share a row, column, or diagonal
+        notes: Branching problem to search
+      - name: criteria
+        required: true
+        example: Valid assignment; no contradictions; cite remaining risk
+        notes: Success criteria
+    prompt: |
+      Problem:
+      <input>
+      {problem}
+      </input>
+
+      Success criteria:
+      {criteria}
+
+      Generate 3 candidate solution paths.
+      Evaluate each against the criteria.
+      Select the best path and return:
+      - final answer
+      - why this path won
+      - checks or unresolved uncertainty

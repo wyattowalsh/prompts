@@ -1,0 +1,54 @@
+slug: code-review
+title: Code Review
+facet: job
+lane: coding
+blurb: review a code change for defects, risks, and test gaps before merge
+order: 10
+badge:
+  logo: "ri:RiCodeSSlashLine"
+  color: "16A34A"
+  chip_label: Code Review
+evidence: Practitioner code-review guidance; findings must cite the supplied diff.
+safety:
+  - Do not invent file paths or line numbers not present in the input.
+  - Separate style nits from correctness and security issues.
+caveat: Review quality is bounded by the provided diff or file contents.
+sources:
+  - title: Google Engineering Practices — Code Review
+    url: https://google.github.io/eng-practices/review/
+modes:
+  - id: review
+    label: Review
+    default: true
+    when_to_use: Review a code change before merge.
+    placeholders:
+      - name: diff_or_code
+        required: true
+        example: see_preview_below
+        notes: Patch or file contents under review
+        preview: |
+          @@
+          - return total
+          + return total + tax
+      - name: review_goals
+        required: false
+        example: none
+        notes: Focus areas
+    prompt: |
+      Job: Review the provided code for bugs, regressions, and missing tests.
+
+      Durable instructions:
+      - Prefer concrete findings with severity and suggested fix.
+      - Call out missing tests or verification steps.
+
+      Code under review:
+      {diff_or_code}
+
+      Review goals:
+      {review_goals}
+    after_copy:
+      fill_pointer: match_placeholder_table
+      expected_output: |
+        Ordered findings with severity, location, and suggested fix or test.
+      upgrade_when: |
+        Add repo conventions, CI logs, or linked tickets for deeper review.

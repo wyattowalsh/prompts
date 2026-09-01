@@ -8,42 +8,35 @@ function variant(base, mutate) {
   return value;
 }
 
-export const baseRecipe = {
-  slug: "sample-recipe",
-  title: "Sample Recipe",
+export const baseItem = {
+  slug: "sample-item",
+  title: "Sample Item",
+  facet: "job",
   lane: "research",
-  class: "research",
+  blurb: "exercise schema parity",
   order: 1,
   badge: { logo: "ri:RiTestTubeLine", color: "2563EB", chip_label: "Sample" },
-  use_for: "exercise schema parity",
-  placeholders: [{ name: "question", required: true, example: "What changed?", notes: "Question" }],
-  prompt: "Question: {question}",
-  after_copy: {
-    fill_pointer: "match_placeholder_table",
-    expected_output: "Answer",
-    upgrade_when: "Add evals",
-    safety_eval_checks: ["Check sources"]
-  },
-  sources: [{ title: "Source", url: "https://example.com/source" }]
-};
-
-export const basePattern = {
-  slug: "sample-pattern",
-  title: "Sample Pattern",
-  section: "reasoning-and-search",
-  order: 1,
-  definition: "Definition",
-  best_use: "Best use",
-  avoid_when: "Avoid",
-  template: "Copy this",
-  model_api_controls: "Controls",
-  cost_latency: "Low",
-  failure_modes: "Failure",
-  evidence_tier: "Moderate",
-  source_type: "primary paper",
-  eval_required: true,
-  caveat: "Caveat",
-  sources: [{ title: "Source", url: "https://example.com/source" }]
+  sources: [{ title: "Source", url: "https://example.com/source" }],
+  evidence: "Fixture evidence",
+  safety: ["Check sources"],
+  caveat: "Fixture caveat",
+  modes: [
+    {
+      id: "default",
+      label: "Default",
+      default: true,
+      when_to_use: "Usual paste path",
+      placeholders: [
+        { name: "question", required: true, example: "What changed?", notes: "Question" }
+      ],
+      prompt: "Question: {question}",
+      after_copy: {
+        fill_pointer: "match_placeholder_table",
+        expected_output: "Answer",
+        upgrade_when: "Add evals"
+      }
+    }
+  ]
 };
 
 export const baseIndex = {
@@ -54,7 +47,7 @@ export const baseIndex = {
     repository_url: "https://github.com/example/prompts",
     web_base_url_default: "https://prompts.example/"
   },
-  counts: { recipes: 1, patterns: 1 },
+  counts: { prompts: 1 },
   lanes: [
     {
       key: "research",
@@ -66,144 +59,193 @@ export const baseIndex = {
         background: "172554"
       },
       order: 1,
-      recipe_slugs: ["sample-recipe"],
-      featured_recipe_slugs: ["sample-recipe"]
-    }
-  ],
-  pattern_sections: [
-    {
-      key: "reasoning-and-search",
-      title: "Reasoning and Search",
-      order: 1,
-      pattern_slugs: ["sample-pattern"]
+      prompt_slugs: ["sample-item"],
+      featured_prompt_slugs: ["sample-item"]
     }
   ],
   readme: {
-    shortcuts: [{ recipe_slug: "sample-recipe", label: "Sample" }]
+    shortcuts: [{ prompt_slug: "sample-item", label: "Sample" }]
   },
   pages: []
 };
 
 export const parityFixtures = {
-  recipe: {
+  item: {
     positive: [
-      { name: "baseline", value: copy(baseRecipe) },
+      { name: "baseline", value: copy(baseItem) },
       {
         name: "preview contract satisfied",
-        value: variant(baseRecipe, (value) => {
-          value.placeholders[0].example = "see_preview_below";
-          value.placeholders[0].preview = "Preview body";
+        value: variant(baseItem, (value) => {
+          value.modes[0].placeholders[0].example = "see_preview_below";
+          value.modes[0].placeholders[0].preview = "Preview body";
         })
       },
       {
         name: "placeholder example length counts Unicode characters",
-        value: variant(baseRecipe, (value) => {
-          value.placeholders[0].example = "😀".repeat(41);
+        value: variant(baseItem, (value) => {
+          value.modes[0].placeholders[0].example = "😀".repeat(41);
         })
       },
       {
         name: "source URL with in-range explicit port",
-        value: variant(baseRecipe, (value) => {
+        value: variant(baseItem, (value) => {
           value.sources[0].url = "https://example.com:8443/source";
+        })
+      },
+      {
+        name: "method fields and template omission",
+        value: variant(baseItem, (value) => {
+          value.facet = "method";
+          value.definition = "Definition";
+          value.avoid_when = "Avoid";
+          value.model_api_controls = "Controls";
+          value.cost_latency = "Low";
+          value.failure_modes = "Failure";
+          value.eval_required = true;
+          value.modes[0].prompt = undefined;
+          delete value.modes[0].prompt;
+          value.modes[0].template_omission_reason = "Unsafe to provide";
+          value.modes[0].placeholders = [];
+          delete value.modes[0].after_copy;
+        })
+      },
+      {
+        name: "four modes with one default",
+        value: variant(baseItem, (value) => {
+          value.modes = [
+            { ...copy(value.modes[0]), id: "one", default: true },
+            { ...copy(value.modes[0]), id: "two", default: false, label: "Two" },
+            { ...copy(value.modes[0]), id: "three", default: false, label: "Three" },
+            { ...copy(value.modes[0]), id: "four", default: false, label: "Four" }
+          ];
         })
       }
     ],
     negative: [
       {
         name: "credential-bearing source URL",
-        value: variant(baseRecipe, (value) => {
+        value: variant(baseItem, (value) => {
           value.sources[0].url = "https://user:password@example.com/source";
         })
       },
       {
         name: "source URL with trailing line break",
-        value: variant(baseRecipe, (value) => {
+        value: variant(baseItem, (value) => {
           value.sources[0].url = "https://example.com/source\n";
         })
       },
       {
         name: "source URL with malformed percent escape",
-        value: variant(baseRecipe, (value) => {
+        value: variant(baseItem, (value) => {
           value.sources[0].url = "https://example.com/%zz";
         })
       },
       {
         name: "source URL with non-ASCII hostname",
-        value: variant(baseRecipe, (value) => {
+        value: variant(baseItem, (value) => {
           value.sources[0].url = "https://münich.example/source";
         })
       },
       {
         name: "source URL with out-of-range port",
-        value: variant(baseRecipe, (value) => {
+        value: variant(baseItem, (value) => {
           value.sources[0].url = "https://example.com:99999/source";
         })
       },
       {
-        name: "recipe title with boundary whitespace",
-        value: variant(baseRecipe, (value) => {
-          value.title = " Sample Recipe";
+        name: "item title with boundary whitespace",
+        value: variant(baseItem, (value) => {
+          value.title = " Sample Item";
         })
       },
       {
-        name: "multiline recipe title",
-        value: variant(baseRecipe, (value) => {
-          value.title = "Sample\nRecipe";
+        name: "multiline item title",
+        value: variant(baseItem, (value) => {
+          value.title = "Sample\nItem";
         })
       },
       {
         name: "placeholder example over 80 Unicode characters",
-        value: variant(baseRecipe, (value) => {
-          value.placeholders[0].example = "😀".repeat(81);
+        value: variant(baseItem, (value) => {
+          value.modes[0].placeholders[0].example = "😀".repeat(81);
         })
       },
       {
         name: "preview sentinel without nonblank preview",
-        value: variant(baseRecipe, (value) => {
-          value.placeholders[0].example = "see_preview_below";
-          value.placeholders[0].preview = "   ";
+        value: variant(baseItem, (value) => {
+          value.modes[0].placeholders[0].example = "see_preview_below";
+          value.modes[0].placeholders[0].preview = "   ";
         })
       },
       {
         name: "duplicate placeholder name with different metadata",
-        value: variant(baseRecipe, (value) => {
-          value.placeholders.push({
-            ...value.placeholders[0],
+        value: variant(baseItem, (value) => {
+          value.modes[0].placeholders.push({
+            ...value.modes[0].placeholders[0],
             notes: "Different notes"
           });
         })
-      }
-    ]
-  },
-  pattern: {
-    positive: [
-      { name: "template branch", value: copy(basePattern) },
+      },
       {
-        name: "omission branch",
-        value: variant(basePattern, (value) => {
-          value.template = null;
-          value.template_omission_reason = "Unsafe to provide";
-        })
-      }
-    ],
-    negative: [
-      {
-        name: "both meaningful template fields",
-        value: variant(basePattern, (value) => {
-          value.template_omission_reason = "Also omitted";
+        name: "reserved slug",
+        value: variant(baseItem, (value) => {
+          value.slug = "catalog";
         })
       },
       {
-        name: "neither meaningful template field",
-        value: variant(basePattern, (value) => {
-          value.template = "  ";
-          value.template_omission_reason = null;
+        name: "facet is not job or method",
+        value: variant(baseItem, (value) => {
+          value.facet = "recipe";
         })
       },
       {
-        name: "credential-bearing source URL",
-        value: variant(basePattern, (value) => {
-          value.sources[0].url = "https://user:password@example.com/source";
+        name: "both meaningful mode template fields",
+        value: variant(baseItem, (value) => {
+          value.modes[0].template_omission_reason = "Also omitted";
+        })
+      },
+      {
+        name: "neither meaningful mode template field",
+        value: variant(baseItem, (value) => {
+          value.modes[0].prompt = "  ";
+        })
+      },
+      {
+        name: "zero default modes",
+        value: variant(baseItem, (value) => {
+          value.modes[0].default = false;
+        })
+      },
+      {
+        name: "two default modes",
+        value: variant(baseItem, (value) => {
+          value.modes.push({
+            ...copy(value.modes[0]),
+            id: "other",
+            default: true
+          });
+        })
+      },
+      {
+        name: "five modes",
+        value: variant(baseItem, (value) => {
+          value.modes = [
+            { ...copy(value.modes[0]), id: "one", default: true },
+            { ...copy(value.modes[0]), id: "two", default: false },
+            { ...copy(value.modes[0]), id: "three", default: false },
+            { ...copy(value.modes[0]), id: "four", default: false },
+            { ...copy(value.modes[0]), id: "five", default: false }
+          ];
+        })
+      },
+      {
+        name: "duplicate mode id",
+        value: variant(baseItem, (value) => {
+          value.modes.push({
+            ...copy(value.modes[0]),
+            label: "Duplicate id",
+            default: false
+          });
         })
       }
     ]
@@ -285,15 +327,21 @@ export const parityFixtures = {
           value.lanes.push({
             ...copy(value.lanes[0]),
             title: "Duplicate Research",
-            recipe_slugs: [],
-            featured_recipe_slugs: []
+            prompt_slugs: [],
+            featured_prompt_slugs: []
           });
         })
       },
       {
-        name: "duplicate shortcut recipe with different label",
+        name: "duplicate shortcut prompt with different label",
         value: variant(baseIndex, (value) => {
-          value.readme.shortcuts.push({ recipe_slug: "sample-recipe", label: "Again" });
+          value.readme.shortcuts.push({ prompt_slug: "sample-item", label: "Again" });
+        })
+      },
+      {
+        name: "recipe count leftover",
+        value: variant(baseIndex, (value) => {
+          value.counts = { prompts: 1, recipes: 1 };
         })
       }
     ]

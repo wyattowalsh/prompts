@@ -1,0 +1,88 @@
+slug: direct-zero-shot
+title: Direct Zero-Shot
+facet: method
+lane: reasoning
+blurb: ask directly for the task without examples.
+order: 70
+badge:
+  logo: ri:RiSparkling2Line
+  color: 8B5CF6
+  chip_label: Zero-shot
+evidence: Strong; survey plus official docs.
+safety:
+  - Say insufficient evidence when required facts are missing.
+  - Do not fabricate missing data.
+caveat: >-
+  Zero-shot is a baseline, not proof of optimality. Move to few-shot, schemas, tools, or
+  retrieval when evals show format drift or missing facts.
+definition: ask directly for the task without examples.
+avoid_when: hidden domain rules, strict output shape, current facts, or ambiguous labels matter.
+model_api_controls: >-
+  None required for simple transforms; use low reasoning effort or low verbosity when
+  supported.
+
+  Upgrade to structured outputs / JSON Schema when the result is machine-consumed.
+  Prefer official
+
+  provider PE guides over inventing elaborate personas for baseline tasks.
+cost_latency: lowest.
+failure_modes: >-
+  underspecified format, unstated assumptions, fabricated missing data, skipping
+  structured
+
+  outputs when a schema is available, treating zero-shot as “no eval needed.”
+eval_required: true
+related:
+  - structured-zero-shot
+sources:
+  - title: The Prompt Report
+    url: https://arxiv.org/abs/2406.06608
+  - title: OpenAI prompt engineering
+    url: https://developers.openai.com/api/docs/guides/prompt-engineering
+  - title: OpenAI prompting guide
+    url: https://developers.openai.com/api/docs/guides/prompting
+  - title: Anthropic Claude prompting best practices
+    url: >-
+      https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices
+  - title: Microsoft Foundry prompt engineering
+    url: https://learn.microsoft.com/en-us/azure/foundry/openai/concepts/prompt-engineering
+modes:
+  - id: template
+    label: Method template
+    default: true
+    when_to_use: >-
+      simple Q&A, rewriting, extraction, summarization, translation, or obvious
+      classification.
+    placeholders:
+      - name: task
+        required: true
+        example: Summarize the incident without assigning blame
+        notes: Task to complete
+      - name: input
+        required: true
+        example: Pasted user text or document excerpt
+        notes: Untrusted input
+      - name: format
+        required: true
+        example: Short answer, then one-line caveat
+        notes: Output contract
+      - name: constraint
+        required: true
+        example: Say insufficient evidence when required facts are missing
+        notes: Hard constraint
+    prompt: |
+      Complete the task below.
+
+      Task: {task}
+
+      Untrusted input:
+      <input>
+      {input}
+      </input>
+
+      Output contract:
+      {format}
+
+      Constraints:
+      - {constraint}
+      - Say "insufficient evidence" when required facts are missing.

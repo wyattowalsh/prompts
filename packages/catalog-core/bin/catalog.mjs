@@ -33,7 +33,7 @@ Usage:
 
 Options:
   --root         Catalog package root (default: catalog/fixtures)
-  --full-counts  Require 48 recipes and 43 patterns
+  --full-counts  Require index.yaml counts.prompts and every catalog lane
   --shell-dir    Frozen shell fragments directory (preamble/middle/post.md)
   --out          Output path
   --check        Site data only: fail if generated output differs without writing
@@ -1080,9 +1080,7 @@ async function main(argv) {
       }
       process.exit(1);
     }
-    console.log(
-      `validate ok: recipes=${result.summary.recipes} patterns=${result.summary.patterns} root=${root}`
-    );
+    console.log(`validate ok: prompts=${result.summary.prompts} root=${root}`);
     return;
   }
 

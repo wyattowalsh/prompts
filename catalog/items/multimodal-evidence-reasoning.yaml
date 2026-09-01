@@ -1,0 +1,67 @@
+slug: multimodal-evidence-reasoning
+title: "Multimodal Evidence Reasoning"
+facet: method
+lane: research
+blurb: combine visual and textual evidence for a source-grounded answer.
+order: 110
+badge:
+  logo: ri:RiImageLine
+  color: "4338CA"
+  chip_label: Multimodal
+evidence: Moderate; primary paper plus official vision docs.
+safety:
+  - Do not claim certainty when the image is cropped, blurry, or unavailable.
+  - this card avoids public long CoT; it asks for evidence summary.
+  - Watch for hallucinated visual details, weak spatial reasoning, missing crop context.
+caveat: this card avoids public long CoT; it asks for evidence summary.
+definition: combine visual and textual evidence for a source-grounded answer.
+avoid_when: the model lacks vision support or the image evidence is not needed.
+model_api_controls: >-
+  image detail setting, multimodal model, OCR/tool support; follow official
+  multimodal prompting strategies (e.g. Gemini prompting strategies) for input
+  framing.
+cost_latency: moderate to high.
+failure_modes: hallucinated visual details, weak spatial reasoning, missing crop context.
+eval_required: true
+sources:
+  - title: "Multimodal Chain-of-Thought Reasoning"
+    url: https://arxiv.org/abs/2302.00923
+  - title: "OpenAI text generation"
+    url: https://developers.openai.com/api/docs/guides/text
+  - title: "Google Gemini prompting strategies"
+    url: https://ai.google.dev/gemini-api/docs/prompting-strategies
+modes:
+  - id: template
+    label: Method template
+    default: true
+    when_to_use: >-
+      screenshots, charts, tables, diagrams, and image-question answering.
+      Prefer evidence-summary contracts over public long CoT for visual claims.
+    placeholders:
+      - name: question
+        required: true
+        example: "What does the chart say about error rate?"
+        notes: "Question the image must answer"
+      - name: image_or_media_reference
+        required: true
+        example: "chart.png: Q1-Q4 error-rate bars"
+        notes: "Image or media the model can see"
+    prompt: |
+      Question:
+      <input>
+      {question}
+      </input>
+
+      Image or media:
+      {image_or_media_reference}
+
+      Rules:
+      - Identify visible evidence needed for the answer.
+      - Do not claim certainty when the image is cropped, blurry, or unavailable.
+      - Return the answer with a short evidence summary.
+    after_copy:
+      fill_pointer: match_placeholder_table
+      expected_output: >-
+        Answer with a short evidence summary; do not claim certainty when the
+        image is cropped, blurry, or unavailable.
+      upgrade_when: the model lacks vision support or the image evidence is not needed.

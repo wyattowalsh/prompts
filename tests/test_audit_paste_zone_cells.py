@@ -162,8 +162,10 @@ class AuditPasteZoneCellsTest(unittest.TestCase):
                 self.assertEqual(audit.main(), 0)
             payload = json.loads(buffer.getvalue())
             self.assertIn("counts", payload)
-            for key in ("recipes", "cells", "warn", "error"):
+            for key in ("prompts", "cells", "warn", "error"):
                 self.assertIn(key, payload["counts"])
+            self.assertNotIn("recipes", payload["counts"])
+            self.assertNotIn("pattern_notes", payload["counts"])
 
     def test_check_fails_when_prompt_library_missing(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
@@ -172,7 +174,7 @@ class AuditPasteZoneCellsTest(unittest.TestCase):
             result = audit.audit_readme(readme)
 
             self.assertFalse(result["ok"])
-            self.assertEqual(result["counts"]["recipes"], 0)
+            self.assertEqual(result["counts"]["prompts"], 0)
             codes = {error["code"] for error in result["parse_errors"]}
             self.assertIn("MISSING_SECTION", codes)
 

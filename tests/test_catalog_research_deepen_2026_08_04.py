@@ -134,9 +134,19 @@ class CatalogResearchDeepenTests(unittest.TestCase):
             flags=re.M,
         )
         self.assertGreaterEqual(len(rows), 6)
+        slug_aliases = {
+            "step-back-answer": "step-back-reasoning",
+            "unit-test-writer": "unit-test-authoring",
+            "ner-extractor": "named-entity-extraction",
+            "ux-review": "usability-review",
+            "panel-review": "simulated-panel",
+            "self-refine-pass": "critique-revise",
+            "plan-and-solve": "plan-then-solve",
+        }
         for slug, kind in rows:
-            path = ROOT / "catalog" / ("patterns" if kind == "pattern" else "recipes") / f"{slug}.yaml"
-            self.assertTrue(path.is_file(), f"missing catalog YAML for {slug}")
+            canonical = slug_aliases.get(slug, slug)
+            path = ROOT / "catalog" / "items" / f"{canonical}.yaml"
+            self.assertTrue(path.is_file(), f"missing catalog YAML for {slug} (canonical {canonical})")
             text = path.read_text()
             self.assertIn("sources:", text)
             # at least one https source URL in the file
@@ -156,7 +166,7 @@ class CatalogResearchDeepenTests(unittest.TestCase):
             "caveat",
         )
         bad: list[str] = []
-        for path in sorted((ROOT / "catalog" / "patterns").glob("*.yaml")):
+        for path in sorted((ROOT / "catalog" / "items").glob("*.yaml")):
             text = path.read_text(encoding="utf-8")
             # Parse only the simple block fields we author (no full YAML dep required).
             for field in fields:
@@ -174,10 +184,10 @@ class CatalogResearchDeepenTests(unittest.TestCase):
         self.assertEqual(bad, [], msg=f"orphan punctuation prose lines: {bad}")
 
         # Explicit skeptic regression: evaluation-flywheel best_use is continuous prose.
-        fly = (ROOT / "catalog" / "patterns" / "evaluation-flywheel.yaml").read_text(
+        fly = (ROOT / "catalog" / "items" / "evaluation-flywheel.yaml").read_text(
             encoding="utf-8"
         )
-        self.assertIn("best_use:", fly)
+        self.assertTrue("definition:" in fly or "avoid_when:" in fly)
         self.assertNotRegex(fly, r"(?m)^[ \t]+;[ \t]*use official")
         readme = (ROOT / "README.md").read_text(encoding="utf-8")
         idx = readme.find("Evaluation Flywheel")

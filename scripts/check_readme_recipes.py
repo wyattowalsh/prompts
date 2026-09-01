@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Validate the README Prompt Library recipe contract."""
+"""Validate the README Prompt Library catalog contract."""
 
 from __future__ import annotations
 
@@ -19,11 +19,12 @@ if str(_SCRIPTS_DIR) not in sys.path:
 from catalog_constants import (  # noqa: E402
     CLASS_SIGNAL_PATTERNS,
     CONTROL_NOTE_RECIPES,
-    PATTERN_NOTE_COUNT,
-    RECIPE_CLASS,
-    RECIPE_COUNT,
+    LANE_CLASS,
+    PROMPT_LIBRARY_CATEGORIES,
     SECTION_MAP_COUNT,
+    SECTION_MAP_PARENT_HEADINGS,
     STRICT_VALIDATION_CLASSES,
+    load_index_catalog,
 )
 from recipe_heading import (  # noqa: E402
     RECIPE_H4_OPEN_RE,
@@ -31,6 +32,7 @@ from recipe_heading import (  # noqa: E402
     parse_recipe_heading,
     skip_malformed_h4_block,
 )
+
 
 def class_signal_haystack(recipe_text: str) -> str:
     """Copy-prompt body used for STRICT class signal checks (exclude Sources tails)."""
@@ -40,9 +42,17 @@ def class_signal_haystack(recipe_text: str) -> str:
     return body
 
 
+def is_job_style_prompt(recipe: Recipe) -> bool:
+    """Job-style copy prompts start with a Job: scaffold, not method templates."""
+    haystack = class_signal_haystack(recipe.text)
+    return bool(re.search(r"^Job:", haystack, re.MULTILINE))
+
+
 def validate_strict_class_signals(recipe: Recipe, errors: list[Diagnostic]) -> None:
-    """Require at least one class-appropriate signal in high-risk recipe templates."""
-    class_name = RECIPE_CLASS.get(recipe.name)
+    """Require class-appropriate signals in high-risk job-style copy prompts."""
+    if not is_job_style_prompt(recipe):
+        return
+    class_name = LANE_CLASS.get(recipe.category)
     if class_name not in STRICT_VALIDATION_CLASSES:
         return
     pattern_text = CLASS_SIGNAL_PATTERNS.get(class_name)
@@ -53,7 +63,7 @@ def validate_strict_class_signals(recipe: Recipe, errors: list[Diagnostic]) -> N
         errors.append(
             Diagnostic(
                 "STRICT_CLASS_SIGNAL_MISSING",
-                f"Recipe class {class_name!r} is missing a required class signal "
+                f"Prompt class {class_name!r} is missing a required class signal "
                 f"(pattern /{pattern_text}/) in the copy prompt haystack.",
                 recipe.line,
                 recipe.name,
@@ -62,6 +72,28 @@ def validate_strict_class_signals(recipe: Recipe, errors: list[Diagnostic]) -> N
         )
 
 
+ALWAYS_REQUIRED_FIELDS = [
+    "Safety/eval checks:",
+    "Sources:",
+]
+PASTE_REQUIRED_FIELDS = [
+    "Copy prompt:",
+    "Fill these in:",
+]
+OPTIONAL_ORDERED_FIELDS = [
+    "Expected output:",
+    "Upgrade when:",
+]
+CANONICAL_FIELD_ORDER = [
+    "Use for:",
+    "Copy prompt:",
+    "Fill these in:",
+    "Expected output:",
+    "Upgrade when:",
+    "Safety/eval checks:",
+    "Sources:",
+]
+# Back-compat alias for tests that still mention the historical required list.
 REQUIRED_FIELDS = [
     "Use for:",
     "Copy prompt:",
@@ -104,7 +136,7 @@ RECIPE_PASTE_ZONE_META_VALUE_PATTERNS = [
     re.compile(pattern, re.IGNORECASE)
     for pattern in [
         r"^A diff that\b",
-        r"^object with\b",
+        r"^object with (?:keys|fields|properties)\b",
         r"^The prompt keeps\b",
         r"^A generated answer says\b",
         r"^Source [A-Z] says\b",
@@ -156,6 +188,7 @@ class Recipe:
     start: int
     end: int
     lines: list[str]
+    slug: str | None = None
 
     @property
     def text(self) -> str:
@@ -197,7 +230,7 @@ def parse_recipes(lines: list[str], errors: list[Diagnostic]) -> list[Recipe]:
 
     start, end = section
     fence = in_fence_by_line(lines)
-    headings: list[tuple[int, str, str]] = []
+    headings: list[tuple[int, str, str, str | None]] = []
     category = ""
     index = start + 1
     while index < end:
@@ -215,7 +248,7 @@ def parse_recipes(lines: list[str], errors: list[Diagnostic]) -> list[Recipe]:
                 errors.append(
                     Diagnostic(
                         "MALFORMED_RECIPE_HEADING",
-                        "Recipe heading block could not be parsed (unclosed </h4> or missing title after <img>).",
+                        "Prompt heading block could not be parsed (unclosed </h4> or missing title after <img>).",
                         index + 1,
                         hint="Regenerate with scripts/update_readme_badges.py or fix the <h4> block.",
                     )
@@ -223,30 +256,19 @@ def parse_recipes(lines: list[str], errors: list[Diagnostic]) -> list[Recipe]:
                 index = skip_malformed_h4_block(lines, index, end)
                 continue
             name, next_index, slug = parsed
-            expected_slug = github_anchor(name, {})
-            if slug is not None and slug != expected_slug:
-                errors.append(
-                    Diagnostic(
-                        "RECIPE_HEADING_SLUG_MISMATCH",
-                        f"Heading id {slug!r} does not match github_anchor({name!r})={expected_slug!r}.",
-                        index + 1,
-                        recipe=name,
-                        hint="Regenerate with scripts/update_readme_badges.py.",
-                    )
-                )
-            headings.append((index, name, category))
+            headings.append((index, name, category, slug))
             index = next_index
             continue
         parsed = parse_recipe_heading(line, lines, index)
         if parsed is not None:
-            name, next_index, _slug = parsed
-            headings.append((index, name, category))
+            name, next_index, slug = parsed
+            headings.append((index, name, category, slug))
             index = next_index
             continue
         index += 1
 
     recipes: list[Recipe] = []
-    for pos, (index, name, recipe_category) in enumerate(headings):
+    for pos, (index, name, recipe_category, slug) in enumerate(headings):
         next_index = headings[pos + 1][0] if pos + 1 < len(headings) else end
         recipes.append(
             Recipe(
@@ -256,18 +278,14 @@ def parse_recipes(lines: list[str], errors: list[Diagnostic]) -> list[Recipe]:
                 start=index,
                 end=next_index,
                 lines=lines[index:next_index],
+                slug=slug,
             )
         )
     return recipes
 
 
-def count_pattern_notes(lines: list[str]) -> int:
-    section = find_section(lines, "## Pattern Notes")
-    if section is None:
-        return 0
-    start, end = section
-    fence = in_fence_by_line(lines)
-    return sum(1 for index in range(start + 1, end) if not fence[index] and lines[index].startswith("#### "))
+def has_pattern_notes_chapter(lines: list[str]) -> bool:
+    return find_section(lines, "## Pattern Notes") is not None
 
 
 def line_for(recipe: Recipe, needle: str) -> int:
@@ -309,6 +327,10 @@ def field_positions(recipe: Recipe, errors: list[Diagnostic]) -> dict[str, int]:
             positions[line] = index
         elif line.startswith("Use for:"):
             positions["Use for:"] = index
+        elif line.startswith("Definition:"):
+            positions["Definition:"] = index
+        elif line.startswith("Copyable template:"):
+            positions["Copyable template:"] = index
     return positions
 
 
@@ -406,6 +428,13 @@ def paste_zone_table_rows(text: str, header: str) -> list[str]:
     return rows
 
 
+def copy_prompt_placeholder_names(recipe: Recipe, positions: dict[str, int]) -> set[str]:
+    names: set[str] = set()
+    for _start, _end, content in text_prompt_blocks(recipe, positions):
+        names.update(re.findall(r"\{([A-Za-z0-9_]+)\}", "\n".join(content)))
+    return names
+
+
 def validate_recipe_paste_zone_table(
     recipe: Recipe,
     positions: dict[str, int],
@@ -414,10 +443,12 @@ def validate_recipe_paste_zone_table(
 ) -> None:
     region = recipe_body_before_copy_prompt(recipe, positions)
     if not region:
+        if "Copy prompt:" not in positions:
+            return
         errors.append(
             Diagnostic(
                 "RECIPE_PASTE_ZONE_REGION",
-                "Recipe missing Use for or Copy prompt markers for paste-zone validation.",
+                "Prompt missing Use for or Copy prompt markers for paste-zone validation.",
                 recipe.line,
                 recipe.name,
             )
@@ -425,6 +456,7 @@ def validate_recipe_paste_zone_table(
         return
 
     visible_region = text_outside_details(region)
+    prompt_placeholders = copy_prompt_placeholder_names(recipe, positions)
     if PASTE_ZONE_TABLE_HEADER not in visible_region:
         if PASTE_ZONE_TABLE_HEADER in region:
             errors.append(
@@ -435,11 +467,11 @@ def validate_recipe_paste_zone_table(
                     recipe.name,
                 )
             )
-        else:
+        elif prompt_placeholders or fill:
             errors.append(
                 Diagnostic(
                     "RECIPE_PASTE_ZONE_TABLE",
-                    "Recipe missing paste-zone table header between Use for and Copy prompt.",
+                    "Prompt missing paste-zone table header between Use for and Copy prompt.",
                     recipe.line,
                     recipe.name,
                 )
@@ -447,7 +479,7 @@ def validate_recipe_paste_zone_table(
         return
 
     input_rows = paste_zone_table_rows(visible_region, PASTE_ZONE_TABLE_HEADER)
-    if len(input_rows) < 1:
+    if len(input_rows) < 1 and (prompt_placeholders or fill):
         errors.append(
             Diagnostic(
                 "RECIPE_PASTE_ZONE_ROWS",
@@ -627,7 +659,7 @@ def validate_no_per_recipe_copy_tip(recipe: Recipe, errors: list[Diagnostic]) ->
                     "Per-recipe Before you copy tip is duplicated; keep one section-level tip only.",
                     recipe.line + offset,
                     recipe.name,
-                    hint="Remove the recipe callout; document paste zones once under Recipe format.",
+                    hint="Remove the per-card callout; document paste zones once under Prompt format.",
                 )
             )
             return
@@ -681,51 +713,74 @@ def validate_fill_these_in_compact(recipe: Recipe, positions: dict[str, int], er
         )
 
 
+def has_paste_path(recipe: Recipe, positions: dict[str, int]) -> bool:
+    if "Copy prompt:" in positions:
+        return True
+    return PASTE_ZONE_TABLE_HEADER in recipe.text
+
+
 def validate_recipe(recipe: Recipe, errors: list[Diagnostic], warnings: list[Diagnostic]) -> dict[str, object]:
     positions = field_positions(recipe, errors)
-    for field in REQUIRED_FIELDS:
-        if field not in positions:
-            errors.append(Diagnostic("MISSING_FIELD", f"Missing recipe field {field}", recipe.line, recipe.name))
-
-    ordered = [positions[field] for field in REQUIRED_FIELDS if field in positions]
-    if ordered != sorted(ordered):
-        errors.append(Diagnostic("FIELD_ORDER", "Recipe fields are out of canonical order.", recipe.line, recipe.name))
-
-    blocks = text_prompt_blocks(recipe, positions)
-    if not blocks:
-        errors.append(Diagnostic("MISSING_TEXT_PROMPT", "Missing fenced text prompt under Copy prompt.", recipe.line, recipe.name))
-
-    fill = fill_entries(recipe, positions)
-    validate_recipe_paste_zone_table(recipe, positions, fill, errors)
-    validate_paste_preview_visibility(recipe, positions, errors)
-    validate_no_per_recipe_copy_tip(recipe, errors)
-    validate_fill_these_in_compact(recipe, positions, errors)
-    prompt_text = "\n".join("\n".join(block[2]) for block in blocks)
-    placeholders = set(re.findall(r"\{([A-Za-z0-9_]+)\}", prompt_text))
-    declared = set(fill)
-    for name in sorted(placeholders - declared):
+    paste_path = has_paste_path(recipe, positions)
+    if "Use for:" not in positions and "Definition:" not in positions:
         errors.append(
             Diagnostic(
-                "UNDECLARED_PLACEHOLDER",
-                f"Prompt placeholder {{{name}}} is not listed in the placeholder table.",
-                line_for(recipe, "Copy prompt:"),
+                "MISSING_FIELD",
+                "Missing prompt field Use for: or Definition:",
+                recipe.line,
                 recipe.name,
             )
         )
-    for name, (_, entry_line) in sorted(fill.items()):
-        if name not in placeholders:
+    required = list(ALWAYS_REQUIRED_FIELDS)
+    if paste_path:
+        required.extend(PASTE_REQUIRED_FIELDS)
+    for field in required:
+        if field not in positions:
+            errors.append(Diagnostic("MISSING_FIELD", f"Missing prompt field {field}", recipe.line, recipe.name))
+
+    ordered_fields = [field for field in CANONICAL_FIELD_ORDER if field in positions]
+    ordered = [positions[field] for field in ordered_fields]
+    if ordered != sorted(ordered):
+        errors.append(Diagnostic("FIELD_ORDER", "Prompt fields are out of canonical order.", recipe.line, recipe.name))
+
+    blocks = text_prompt_blocks(recipe, positions)
+    if paste_path and "Copy prompt:" in positions and not blocks:
+        errors.append(Diagnostic("MISSING_TEXT_PROMPT", "Missing fenced text prompt under Copy prompt.", recipe.line, recipe.name))
+
+    fill = fill_entries(recipe, positions)
+    if paste_path:
+        validate_recipe_paste_zone_table(recipe, positions, fill, errors)
+        validate_paste_preview_visibility(recipe, positions, errors)
+        validate_no_per_recipe_copy_tip(recipe, errors)
+        if "Fill these in:" in positions:
+            validate_fill_these_in_compact(recipe, positions, errors)
+    prompt_text = "\n".join("\n".join(block[2]) for block in blocks)
+    placeholders = set(re.findall(r"\{([A-Za-z0-9_]+)\}", prompt_text))
+    declared = set(fill)
+    if paste_path:
+        for name in sorted(placeholders - declared):
             errors.append(
                 Diagnostic(
-                    "UNUSED_FILL_ENTRY",
-                    f"Placeholder table entry {{{name}}} is not present in the copy prompt.",
-                    entry_line,
+                    "UNDECLARED_PLACEHOLDER",
+                    f"Prompt placeholder {{{name}}} is not listed in the placeholder table.",
+                    line_for(recipe, "Copy prompt:"),
                     recipe.name,
                 )
             )
-        if re.search(r"[^a-z0-9_]", name):
-            warnings.append(
-                Diagnostic("PLACEHOLDER_STYLE", f"Placeholder {{{name}}} is not lowercase snake_case.", entry_line, recipe.name)
-            )
+        for name, (_, entry_line) in sorted(fill.items()):
+            if name not in placeholders:
+                errors.append(
+                    Diagnostic(
+                        "UNUSED_FILL_ENTRY",
+                        f"Placeholder table entry {{{name}}} is not present in the copy prompt.",
+                        entry_line,
+                        recipe.name,
+                    )
+                )
+            if re.search(r"[^a-z0-9_]", name):
+                warnings.append(
+                    Diagnostic("PLACEHOLDER_STYLE", f"Placeholder {{{name}}} is not lowercase snake_case.", entry_line, recipe.name)
+                )
 
     paste_zones: list[dict[str, object]] = []
     zone_pattern = re.compile(r"^([A-Za-z][A-Za-z0-9 /,&().'-]{0,80}): \[(required|optional)\]$")
@@ -740,11 +795,11 @@ def validate_recipe(recipe: Recipe, errors: list[Diagnostic], warnings: list[Dia
                         "line": recipe.line + block_start + 1 + offset,
                     }
                 )
-    if not paste_zones:
+    if paste_path and is_job_style_prompt(recipe) and not paste_zones:
         errors.append(Diagnostic("MISSING_PASTE_ZONE", "No named [required] or [optional] paste zone in copy prompt.", recipe.line, recipe.name))
 
     if "{input}: The task payload" in recipe.text:
-        errors.append(Diagnostic("STALE_INPUT_PLACEHOLDER", "Recipe uses stale generic input placeholder text.", line_for(recipe, "{input}: The task payload"), recipe.name))
+        errors.append(Diagnostic("STALE_INPUT_PLACEHOLDER", "Prompt uses stale generic input placeholder text.", line_for(recipe, "{input}: The task payload"), recipe.name))
 
     for _, _, content in blocks:
         block_text = "\n".join(content)
@@ -753,23 +808,19 @@ def validate_recipe(recipe: Recipe, errors: list[Diagnostic], warnings: list[Dia
                 errors.append(Diagnostic("VISIBLE_COT", "Copy prompt asks for visible long chain-of-thought or private trace.", recipe.line, recipe.name))
                 break
 
-    note_count = sum(1 for line in recipe.lines if line.startswith("Control/evidence note:"))
-    if recipe.name in CONTROL_NOTE_RECIPES:
-        if note_count != 1:
-            errors.append(Diagnostic("CONTROL_NOTE", "Target recipe must have exactly one Control/evidence note.", recipe.line, recipe.name))
-        else:
-            note_index = next(index for index, line in enumerate(recipe.lines) if line.startswith("Control/evidence note:"))
-            note = recipe.lines[note_index]
-            if note.count("](") > 1:
-                errors.append(Diagnostic("CONTROL_NOTE_LINKS", "Control/evidence note has more than one Markdown link.", recipe.line + note_index, recipe.name))
-            note_body = note.split("Control/evidence note:", 1)[1].strip()
-            if control_note_sentence_count(note_body) != 1:
-                errors.append(Diagnostic("CONTROL_NOTE_SENTENCE", "Control/evidence note must be exactly one sentence.", recipe.line + note_index, recipe.name))
-            if "Upgrade when:" in positions and "Safety/eval checks:" in positions:
-                if not (positions["Upgrade when:"] < note_index < positions["Safety/eval checks:"]):
-                    errors.append(Diagnostic("CONTROL_NOTE_POSITION", "Control/evidence note must be between Upgrade when and Safety/eval checks.", recipe.line + note_index, recipe.name))
-    elif note_count:
-        errors.append(Diagnostic("UNEXPECTED_CONTROL_NOTE", "Only high-risk target recipes may have Control/evidence notes.", recipe.line, recipe.name))
+    note_indexes = [index for index, line in enumerate(recipe.lines) if line.startswith("Control/evidence note:")]
+    for note_index in note_indexes:
+        note = recipe.lines[note_index]
+        if note.count("](") > 1:
+            errors.append(Diagnostic("CONTROL_NOTE_LINKS", "Control/evidence note has more than one Markdown link.", recipe.line + note_index, recipe.name))
+        note_body = note.split("Control/evidence note:", 1)[1].strip()
+        if control_note_sentence_count(note_body) != 1:
+            errors.append(Diagnostic("CONTROL_NOTE_SENTENCE", "Control/evidence note must be exactly one sentence.", recipe.line + note_index, recipe.name))
+        if "Upgrade when:" in positions and "Safety/eval checks:" in positions:
+            if not (positions["Upgrade when:"] < note_index < positions["Safety/eval checks:"]):
+                errors.append(Diagnostic("CONTROL_NOTE_POSITION", "Control/evidence note must be between Upgrade when and Safety/eval checks.", recipe.line + note_index, recipe.name))
+    if recipe.name in CONTROL_NOTE_RECIPES and len(note_indexes) > 1:
+        errors.append(Diagnostic("CONTROL_NOTE", "Target prompt must not repeat Control/evidence notes.", recipe.line, recipe.name))
 
     if recipe.name == "RAG Answer Contract":
         rag_text = recipe.text
@@ -836,41 +887,10 @@ def find_subsection(lines: list[str], parent_heading: str, subsection_heading: s
     return start, end
 
 
-SECTION_MAP_PARENT_HEADINGS = [
-    "Start Here",
-    "Prompt Library",
-    "How To Adapt Prompts",
-    "Provider Controls",
-    "Safety, Evals, And Trust Boundaries",
-    "Pattern Selection Matrix",
-    "Pattern Notes",
-    "Contributing Prompt Recipes",
-    "Bibliography",
-]
-
-PROMPT_LIBRARY_CATEGORIES = [
-    "Research",
-    "Writing",
-    "Coding",
-    "Data",
-    "Product",
-    "Operations",
-    "Agent and Tool Workflows",
-    "Reasoning",
-]
-
-PATTERN_NOTE_SUBSECTIONS = [
-    "Core Prompt Construction",
-    "Reasoning and Search",
-    "Verification and Iteration",
-    "Task and Workflow Snippets",
-]
-
-
 def build_section_map_expected_anchors() -> set[str]:
     used: dict[str, int] = {}
     anchors: set[str] = set()
-    for title in SECTION_MAP_PARENT_HEADINGS + PROMPT_LIBRARY_CATEGORIES + PATTERN_NOTE_SUBSECTIONS:
+    for title in [*SECTION_MAP_PARENT_HEADINGS, *PROMPT_LIBRARY_CATEGORIES]:
         anchors.add(github_anchor(title, used))
     return anchors
 
@@ -880,29 +900,10 @@ def build_prompt_library_category_anchors() -> set[str]:
     return {github_anchor(title, used) for title in PROMPT_LIBRARY_CATEGORIES}
 
 
-INDEX_RECIPE_SLUGS_HEADER = re.compile(r"^    recipe_slugs:\s*$")
-INDEX_RECIPE_SLUG_ITEM = re.compile(r"^      - ([a-z0-9]+(?:-[a-z0-9]+)*)$")
-
-
-def load_index_recipe_slugs(index_path: Path) -> list[str]:
-    """Return `recipe_slugs` from catalog/index.yaml without a YAML dependency."""
-    slugs: list[str] = []
-    in_recipe_slugs = False
-    lineno = 0
-    for lineno, raw in enumerate(index_path.read_text(encoding="utf-8").splitlines(), start=1):
-        if INDEX_RECIPE_SLUGS_HEADER.match(raw):
-            in_recipe_slugs = True
-            continue
-        if not in_recipe_slugs:
-            continue
-        item = INDEX_RECIPE_SLUG_ITEM.match(raw)
-        if item:
-            slugs.append(item.group(1))
-            continue
-        in_recipe_slugs = False
-    if not slugs:
-        raise ValueError(f"{index_path}:{lineno}: no recipe_slugs entries found")
-    return slugs
+def prompt_anchor(recipe: Recipe, used: dict[str, int]) -> str:
+    if recipe.slug:
+        return recipe.slug
+    return github_anchor(recipe.name, used)
 
 
 def validate_prompt_index(
@@ -919,13 +920,14 @@ def validate_prompt_index(
     index_text = "\n".join(lines[start:end])
     links = re.findall(r'href="#([^"]+)"', index_text)
     used: dict[str, int] = {}
-    expected = {github_anchor(recipe.name, used): recipe.name for recipe in recipes}
+    expected = {prompt_anchor(recipe, used): recipe.name for recipe in recipes}
     unique_links = set(links)
-    if len(links) != RECIPE_COUNT or len(unique_links) != RECIPE_COUNT:
+    expected_count = len(expected)
+    if len(links) != expected_count or len(unique_links) != expected_count:
         errors.append(
             Diagnostic(
                 "PROMPT_INDEX_COUNT",
-                f"Prompt Index must contain {RECIPE_COUNT} unique recipe links.",
+                f"Prompt Index must contain {expected_count} unique prompt links.",
                 start + 1,
             )
         )
@@ -934,14 +936,14 @@ def validate_prompt_index(
     for anchor in missing:
         errors.append(Diagnostic("PROMPT_INDEX_MISSING", f"Prompt Index missing link to #{anchor}.", start + 1, expected.get(anchor)))
     for anchor in extra:
-        errors.append(Diagnostic("PROMPT_INDEX_EXTRA", f"Prompt Index links to non-recipe anchor #{anchor}.", start + 1))
+        errors.append(Diagnostic("PROMPT_INDEX_EXTRA", f"Prompt Index links to non-prompt anchor #{anchor}.", start + 1))
     if index_slugs is not None:
         expected_yaml = set(index_slugs)
-        if len(index_slugs) != RECIPE_COUNT or len(expected_yaml) != RECIPE_COUNT:
+        if len(index_slugs) != len(expected_yaml):
             errors.append(
                 Diagnostic(
                     "PROMPT_INDEX_YAML_COUNT",
-                    f"catalog/index.yaml must list {RECIPE_COUNT} unique recipe_slugs.",
+                    "catalog/index.yaml prompt_slugs must be unique.",
                     start + 1,
                 )
             )
@@ -995,27 +997,37 @@ def validate_section_map(lines: list[str], errors: list[Diagnostic]) -> int:
 
 
 def validate_recipe_map(lines: list[str], recipes: list[Recipe], errors: list[Diagnostic]) -> int:
-    markdown = "\n".join(lines)
-    match = re.search(r"<summary><strong>Browse all 48 recipes by job</strong></summary>(.*?)</details>", markdown, re.DOTALL)
-    if not match:
-        errors.append(Diagnostic("RECIPE_MAP", "Missing collapsed recipe map.", 1))
+    try:
+        start = lines.index("<!-- JOB-MAP:START -->")
+        end = lines.index("<!-- JOB-MAP:END -->")
+    except ValueError:
+        errors.append(Diagnostic("RECIPE_MAP", "Missing collapsed prompt job map.", 1))
         return 0
-    map_text = match.group(1)
+    if end <= start:
+        errors.append(Diagnostic("RECIPE_MAP", "Prompt job map markers are out of order.", 1))
+        return 0
+    map_text = "\n".join(lines[start : end + 1])
     links = re.findall(r"\(#([^)]+)\)", map_text)
     links.extend(re.findall(r'href="#([^"]+)"', map_text))
     used: dict[str, int] = {}
-    expected = {github_anchor(recipe.name, used): recipe.name for recipe in recipes}
+    expected = {prompt_anchor(recipe, used): recipe.name for recipe in recipes}
     recipe_links = [link for link in links if link in expected]
     unique_links = set(recipe_links)
-    if len(recipe_links) != 48 or len(unique_links) != 48:
-        errors.append(Diagnostic("RECIPE_MAP_COUNT", "Collapsed recipe map must contain 48 unique links.", 1))
+    if len(unique_links) != len(expected):
+        errors.append(
+            Diagnostic(
+                "RECIPE_MAP_COUNT",
+                f"Collapsed prompt map must contain {len(expected)} unique links.",
+                start + 1,
+            )
+        )
     missing = sorted(set(expected) - unique_links)
     allowed_links = set(expected) | build_prompt_library_category_anchors()
     extra = sorted(set(links) - allowed_links)
     for anchor in missing:
-        errors.append(Diagnostic("RECIPE_MAP_MISSING", f"Recipe map missing link to #{anchor}.", 1, expected.get(anchor)))
+        errors.append(Diagnostic("RECIPE_MAP_MISSING", f"Prompt map missing link to #{anchor}.", start + 1, expected.get(anchor)))
     for anchor in extra:
-        errors.append(Diagnostic("RECIPE_MAP_EXTRA", f"Recipe map links to non-recipe anchor #{anchor}.", 1))
+        errors.append(Diagnostic("RECIPE_MAP_EXTRA", f"Prompt map links to non-prompt anchor #{anchor}.", start + 1))
     return len(recipe_links)
 
 
@@ -1025,57 +1037,81 @@ def run(readme: Path, index_path: Path | None = None) -> dict[str, object]:
     warnings: list[Diagnostic] = []
     resolved_index = Path(index_path) if index_path is not None else DEFAULT_INDEX_PATH
     index_slugs: list[str] | None
+    expected_prompt_count: int | None
     try:
-        index_slugs = load_index_recipe_slugs(resolved_index)
+        expected_prompt_count, index_slug_tuple = load_index_catalog(str(resolved_index))
+        index_slugs = list(index_slug_tuple)
     except FileNotFoundError:
         errors.append(
             Diagnostic("PROMPT_INDEX_YAML", f"Missing catalog index at {resolved_index}.", 1)
         )
         index_slugs = None
+        expected_prompt_count = None
     except ValueError as exc:
         errors.append(Diagnostic("PROMPT_INDEX_YAML", str(exc), 1))
         index_slugs = None
+        expected_prompt_count = None
     recipes = parse_recipes(lines, errors)
-    if len(recipes) != RECIPE_COUNT:
+    if expected_prompt_count is not None and len(recipes) != expected_prompt_count:
         errors.append(
-            Diagnostic("RECIPE_COUNT", f"Expected {RECIPE_COUNT} recipes, found {len(recipes)}.", 1)
+            Diagnostic("PROMPT_COUNT", f"Expected {expected_prompt_count} prompts, found {len(recipes)}.", 1)
+        )
+    if index_slugs is not None:
+        unique_index = set(index_slugs)
+        if len(index_slugs) != len(unique_index):
+            errors.append(
+                Diagnostic("PROMPT_INDEX_YAML_COUNT", "catalog/index.yaml prompt_slugs must be unique.", 1)
+            )
+        if expected_prompt_count is not None and len(unique_index) != expected_prompt_count:
+            errors.append(
+                Diagnostic(
+                    "PROMPT_COUNT",
+                    f"index.counts.prompts={expected_prompt_count} but prompt_slugs lists {len(unique_index)} unique slugs.",
+                    1,
+                )
+            )
+        library_slugs = {recipe.slug for recipe in recipes if recipe.slug}
+        for slug in sorted(unique_index - library_slugs):
+            errors.append(
+                Diagnostic(
+                    "PROMPT_LIBRARY_YAML_MISSING",
+                    f"Prompt Library missing catalog slug {slug!r}.",
+                    1,
+                )
+            )
+        for slug in sorted(library_slugs - unique_index):
+            errors.append(
+                Diagnostic(
+                    "PROMPT_LIBRARY_YAML_EXTRA",
+                    f"Prompt Library heading id {slug!r} is not in catalog/index.yaml prompt_slugs.",
+                    1,
+                )
+            )
+
+    unknown_lanes = sorted({recipe.category for recipe in recipes if recipe.category not in LANE_CLASS})
+    for category in unknown_lanes:
+        errors.append(
+            Diagnostic(
+                "RECIPE_CLASS_MISSING",
+                f"Prompt Library lane {category!r} is missing from LANE_CLASS in catalog_constants.py.",
+                1,
+            )
         )
 
-    recipe_names = {recipe.name for recipe in recipes}
-    class_names = set(RECIPE_CLASS)
-    if class_names != recipe_names and len(recipes) == RECIPE_COUNT:
-        for name in sorted(recipe_names - class_names):
-            errors.append(
-                Diagnostic(
-                    "RECIPE_CLASS_MISSING",
-                    f"Recipe {name!r} is missing from RECIPE_CLASS in catalog_constants.py.",
-                    1,
-                    name,
-                )
+    if has_pattern_notes_chapter(lines):
+        errors.append(
+            Diagnostic(
+                "PATTERN_NOTES_CHAPTER",
+                "README must not contain a ## Pattern Notes catalog chapter.",
+                1,
+                hint="Keep one Prompt Library; method notes belong on prompt cards.",
             )
-        for name in sorted(class_names - recipe_names):
-            errors.append(
-                Diagnostic(
-                    "RECIPE_CLASS_EXTRA",
-                    f"RECIPE_CLASS entry {name!r} does not match a Prompt Library recipe.",
-                    1,
-                    name,
-                )
-            )
+        )
 
     recipe_results = [validate_recipe(recipe, errors, warnings) for recipe in recipes]
     map_count = validate_recipe_map(lines, recipes, errors)
     prompt_index_count = validate_prompt_index(lines, recipes, errors, index_slugs)
     section_map_count = validate_section_map(lines, errors)
-    pattern_count = count_pattern_notes(lines)
-    if pattern_count != PATTERN_NOTE_COUNT:
-        errors.append(
-            Diagnostic(
-                "PATTERN_NOTE_COUNT",
-                f"Expected {PATTERN_NOTE_COUNT} pattern notes, found {pattern_count}.",
-                1,
-            )
-        )
 
     control_count = sum(sum(1 for line in recipe.lines if line.startswith("Control/evidence note:")) for recipe in recipes)
 
@@ -1085,18 +1121,17 @@ def run(readme: Path, index_path: Path | None = None) -> dict[str, object]:
         "readme": str(readme),
         "ok": not errors,
         "counts": {
-            "recipes": len(recipes),
-            "pattern_notes": pattern_count,
+            "prompts": len(recipes),
             "recipe_map_links": map_count,
             "prompt_index_links": prompt_index_count,
             "section_map_links": section_map_count,
             "control_evidence_notes": control_count,
         },
-        "recipes": recipe_results,
+        "prompts": recipe_results,
         "errors": [error.as_dict() for error in errors],
         "warnings": [warning.as_dict() for warning in warnings],
         "checked_rules": [
-            "recipe_count",
+            "prompt_count",
             "required_fields",
             "copy_prompt_hidden_only",
             "text_prompt_blocks",
@@ -1105,7 +1140,7 @@ def run(readme: Path, index_path: Path | None = None) -> dict[str, object]:
             "paste_zone_fill_entries",
             "stale_input_placeholder",
             "visible_chain_of_thought",
-            "pattern_note_count",
+            "pattern_notes_absent",
             "rag_retrieved_sources",
             "recipe_map_links",
             "prompt_index_links",
@@ -1130,7 +1165,7 @@ def print_check(result: dict[str, object]) -> None:
     errors = result["errors"]
     warnings = result["warnings"]
     if not errors and not warnings:
-        print("README recipe contract checks passed.")
+        print("README prompt catalog checks passed.")
         return
     for kind, diagnostics in [("error", errors), ("warning", warnings)]:
         for diagnostic in diagnostics:

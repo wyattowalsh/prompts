@@ -1,0 +1,65 @@
+slug: skeleton-of-thought
+title: Skeleton-of-Thought
+facet: method
+lane: reasoning
+blurb: generate a compact outline, then expand separable sections.
+order: 140
+badge:
+  logo: ri:RiShapeLine
+  color: 8B5CF6
+  chip_label: Skeleton
+evidence: Moderate; primary research plus survey.
+safety:
+  - A single prompt is not the full orchestration method.
+  - Re-check cross-section consistency in a final merge step.
+caveat: >-
+  A single prompt is not the full orchestration method. Treat SoT as a workflow pattern
+  with contracts per section, not a magic paste template.
+definition: generate a compact outline, then expand separable sections.
+avoid_when: sections require tight cross-references or a single narrative.
+model_api_controls: >-
+  Real wall-clock benefit usually requires parallel expansion calls after the skeleton,
+  not a
+
+  single serial prompt. Use structured section schemas for each expansion when software
+  assembles
+
+  the doc. Cap section length; re-check cross-section consistency in a final merge step
+  with eval
+
+  criteria.
+cost_latency: lower wall-clock latency with orchestration; possibly higher total tokens.
+failure_modes: >-
+  inconsistent sections, repeated context, shallow outline, claiming SoT latency gains
+  without
+
+  parallel orchestration, missing a final consistency pass.
+eval_required: true
+sources:
+  - title: Skeleton-of-Thought
+    url: https://arxiv.org/abs/2307.15337
+  - title: OpenAI evaluation best practices
+    url: https://developers.openai.com/api/docs/guides/evaluation-best-practices
+  - title: Anthropic prompt engineering overview
+    url: https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/overview
+  - title: The Prompt Report
+    url: https://arxiv.org/abs/2406.06608
+modes:
+  - id: template
+    label: Method template
+    default: true
+    when_to_use: long-form informational outputs with independent sections and latency pressure.
+    placeholders:
+      - name: topic
+        required: true
+        example: How the billing export job handles retries
+        notes: Topic to outline and expand
+    prompt: |
+      Topic:
+      <input>
+      {topic}
+      </input>
+
+      Create a 5-point skeleton.
+      Then expand each point into a concise section.
+      Keep sections self-contained and avoid repetition.

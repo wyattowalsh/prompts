@@ -172,29 +172,40 @@ async function prepareRoot(root) {
   return { canonicalRoot, notFound };
 }
 
+function destroyTrackedSockets(server, sockets) {
+  for (const socket of sockets) socket.destroy();
+  sockets.clear();
+  server.closeAllConnections?.();
+}
+
 function closeServer(server, sockets, gracePeriodMs) {
   let forceTimer;
   return new Promise((resolveClose, rejectClose) => {
+    let finished = false;
     const finish = (error) => {
+      if (finished) return;
+      finished = true;
       if (forceTimer) clearTimeout(forceTimer);
+      destroyTrackedSockets(server, sockets);
       if (error && error.code !== "ERR_SERVER_NOT_RUNNING") rejectClose(error);
       else resolveClose();
     };
 
     if (!server.listening) {
-      for (const socket of sockets) socket.destroy();
       finish();
       return;
     }
 
-    forceTimer = setTimeout(() => {
-      for (const socket of sockets) socket.destroy();
-      server.closeAllConnections?.();
-    }, gracePeriodMs);
-    forceTimer.unref();
-
     server.close(finish);
     server.closeIdleConnections?.();
+    if (gracePeriodMs <= 0) {
+      destroyTrackedSockets(server, sockets);
+      return;
+    }
+
+    // Keep the failsafe referenced. An unref'd timer skipped keep-alive destroy and
+    // hung past Playwright's 2s SIGTERM window.
+    forceTimer = setTimeout(() => destroyTrackedSockets(server, sockets), gracePeriodMs);
   });
 }
 
@@ -202,7 +213,7 @@ export async function startDistServer({
   root = "web/dist",
   host = "127.0.0.1",
   port = 4173,
-  gracePeriodMs = 1_000,
+  gracePeriodMs = 0,
   onError = (error) => console.error(error)
 } = {}) {
   const { canonicalRoot, notFound } = await prepareRoot(root);
@@ -295,27 +306,66 @@ function validatedHost(value) {
   return value;
 }
 
+function writeListeningLine(url, stdout = process.stdout) {
+  const line = `prompts dist server listening on ${url}\n`;
+  return new Promise((resolveWrite, rejectWrite) => {
+    stdout.write(line, (error) => {
+      if (error) rejectWrite(error);
+      else resolveWrite();
+    });
+  });
+}
+
+export function installCliShutdownHandlers({
+  close,
+  exitProcess = (code) => process.exit(code),
+  signalSource = process,
+  signals = ["SIGINT", "SIGTERM"]
+}) {
+  let shuttingDown = false;
+  let inFlight;
+  const handlers = new Map();
+  const removeHandlers = () => {
+    for (const [signal, handler] of handlers) {
+      signalSource.removeListener(signal, handler);
+    }
+    handlers.clear();
+  };
+  const shutdown = () => {
+    if (shuttingDown) return inFlight;
+    shuttingDown = true;
+    removeHandlers();
+    inFlight = Promise.resolve()
+      .then(() => close())
+      .then(
+        () => 0,
+        (error) => {
+          console.error(error);
+          return 1;
+        }
+      )
+      .then((code) => {
+        exitProcess(code);
+      });
+    return inFlight;
+  };
+  for (const signal of signals) {
+    const handler = () => void shutdown();
+    handlers.set(signal, handler);
+    signalSource.once(signal, handler);
+  }
+  return { removeHandlers, shutdown };
+}
+
 async function main() {
   const controller = await startDistServer({
     root: process.env.PLAYWRIGHT_DIST_ROOT || "web/dist",
     host: validatedHost(process.env.PLAYWRIGHT_WEB_SERVER_HOST || "127.0.0.1"),
-    port: validatedPort(process.env.PLAYWRIGHT_WEB_SERVER_PORT || "4173")
+    port: validatedPort(process.env.PLAYWRIGHT_WEB_SERVER_PORT || "4173"),
+    gracePeriodMs: 0
   });
-  console.log(`prompts dist server listening on ${controller.url}`);
-
-  let shuttingDown = false;
-  const shutdown = async () => {
-    if (shuttingDown) return;
-    shuttingDown = true;
-    try {
-      await controller.close();
-    } catch (error) {
-      console.error(error);
-      process.exitCode = 1;
-    }
-  };
-  process.once("SIGINT", () => void shutdown());
-  process.once("SIGTERM", () => void shutdown());
+  await writeListeningLine(controller.url);
+  installCliShutdownHandlers({ close: () => controller.close() });
 }
 
 if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {

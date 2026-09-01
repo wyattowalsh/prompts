@@ -24,11 +24,12 @@ import {
   withOutputLock,
   withSiteDataLock
 } from "../bin/catalog.mjs";
-import { stableSiteData } from "../src/emit-site.js";
+import { emitSiteData, emitSiteMeta, stableSiteData } from "../src/emit-site.js";
+import { loadCatalogPackage } from "../src/load.js";
 
 const here = dirname(fileURLToPath(import.meta.url));
 const cli = resolve(here, "../bin/catalog.mjs");
-const fixturesRoot = resolve(here, "../../../catalog/fixtures");
+const fixturesRoot = resolve(here, "fixtures");
 
 function runSiteData(out, ...args) {
   return spawnSync(
@@ -218,6 +219,23 @@ async function temporaryDirectory(t, prefix) {
 }
 
 describe("site-data freshness", () => {
+  it("emits a single prompts list without recipe or pattern product arrays", async () => {
+    const pkg = await loadCatalogPackage(fixturesRoot);
+    const site = emitSiteData(pkg);
+    const meta = emitSiteMeta(site);
+
+    assert.equal(Array.isArray(site.prompts), true);
+    assert.equal(site.counts.prompts, site.prompts.length);
+    assert.equal(Object.hasOwn(site, "recipes"), false);
+    assert.equal(Object.hasOwn(site, "patterns"), false);
+    assert.equal(Object.hasOwn(site, "pattern_sections"), false);
+    assert.equal(Object.hasOwn(meta, "prompts"), false);
+    assert.equal(Object.hasOwn(meta, "recipes"), false);
+    assert.equal(Object.hasOwn(meta, "patterns"), false);
+    assert.equal(Object.hasOwn(meta, "pattern_sections"), false);
+    assert.deepEqual(Object.keys(meta.counts), ["prompts"]);
+  });
+
   it("normalizes only the volatile generated_at field", () => {
     assert.equal(
       stableSiteData({ generated_at: "first", value: { generated_at: "nested", ok: true } }),
@@ -330,10 +348,12 @@ describe("site-data freshness", () => {
         generated_at: site.generated_at,
         meta: site.meta,
         lanes: site.lanes,
-        pattern_sections: site.pattern_sections,
         counts: site.counts
       })
     );
+    assert.equal(Object.hasOwn(site, "recipes"), false);
+    assert.equal(Object.hasOwn(site, "patterns"), false);
+    assert.equal(Object.hasOwn(site, "pattern_sections"), false);
     assert.deepEqual(names.sort(), ["catalog-meta.json", "catalog.json"]);
   });
 

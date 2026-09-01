@@ -1,43 +1,98 @@
 import assert from "node:assert/strict";
+import { mkdir, mkdtemp, rm, writeFile } from "node:fs/promises";
+import { tmpdir } from "node:os";
+import { join, resolve } from "node:path";
 import { describe, it } from "node:test";
-import { resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { loadCatalogPackage } from "../src/load.js";
 import { validateCatalogPackage } from "../src/validate.js";
-import { CatalogIndex, Pattern, Recipe, SourceRef } from "../src/schema.js";
+import { CatalogIndex, CatalogItem, LANE_KEYS, SourceRef } from "../src/schema.js";
+import yaml from "../src/yaml-cjs.js";
 
 const here = fileURLToPath(new URL(".", import.meta.url));
-const fixturesRoot = resolve(here, "../../../catalog/fixtures");
-const catalogRoot = resolve(here, "../../../catalog");
+const fixturesRoot = resolve(here, "fixtures");
+
+function samplePrompt(overrides = {}) {
+  const { modes, placeholders, prompt, after_copy, ...rest } = overrides;
+  return {
+    slug: "sample",
+    title: "Sample",
+    facet: "job",
+    lane: "research",
+    blurb: "test",
+    order: 1,
+    badge: { logo: "ri:X", color: "2563EB", chip_label: "S" },
+    sources: [{ title: "t", url: "https://example.com/" }],
+    evidence: "evidence",
+    safety: ["s"],
+    caveat: "caveat",
+    modes: modes ?? [
+      {
+        id: "default",
+        label: "Default",
+        default: true,
+        when_to_use: "Usual path",
+        placeholders: placeholders ?? [
+          { name: "question", required: true, example: "q", notes: "n" }
+        ],
+        prompt: prompt ?? "Q: {question}",
+        after_copy: after_copy ?? {
+          fill_pointer: "match_placeholder_table",
+          expected_output: "out",
+          upgrade_when: "up"
+        }
+      }
+    ],
+    ...rest
+  };
+}
 
 describe("catalog fixtures package", () => {
   it("loads and validates fixtures", async () => {
     const pkg = await loadCatalogPackage(fixturesRoot);
     const result = validateCatalogPackage(pkg, { expectFullCounts: false });
     assert.equal(result.ok, true, JSON.stringify(result.errors, null, 2));
-    assert.equal(result.summary.recipes, 2);
-    assert.equal(result.summary.patterns, 1);
+    assert.equal(result.summary.prompts, 3);
+    assert.equal(pkg.recipes, undefined);
+    assert.equal(pkg.patterns, undefined);
+  });
+
+  it("loads catalog/items only and does not read recipes/ or patterns/", async (t) => {
+    const root = await mkdtemp(join(tmpdir(), "prompts-catalog-items-only-"));
+    t.after(() => rm(root, { recursive: true, force: true }));
+    const pkg = await loadCatalogPackage(fixturesRoot);
+    await writeFile(join(root, "index.yaml"), yaml.dump(pkg.index));
+    await mkdir(join(root, "items"));
+    await mkdir(join(root, "recipes"));
+    await mkdir(join(root, "patterns"));
+    const item = structuredClone(pkg.prompts[0]);
+    await writeFile(join(root, "items", `${item.slug}.yaml`), yaml.dump(item));
+    await writeFile(
+      join(root, "recipes", "should-not-load.yaml"),
+      "slug: should-not-load\ntitle: leftover\n"
+    );
+    await writeFile(
+      join(root, "patterns", "should-not-load.yaml"),
+      "slug: should-not-load\ntitle: leftover\n"
+    );
+
+    const loaded = await loadCatalogPackage(root);
+    assert.equal(loaded.prompts.length, 1);
+    assert.equal(loaded.prompts[0].slug, item.slug);
+    assert.equal(loaded.recipes, undefined);
+    assert.equal(loaded.patterns, undefined);
+    assert.equal(
+      loaded.prompts.some((prompt) => prompt.slug === "should-not-load"),
+      false
+    );
   });
 
   it("rejects undeclared placeholders", () => {
-    const recipe = Recipe.parse({
-      slug: "sample",
-      title: "Sample",
-      lane: "research",
-      class: "research",
-      order: 1,
-      badge: { logo: "ri:X", color: "2563EB", chip_label: "S" },
-      use_for: "test",
-      placeholders: [{ name: "question", required: true, example: "q", notes: "n" }],
-      prompt: "Q: {question}\nExtra: {nope}",
-      after_copy: {
-        fill_pointer: "match_placeholder_table",
-        expected_output: "out",
-        upgrade_when: "up",
-        safety_eval_checks: ["s"]
-      },
-      sources: [{ title: "t", url: "https://example.com/" }]
-    });
+    const prompt = CatalogItem.parse(
+      samplePrompt({
+        prompt: "Q: {question}\nExtra: {nope}"
+      })
+    );
     const result = validateCatalogPackage({
       root: "mem",
       index: {
@@ -45,13 +100,21 @@ describe("catalog fixtures package", () => {
         meta: {
           title: "t",
           description: "d",
-          repository_url: "https://example.com"
+          repository_url: "https://github.com/example/prompts"
         },
-        lanes: [{ key: "research", title: "R", order: 1, recipe_slugs: ["sample"] }],
-        pattern_sections: []
+        counts: { prompts: 1 },
+        lanes: [
+          {
+            key: "research",
+            title: "R",
+            order: 1,
+            prompt_slugs: ["sample"],
+            featured_prompt_slugs: []
+          }
+        ],
+        readme: { shortcuts: [{ prompt_slug: "sample", label: "Sample" }] }
       },
-      recipes: [recipe],
-      patterns: []
+      prompts: [prompt]
     });
     assert.equal(result.ok, false);
     assert.ok(result.errors.some((error) => error.code === "UNDECLARED_PLACEHOLDER"));
@@ -59,55 +122,60 @@ describe("catalog fixtures package", () => {
 
   it("rejects duplicate placeholder names at parse and semantic-validation boundaries", async () => {
     const pkg = await loadCatalogPackage(fixturesRoot);
-    const recipe = structuredClone(pkg.recipes[0]);
-    recipe.placeholders.push({
-      ...recipe.placeholders[0],
+    const prompt = structuredClone(pkg.prompts[0]);
+    const mode = prompt.modes[0];
+    mode.placeholders.push({
+      ...mode.placeholders[0],
       notes: "same name with different metadata"
     });
 
-    assert.equal(Recipe.safeParse(recipe).success, false);
-    const result = validateCatalogPackage({ ...pkg, recipes: [recipe, ...pkg.recipes.slice(1)] });
+    assert.equal(CatalogItem.safeParse(prompt).success, false);
+    const result = validateCatalogPackage({ ...pkg, prompts: [prompt, ...pkg.prompts.slice(1)] });
     assert.deepEqual(
       result.errors.filter((error) => error.code === "DUPLICATE_PLACEHOLDER"),
       [
         {
           code: "DUPLICATE_PLACEHOLDER",
-          message: `recipe ${recipe.slug}: placeholder {${recipe.placeholders[0].name}} is declared multiple times`,
-          recipe: recipe.slug
+          message: `prompt ${prompt.slug} mode ${mode.id}: placeholder {${mode.placeholders[0].name}} is declared multiple times`,
+          prompt: prompt.slug,
+          mode: mode.id
         }
       ]
     );
   });
 
-  it("rejects duplicate recipe titles and heading logos across records", async () => {
+  it("rejects duplicate prompt titles and heading logos across records", async () => {
     const pkg = await loadCatalogPackage(fixturesRoot);
-    pkg.recipes[1].title = pkg.recipes[0].title;
-    pkg.recipes[1].badge.logo = pkg.recipes[0].badge.logo;
+    pkg.prompts[1].title = pkg.prompts[0].title;
+    pkg.prompts[1].badge.logo = pkg.prompts[0].badge.logo;
 
     const result = validateCatalogPackage(pkg);
     assert.equal(result.ok, false);
-    assert.ok(result.errors.some((error) => error.code === "DUPLICATE_RECIPE_TITLE"));
-    assert.ok(result.errors.some((error) => error.code === "DUPLICATE_RECIPE_BADGE_LOGO"));
+    assert.ok(result.errors.some((error) => error.code === "DUPLICATE_PROMPT_TITLE"));
+    assert.ok(result.errors.some((error) => error.code === "DUPLICATE_PROMPT_BADGE_LOGO"));
   });
 
-  it("requires exactly one meaningful pattern template field", async () => {
+  it("requires exactly one meaningful mode template field", async () => {
     const pkg = await loadCatalogPackage(fixturesRoot);
-    const neither = structuredClone(pkg.patterns[0]);
-    delete neither.template;
-    delete neither.template_omission_reason;
-    const both = { ...structuredClone(pkg.patterns[0]), template_omission_reason: "Not needed" };
-    const omissionOnly = {
-      ...structuredClone(pkg.patterns[0]),
-      template: null,
-      template_omission_reason: "Unsafe to provide as a reusable template."
-    };
+    const neither = structuredClone(pkg.prompts[0]);
+    delete neither.modes[0].prompt;
+    delete neither.modes[0].template_omission_reason;
+    const both = structuredClone(pkg.prompts[0]);
+    both.modes[0].template_omission_reason = "Not needed";
+    const omissionOnly = structuredClone(pkg.prompts[0]);
+    delete omissionOnly.modes[0].prompt;
+    omissionOnly.modes[0].placeholders = [];
+    omissionOnly.modes[0].template_omission_reason = "Unsafe to provide as a reusable template.";
 
-    assert.equal(Pattern.safeParse(neither).success, false);
-    assert.equal(Pattern.safeParse(both).success, false);
-    assert.equal(Pattern.safeParse(omissionOnly).success, true);
+    assert.equal(CatalogItem.safeParse(neither).success, false);
+    assert.equal(CatalogItem.safeParse(both).success, false);
+    assert.equal(CatalogItem.safeParse(omissionOnly).success, true);
 
-    const result = validateCatalogPackage({ ...pkg, patterns: [neither] });
-    assert.ok(result.errors.some((error) => error.code === "PATTERN_TEMPLATE_CONTRACT"));
+    const result = validateCatalogPackage({
+      ...pkg,
+      prompts: [neither, ...pkg.prompts.slice(1)]
+    });
+    assert.ok(result.errors.some((error) => error.code === "MODE_TEMPLATE_CONTRACT"));
   });
 
   it("requires HTTPS source and catalog metadata URLs", async () => {
@@ -142,47 +210,95 @@ describe("catalog fixtures package", () => {
   it("rejects unsupported index key domains", async () => {
     const pkg = await loadCatalogPackage(fixturesRoot);
     const invalidLane = structuredClone(pkg.index);
-    invalidLane.lanes.push({ key: "typo-lane", title: "Typo", order: 99, recipe_slugs: [] });
-    assert.equal(CatalogIndex.safeParse(invalidLane).success, false);
-
-    const invalidSection = structuredClone(pkg.index);
-    invalidSection.pattern_sections.push({
-      key: "typo-section",
+    invalidLane.lanes.push({
+      key: "typo-lane",
       title: "Typo",
       order: 99,
-      pattern_slugs: []
+      prompt_slugs: [],
+      featured_prompt_slugs: []
     });
-    assert.equal(CatalogIndex.safeParse(invalidSection).success, false);
+    assert.equal(CatalogIndex.safeParse(invalidLane).success, false);
 
     const semantic = validateCatalogPackage({ ...pkg, index: invalidLane });
     assert.ok(semantic.errors.some((error) => error.code === "INDEX_INVALID_LANE_KEY"));
   });
 
   it("requires every canonical index key in full-catalog mode", async () => {
-    const pkg = await loadCatalogPackage(catalogRoot);
-    pkg.index.lanes = pkg.index.lanes.filter((lane) => lane.key !== "research");
-    pkg.index.pattern_sections = pkg.index.pattern_sections.filter(
-      (section) => section.key !== "verification-and-iteration"
-    );
-
+    const pkg = await loadCatalogPackage(fixturesRoot);
     const result = validateCatalogPackage(pkg, { expectFullCounts: true });
     assert.ok(result.errors.some((error) => error.code === "INDEX_MISSING_LANE_KEYS"));
-    assert.ok(result.errors.some((error) => error.code === "INDEX_MISSING_PATTERN_SECTION_KEYS"));
+    assert.equal(
+      result.errors.some(
+        (error) => error.code === "RECIPE_COUNT" || error.code === "PATTERN_NOTE_COUNT"
+      ),
+      false,
+      "full-count mode must not revive dual recipe/pattern count contracts"
+    );
   });
 
-  it("rejects duplicate lane keys even when recipe lane metadata is aligned", async () => {
+  it("full-count mode compares one prompt total from index.yaml", () => {
+    const prompts = LANE_KEYS.map((key) =>
+      CatalogItem.parse(
+        samplePrompt({
+          slug: `prompt-${key}`,
+          title: `Prompt ${key}`,
+          lane: key,
+          badge: { logo: `ri:${key}`, color: "2563EB", chip_label: key }
+        })
+      )
+    );
+    const index = {
+      version: 1,
+      meta: {
+        title: "t",
+        description: "d",
+        repository_url: "https://github.com/example/prompts"
+      },
+      counts: { prompts: 8 },
+      lanes: LANE_KEYS.map((key, order) => ({
+        key,
+        title: key,
+        color: "2563EB",
+        badge: { label: key, logo: `ri:${key}`, background: "172554" },
+        order,
+        prompt_slugs: [`prompt-${key}`],
+        featured_prompt_slugs: [`prompt-${key}`]
+      })),
+      readme: { shortcuts: [{ prompt_slug: "prompt-research", label: "Research" }] }
+    };
+
+    const ok = validateCatalogPackage({ root: "mem", index, prompts }, { expectFullCounts: true });
+    assert.equal(ok.ok, true, JSON.stringify(ok.errors, null, 2));
+
+    const mismatch = validateCatalogPackage(
+      { root: "mem", index: { ...index, counts: { prompts: 99 } }, prompts },
+      { expectFullCounts: true }
+    );
+    assert.equal(mismatch.ok, false);
+    assert.ok(mismatch.errors.some((error) => error.code === "PROMPT_COUNT"));
+    assert.equal(
+      mismatch.errors.some(
+        (error) => error.code === "RECIPE_COUNT" || error.code === "PATTERN_NOTE_COUNT"
+      ),
+      false,
+      "full-count mismatches must use PROMPT_COUNT, not recipe/pattern counts"
+    );
+  });
+
+  it("rejects duplicate lane keys even when prompt lane metadata is aligned", async () => {
     const pkg = await loadCatalogPackage(fixturesRoot);
     const duplicateKey = pkg.index.lanes[0].key;
-    const ownedSlug = pkg.index.lanes[0].recipe_slugs[0];
-    const ownedRecipe = pkg.recipes.find((recipe) => recipe.slug === ownedSlug);
+    const ownedSlug = pkg.index.lanes[0].prompt_slugs[0];
+    const ownedPrompt = pkg.prompts.find((prompt) => prompt.slug === ownedSlug);
     pkg.index.lanes.push({
       key: duplicateKey,
       title: "Duplicate Research",
       order: 99,
-      recipe_slugs: []
+      prompt_slugs: [],
+      featured_prompt_slugs: []
     });
 
-    assert.equal(ownedRecipe?.lane, duplicateKey);
+    assert.equal(ownedPrompt?.lane, duplicateKey);
     const result = validateCatalogPackage(pkg, { expectFullCounts: false });
 
     assert.equal(result.ok, false);
@@ -194,89 +310,33 @@ describe("catalog fixtures package", () => {
     ]);
   });
 
-  it("rejects duplicate pattern-section keys when pattern metadata is aligned", async () => {
+  it("rejects prompts listed in more than one index lane", async () => {
     const pkg = await loadCatalogPackage(fixturesRoot);
-    const duplicateKey = pkg.index.pattern_sections[0].key;
-    pkg.index.pattern_sections.push({
-      key: duplicateKey,
-      title: "Duplicate Reasoning and Search",
-      order: 99,
-      pattern_slugs: []
-    });
-
-    assert.equal(pkg.patterns[0].section, duplicateKey);
-    const result = validateCatalogPackage(pkg, { expectFullCounts: false });
-
-    assert.equal(result.ok, false);
-    assert.deepEqual(result.errors, [
-      {
-        code: "INDEX_DUPLICATE_PATTERN_SECTION_KEY",
-        message: "index.pattern_sections contains duplicate key reasoning-and-search"
-      }
-    ]);
-  });
-
-  it("rejects recipes listed in more than one index lane", async () => {
-    const pkg = await loadCatalogPackage(fixturesRoot);
-    const slug = pkg.index.lanes[0].recipe_slugs[0];
-    pkg.index.lanes[1].recipe_slugs.push(slug);
+    const slug = pkg.index.lanes[0].prompt_slugs[0];
+    pkg.index.lanes[1].prompt_slugs.push(slug);
 
     const result = validateCatalogPackage(pkg, { expectFullCounts: false });
 
     assert.equal(result.ok, false);
     assert.deepEqual(
-      result.errors.filter((error) => error.code === "INDEX_DUPLICATE_RECIPE"),
+      result.errors.filter((error) => error.code === "INDEX_DUPLICATE_PROMPT"),
       [
         {
-          code: "INDEX_DUPLICATE_RECIPE",
-          message: `recipe ${slug} listed multiple times in index.lanes: research, coding`
+          code: "INDEX_DUPLICATE_PROMPT",
+          message: `prompt ${slug} listed multiple times in index.lanes: research, coding`
         }
       ]
     );
   });
 
-  it("rejects patterns listed in more than one index section", async () => {
+  it("rejects related self, missing, and duplicate links", async () => {
     const pkg = await loadCatalogPackage(fixturesRoot);
-    const slug = pkg.index.pattern_sections[0].pattern_slugs[0];
-    pkg.index.pattern_sections.push({
-      key: "verification-and-iteration",
-      title: "Verification and Iteration",
-      order: 3,
-      pattern_slugs: [slug]
-    });
+    const prompt = structuredClone(pkg.prompts[0]);
+    prompt.related = [prompt.slug, "missing-prompt", "missing-prompt"];
 
-    const result = validateCatalogPackage(pkg, { expectFullCounts: false });
-
-    assert.equal(result.ok, false);
-    assert.deepEqual(
-      result.errors.filter((error) => error.code === "INDEX_DUPLICATE_PATTERN"),
-      [
-        {
-          code: "INDEX_DUPLICATE_PATTERN",
-          message:
-            "pattern tree-of-thoughts listed multiple times in index.pattern_sections: reasoning-and-search, verification-and-iteration"
-        }
-      ]
-    );
-  });
-
-  it("rejects pattern section metadata that disagrees with its index section", async () => {
-    const pkg = await loadCatalogPackage(fixturesRoot);
-    pkg.patterns[0].section = "verification-and-iteration";
-
-    const result = validateCatalogPackage(pkg, { expectFullCounts: false });
-
-    assert.equal(result.ok, false);
-    assert.deepEqual(
-      result.errors.filter((error) => error.code === "PATTERN_SECTION_MISMATCH"),
-      [
-        {
-          code: "PATTERN_SECTION_MISMATCH",
-          message:
-            "pattern tree-of-thoughts: section verification-and-iteration != index section reasoning-and-search",
-          pattern: "tree-of-thoughts"
-        }
-      ]
-    );
+    const result = validateCatalogPackage({ ...pkg, prompts: [prompt, ...pkg.prompts.slice(1)] });
+    assert.ok(result.errors.some((error) => error.code === "RELATED_SELF"));
+    assert.ok(result.errors.some((error) => error.code === "RELATED_MISSING"));
+    assert.ok(result.errors.some((error) => error.code === "RELATED_DUPLICATE"));
   });
 });

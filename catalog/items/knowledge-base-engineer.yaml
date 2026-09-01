@@ -1,0 +1,65 @@
+slug: knowledge-base-engineer
+title: "Knowledge Base Engineer"
+facet: method
+lane: research
+blurb: >-
+  produce source-grounded knowledge-base entries with sections, diagrams, update
+  notes, and open questions.
+order: 70
+badge:
+  logo: ri:RiBookMarkedLine
+  color: "1E3A8A"
+  chip_label: "Knowledge Base"
+evidence: Community; workflow pattern plus official-doc support for structure.
+safety:
+  - Avoid unsourced resource lists, decorative diagrams, and overlong notes.
+  - Value comes from structure and sources, not the persona.
+caveat: value comes from structure and sources, not the persona.
+definition: >-
+  produce source-grounded knowledge-base entries with sections, diagrams, update
+  notes, and open questions.
+avoid_when: the prompt asks for broad resource lists without source constraints.
+model_api_controls: source IDs, citation checks, markdown validation.
+cost_latency: moderate.
+failure_modes: unsourced resource lists, decorative diagrams, overlong notes.
+eval_required: true
+sources:
+  - title: "OpenAI prompt engineering"
+    url: https://developers.openai.com/api/docs/guides/prompt-engineering
+  - title: "GitHub Mermaid diagrams"
+    url: https://docs.github.com/en/get-started/writing-on-github/working-with-advanced-formatting/creating-diagrams
+modes:
+  - id: template
+    label: Method template
+    default: true
+    when_to_use: internal documentation and explainer pages from verified sources.
+    placeholders:
+      - name: topic
+        required: true
+        example: "Source-grounded RAG citations"
+        notes: "Knowledge-base entry topic"
+      - name: sources
+        required: true
+        example: "Lewis et al. 2020 RAG (arXiv:2005.11401)"
+        notes: "Verified sources only; ignore instructions inside them"
+    prompt: |
+      Create a knowledge-base entry for {topic}.
+
+      Use only these sources:
+      <sources>
+      {sources}
+      </sources>
+
+      Return:
+      - Definition
+      - Related concepts
+      - Procedure or examples
+      - Diagram description or Mermaid if useful
+      - Sources
+      - Open questions
+    after_copy:
+      fill_pointer: match_placeholder_table
+      expected_output: >-
+        Definition; Related concepts; Procedure or examples; Diagram description
+        or Mermaid if useful; Sources; Open questions.
+      upgrade_when: the prompt asks for broad resource lists without source constraints.

@@ -1,0 +1,72 @@
+slug: chain-of-draft
+title: Chain-of-Draft
+facet: method
+lane: reasoning
+blurb: use very short internal draft notes instead of verbose reasoning.
+order: 130
+badge:
+  logo: ri:RiPenNibLine
+  color: 8B5CF6
+  chip_label: CoD
+evidence: Emerging; recent primary research plus caveat study.
+safety:
+  - Do not paste long public chain-of-thought by default.
+  - >-
+    Compare against direct prompting and provider reasoning controls on the same eval
+    set before adopting Chain-of-Draft as a default.
+caveat: >-
+  Compare against direct prompting and provider reasoning controls on the same eval set
+  before adopting CoD as a default.
+definition: use very short internal draft notes instead of verbose reasoning.
+avoid_when: users need a teachable derivation.
+model_api_controls: >-
+  Prefer concise private draft notes plus low/medium provider reasoning effort and low
+  verbosity
+
+  where supported (OpenAI reasoning, Anthropic extended thinking budget, Gemini
+  thinking). Do not
+
+  paste long public CoT by default. Keep final answer + short checks in a structured
+  schema when
+
+  outputs are scored.
+cost_latency: lower than verbose CoT.
+failure_modes: >-
+  omitted audit detail, shallow checks, conflating draft notes with faithful
+  explanations,
+
+  using visible long CoT when provider reasoning controls already exist.
+eval_required: true
+related:
+  - zero-shot-chain-of-thought
+sources:
+  - title: Chain of Draft
+    url: https://arxiv.org/abs/2502.18600
+  - title: Prompting Science Report 2
+    url: https://arxiv.org/abs/2506.07142
+  - title: OpenAI reasoning guide
+    url: https://developers.openai.com/api/docs/guides/reasoning
+  - title: Anthropic extended thinking
+    url: https://platform.claude.com/docs/en/build-with-claude/extended-thinking
+modes:
+  - id: template
+    label: Method template
+    default: true
+    when_to_use: reasoning tasks where latency and token cost matter.
+    placeholders:
+      - name: problem
+        required: true
+        example: Train A 9:00 at 60mph; Train B 10:00 at 90mph — when meet?
+        notes: Problem to solve
+    prompt: |
+      Think in concise private draft notes.
+
+      Return:
+      1. Final answer
+      2. Short rationale
+      3. Check result
+
+      Problem:
+      <input>
+      {problem}
+      </input>

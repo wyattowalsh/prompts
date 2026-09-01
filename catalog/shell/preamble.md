@@ -7,7 +7,7 @@
 <!-- Takumi README chrome: hero + path, light/dark via prefers-color-scheme. -->
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="catalog/shell/chrome/dist/hero-dark.png">
-  <img src="catalog/shell/chrome/dist/hero-light.png" alt="Prompt Library: research-backed recipes you copy, adapt, and verify." width="1280" height="360">
+  <img src="catalog/shell/chrome/dist/hero-light.png" alt="Prompt Library: research-backed prompts you copy, adapt, and verify." width="1280" height="360">
 </picture>
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="catalog/shell/chrome/dist/path-dark.png">
@@ -15,13 +15,12 @@
 </picture>
 
 <p>
-  <sub>Research-backed recipes · copy · adapt · verify</sub>
+  <sub>Research-backed prompts · copy · adapt · verify</sub>
 </p>
 
 <!-- BADGES:START -->
 <p align="center">
   <a href="#prompt-library"><img alt="Prompt library: 48 prompts" src="https://shieldcn.dev/badge/48%20Prompts-14B8A6.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=26&radius=7&padX=10&iconSize=13&variant=default&logo=readthedocs&logoColor=5EEAD4"></a>
-  <a href="#pattern-notes"><img alt="Pattern notes: 43 techniques" src="https://shieldcn.dev/badge/43%20Patterns-38BDF8.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=26&radius=7&padX=10&iconSize=13&variant=default&logo=gitbook&logoColor=7DD3FC"></a>
   <a href="#how-to-adapt-prompts"><img alt="Zero-shot first: examples optional" src="https://shieldcn.dev/badge/Zero%20Shot-818CF8.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=26&radius=7&padX=10&iconSize=13&variant=default&logo=ri:RiSparkling2Line&logoColor=C7D2FE"></a>
   <a href="#bibliography"><img alt="Evidence base: papers and docs" src="https://shieldcn.dev/badge/Evidence-F43F5E.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=26&radius=7&padX=10&iconSize=13&variant=default&logo=arxiv&logoColor=FDA4AF"></a>
   <a href="#safety-evals-and-trust-boundaries"><img alt="Safety and evals: gated" src="https://shieldcn.dev/badge/Safety-FB923C.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=26&radius=7&padX=10&iconSize=13&variant=default&logo=owasp&logoColor=FED7AA"></a>
@@ -66,9 +65,9 @@
 ## Start Here
 
 > [!TIP]
-> Pick a [recipe shortcut](#recipe-shortcuts). Fill the placeholder table — paste `none` for optional zones you omit — then copy the `text` fence. Read the visible [Safety CAUTION](#safety-evals-and-trust-boundaries) before reuse.
+> Pick a [prompt shortcut](#prompt-shortcuts). Fill the placeholder table — paste `none` for optional zones you omit — then copy the `text` fence. Read the visible [Safety CAUTION](#safety-evals-and-trust-boundaries) before reuse.
 
-### Recipe shortcuts
+### Prompt shortcuts
 
 <!-- SHORTCUTS:START -->
 <p align="center">
@@ -101,7 +100,7 @@
 | Triage logs or incidents | [Log Triage](#log-triage) | Tool access, credentials, production systems, or destructive actions are involved. |
 | Build an agent workflow | [Tool-Use Planner](#tool-use-planner) | Tools can mutate state or access private data. |
 | Improve a prompt | [Prompt Optimizer](#prompt-optimizer) | You have repeated failures and need regression evals. |
-| Solve hard reasoning tasks | [Plan-and-Solve](#plan-and-solve) | One pass is brittle; add verification or independent samples. |
+| Solve hard reasoning tasks | [Plan-and-Solve](#plan-then-solve) | One pass is brittle; add verification or independent samples. |
 
 <p align="right">
   <a href="#table-of-contents"><img alt="Table of contents" src="https://shieldcn.dev/badge/TOC-6366F1.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=24&radius=7&padX=9&iconSize=13&variant=default&logo=ri:RiListCheck&logoColor=f8fafc"></a>
@@ -113,36 +112,12 @@
 ## Table of Contents
 
 <details>
-<summary>Prompt Index (48) and Section Map (21)</summary>
+<summary>Prompt Index (<!-- PROMPT-COUNT -->) and Section Map</summary>
 
 ### Prompt Index
 
-<table>
-  <tr>
-    <th style="background-color:#172554;color:#93c5fd">Research</th>
-    <th style="background-color:#3b0764;color:#d8b4fe">Writing</th>
-    <th style="background-color:#14532d;color:#86efac">Coding</th>
-    <th style="background-color:#713f12;color:#fde047">Data</th>
-  </tr>
-  <tr>
-    <td valign="top"><kbd>01</kbd> <a href="#source-grounded-answer">Source-Grounded Answer</a><br><kbd>02</kbd> <a href="#web-research-brief">Web Research Brief</a><br><kbd>03</kbd> <a href="#literature-scan">Literature Scan</a><br><kbd>04</kbd> <a href="#claim-checker">Claim Checker</a><br><kbd>05</kbd> <a href="#citation-matrix">Citation Matrix</a><br><kbd>06</kbd> <a href="#disagreement-map">Disagreement Map</a></td>
-    <td valign="top"><kbd>07</kbd> <a href="#executive-brief">Executive Brief</a><br><kbd>08</kbd> <a href="#rewrite-with-constraints">Rewrite With Constraints</a><br><kbd>09</kbd> <a href="#style-transfer-without-examples">Style Transfer Without Examples</a><br><kbd>10</kbd> <a href="#dense-summary">Dense Summary</a><br><kbd>11</kbd> <a href="#faq-generator">FAQ Generator</a><br><kbd>12</kbd> <a href="#newsletter-draft">Newsletter Draft</a></td>
-    <td valign="top"><kbd>13</kbd> <a href="#code-review">Code Review</a><br><kbd>14</kbd> <a href="#bug-rca">Bug RCA</a><br><kbd>15</kbd> <a href="#unit-test-writer">Unit Test Writer</a><br><kbd>16</kbd> <a href="#refactor-planner">Refactor Planner</a><br><kbd>17</kbd> <a href="#pr-description">PR Description</a><br><kbd>18</kbd> <a href="#api-contract-explainer">API Contract Explainer</a></td>
-    <td valign="top"><kbd>19</kbd> <a href="#json-extractor">JSON Extractor</a><br><kbd>20</kbd> <a href="#table-normalizer">Table Normalizer</a><br><kbd>21</kbd> <a href="#classifier">Classifier</a><br><kbd>22</kbd> <a href="#ner-extractor">NER Extractor</a><br><kbd>23</kbd> <a href="#sentiment-triage">Sentiment Triage</a><br><kbd>24</kbd> <a href="#synthetic-edge-cases">Synthetic Edge Cases</a></td>
-  </tr>
-  <tr>
-    <th style="background-color:#500724;color:#f9a8d4">Product</th>
-    <th style="background-color:#431407;color:#fdba74">Operations</th>
-    <th style="background-color:#164e63;color:#67e8f9">Agent and tool workflows</th>
-    <th style="background-color:#2e1065;color:#c4b5fd">Reasoning</th>
-  </tr>
-  <tr>
-    <td valign="top"><kbd>25</kbd> <a href="#prd-drafter">PRD Drafter</a><br><kbd>26</kbd> <a href="#user-story-splitter">User Story Splitter</a><br><kbd>27</kbd> <a href="#acceptance-criteria-writer">Acceptance Criteria Writer</a><br><kbd>28</kbd> <a href="#launch-checklist">Launch Checklist</a><br><kbd>29</kbd> <a href="#ux-review">UX Review</a><br><kbd>30</kbd> <a href="#support-macro">Support Macro</a></td>
-    <td valign="top"><kbd>31</kbd> <a href="#incident-summary">Incident Summary</a><br><kbd>32</kbd> <a href="#runbook-generator">Runbook Generator</a><br><kbd>33</kbd> <a href="#log-triage">Log Triage</a><br><kbd>34</kbd> <a href="#risk-register">Risk Register</a><br><kbd>35</kbd> <a href="#decision-memo">Decision Memo</a><br><kbd>36</kbd> <a href="#meeting-action-extractor">Meeting Action Extractor</a></td>
-    <td valign="top"><kbd>37</kbd> <a href="#tool-use-planner">Tool-Use Planner</a><br><kbd>38</kbd> <a href="#rag-answer-contract">RAG Answer Contract</a><br><kbd>39</kbd> <a href="#prompt-injection-scanner">Prompt-Injection Scanner</a><br><kbd>40</kbd> <a href="#eval-set-generator">Eval-Set Generator</a><br><kbd>41</kbd> <a href="#regression-judge">Regression Judge</a><br><kbd>42</kbd> <a href="#prompt-optimizer">Prompt Optimizer</a></td>
-    <td valign="top"><kbd>43</kbd> <a href="#plan-and-solve">Plan-and-Solve</a><br><kbd>44</kbd> <a href="#step-back-answer">Step-Back Answer</a><br><kbd>45</kbd> <a href="#verification-pass">Verification Pass</a><br><kbd>46</kbd> <a href="#self-refine-pass">Self-Refine Pass</a><br><kbd>47</kbd> <a href="#panel-review">Panel Review</a><br><kbd>48</kbd> <a href="#tradeoff-matrix">Tradeoff Matrix</a></td>
-  </tr>
-</table>
+<!-- PROMPT-INDEX:START -->
+<!-- PROMPT-INDEX:END -->
 
 ### Section Map
 
@@ -160,18 +135,13 @@
 - [Provider Controls](#provider-controls)
 - [Safety, Evals, And Trust Boundaries](#safety-evals-and-trust-boundaries)
 - [Pattern Selection Matrix](#pattern-selection-matrix)
-- [Pattern Notes](#pattern-notes)
-  - [Core Prompt Construction](#core-prompt-construction)
-  - [Reasoning and Search](#reasoning-and-search)
-  - [Verification and Iteration](#verification-and-iteration)
-  - [Task and Workflow Snippets](#task-and-workflow-snippets)
-- [Contributing Prompt Recipes](#contributing-prompt-recipes)
+- [Contributing Prompts](#contributing-prompts)
 - [Bibliography](#bibliography)
 
 </details>
 
 <details>
-<summary><strong>Browse all 48 recipes by job</strong></summary>
+<summary><strong>Browse all prompts by lane</strong></summary>
 
 <!-- JOB-MAP:START -->
 <table>
@@ -195,19 +165,19 @@
     <td style="background-color:#14532d;border-left:4px solid #22C55E;vertical-align:top;width:190px">
       <a href="#coding"><img alt="Coding lane" src="https://shieldcn.dev/badge/Coding-22C55E.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=22&radius=7&padX=8&iconSize=12&variant=default&logo=ri:RiCodeBoxLine&logoColor=f8fafc"></a>
     </td>
-    <td style="vertical-align:top"><a href="#code-review">Code Review</a> · <a href="#bug-rca">Bug RCA</a> · <a href="#unit-test-writer">Unit Test Writer</a> · <a href="#refactor-planner">Refactor Planner</a> · <a href="#pr-description">PR Description</a> · <a href="#api-contract-explainer">API Contract Explainer</a></td>
+    <td style="vertical-align:top"><a href="#code-review">Code Review</a> · <a href="#bug-rca">Bug RCA</a> · <a href="#unit-test-authoring">Unit Test Authoring</a> · <a href="#refactor-planner">Refactor Planner</a> · <a href="#pr-description">PR Description</a> · <a href="#api-contract-explainer">API Contract Explainer</a></td>
   </tr>
   <tr>
     <td style="background-color:#713f12;border-left:4px solid #EAB308;vertical-align:top;width:190px">
       <a href="#data"><img alt="Data lane" src="https://shieldcn.dev/badge/Data-EAB308.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=22&radius=7&padX=8&iconSize=12&variant=default&logo=ri:RiDatabaseLine&logoColor=f8fafc"></a>
     </td>
-    <td style="vertical-align:top"><a href="#json-extractor">JSON Extractor</a> · <a href="#table-normalizer">Table Normalizer</a> · <a href="#classifier">Classifier</a> · <a href="#ner-extractor">NER Extractor</a> · <a href="#sentiment-triage">Sentiment Triage</a> · <a href="#synthetic-edge-cases">Synthetic Edge Cases</a></td>
+    <td style="vertical-align:top"><a href="#json-extractor">JSON Extractor</a> · <a href="#table-normalizer">Table Normalizer</a> · <a href="#classifier">Classifier</a> · <a href="#named-entity-extraction">Named Entity Extraction</a> · <a href="#sentiment-triage">Sentiment Triage</a> · <a href="#synthetic-edge-cases">Synthetic Edge Cases</a></td>
   </tr>
   <tr>
     <td style="background-color:#500724;border-left:4px solid #EC4899;vertical-align:top;width:190px">
       <a href="#product"><img alt="Product lane" src="https://shieldcn.dev/badge/Product-EC4899.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=22&radius=7&padX=8&iconSize=12&variant=default&logo=ri:RiLayoutGridLine&logoColor=f8fafc"></a>
     </td>
-    <td style="vertical-align:top"><a href="#prd-drafter">PRD Drafter</a> · <a href="#user-story-splitter">User Story Splitter</a> · <a href="#acceptance-criteria-writer">Acceptance Criteria Writer</a> · <a href="#launch-checklist">Launch Checklist</a> · <a href="#ux-review">UX Review</a> · <a href="#support-macro">Support Macro</a></td>
+    <td style="vertical-align:top"><a href="#prd-drafter">PRD Drafter</a> · <a href="#user-story-splitter">User Story Splitter</a> · <a href="#acceptance-criteria-writer">Acceptance Criteria Writer</a> · <a href="#launch-checklist">Launch Checklist</a> · <a href="#usability-review">Usability Review</a> · <a href="#support-macro">Support Macro</a></td>
   </tr>
   <tr>
     <td style="background-color:#431407;border-left:4px solid #F97316;vertical-align:top;width:190px">
@@ -225,7 +195,7 @@
     <td style="background-color:#2e1065;border-left:4px solid #8B5CF6;vertical-align:top;width:190px">
       <a href="#reasoning"><img alt="Reasoning lane" src="https://shieldcn.dev/badge/Reasoning-8B5CF6.svg?mode=dark&font=space-grotesk&split=false&labelColor=020617&labelTextColor=cbd5e1&valueColor=f8fafc&height=22&radius=7&padX=8&iconSize=12&variant=default&logo=ri:RiBrainLine&logoColor=f8fafc"></a>
     </td>
-    <td style="vertical-align:top"><a href="#plan-and-solve">Plan-and-Solve</a> · <a href="#step-back-answer">Step-Back Answer</a> · <a href="#verification-pass">Verification Pass</a> · <a href="#self-refine-pass">Self-Refine Pass</a> · <a href="#panel-review">Panel Review</a> · <a href="#tradeoff-matrix">Tradeoff Matrix</a></td>
+    <td style="vertical-align:top"><a href="#plan-then-solve">Plan-and-Solve</a> · <a href="#step-back-reasoning">Step-Back Reasoning</a> · <a href="#verification-pass">Verification Pass</a> · <a href="#critique-revise">Self-Refine</a> · <a href="#simulated-panel">Simulated Panel</a> · <a href="#tradeoff-matrix">Tradeoff Matrix</a></td>
   </tr>
 </table>
 <!-- JOB-MAP:END -->
@@ -233,12 +203,12 @@
 </details>
 
 <details>
-<summary>Recipe format</summary>
+<summary>Prompt format</summary>
 
 > [!TIP]
 > Fill the placeholder table first; paste `none` for optional zones you omit. Long copy prompts may scroll horizontally on GitHub — keep the full template copyable as one block.
 
-| Recipe field | Purpose |
+| Prompt field | Purpose |
 | --- | --- |
 | Use for | Confirms the job before copying. |
 | Placeholder table | Canonical placeholders, required/optional, examples, notes. |
@@ -249,7 +219,7 @@
 | Upgrade when | When to add examples, retrieval, tools, schemas, or evals. |
 | Control/evidence note | Provider control or review upgrade for higher-risk work. |
 | Safety/eval checks | Common failure guards before reuse. |
-| Sources | Docs, research, or pattern notes. |
+| Sources | Docs, research, or method notes. |
 | After copy details | Collapsed fill, output, upgrade, safety, and sources metadata. |
 
 </details>

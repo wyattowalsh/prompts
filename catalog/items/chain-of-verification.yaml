@@ -1,0 +1,75 @@
+slug: chain-of-verification
+title: Chain-of-Verification
+facet: method
+lane: reasoning
+blurb: >-
+  draft, generate verification questions, check them against sources or tools, then
+  revise.
+order: 200
+badge:
+  logo: ri:RiVerifiedBadgeLine
+  color: 8B5CF6
+  chip_label: CoVe
+evidence: Moderate; primary research plus eval docs.
+safety:
+  - Verification should be grounded in independent evidence.
+  - Do not confuse Chain-of-Verification with hidden-reasoning API modes.
+caveat: >-
+  Verification should be grounded in independent evidence; do not confuse CoVe with
+  hidden-reasoning API modes.
+definition: >-
+  draft, generate verification questions, check them against sources or tools, then
+  revise.
+avoid_when: verification cannot access better evidence than the draft.
+model_api_controls: >-
+  source access, retrieval, citation checker, trace grading, eval rubric. CoVe is an
+  independent verification procedure — not the same as provider reasoning/thinking
+  controls.
+cost_latency: moderate to high.
+failure_modes: >-
+  self-verification that rubber-stamps errors, weak source checks, ungrounded citation
+  repair.
+eval_required: true
+related:
+  - verification-pass
+sources:
+  - title: Chain-of-Verification
+    url: https://arxiv.org/abs/2309.11495
+  - title: OpenAI citation formatting
+    url: https://developers.openai.com/api/docs/guides/citation-formatting
+  - title: OpenAI trace grading
+    url: https://developers.openai.com/api/docs/guides/trace-grading
+  - title: OpenAI evaluation best practices
+    url: https://developers.openai.com/api/docs/guides/evaluation-best-practices
+  - title: OpenAI reasoning guide
+    url: https://developers.openai.com/api/docs/guides/reasoning
+modes:
+  - id: template
+    label: Method template
+    default: true
+    when_to_use: factual generation, summaries, research notes, and hallucination-prone answers.
+    placeholders:
+      - name: question
+        required: true
+        example: Does the Team plan include SAML SSO?
+        notes: Question to answer
+      - name: sources
+        required: true
+        example: 'Memo v3: Pilot OAuth rollout is limited to Acme and Northwind.'
+        notes: Trusted sources for verification
+    prompt: |
+      Question:
+      <input>
+      {question}
+      </input>
+
+      Sources:
+      <sources>
+      {sources}
+      </sources>
+
+      Process:
+      1. Draft the answer.
+      2. List verification questions that would catch likely factual errors.
+      3. Check each question against the sources or tools.
+      4. Revise the answer and include unresolved uncertainty.

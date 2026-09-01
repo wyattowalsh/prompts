@@ -72,7 +72,7 @@ def _mini_readme_with_recipe(recipe_lines: list[str]) -> list[str]:
         "",
         *recipe_lines,
         "",
-        "## Pattern Notes",
+        "## How To Adapt Prompts",
     ]
 
 

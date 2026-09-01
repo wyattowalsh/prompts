@@ -1,0 +1,73 @@
+slug: self-consistency
+title: Self-Consistency
+facet: method
+lane: reasoning
+blurb: sample multiple solution attempts and choose the answer with strongest agreement.
+order: 190
+badge:
+  logo: ri:RiShuffleLine
+  color: 8B5CF6
+  chip_label: Consistency
+evidence: >-
+  Strong for reasoning benchmarks, task-sensitive in production; primary research plus
+  survey.
+safety:
+  - Agreement is not truth; factual claims still need sources or tools.
+  - Do not treat vote agreement as factual truth.
+caveat: >-
+  Agreement is not truth; factual claims still need sources or tools. Compare
+  multi-sample self-consistency against provider reasoning controls on your regression
+  set before shipping.
+definition: sample multiple solution attempts and choose the answer with strongest agreement.
+avoid_when: token cost is constrained or factual claims need external evidence.
+model_api_controls: >-
+  Independent sampled calls with temperature/top_p where supported; do not confuse
+  multi-sample
+
+  consensus with provider reasoning/thinking controls (OpenAI reasoning effort,
+  Anthropic
+
+  extended thinking, Gemini thinking, xAI reasoning). Prefer private reasoning per
+  sample and a
+
+  structured final vote schema. Measure cost against eval sets before defaulting to
+  k-samples.
+cost_latency: high.
+failure_modes: >-
+  correlated errors, false consensus, unsupported confidence, treating vote agreement as
+
+  factual truth, burning tokens when a single reasoning-control call plus checks would
+  suffice.
+eval_required: true
+sources:
+  - title: Self-Consistency Improves Chain of Thought
+    url: https://arxiv.org/abs/2203.11171
+  - title: OpenAI reasoning guide
+    url: https://developers.openai.com/api/docs/guides/reasoning
+  - title: OpenAI evaluation best practices
+    url: https://developers.openai.com/api/docs/guides/evaluation-best-practices
+  - title: The Prompt Report
+    url: https://arxiv.org/abs/2406.06608
+modes:
+  - id: template
+    label: Method template
+    default: true
+    when_to_use: high-value reasoning where independent attempts reduce variance.
+    placeholders:
+      - name: problem
+        required: true
+        example: Train A 9:00 at 60mph; Train B 10:00 at 90mph — when meet?
+        notes: Problem to solve
+    prompt: |
+      Problem:
+      <input>
+      {problem}
+      </input>
+
+      Solve the problem three independent ways using private reasoning.
+      Compare final answers.
+      Return:
+      - consensus answer
+      - disagreements
+      - confidence with reason
+      - checks performed

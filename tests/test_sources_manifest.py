@@ -58,6 +58,18 @@ class SourceManifestTest(unittest.TestCase):
         self.assertFalse(result["ok"])
         self.assertIn("source_type must be one of", result["errors"][0])
 
+    def test_redirected_without_replacement_url_fails(self) -> None:
+        text = VALID_ENTRY.replace("status: checked", "status: redirected")
+        result = self.run_temp_manifest(text)
+        self.assertFalse(result["ok"])
+        self.assertIn("redirected requires a replacement_url", result["errors"][0])
+
+    def test_replaced_without_replacement_url_fails(self) -> None:
+        text = VALID_ENTRY.replace("status: checked", "status: replaced")
+        result = self.run_temp_manifest(text)
+        self.assertFalse(result["ok"])
+        self.assertIn("replaced requires a replacement_url", result["errors"][0])
+
     def test_source_refresh_unknown_manifest_id_fails(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
             manifest = Path(tmp) / "sources.yaml"
