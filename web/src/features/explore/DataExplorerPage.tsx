@@ -1,4 +1,4 @@
-import { BookOpen, Database, ExternalLink, FileText, Search } from "lucide-react";
+import { BookOpen, Database, FileText, Search, X } from "lucide-react";
 import {
   useEffect,
   useLayoutEffect,
@@ -7,107 +7,36 @@ import {
   useState,
   type KeyboardEvent as ReactKeyboardEvent
 } from "react";
-import { Link, useNavigate, useNavigationType, useSearchParams } from "react-router-dom";
+import { useNavigate, useNavigationType, useSearchParams } from "react-router-dom";
+import { BrandMark } from "../../components/BrandMark";
 import { Badge } from "../../components/ui/Badge";
+import { Button } from "../../components/ui/Button";
 import { useDocumentMeta } from "../../hooks/useDocumentMeta";
-import { catalog, promptDetailHref, promptSources } from "../../lib/catalog";
 import {
-  domainMarkForHref,
   explorerUrlIntentFromParams,
   matchesExplorerQuery,
   nextExplorerIndex,
   normalizeExplorerQuery,
   reconcileExplorerUrlIntent,
+  toggleExplorerFacet,
   updateExplorerUrlIntent,
-  type DomainMark,
   type ExplorerNavigationKey,
   type ExplorerScope,
   type ExplorerUrlIntentUpdate
 } from "../../lib/explorer-state";
 import { cn } from "../../lib/utils";
+import { ExplorerDetail } from "./ExplorerDetail";
+import { ExplorerEvidenceMap } from "./ExplorerEvidenceMap";
+import { ExplorerInsightStrip } from "./ExplorerInsightStrip";
+import { ExplorerListRow } from "./ExplorerListRow";
+import { explorerHubs, explorerNeighborIds, explorerNeighborhood } from "./explorer-graph";
+import { collectExplorerItems, explorerInsight, type ExplorerItem } from "./explorer-model";
 
-type ExplorerItem = (
-  | {
-      kind: "source";
-      id: string;
-      title: string;
-      subtitle: string;
-      href: string;
-      external: true;
-      usedBy: string[];
-      domainMark: DomainMark | null;
-    }
-  | {
-      kind: "prompt";
-      id: string;
-      title: string;
-      subtitle: string;
-      href: string;
-      external: false;
-      lane: string;
-    }
-) & { searchTerms: readonly string[] };
-
-function collectSources(): ExplorerItem[] {
-  const map = new Map<string, { title: string; url: string; usedBy: string[] }>();
-  for (const prompt of catalog.prompts) {
-    for (const source of promptSources(prompt)) {
-      const existing = map.get(source.url);
-      if (existing) existing.usedBy.push(prompt.title);
-      else {
-        map.set(source.url, {
-          title: source.title,
-          url: source.url,
-          usedBy: [prompt.title]
-        });
-      }
-    }
-  }
-  return [...map.values()]
-    .sort((a, b) => a.title.localeCompare(b.title))
-    .map((source) => ({
-      kind: "source" as const,
-      id: `source:${source.url}`,
-      title: source.title,
-      subtitle: source.url,
-      href: source.url,
-      external: true as const,
-      usedBy: source.usedBy,
-      domainMark: domainMarkForHref(source.url),
-      searchTerms: source.usedBy
-    }));
-}
-
-function allPrompts(): ExplorerItem[] {
-  const laneTitles = new Map(catalog.lanes.map((lane) => [lane.key, lane.title]));
-  return catalog.prompts.map((prompt) => ({
-    kind: "prompt" as const,
-    id: `prompt:${prompt.slug}`,
-    title: prompt.title,
-    subtitle: prompt.blurb,
-    href: promptDetailHref(prompt.slug),
-    external: false as const,
-    lane: prompt.lane,
-    searchTerms: [prompt.slug, prompt.lane, laneTitles.get(prompt.lane) ?? ""]
-  }));
-}
-
-function SourceDomainMark({ mark, large = false }: { mark: DomainMark | null; large?: boolean }) {
-  if (!mark) return <BookOpen size={large ? 20 : 14} aria-hidden="true" />;
-
-  return (
-    <span
-      className={cn(
-        "source-favicon inline-flex items-center justify-center font-mono font-semibold",
-        large ? "source-favicon-lg size-5 text-[0.62rem]" : "size-3.5 text-[0.55rem]"
-      )}
-      title={mark.host}
-      aria-hidden="true"
-    >
-      {mark.glyph}
-    </span>
-  );
-}
+const SCOPE_OPTIONS = [
+  ["all", "All", Database],
+  ["sources", "Sources", BookOpen],
+  ["prompts", "Prompts", FileText]
+] as const;
 
 /**
  * Unified data explorer: sources and prompts.
@@ -122,13 +51,17 @@ export function DataExplorerPage() {
   const serializedParams = params.toString();
   const urlIntent = explorerUrlIntentFromParams(params);
   const { query: urlQuery, scope } = urlIntent;
-  const allItems = useMemo(() => [...collectSources(), ...allPrompts()], []);
+  const allItems = useMemo(() => collectExplorerItems(), []);
+  const insight = useMemo(() => explorerInsight(allItems), [allItems]);
+  const hubs = useMemo(() => explorerHubs(allItems), [allItems]);
 
   const [queryInput, setQueryInput] = useState(urlQuery);
   const query = normalizeExplorerQuery(queryInput);
   const [selectedId, setSelectedId] = useState<string | null>(null);
+  const [clusterOn, setClusterOn] = useState(false);
   const urlIntentRef = useRef(urlIntent);
   const pendingUrlWritesRef = useRef(new Set<string>());
+  const pendingInspectIdRef = useRef<string | null>(null);
   const optionRefs = useRef(new Map<string, HTMLButtonElement>());
   const searchRef = useRef<HTMLInputElement>(null);
 
@@ -179,40 +112,70 @@ export function DataExplorerPage() {
 
   function onScope(next: ExplorerScope) {
     if (next === urlIntentRef.current.scope) return;
+    setClusterOn(false);
     writeUrlIntent({ scope: next }, false);
   }
 
   function onQuery(nextQuery: string) {
+    setClusterOn(false);
     setQueryInput(nextQuery);
     writeUrlIntent({ query: nextQuery }, true);
   }
 
-  const filtered = useMemo(() => {
+  const scoped = useMemo(() => {
     return allItems.filter((item) => {
       if (scope === "sources" && item.kind !== "source") return false;
       if (scope === "prompts" && item.kind !== "prompt") return false;
-      return matchesExplorerQuery(item, query);
+      return true;
     });
-  }, [allItems, query, scope]);
+  }, [allItems, scope]);
 
-  const selected = filtered.find((item) => item.id === selectedId) ?? filtered[0] ?? null;
+  const filtered = useMemo(() => {
+    return scoped.filter((item) => matchesExplorerQuery(item, query));
+  }, [query, scoped]);
+
+  const focusId = selectedId ?? filtered[0]?.id ?? null;
+  const neighborhood = useMemo(
+    () => (focusId ? explorerNeighborhood(allItems, focusId) : null),
+    [allItems, focusId]
+  );
+  const linkedIds = useMemo(() => explorerNeighborIds(neighborhood), [neighborhood]);
+  const visible = useMemo(() => {
+    if (!clusterOn || !neighborhood) return filtered;
+    const ids = new Set([neighborhood.focusId, ...linkedIds]);
+    return allItems.filter((item) => ids.has(item.id));
+  }, [allItems, clusterOn, filtered, linkedIds, neighborhood]);
+  const selected = visible.find((item) => item.id === selectedId) ?? visible[0] ?? null;
+
+  useLayoutEffect(() => {
+    const id = pendingInspectIdRef.current;
+    if (!id) return;
+    if (!visible.some((item) => item.id === id)) return;
+    pendingInspectIdRef.current = null;
+    setSelectedId(id);
+    const option = optionRefs.current.get(id);
+    option?.scrollIntoView({ block: "nearest" });
+    option?.focus();
+  }, [visible]);
 
   useEffect(() => {
-    if (selectedId && filtered.some((item) => item.id === selectedId)) return;
-    const fallback = filtered[0]?.id ?? null;
+    if (pendingInspectIdRef.current) return;
+    if (selectedId && visible.some((item) => item.id === selectedId)) return;
+    const fallback = visible[0]?.id ?? null;
     if (fallback !== selectedId) setSelectedId(fallback);
-  }, [filtered, selectedId]);
+  }, [selectedId, visible]);
 
   const counts = useMemo(
     () => ({
-      sources: allItems.filter((item) => item.kind === "source").length,
-      prompts: allItems.filter((item) => item.kind === "prompt").length
+      sources: insight.sources,
+      prompts: insight.prompts,
+      all: allItems.length
     }),
-    [allItems]
+    [allItems.length, insight.prompts, insight.sources]
   );
 
   function focusItemAt(index: number) {
-    const item = filtered[index];
+    const item = visible[index];
     if (!item) return;
     setSelectedId(item.id);
     optionRefs.current.get(item.id)?.focus();
@@ -224,6 +187,51 @@ export function DataExplorerPage() {
       return;
     }
     void navigate(item.href);
+  }
+
+  function inspectRelated(id: string) {
+    const item = allItems.find((entry) => entry.id === id);
+    if (!item) return;
+
+    const current = urlIntentRef.current;
+    const queryMatches = matchesExplorerQuery(item, current.query);
+    const scopeHides =
+      (current.scope === "sources" && item.kind !== "source") ||
+      (current.scope === "prompts" && item.kind !== "prompt");
+    const nextScope: ExplorerScope = scopeHides ? "all" : current.scope;
+    const nextQuery = queryMatches ? current.query : "";
+    const urlChanges = nextScope !== current.scope || nextQuery !== current.query;
+
+    pendingInspectIdRef.current = id;
+
+    if (nextQuery !== current.query) setQueryInput(nextQuery);
+    if (urlChanges) {
+      writeUrlIntent({ scope: nextScope, query: nextQuery }, nextScope === current.scope);
+      return;
+    }
+
+    pendingInspectIdRef.current = null;
+    setSelectedId(id);
+    const option = optionRefs.current.get(id);
+    option?.scrollIntoView({ block: "nearest" });
+    option?.focus();
+  }
+
+  function onToggleFacet(target: { token: string; scope: "prompts" | "sources" }) {
+    const current = urlIntentRef.current;
+    const next = toggleExplorerFacet({ query: current.query, scope: current.scope }, target);
+    setClusterOn(false);
+    setQueryInput(next.query);
+    writeUrlIntent({ query: next.query, scope: next.scope }, next.scope === current.scope);
+  }
+
+  function clearFilters() {
+    const current = urlIntentRef.current;
+    const scopeChanged = current.scope !== "all";
+    setClusterOn(false);
+    setQueryInput("");
+    writeUrlIntent({ query: "", scope: "all" }, !scopeChanged);
+    searchRef.current?.focus();
   }
 
   function onListKeyDown(event: ReactKeyboardEvent<HTMLUListElement>) {
@@ -242,9 +250,16 @@ export function DataExplorerPage() {
       return;
     }
     event.preventDefault();
-    const currentIndex = filtered.findIndex((item) => item.id === selected?.id);
-    focusItemAt(nextExplorerIndex(currentIndex, filtered.length, key));
+    const currentIndex = visible.findIndex((item) => item.id === selected?.id);
+    focusItemAt(nextExplorerIndex(currentIndex, visible.length, key));
   }
+
+  const canClearFilters = Boolean(query) || scope !== "all";
+  const scopeCounts: Record<ExplorerScope, number> = {
+    all: counts.all,
+    sources: counts.sources,
+    prompts: counts.prompts
+  };
 
   return (
     <section className="section research-workspace">
@@ -259,48 +274,83 @@ export function DataExplorerPage() {
           <Badge tone="muted" icon={<FileText size={12} aria-hidden="true" />}>
             {counts.prompts} prompts
           </Badge>
+          <p className="count-pill">
+            {visible.length}
+            <span> / {clusterOn ? filtered.length : scoped.length}</span>
+          </p>
         </div>
       </header>
 
+      <ExplorerInsightStrip
+        insight={insight}
+        hubs={hubs}
+        catalog={allItems}
+        onInspect={inspectRelated}
+        query={query}
+        scope={scope}
+        onToggleFacet={onToggleFacet}
+      />
+
       <div className="research-toolbar">
-        <label className="research-search-label" htmlFor="explore-search">
-          <Search size={15} aria-hidden="true" />
-          <span className="sr-only">Filter catalog data</span>
-          <input
-            ref={searchRef}
-            id="explore-search"
-            type="search"
-            className="search research-search"
-            value={queryInput}
-            onChange={(event) => onQuery(event.target.value)}
-            onBlur={() => setQueryInput(urlIntentRef.current.query)}
-            onKeyDown={(event) => {
-              if (event.key === "ArrowDown" && filtered.length > 0) {
-                event.preventDefault();
-                const currentIndex = filtered.findIndex((item) => item.id === selected?.id);
-                focusItemAt(Math.max(currentIndex, 0));
-              }
-            }}
-            placeholder="Filter by title, URL, lane…"
-            autoComplete="off"
-          />
-        </label>
+        <div className="research-search-label">
+          <label htmlFor="explore-search" className="sr-only">
+            Filter catalog data
+          </label>
+          <div className="search-field">
+            <Search className="search-field-icon" size={18} aria-hidden="true" />
+            <input
+              ref={searchRef}
+              id="explore-search"
+              type="search"
+              className="search research-search"
+              value={queryInput}
+              onChange={(event) => onQuery(event.target.value)}
+              onBlur={() => setQueryInput(urlIntentRef.current.query)}
+              onKeyDown={(event) => {
+                if (event.key === "ArrowDown" && visible.length > 0) {
+                  event.preventDefault();
+                  const currentIndex = visible.findIndex((item) => item.id === selected?.id);
+                  focusItemAt(Math.max(currentIndex, 0));
+                }
+              }}
+              placeholder="Filter by title, URL, lane…"
+              autoComplete="off"
+              spellCheck={false}
+            />
+            {queryInput ? (
+              <button
+                type="button"
+                className="search-clear"
+                onClick={() => {
+                  onQuery("");
+                  searchRef.current?.focus();
+                }}
+                aria-label="Clear search"
+              >
+                <X size={16} aria-hidden="true" />
+              </button>
+            ) : null}
+          </div>
+          <kbd className="kbd hidden sm:inline-flex" aria-hidden="true">
+            ↓ Esc
+          </kbd>
+        </div>
         <div className="research-scope" role="group" aria-label="Scope">
-          {(
-            [
-              ["all", "All"],
-              ["sources", "Sources"],
-              ["prompts", "Prompts"]
-            ] as const
-          ).map(([id, label]) => (
+          {SCOPE_OPTIONS.map(([id, label, Icon]) => (
             <button
               key={id}
               type="button"
-              className={cn("research-scope-btn", scope === id && "is-active")}
+              className={cn("research-scope-btn chip", scope === id && "is-active")}
               aria-pressed={scope === id}
               onClick={() => onScope(id)}
             >
+              <span className="chip-icon" aria-hidden="true">
+                <Icon size={13} strokeWidth={2.1} />
+              </span>
               {label}
+              <span className="chip-count" aria-hidden="true">
+                {scopeCounts[id]}
+              </span>
             </button>
           ))}
         </div>
@@ -313,101 +363,80 @@ export function DataExplorerPage() {
         aria-live="polite"
         aria-atomic="true"
       >
-        {filtered.length} explorer result{filtered.length === 1 ? "" : "s"}.
+        {visible.length} explorer result{visible.length === 1 ? "" : "s"}.
       </p>
 
-      <div className="research-layout">
-        <div className="research-list panel">
+      <div className="related-hub research-atlas">
+        <div className="research-layout">
           {filtered.length === 0 ? (
-            <p className="muted empty-state">No matches. Try another filter.</p>
-          ) : (
-            <ul
-              className="research-list-ul"
-              role="listbox"
-              aria-label="Explorer results"
-              aria-describedby="explorer-results-status"
-              onKeyDown={onListKeyDown}
-            >
-              {filtered.map((item, index) => {
-                const active = selected?.id === item.id;
-                return (
-                  <li key={item.id} role="presentation">
-                    <button
-                      ref={(element) => {
-                        if (element) optionRefs.current.set(item.id, element);
-                        else optionRefs.current.delete(item.id);
-                      }}
-                      id={`explorer-option-${index}`}
-                      type="button"
-                      role="option"
-                      className={cn("research-list-item", active && "is-active")}
-                      aria-selected={active}
-                      tabIndex={active ? 0 : -1}
-                      onClick={() => {
-                        setSelectedId(item.id);
-                        activateItem(item);
-                      }}
-                    >
-                      <span className="research-list-kind">
-                        {item.kind === "source" ? (
-                          <SourceDomainMark mark={item.domainMark} />
-                        ) : (
-                          <FileText size={14} aria-hidden="true" />
-                        )}
-                        {item.kind}
-                      </span>
-                      <span className="research-list-title">{item.title}</span>
-                      <span className="muted research-list-sub">{item.subtitle}</span>
-                    </button>
-                  </li>
-                );
-              })}
-            </ul>
-          )}
-        </div>
-
-        <div className="research-detail panel">
-          {!selected ? (
-            <p className="muted">Select an item to inspect.</p>
-          ) : (
-            <div className="research-detail-head">
-              <Badge tone="accent">{selected.kind}</Badge>
-              <h2 className="flex items-center gap-2">
-                {selected.kind === "source" ? (
-                  <SourceDomainMark mark={selected.domainMark} large />
-                ) : null}
-                {selected.title}
-              </h2>
-              <p className="muted research-detail-sub">{selected.subtitle}</p>
-              {selected.external ? (
-                <a
-                  className="nav-link is-active research-open"
-                  href={selected.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  <ExternalLink size={14} aria-hidden="true" /> Open source
-                </a>
-              ) : (
-                <Link className="nav-link is-active research-open" to={selected.href}>
-                  Open in catalog
-                </Link>
-              )}
-              {selected.kind === "source" ? (
-                <p className="muted meta-line">
-                  Referenced by {selected.usedBy.length} catalog item
-                  {selected.usedBy.length === 1 ? "" : "s"}
-                  {selected.usedBy.length
-                    ? `: ${selected.usedBy.slice(0, 8).join(", ")}${
-                        selected.usedBy.length > 8 ? "…" : ""
-                      }`
-                    : ""}
-                </p>
-              ) : null}
-              {selected.kind === "prompt" ? (
-                <p className="muted meta-line">Lane: {selected.lane}</p>
+            <div className="empty-state empty-state-panel research-empty research-empty-span">
+              <BrandMark size={32} decorative className="mx-auto text-primary" />
+              <p>No catalog evidence matches this filter.</p>
+              {canClearFilters ? (
+                <Button type="button" variant="outline" size="md" onClick={clearFilters}>
+                  Clear filters
+                </Button>
               ) : null}
             </div>
+          ) : (
+            <>
+              <div className="research-list panel">
+                {clusterOn && selected ? (
+                  <div className="research-cluster-bar">
+                    <p>
+                      Linked to {selected.title}
+                      <span className="research-meter-count">{visible.length}</span>
+                    </p>
+                    <Button
+                      type="button"
+                      variant="outline"
+                      size="md"
+                      onClick={() => setClusterOn(false)}
+                    >
+                      Show all results
+                    </Button>
+                  </div>
+                ) : null}
+                <ul
+                  className="research-list-ul"
+                  role="listbox"
+                  aria-label="Explorer results"
+                  aria-describedby="explorer-results-status"
+                  onKeyDown={onListKeyDown}
+                >
+                  {visible.map((item, index) => {
+                    const active = selected?.id === item.id;
+                    return (
+                      <li key={item.id} role="presentation">
+                        <ExplorerListRow
+                          item={item}
+                          active={active}
+                          index={index}
+                          maxDegree={insight.maxDegree}
+                          linked={linkedIds.has(item.id)}
+                          optionRef={(element) => {
+                            if (element) optionRefs.current.set(item.id, element);
+                            else optionRefs.current.delete(item.id);
+                          }}
+                          onSelect={() => setSelectedId(item.id)}
+                        />
+                      </li>
+                    );
+                  })}
+                </ul>
+              </div>
+
+              <div className={cn("research-detail panel", selected && "has-item")}>
+                <ExplorerDetail selected={selected} />
+                <ExplorerEvidenceMap
+                  graph={neighborhood}
+                  catalog={allItems}
+                  clusterOn={clusterOn}
+                  onInspect={inspectRelated}
+                  onToggleCluster={() => setClusterOn((on) => !on)}
+                />
+              </div>
+            </>
           )}
         </div>
       </div>

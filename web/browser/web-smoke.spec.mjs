@@ -250,6 +250,117 @@ test("explorer rehydrates a popped scope before the next query edit", async ({ p
   await expect(page).toHaveURL(/\/catalog\/source-grounded-answer\/$/);
 });
 
+test("explorer inspect stays on explore while Open CTAs activate", async ({ page }) => {
+  const observedRequests = [];
+  page.on("request", (request) => {
+    const url = request.url();
+    if (/^https?:/i.test(url)) observedRequests.push(new URL(url));
+  });
+
+  await gotoPath(page, "/explore/", /Explore/i);
+  await expect(page.getByRole("heading", { name: /Catalog evidence mix/i })).toBeAttached();
+  const stats = page.locator(".research-stats");
+  await expect(stats.getByText("Sources", { exact: true })).toBeVisible();
+  await expect(stats.getByText("Prompts", { exact: true })).toBeVisible();
+  await expect(page.locator(".research-list-item").first()).toBeVisible({ timeout: 10_000 });
+
+  const openSource = page.getByRole("link", { name: /Open source/i });
+  await expect(openSource).toHaveAttribute("target", "_blank");
+  await expect(openSource).toHaveAttribute("rel", /noopener/);
+
+  const listbox = page.getByRole("listbox", { name: /Explorer results/i });
+  const hubChip = page.locator(".research-hub-chip").first();
+  const chipTitle = (await hubChip.locator(".research-hub-chip-title").innerText()).trim();
+  await hubChip.click();
+  await expect(page).toHaveURL((url) => url.pathname === "/explore/");
+  await expect(
+    listbox.locator('[role="option"][aria-selected="true"] .research-list-title')
+  ).toHaveText(chipTitle);
+
+  const ledgerRow = page.locator(".research-map-row").first();
+  if ((await ledgerRow.count()) > 0) {
+    await ledgerRow.click();
+    await expect(page).toHaveURL((url) => url.pathname === "/explore/");
+  }
+
+  const otherOption = listbox.locator('[role="option"][aria-selected="false"]').first();
+  await expect(otherOption).toBeVisible();
+  await otherOption.click();
+  await expect(page).toHaveURL((url) => url.pathname === "/explore/");
+
+  await page.locator(".research-hub-chip.is-prompt").first().click();
+  await expect(page).toHaveURL((url) => url.pathname === "/explore/");
+  await page.getByRole("link", { name: "Open in catalog" }).click();
+  await expect(page).toHaveURL(/\/catalog\/[^/]+\/$/);
+
+  const pageOrigin = new URL(page.url()).origin;
+  expect(
+    observedRequests.filter((url) => url.origin !== pageOrigin).map((url) => url.href)
+  ).toEqual([]);
+});
+
+test("explorer cluster filter lists the neighborhood then restores", async ({ page }) => {
+  await gotoPath(page, "/explore/", /Explore/i);
+  const listbox = page.getByRole("listbox", { name: /Explorer results/i });
+  const options = listbox.locator('[role="option"]');
+  await expect(options.first()).toBeVisible({ timeout: 10_000 });
+  const before = await options.count();
+
+  await page.getByRole("button", { name: "List this cluster" }).click();
+  await expect(options).not.toHaveCount(before);
+  await expect(options.first()).toBeVisible();
+  await expect(page).toHaveURL((url) => url.pathname === "/explore/");
+
+  await page.getByRole("button", { name: "Show all results" }).click();
+  await expect(options).toHaveCount(before);
+  await expect(page).toHaveURL((url) => url.pathname === "/explore/");
+});
+
+test("explorer lane and host meters write matching scope and q", async ({ page }) => {
+  await gotoPath(page, "/explore/", /Explore/i);
+  const search = page.getByRole("searchbox", { name: /Filter catalog data/i });
+  const research = page.getByRole("button", { name: /Filter by Research/i });
+  await research.click();
+  await expect(page).toHaveURL((url) => {
+    return url.searchParams.get("q") === "Research" && url.searchParams.get("scope") === "prompts";
+  });
+  await expect(search).toHaveValue("Research");
+  await expect(page.getByRole("button", { name: /^Prompts$/i })).toHaveAttribute(
+    "aria-pressed",
+    "true"
+  );
+  await expect(research).toHaveAttribute("aria-pressed", "true");
+
+  await research.click();
+  await expect(page).toHaveURL((url) => {
+    return (
+      url.pathname === "/explore/" && !url.searchParams.has("q") && !url.searchParams.has("scope")
+    );
+  });
+  await expect(search).toHaveValue("");
+  await expect(page.getByRole("button", { name: /^All$/i })).toHaveAttribute(
+    "aria-pressed",
+    "true"
+  );
+  await expect(research).toHaveAttribute("aria-pressed", "false");
+
+  const hostButton = page.locator(".research-rank-row > button").first();
+  await expect(hostButton).toBeVisible();
+  const hostLabelText = (await hostButton.locator(".research-rank-label").innerText()).trim();
+  await hostButton.click();
+  await expect(page).toHaveURL((url) => {
+    return (
+      url.searchParams.get("q") === hostLabelText && url.searchParams.get("scope") === "sources"
+    );
+  });
+  await expect(search).toHaveValue(hostLabelText);
+  await expect(page.getByRole("button", { name: /^Sources$/i })).toHaveAttribute(
+    "aria-pressed",
+    "true"
+  );
+  await expect(page.getByRole("button", { name: /Filter by other/i })).toHaveCount(0);
+});
+
 test("catalog card opens preview modal from home", async ({ page }) => {
   await gotoHome(page);
   const card = page.locator('button[data-prompt-slug="source-grounded-answer"]');

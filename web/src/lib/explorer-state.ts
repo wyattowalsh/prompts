@@ -94,6 +94,18 @@ export function updateExplorerUrlIntent(
   };
 }
 
+export function toggleExplorerFacet(
+  current: { query: string; scope: ExplorerScope },
+  target: { token: string; scope: "prompts" | "sources" }
+): { query: string; scope: ExplorerScope } {
+  const query = normalizeExplorerQuery(current.query);
+  const token = normalizeExplorerQuery(target.token);
+  if (query.toLowerCase() === token.toLowerCase() && current.scope === target.scope) {
+    return { query: "", scope: "all" };
+  }
+  return { query: token, scope: target.scope };
+}
+
 /**
  * Classifies a rendered history entry without confusing its search string for
  * the identity of the navigation. A POP always represents the browser's
@@ -130,6 +142,21 @@ export function matchesExplorerQuery(
     .replace(/\s+/gu, " ")
     .toLowerCase();
   return searchable.includes(query);
+}
+
+export function hostLabel(host: string): string {
+  const parts = host.split(".").filter(Boolean);
+  if (parts.length < 2) return host;
+  const sld = parts.at(-2) ?? host;
+  if (sld === "co" || sld === "com" || sld === "ac" || sld === "gov" || sld === "net") {
+    return parts.at(-3) ?? sld;
+  }
+  return sld;
+}
+
+export function meterShare(count: number, max: number, minPercent = 0): number {
+  if (max <= 0 || count <= 0) return 0;
+  return Math.min(100, Math.max(minPercent, Math.round((count / max) * 100)));
 }
 
 export function domainMarkForHref(href: string): DomainMark | null {

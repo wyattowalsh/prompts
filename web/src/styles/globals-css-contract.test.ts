@@ -92,7 +92,16 @@ const REQUIRED = [
   ".lazy-load-overlay",
   ".lazy-load-status",
   ".lazy-load-failure-notice",
-  ".lazy-load-button"
+  ".lazy-load-button",
+  // explore atlas chrome
+  ".research-insight",
+  ".research-stats",
+  ".research-meter-track",
+  ".research-meter-seg",
+  ".research-list-item",
+  ".research-map",
+  ".research-map-row",
+  ".research-hubs"
 ];
 
 test("globals.css ships product surface rules for prompt workspace chrome", () => {
@@ -164,4 +173,18 @@ test("small interactive labels use contrast-safe foreground and focus tokens", (
       `${theme} ring/background contrast ${ringRatio.toFixed(2)} is below 3:1`
     );
   }
+});
+
+test("explore atlas meters paint from live lane tokens, not unused @theme aliases", () => {
+  const segment = ruleBody(".research-meter-seg");
+  const swatch = ruleBody(".research-meter-swatch");
+  assert.match(segment, /background:\s*var\(--card-lane/);
+  assert.match(swatch, /background:\s*var\(--card-lane/);
+  const insightSource = readFileSync(
+    join(here, "../features/explore/ExplorerInsightStrip.tsx"),
+    "utf8"
+  );
+  assert.doesNotMatch(insightSource, /--color-lane-/u);
+  const sourceMark = readFileSync(join(here, "../features/explore/SourceDomainMark.tsx"), "utf8");
+  assert.doesNotMatch(sourceMark, /<img/u);
 });

@@ -37,7 +37,7 @@
   report is retired.
 - Hosting LLM proxies or user accounts on the static site.
 - Pagefind / dual markdown-it static builder (removed).
-- Charts, 3D, or heavy global client state frameworks.
+- Chart libraries, 3D, or heavy global client state frameworks.
 - Putting prompt text, pasted values, or fill state in Open-in-Chat URLs.
 
 ## Design thesis
@@ -219,6 +219,17 @@ Semantic colors are CSS variables on `:root` / `.dark`, exposed to Tailwind via
 
 - Unified prompts-and-sources surface at `/explore/` (one prompt table, no type
   split, plus the source ledger)
+- Research atlas chrome: catalog stat tiles, CSS-only lane-mix and ranked host
+  meters, hub chips, lane-rail dossier rows, and a sticky inspect dossier.
+  Linked evidence is a readable ledger (cites, cited-by, see-also, shared
+  evidence) with an optional cluster filter on the results list. Ledger and hub
+  clicks inspect; they do not activate.
+- Lane-mix legend and ranked host meters filter the current list via shareable
+  `q` plus matching `scope` (`prompts` for lanes, `sources` for hosts). They
+  do not activate. Meter tracks stay CSS-only catalog-wide overview (not
+  recomputed from the filtered list). Legend wrap chips meet 24px WCAG 2.2 AA
+  without using `min-h-11` on every chip; rank rows are 44px.
+- Pointer click inspects a row; Enter and the Open CTA activate
 - Shareable normalized `scope` and `q` URL state with history restoration
 - Listbox keyboard navigation and live result counts
 - Source identity is rendered locally; no third-party favicon requests
