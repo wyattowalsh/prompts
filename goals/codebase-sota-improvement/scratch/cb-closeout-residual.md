@@ -54,7 +54,7 @@
 
 ## Session residual (2026-07-31 theme menu)
 
-- Theme control collapsed to single menu button (dirty → fix package A/B)
+- Theme control collapsed to single menu button (shipped on main)
 - RV-S-001/002/003/005/008: keyboard/focus + smoke + gates
 - Research-upgrade product work stays out of this ship; validation fences only the untracked interview artifact (RF-012)
 
@@ -64,7 +64,3 @@
 - Browser smoke uses one wrapper-selected port across Playwright runner and worker config evaluations and refuses server reuse.
 - Final cold run: 57 passed and 1 intentional desktop-only skip across desktop/mobile, including the dedicated 320 px geometry check.
 - The dated 2026-07-31 18-test evidence remains in `residual-register.md`; the Gates table above records the current closeout.
-
-## Residual optional (future)
-
-- Panel IA merge (product decision)
