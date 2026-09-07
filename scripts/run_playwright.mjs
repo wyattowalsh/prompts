@@ -21,8 +21,15 @@ export function validatePort(value) {
   return port;
 }
 
+// `playwright test` has no --screenshot CLI option (only `playwright screenshot`
+// does). The CI contract passes --screenshot=only-on-failure, so the wrapper
+// consumes it here and playwright.config.mjs honors it through
+// `use.screenshot = "only-on-failure"` on every project.
+const WRAPPER_CONSUMED_ARGS = new Set(["--screenshot=only-on-failure"]);
+
 export function forwardedPlaywrightArgs(args) {
-  return args[0] === "--" ? args.slice(1) : [...args];
+  const rest = args[0] === "--" ? args.slice(1) : [...args];
+  return rest.filter((arg) => !WRAPPER_CONSUMED_ARGS.has(arg));
 }
 
 export async function allocatePort(host, createServerImpl = createServer) {

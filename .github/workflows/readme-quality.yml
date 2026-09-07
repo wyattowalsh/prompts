@@ -299,7 +299,7 @@ jobs:
 
       - name: Web browser smoke
         shell: bash
-        run: pnpm run web:test:browser
+        run: pnpm run web:test:browser -- --trace=retain-on-failure --screenshot=only-on-failure
 
       - name: Retain browser failure artifacts
         if: ${{ failure() }}

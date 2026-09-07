@@ -42,12 +42,17 @@ export default defineConfig({
       use: {
         ...devices["Desktop Chrome"],
         baseURL,
+        screenshot: "only-on-failure",
         viewport: { width: 1280, height: 900 }
       }
     },
     {
       name: "chromium-mobile",
-      use: { ...devices["Pixel 7"], baseURL }
+      use: {
+        ...devices["Pixel 7"],
+        baseURL,
+        screenshot: "only-on-failure"
+      }
     }
   ]
 });

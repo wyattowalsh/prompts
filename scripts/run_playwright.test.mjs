@@ -47,6 +47,12 @@ test("strips only the leading argument separator", () => {
     "chromium",
     "--"
   ]);
+  assert.deepEqual(
+    forwardedPlaywrightArgs(["--", "--trace=retain-on-failure", "--screenshot=only-on-failure"]),
+    ["--trace=retain-on-failure"],
+    "the wrapper must consume the screenshot flag playwright test rejects"
+  );
+  assert.deepEqual(forwardedPlaywrightArgs(["--screenshot=only-on-failure"]), []);
 });
 
 test("forwards arguments and an overridden port to Playwright", async () => {

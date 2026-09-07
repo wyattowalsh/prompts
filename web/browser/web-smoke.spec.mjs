@@ -1064,6 +1064,10 @@ test("home lane filters render exactly the advertised Coding prompts", async ({ 
 test("representative catalog states have no WCAG A or AA accessibility violations", async ({
   page
 }) => {
+  // The multi-state axe scan approaches the 60s suite timeout even untraced on
+  // slower machines, and CI's --trace=retain-on-failure overhead pushes the
+  // desktop project well past it. Keep the scan whole; give it a viable bound.
+  test.setTimeout(240_000);
   await gotoHome(page);
   await expectNoAccessibilityViolations(page);
   await page.locator("button[data-prompt-slug]").first().click();
@@ -1094,6 +1098,9 @@ test("representative catalog states have no WCAG A or AA accessibility violation
 test("dark prompt cards and provider interaction states retain accessible contrast", async ({
   page
 }) => {
+  // Axe contrast analysis under CI's --trace=retain-on-failure overhead varies
+  // widely on the desktop project; keep the 60s suite timeout elsewhere.
+  test.setTimeout(240_000);
   await page.addInitScript(() => globalThis.localStorage.setItem("prompts-theme", "dark"));
   await gotoHome(page);
   await expect(page.locator("html")).toHaveClass(/dark/);
