@@ -144,7 +144,6 @@ function renderPromptExport(prompt, descriptor, baseUrl) {
 Source: catalog/items/${descriptor.slug}.yaml
 Canonical URL: ${publicUrl(descriptor.path, baseUrl)}
 
-- Facet: ${fullMarkdownText(prompt.facet)}
 - Lane: ${fullMarkdownText(prompt.lane)}
 - Order: ${prompt.order}
 - Badge logo: ${fullMarkdownText(prompt.badge.logo)}

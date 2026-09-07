@@ -8,6 +8,55 @@ async function expectNoAccessibilityViolations(page) {
   expect(results.violations).toEqual([]);
 }
 
+async function expectVisibleFocusOutline(locator, expectedOffset = 2) {
+  await locator.focus();
+  await expect
+    .poll(async () =>
+      locator.evaluate((element) => {
+        const probe = globalThis.document.createElement("span");
+        probe.style.color = "CanvasText";
+        probe.style.backgroundColor = "Canvas";
+        globalThis.document.body.append(probe);
+        const probeStyle = globalThis.getComputedStyle(probe);
+        const canvasText = probeStyle.color.toLowerCase();
+        const canvas = probeStyle.backgroundColor.toLowerCase();
+        probe.remove();
+
+        const style = globalThis.getComputedStyle(element);
+        const color = style.outlineColor.toLowerCase();
+        return {
+          contrastsCanvas: color !== canvas,
+          matchesCanvasText: color === canvasText,
+          offset: Number.parseFloat(style.outlineOffset),
+          style: style.outlineStyle,
+          width: Number.parseFloat(style.outlineWidth)
+        };
+      })
+    )
+    .toEqual({
+      contrastsCanvas: true,
+      matchesCanvasText: true,
+      offset: expectedOffset,
+      style: "solid",
+      width: 2
+    });
+}
+
+async function clickPromptCopyLink(page) {
+  const actions = page.getByRole("group", { name: "Prompt actions" });
+  const wideCopyLink = actions
+    .locator(".sticky-actions-secondary-wide")
+    .getByRole("button", { name: "Copy link" });
+  if (await wideCopyLink.isVisible()) {
+    await wideCopyLink.click();
+    return;
+  }
+
+  const moreActions = actions.locator(".sticky-actions-more");
+  await moreActions.locator(".sticky-actions-more-summary").click();
+  await moreActions.getByRole("button", { name: "Copy link" }).click();
+}
+
 async function failFirstChunkRequest(page, pattern) {
   let failed = false;
   await page.route(pattern, async (route) => {
@@ -78,6 +127,31 @@ test("home search announces one atomic result count instead of the result cards"
   await expect(status).toHaveAttribute("aria-atomic", "true");
   await expect(status).toContainText(/\d+ search results?\./i);
   await expect(status).not.toContainText(/recipes? and \d+ patterns?/i);
+});
+
+test("catalog search uses deterministic token-prefix ranking without mid-token matches", async ({
+  page
+}) => {
+  await gotoHome(page);
+  const search = page.locator("#catalog-search");
+  const cards = page.locator("article[data-prompt-slug]");
+  const titles = cards.locator(".prompt-card-title");
+
+  await search.fill("source groun");
+  await expect(cards).toHaveCount(4);
+  await expect(titles).toHaveText([
+    "Source-Grounded Answer",
+    "RAG / Citation-Grounded Answering",
+    "Knowledge Base Engineer",
+    "Multimodal Evidence Reasoning"
+  ]);
+
+  await search.fill("rounded");
+  await expect(cards).toHaveCount(0);
+
+  await search.fill("unit author");
+  await expect(cards).toHaveCount(1);
+  await expect(titles).toHaveText(["Unit Test Authoring"]);
 });
 
 test("mobile header controls remain visible, separate, and overflow-free at 320px", async ({
@@ -214,6 +288,31 @@ test("explorer preserves URL state, supports listbox keys, and makes no favicon 
   ).toEqual([]);
 });
 
+test("explorer search uses deterministic token-prefix ranking without mid-token matches", async ({
+  page
+}) => {
+  await gotoPath(page, "/explore/?scope=prompts&q=source%20groun", /Explore/i);
+  const search = page.getByRole("searchbox", { name: /Filter catalog data/i });
+  const listbox = page.getByRole("listbox", { name: /Explorer results/i });
+  const options = listbox.locator('[role="option"]');
+  const titles = options.locator(".research-list-title");
+
+  await expect(options).toHaveCount(4);
+  await expect(titles).toHaveText([
+    "Source-Grounded Answer",
+    "RAG / Citation-Grounded Answering",
+    "Knowledge Base Engineer",
+    "Multimodal Evidence Reasoning"
+  ]);
+
+  await search.fill("rounded");
+  await expect(options).toHaveCount(0);
+
+  await search.fill("unit author");
+  await expect(options).toHaveCount(1);
+  await expect(titles).toHaveText(["Unit Test Authoring"]);
+});
+
 test("explorer rehydrates a popped scope before the next query edit", async ({ page }) => {
   await gotoPath(page, "/explore/?scope=sources", /Explore/i);
   const promptsScope = page.getByRole("button", { name: /^Prompts$/i });
@@ -299,21 +398,258 @@ test("explorer inspect stays on explore while Open CTAs activate", async ({ page
   ).toEqual([]);
 });
 
-test("explorer cluster filter lists the neighborhood then restores", async ({ page }) => {
+test("explorer cluster intersects fixed query results, restores them, and resets on POP", async ({
+  page
+}) => {
+  const sourceScopeCount = 100;
+  const promptScopeCount = 83;
+  const researchBaseTitles = [
+    "Research Synthesis",
+    "Web Research Brief",
+    "Citation Matrix",
+    "Claim Checker",
+    "Disagreement Map",
+    "Knowledge Base Engineer",
+    "Literature Scan",
+    "Multimodal Evidence Reasoning",
+    "Source-Grounded Answer"
+  ];
+  const researchClusterTitles = [
+    "Research Synthesis",
+    "Citation Matrix",
+    "Claim Checker",
+    "Source-Grounded Answer"
+  ];
+
+  await gotoPath(page, "/explore/?scope=sources", /Explore/i);
+  const sourceScope = page.getByRole("button", { name: /^Sources$/i });
+  const promptsScope = page.getByRole("button", { name: /^Prompts$/i });
+  const search = page.getByRole("searchbox", { name: /Filter catalog data/i });
+  const listbox = page.getByRole("listbox", { name: /Explorer results/i });
+  const options = listbox.locator('[role="option"]');
+  const titles = options.locator(".research-list-title");
+  const countPill = page.locator(".hero-meta .count-pill");
+  const status = page.locator("#explorer-results-status");
+
+  await expect(sourceScope).toHaveAttribute("aria-pressed", "true");
+  await expect(sourceScope.locator(".chip-count")).toHaveText(String(sourceScopeCount));
+  await expect(options).toHaveCount(sourceScopeCount);
+  expect(
+    await options.evaluateAll((rows) => rows.every((row) => row.classList.contains("is-source")))
+  ).toBe(true);
+  await expect(options.locator(".research-list-kind")).toHaveText(
+    Array(sourceScopeCount).fill("source")
+  );
+
+  await promptsScope.click();
+  await expect(page).toHaveURL((url) => url.searchParams.get("scope") === "prompts");
+  await expect(promptsScope).toHaveAttribute("aria-pressed", "true");
+  await expect(promptsScope.locator(".chip-count")).toHaveText(String(promptScopeCount));
+  await expect(options).toHaveCount(promptScopeCount);
+  expect(
+    await options.evaluateAll((rows) => rows.every((row) => row.classList.contains("is-prompt")))
+  ).toBe(true);
+
+  await search.fill("research");
+  await expect(page).toHaveURL((url) => {
+    return url.searchParams.get("scope") === "prompts" && url.searchParams.get("q") === "research";
+  });
+  await expect(options).toHaveCount(researchBaseTitles.length);
+  await expect(titles).toHaveText(researchBaseTitles);
+  await expect(options.first()).toHaveAttribute("aria-selected", "true");
+  await expect(page.locator(".research-detail-head h2")).toHaveText("Research Synthesis");
+  await expect(countPill).toHaveText(
+    `${researchBaseTitles.length} results / ${promptScopeCount} scoped`
+  );
+  await expect(status).toHaveText(`${researchBaseTitles.length} explorer results.`);
+
+  const clusterButton = page.getByRole("button", {
+    name: "Filter base results by all 13 linked items"
+  });
+  await clusterButton.click();
+  await expect(search).toHaveValue("research");
+  await expect(page).toHaveURL((url) => {
+    return url.searchParams.get("scope") === "prompts" && url.searchParams.get("q") === "research";
+  });
+  await expect(options).toHaveCount(researchClusterTitles.length);
+  await expect(titles).toHaveText(researchClusterTitles);
+  await expect(page.locator(".research-cluster-bar")).toContainText(
+    "Cluster around Research Synthesis"
+  );
+  await expect(countPill).toHaveText(
+    `${researchClusterTitles.length} cluster results / ${researchBaseTitles.length} base results`
+  );
+  await expect(status).toHaveText(
+    `${researchClusterTitles.length} cluster results from ${researchBaseTitles.length} base results.`
+  );
+
+  await page
+    .getByRole("button", {
+      name: `Show ${researchBaseTitles.length} base results`
+    })
+    .click();
+  await expect(options).toHaveCount(researchBaseTitles.length);
+  await expect(titles).toHaveText(researchBaseTitles);
+  await expect(search).toHaveValue("research");
+  await expect(countPill).toHaveText(
+    `${researchBaseTitles.length} results / ${promptScopeCount} scoped`
+  );
+
+  await clusterButton.click();
+  await expect(page.locator(".research-cluster-bar")).toBeVisible();
+  await page.goBack();
+  await expect(page).toHaveURL((url) => {
+    return url.searchParams.get("scope") === "sources" && !url.searchParams.has("q");
+  });
+  await expect(sourceScope).toHaveAttribute("aria-pressed", "true");
+  await expect(search).toHaveValue("");
+  await expect(page.locator(".research-cluster-bar")).toHaveCount(0);
+  await expect(options).toHaveCount(sourceScopeCount);
+  expect(
+    await options.evaluateAll((rows) => rows.every((row) => row.classList.contains("is-source")))
+  ).toBe(true);
+  await expect(options.locator(".research-list-kind")).toHaveText(
+    Array(sourceScopeCount).fill("source")
+  );
+  await expect(titles.first()).toHaveText("A Survey of Context Engineering for LLMs");
+  const selectedSource = listbox.locator('[role="option"][aria-selected="true"]');
+  await expect(selectedSource).toHaveCount(1);
+  await expect(selectedSource).toHaveClass(/\bis-source\b/u);
+  await expect(selectedSource.locator(".research-list-kind")).toHaveText("source");
+  const selectedSourceTitle = (
+    await selectedSource.locator(".research-list-title").innerText()
+  ).trim();
+  await expect(page.locator(".research-detail-head h2")).toHaveText(selectedSourceTitle);
+  await expect(countPill).toHaveText(`${sourceScopeCount} results / ${sourceScopeCount} scoped`);
+  await expect(status).toHaveText(`${sourceScopeCount} explorer results.`);
+});
+
+test("explorer clusters include complete neighbors beyond the capped evidence ledger", async ({
+  page
+}) => {
+  await gotoPath(page, "/explore/", /Explore/i);
+  const sourceTitle = "OpenAI prompt engineering";
+  const sourceHub = page.locator(".research-hub-chip.is-source").filter({
+    has: page.getByText(sourceTitle, { exact: true })
+  });
+  await expect(sourceHub).toHaveCount(1);
+  await sourceHub.click();
+
+  const listbox = page.getByRole("listbox", { name: /Explorer results/i });
+  const options = listbox.locator('[role="option"]');
+  const sourceOption = options.filter({
+    has: page.getByText(sourceTitle, { exact: true })
+  });
+  await expect(sourceOption).toHaveAttribute("aria-selected", "true");
+
+  const hiddenNeighborTitle = "Tradeoff Matrix";
+  const displayedLedgerTitles = page.locator(".research-map-row-title");
+  await expect(displayedLedgerTitles.filter({ hasText: hiddenNeighborTitle })).toHaveCount(0);
+
+  const hiddenNeighborOption = options.filter({
+    has: page.getByText(hiddenNeighborTitle, { exact: true })
+  });
+  await expect(hiddenNeighborOption).toHaveCount(1);
+  await expect(hiddenNeighborOption).toHaveClass(/\bis-linked\b/u);
+
+  const clusterButton = page.getByRole("button", {
+    name: /^Filter base results by all \d+ linked items?$/
+  });
+  const neighborCount = Number(
+    /^Filter base results by all (\d+) linked items?$/u.exec(
+      (await clusterButton.getAttribute("aria-label")) ?? ""
+    )?.[1] ?? 0
+  );
+  expect(neighborCount).toBeGreaterThan(await page.locator(".research-map-row").count());
+
+  await clusterButton.click();
+  await expect(page.locator(".research-cluster-bar")).toContainText(
+    `Cluster around ${sourceTitle}`
+  );
+  await expect(options).toHaveCount(neighborCount + 1);
+  await expect(page.locator(".hero-meta .count-pill")).toHaveText(
+    `${neighborCount + 1} cluster results / 183 base results`
+  );
+  await expect(hiddenNeighborOption).toHaveCount(1);
+  await expect(hiddenNeighborOption).toHaveClass(/\bis-linked\b/u);
+});
+
+test("explorer hub inspection escapes clusters with and without URL reconciliation", async ({
+  page
+}) => {
+  let popupCount = 0;
+  page.on("popup", () => {
+    popupCount += 1;
+  });
+
   await gotoPath(page, "/explore/", /Explore/i);
   const listbox = page.getByRole("listbox", { name: /Explorer results/i });
   const options = listbox.locator('[role="option"]');
-  await expect(options.first()).toBeVisible({ timeout: 10_000 });
-  const before = await options.count();
+  const clusterButton = page.getByRole("button", {
+    name: /^Filter base results by all \d+ linked items?$/
+  });
+  await clusterButton.click();
+  await expect(page.locator(".research-cluster-bar")).toBeVisible();
 
-  await page.getByRole("button", { name: "List this cluster" }).click();
-  await expect(options).not.toHaveCount(before);
-  await expect(options.first()).toBeVisible();
-  await expect(page).toHaveURL((url) => url.pathname === "/explore/");
+  const clusterTitles = (await options.locator(".research-list-title").allTextContents()).map(
+    (title) => title.trim()
+  );
+  const hubChips = page.locator(".research-hub-chip");
+  const outOfClusterHubIndex = await hubChips.evaluateAll((chips, visibleTitles) => {
+    return chips.findIndex((chip) => {
+      const title = chip.querySelector(".research-hub-chip-title")?.textContent?.trim();
+      return Boolean(title && !visibleTitles.includes(title));
+    });
+  }, clusterTitles);
+  expect(outOfClusterHubIndex).toBeGreaterThanOrEqual(0);
 
-  await page.getByRole("button", { name: "Show all results" }).click();
-  await expect(options).toHaveCount(before);
-  await expect(page).toHaveURL((url) => url.pathname === "/explore/");
+  const matchingHub = hubChips.nth(outOfClusterHubIndex);
+  const matchingTitle = (await matchingHub.locator(".research-hub-chip-title").innerText()).trim();
+  expect(clusterTitles).not.toContain(matchingTitle);
+  await matchingHub.click();
+  await expect(page).toHaveURL((url) => url.pathname === "/explore/" && url.search === "");
+  await expect(page.locator(".research-cluster-bar")).toHaveCount(0);
+  const matchingOption = options.filter({
+    has: page.getByText(matchingTitle, { exact: true })
+  });
+  await expect(matchingOption).toHaveAttribute("aria-selected", "true");
+  await expect(matchingOption).toBeFocused();
+
+  await gotoPath(page, "/explore/?scope=prompts&q=research", /Explore/i);
+  const search = page.getByRole("searchbox", { name: /Filter catalog data/i });
+  const researchSynthesis = options.filter({
+    has: page.getByText("Research Synthesis", { exact: true })
+  });
+  await expect(researchSynthesis).toHaveAttribute("aria-selected", "true");
+  await expect(page.locator(".research-detail-head h2")).toHaveText("Research Synthesis");
+  await clusterButton.click();
+  await expect(page.locator(".research-cluster-bar")).toContainText(
+    "Cluster around Research Synthesis"
+  );
+
+  const sourceTitle = "OpenAI prompt engineering";
+  const sourceHub = page.locator(".research-hub-chip.is-source").filter({
+    has: page.getByText(sourceTitle, { exact: true })
+  });
+  await expect(sourceHub).toHaveCount(1);
+  await expect(options.filter({ has: page.getByText(sourceTitle, { exact: true }) })).toHaveCount(
+    0
+  );
+  await sourceHub.click();
+
+  await expect(page).toHaveURL((url) => url.pathname === "/explore/" && url.search === "");
+  await expect(search).toHaveValue("");
+  await expect(page.getByRole("button", { name: /^All$/i })).toHaveAttribute(
+    "aria-pressed",
+    "true"
+  );
+  await expect(page.locator(".research-cluster-bar")).toHaveCount(0);
+  const sourceOption = options.filter({
+    has: page.getByText(sourceTitle, { exact: true })
+  });
+  await expect(sourceOption).toHaveAttribute("aria-selected", "true");
+  await expect(sourceOption).toBeFocused();
+  expect(popupCount).toBe(0);
 });
 
 test("explorer lane and host meters write matching scope and q", async ({ page }) => {
@@ -359,6 +695,29 @@ test("explorer lane and host meters write matching scope and q", async ({ page }
     "true"
   );
   await expect(page.getByRole("button", { name: /Filter by other/i })).toHaveCount(0);
+});
+
+test("forced-colors mode keeps shared and Explore focus outlines visible", async ({
+  page
+}, testInfo) => {
+  test.skip(testInfo.project.name !== "chromium-desktop", "Desktop forced-colors assurance");
+  await page.emulateMedia({ forcedColors: "active" });
+  await gotoHome(page);
+
+  await page.getByRole("button", { name: "Open command palette", exact: true }).click();
+  const paletteDialog = page.getByRole("dialog", { name: "Site command palette" });
+  await expect(paletteDialog).toBeVisible({ timeout: 15_000 });
+  const paletteInput = paletteDialog.locator("[cmdk-input]");
+  await expect(paletteInput).toBeVisible();
+  await expectVisibleFocusOutline(paletteInput);
+  const selectedPaletteItem = paletteDialog.locator('[cmdk-item][aria-selected="true"]');
+  await expect(selectedPaletteItem).toHaveCount(1);
+  await expectVisibleFocusOutline(selectedPaletteItem, -2);
+  await page.keyboard.press("Escape");
+
+  await gotoPath(page, "/explore/", /Explore/i);
+  await expectVisibleFocusOutline(page.getByRole("button", { name: /^Prompts$/i }));
+  await expectVisibleFocusOutline(page.getByRole("button", { name: /Filter by Research/i }));
 });
 
 test("catalog card opens preview modal from home", async ({ page }) => {
@@ -660,17 +1019,46 @@ test("a pending or rejected detail chunk never retains metadata from the previou
   }
 });
 
-test("home lane filters subset the prompt index", async ({ page }) => {
+test("home lane filters render exactly the advertised Coding prompts", async ({ page }) => {
+  const expectedCodingSlugs = [
+    "api-contract-explainer",
+    "bug-rca",
+    "code-review",
+    "pr-description",
+    "refactor-planner",
+    "unit-test-authoring"
+  ];
+
   await gotoHome(page);
-  const allCount = await page.locator("[data-prompt-slug]").count();
-  expect(allCount).toBeGreaterThan(1);
-  await page
-    .getByRole("group", { name: "Filter by lane" })
-    .getByRole("button", { name: /^Coding/ })
-    .click();
-  const codingCount = await page.locator("[data-prompt-slug]").count();
-  expect(codingCount).toBeGreaterThan(0);
-  expect(codingCount).toBeLessThan(allCount);
+  const laneFilters = page.getByRole("group", { name: "Filter by lane" });
+  const allButton = laneFilters.getByRole("button", { name: /^All/ });
+  const codingButton = laneFilters.getByRole("button", { name: /^Coding/ });
+  const promptCards = page.locator("article[data-prompt-slug]");
+  const allCount = Number(await allButton.locator(".chip-count").innerText());
+  const advertisedCodingCount = Number(await codingButton.locator(".chip-count").innerText());
+
+  expect(allCount).toBe(83);
+  expect(advertisedCodingCount).toBe(expectedCodingSlugs.length);
+  await expect(promptCards).toHaveCount(allCount);
+
+  await codingButton.click();
+  await expect(codingButton).toHaveAttribute("aria-pressed", "true");
+  await expect(promptCards).toHaveCount(advertisedCodingCount);
+  expect(
+    await promptCards.evaluateAll((cards) => cards.map((card) => card.dataset.promptSlug))
+  ).toEqual(expectedCodingSlugs);
+  expect(
+    await promptCards.evaluateAll((cards) =>
+      cards.every((card) => card.classList.contains("prompt-card-lane-coding"))
+    )
+  ).toBe(true);
+  const codingLabels = promptCards.getByText("coding", { exact: true });
+  await expect(codingLabels).toHaveCount(advertisedCodingCount);
+  await expect(codingLabels).toHaveText(Array(advertisedCodingCount).fill("coding"));
+  await expect(page.locator("[data-landing-prompt-count]")).toHaveAttribute(
+    "data-landing-prompt-count",
+    String(advertisedCodingCount)
+  );
 });
 
 test("representative catalog states have no WCAG A or AA accessibility violations", async ({
@@ -923,6 +1311,47 @@ test("prompt fill path substitutes placeholders before copy", async ({ page, con
   await expect(page.getByText(/filled/i).first()).toBeVisible();
 });
 
+test("prompt drafts reset across slug navigation and reload without entering URL storage", async ({
+  page
+}) => {
+  const sentinel = "private-draft-94";
+  const expectNoPersistedDraft = async () => {
+    const persisted = await page.evaluate(() => ({
+      local: Object.fromEntries(Object.entries(localStorage)),
+      session: Object.fromEntries(Object.entries(sessionStorage)),
+      url: globalThis.location.href
+    }));
+    expect(JSON.stringify(persisted)).not.toContain(sentinel);
+  };
+
+  await gotoPath(page, "/catalog/tree-of-thoughts/", /Tree-of-Thoughts/i);
+  const firstDraft = page.locator("[data-prompt-fill-form] .fill-input").first();
+  await firstDraft.fill(sentinel);
+  await expect(firstDraft).toHaveValue(sentinel);
+  await expectNoPersistedDraft();
+
+  await page
+    .getByRole("link", { name: /Graph-of-Thoughts/i })
+    .first()
+    .click();
+  await expect(page).toHaveURL(/\/catalog\/graph-of-thoughts\/$/);
+  await expect(page.getByRole("heading", { level: 1, name: /Graph-of-Thoughts/i })).toBeVisible();
+  await expect(page.locator("[data-prompt-fill-form] .fill-input").first()).toHaveValue("");
+
+  await page.goBack();
+  await expect(page).toHaveURL(/\/catalog\/tree-of-thoughts\/$/);
+  await expect(page.getByRole("heading", { level: 1, name: /Tree-of-Thoughts/i })).toBeVisible();
+  const returnedDraft = page.locator("[data-prompt-fill-form] .fill-input").first();
+  await expect(returnedDraft).toHaveValue("");
+  await returnedDraft.fill(sentinel);
+  await expectNoPersistedDraft();
+
+  await page.reload({ waitUntil: "domcontentloaded" });
+  await expect(page.getByRole("heading", { level: 1, name: /Tree-of-Thoughts/i })).toBeVisible();
+  await expect(page.locator("[data-prompt-fill-form] .fill-input").first()).toHaveValue("");
+  await expectNoPersistedDraft();
+});
+
 test("theme menu keyboard open, system select, and escape restore focus", async ({ page }) => {
   await gotoHome(page);
   const themeTrigger = page.getByRole("button", { name: /^Theme:/ });
@@ -965,59 +1394,633 @@ test("theme menu keyboard open, system select, and escape restore focus", async 
   }).toPass({ timeout: 5_000 });
 });
 
-test("prompt mode switch uses only the mode query and announces the change", async ({ page }) => {
-  await gotoPath(page, "/catalog/unit-test-authoring/", /Unit Test Authoring/i);
+test("prompt mode params normalize and one authoritative status announces switches", async ({
+  page
+}) => {
+  await gotoPath(page, "/catalog/unit-test-authoring/?mode=", /Unit Test Authoring/i);
   const modes = page.getByRole("group", { name: "Prompt mode" });
+  const status = page.getByRole("status");
   await expect(modes).toBeVisible();
-  await expect(page).not.toHaveURL(/[?&]mode=/);
+  await expect(page).toHaveURL(/\/catalog\/unit-test-authoring\/$/);
+  await expect(modes.getByRole("button", { name: /^General$/i })).toHaveAttribute(
+    "aria-pressed",
+    "true"
+  );
+  await expect(status).toHaveCount(1);
+
+  await gotoPath(
+    page,
+    "/catalog/unit-test-authoring/?mode=python&mode=general",
+    /Unit Test Authoring/i
+  );
+  await expect(page).toHaveURL(/\/catalog\/unit-test-authoring\/\?mode=python$/);
+  await expect(modes.getByRole("button", { name: /^Python$/i })).toHaveAttribute(
+    "aria-pressed",
+    "true"
+  );
+
+  await modes.getByRole("button", { name: /^General$/i }).click();
+  await expect(page).toHaveURL(/\/catalog\/unit-test-authoring\/$/);
+  await expect(status).toHaveCount(1);
+  await expect(status).toHaveText("Mode switched to General.");
+
   await modes.getByRole("button", { name: /^Python$/i }).click();
   await expect(page).toHaveURL(/\/catalog\/unit-test-authoring\/\?mode=python$/);
-  await expect(
-    page.getByRole("status").filter({ hasText: /Mode switched to Python/i })
-  ).toBeVisible();
+  await expect(status).toHaveCount(1);
+  await expect(status).toHaveText("Mode switched to Python.");
   await expect(page).not.toHaveURL(/[?&]q=/);
-  await modes.getByRole("button", { name: /^General$/i }).click();
-  await expect(page).not.toHaveURL(/[?&]mode=/);
 });
 
-test("open in chat copies then opens provider home without query payload", async ({
+test("open in chat reserves a blank popup before copy, then replaces it with a private provider URL", async ({
   page,
   context
 }) => {
   await context.grantPermissions(["clipboard-read", "clipboard-write"]);
   await gotoPath(page, "/catalog/source-grounded-answer/", /Source-Grounded Answer/i);
+  const provider = page.locator(".provider-chatgpt");
+  await expect(provider).toHaveAttribute("href", "https://chatgpt.com/");
+  await expect(provider).not.toHaveAttribute("href", /[?&](q|text)=/);
+
   await page.evaluate(() => {
-    globalThis.__openUrls = [];
-    globalThis.open = (url) => {
-      globalThis.__openUrls.push(String(url ?? ""));
-      return null;
+    globalThis.__providerEvents = [];
+    Object.defineProperty(navigator.clipboard, "writeText", {
+      configurable: true,
+      value: async (text) => {
+        globalThis.__providerEvents.push(["copy", String(text).length]);
+      }
+    });
+    globalThis.open = (url, target) => {
+      globalThis.__providerEvents.push(["open", String(url ?? ""), String(target ?? "")]);
+      const popup = {
+        closed: false,
+        close: () => globalThis.__providerEvents.push(["close"]),
+        location: {
+          replace: (nextUrl) => globalThis.__providerEvents.push(["replace", String(nextUrl ?? "")])
+        }
+      };
+      Object.defineProperty(popup, "opener", {
+        configurable: true,
+        get: () => null,
+        set: (value) => {
+          globalThis.__providerEvents.push(["opener", value]);
+        }
+      });
+      return popup;
     };
   });
-  await page.locator(".provider-chatgpt").click();
+
+  await provider.click();
   await expect(
     page
       .getByRole("status")
-      .filter({ hasText: /copied/i })
+      .filter({ hasText: /Prompt copied — opened ChatGPT/i })
       .first()
   ).toBeVisible({ timeout: 5_000 });
-  const opened = await page.evaluate(() => globalThis.__openUrls);
-  expect(opened).toEqual(["https://chatgpt.com/"]);
-  expect(String(opened[0] ?? "")).not.toMatch(/[?&](q|text)=/);
+  const events = await page.evaluate(() => globalThis.__providerEvents);
+  expect(events.slice(0, 2)).toEqual([
+    ["open", "about:blank", "_blank"],
+    ["opener", null]
+  ]);
+  expect(events[2]?.[0]).toBe("copy");
+  expect(events[2]?.[1]).toBeGreaterThan(0);
+  expect(events[3]).toEqual(["replace", "https://chatgpt.com/"]);
+  for (const event of events.filter(([kind]) => kind === "open" || kind === "replace")) {
+    expect(String(event[1] ?? "")).not.toMatch(/[?&](q|text)=/);
+  }
+
+  await page.evaluate(() => {
+    const anchor = globalThis.document.querySelector(".provider-chatgpt");
+    if (!(anchor instanceof globalThis.HTMLAnchorElement)) {
+      throw new Error("ChatGPT provider link missing");
+    }
+    globalThis.__modifiedDefaultPrevented = null;
+    globalThis.document.addEventListener(
+      "click",
+      (event) => {
+        globalThis.__modifiedDefaultPrevented = event.defaultPrevented;
+        event.preventDefault();
+      },
+      { once: true }
+    );
+    anchor.dispatchEvent(
+      new globalThis.MouseEvent("click", {
+        bubbles: true,
+        button: 0,
+        cancelable: true,
+        ctrlKey: true
+      })
+    );
+  });
+  expect(await page.evaluate(() => globalThis.__modifiedDefaultPrevented)).toBe(false);
+  expect(await page.evaluate(() => globalThis.__providerEvents)).toEqual(events);
+
+  await page.evaluate(() => {
+    globalThis.__providerEvents = [];
+    Object.defineProperty(navigator.clipboard, "writeText", {
+      configurable: true,
+      value: async () => {
+        globalThis.__providerEvents.push(["copy-failed"]);
+        throw new Error("clipboard denied");
+      }
+    });
+    globalThis.document.execCommand = () => false;
+  });
+  await provider.click();
+  await expect(page.getByRole("status")).toHaveCount(1);
+  await expect(page.getByRole("status")).toHaveText("Copy failed — ChatGPT was not opened.");
+  const copyFailureEvents = await page.evaluate(() => globalThis.__providerEvents);
+  expect(copyFailureEvents.map(([kind]) => kind)).toEqual([
+    "open",
+    "opener",
+    "copy-failed",
+    "close"
+  ]);
+  expect(copyFailureEvents.some(([kind]) => kind === "replace")).toBe(false);
+
+  await page.evaluate(() => {
+    globalThis.__providerEvents = [];
+    Object.defineProperty(navigator.clipboard, "writeText", {
+      configurable: true,
+      value: async () => {
+        globalThis.__providerEvents.push(["copy"]);
+      }
+    });
+    globalThis.open = (url, target) => {
+      globalThis.__providerEvents.push(["open", String(url ?? ""), String(target ?? "")]);
+      return null;
+    };
+  });
+  await provider.click();
+  await expect(page.getByRole("status")).toHaveCount(1);
+  await expect(page.getByRole("status")).toHaveText(
+    "Prompt copied, but ChatGPT was blocked by the browser."
+  );
+  expect(await page.evaluate(() => globalThis.__providerEvents)).toEqual([
+    ["open", "about:blank", "_blank"],
+    ["copy"]
+  ]);
+});
+
+test("latest prompt action wins the single authoritative status", async ({ page }) => {
+  await gotoPath(page, "/catalog/source-grounded-answer/", /Source-Grounded Answer/i);
+  await page.evaluate(() => {
+    globalThis.__clipboardAttempts = [];
+    Object.defineProperty(navigator.clipboard, "writeText", {
+      configurable: true,
+      value: (text) =>
+        new Promise((resolve) => {
+          globalThis.__clipboardAttempts.push({ resolve, text: String(text) });
+        })
+    });
+  });
+
+  const actions = page.getByRole("group", { name: "Prompt actions" });
+  await actions.getByRole("button", { name: "Copy prompt", exact: true }).click();
+  await clickPromptCopyLink(page);
+  await expect.poll(() => page.evaluate(() => globalThis.__clipboardAttempts.length)).toBe(2);
+
+  await page.evaluate(() => globalThis.__clipboardAttempts[1].resolve());
+  const status = page.getByRole("status");
+  await expect(status).toHaveCount(1);
+  await expect(status).toHaveText("");
+
+  await page.evaluate(() => globalThis.__clipboardAttempts[0].resolve());
+  await expect.poll(() => page.evaluate(() => globalThis.__clipboardAttempts.length)).toBe(3);
+  await expect(status).toHaveText("");
+
+  await page.evaluate(async () => {
+    globalThis.__clipboardAttempts[2].resolve();
+    await new Promise((resolve) => setTimeout(resolve, 0));
+  });
+  await expect(status).toHaveCount(1);
+  await expect(status).toHaveText("Link copied");
+});
+
+test("cross-slug copy awaits repair before publishing the newer prompt link", async ({ page }) => {
+  await gotoPath(page, "/catalog/tree-of-thoughts/", /Tree-of-Thoughts/i);
+  await page.evaluate(() => {
+    globalThis.__clipboardAttempts = [];
+    globalThis.__clipboardValue = null;
+    Object.defineProperty(navigator.clipboard, "writeText", {
+      configurable: true,
+      value: (text) =>
+        new Promise((resolve) => {
+          const value = String(text);
+          globalThis.__clipboardAttempts.push({
+            text: value,
+            resolve: () => {
+              globalThis.__clipboardValue = value;
+              resolve();
+            }
+          });
+        })
+    });
+  });
+
+  const actions = page.getByRole("group", { name: "Prompt actions" });
+  await actions.getByRole("button", { name: "Copy prompt", exact: true }).click();
+  await expect.poll(() => page.evaluate(() => globalThis.__clipboardAttempts.length)).toBe(1);
+
+  const related = page.getByRole("link", { name: /Graph-of-Thoughts/i }).first();
+  await expect(related).toBeVisible();
+  const nextHref = await related.getAttribute("href");
+  expect(nextHref).toBe("/catalog/graph-of-thoughts/");
+  const nextPath = new URL(nextHref, page.url()).pathname;
+  await related.click();
+  await expect(page).toHaveURL((url) => url.pathname === nextPath);
+  await expect(page.getByRole("heading", { level: 1, name: /Graph-of-Thoughts/i })).toBeVisible();
+
+  await clickPromptCopyLink(page);
+  await expect.poll(() => page.evaluate(() => globalThis.__clipboardAttempts.length)).toBe(2);
+  const newerText = await page.evaluate(() => globalThis.__clipboardAttempts[1].text);
+  expect(new URL(newerText).pathname).toBe(nextPath);
+
+  await page.evaluate(() => globalThis.__clipboardAttempts[1].resolve());
+  const status = page.getByRole("status");
+  await expect(status).toHaveText("");
+
+  await page.evaluate(() => globalThis.__clipboardAttempts[0].resolve());
+  await expect.poll(() => page.evaluate(() => globalThis.__clipboardAttempts.length)).toBe(3);
+  expect(await page.evaluate(() => globalThis.__clipboardAttempts[2].text)).toBe(newerText);
+  await expect(status).toHaveText("");
+
+  await page.evaluate(async () => {
+    globalThis.__clipboardAttempts[2].resolve();
+    await new Promise((resolve) => setTimeout(resolve, 0));
+  });
+
+  expect(await page.evaluate(() => globalThis.__clipboardValue)).toBe(newerText);
+  await expect(status).toHaveText("Link copied");
+});
+
+test("newer mode activation preserves accepted clipboard repair authority", async ({ page }) => {
+  await gotoPath(page, "/catalog/unit-test-authoring/", /Unit Test Authoring/i);
+  await page.evaluate(() => {
+    globalThis.__clipboardAttempts = [];
+    globalThis.__clipboardValue = null;
+    Object.defineProperty(navigator.clipboard, "writeText", {
+      configurable: true,
+      value: (text) =>
+        new Promise((resolve) => {
+          const value = String(text);
+          globalThis.__clipboardAttempts.push({
+            text: value,
+            resolve: () => {
+              globalThis.__clipboardValue = value;
+              resolve();
+            }
+          });
+        })
+    });
+  });
+
+  const actions = page.getByRole("group", { name: "Prompt actions" });
+  await actions.getByRole("button", { name: "Copy prompt", exact: true }).click();
+  await clickPromptCopyLink(page);
+  await expect.poll(() => page.evaluate(() => globalThis.__clipboardAttempts.length)).toBe(2);
+  const acceptedText = await page.evaluate(() => globalThis.__clipboardAttempts[1].text);
+  expect(new URL(acceptedText).pathname).toBe("/catalog/unit-test-authoring/");
+
+  await page.evaluate(() => globalThis.__clipboardAttempts[1].resolve());
+  const modes = page.getByRole("group", { name: "Prompt mode" });
+  await modes.getByRole("button", { name: /^Python$/i }).click();
+  await expect(page).toHaveURL(/\/catalog\/unit-test-authoring\/\?mode=python$/);
+  const status = page.getByRole("status");
+  await expect(status).toHaveText("Mode switched to Python.");
+
+  await page.evaluate(() => globalThis.__clipboardAttempts[0].resolve());
+  await expect.poll(() => page.evaluate(() => globalThis.__clipboardAttempts.length)).toBe(3);
+  expect(await page.evaluate(() => globalThis.__clipboardAttempts[2].text)).toBe(acceptedText);
+  await expect(status).toHaveText("Mode switched to Python.");
+
+  await page.evaluate(async () => {
+    globalThis.__clipboardAttempts[2].resolve();
+    await new Promise((resolve) => setTimeout(resolve, 0));
+  });
+  expect(await page.evaluate(() => globalThis.__clipboardValue)).toBe(acceptedText);
+  await expect(status).toHaveText("Mode switched to Python.");
+});
+
+test("cross-slug navigation synchronously closes a stale provider popup", async ({ page }) => {
+  await gotoPath(page, "/catalog/tree-of-thoughts/", /Tree-of-Thoughts/i);
+  await page.evaluate(() => {
+    globalThis.__clipboardAttempts = [];
+    globalThis.__providerEvents = [];
+    Object.defineProperty(navigator.clipboard, "writeText", {
+      configurable: true,
+      value: (text) =>
+        new Promise((resolve) => {
+          globalThis.__clipboardAttempts.push({ text: String(text), resolve });
+        })
+    });
+    globalThis.open = (url, target) => {
+      globalThis.__providerEvents.push(["open", String(url ?? ""), String(target ?? "")]);
+      const popup = {
+        closed: false,
+        close: () => {
+          popup.closed = true;
+          globalThis.__providerEvents.push(["close"]);
+        },
+        location: {
+          replace: (nextUrl) => globalThis.__providerEvents.push(["replace", String(nextUrl ?? "")])
+        }
+      };
+      Object.defineProperty(popup, "opener", {
+        configurable: true,
+        get: () => null,
+        set: (value) => {
+          globalThis.__providerEvents.push(["opener", value]);
+        }
+      });
+      return popup;
+    };
+  });
+
+  await page.locator(".provider-chatgpt").click();
+  await expect.poll(() => page.evaluate(() => globalThis.__clipboardAttempts.length)).toBe(1);
+  expect((await page.evaluate(() => globalThis.__providerEvents)).slice(0, 2)).toEqual([
+    ["open", "about:blank", "_blank"],
+    ["opener", null]
+  ]);
+
+  const related = page.getByRole("link", { name: /Graph-of-Thoughts/i }).first();
+  await expect(related).toBeVisible();
+  const nextHref = await related.getAttribute("href");
+  expect(nextHref).toBe("/catalog/graph-of-thoughts/");
+  const nextPath = new URL(nextHref, page.url()).pathname;
+  await related.click();
+  await expect(page).toHaveURL((url) => url.pathname === nextPath);
+  await expect(page.getByRole("heading", { level: 1, name: /Graph-of-Thoughts/i })).toBeVisible();
+  await expect
+    .poll(() => page.evaluate(() => globalThis.__providerEvents.map(([kind]) => kind)))
+    .toContain("close");
+  expect(
+    await page.evaluate(() => globalThis.__providerEvents.some(([kind]) => kind === "replace"))
+  ).toBe(false);
+
+  await page.evaluate(async () => {
+    globalThis.__clipboardAttempts[0].resolve();
+    await new Promise((resolve) => setTimeout(resolve, 0));
+  });
+  const events = await page.evaluate(() => globalThis.__providerEvents);
+  expect(events.some(([kind]) => kind === "replace")).toBe(false);
+  await expect(page.getByRole("status")).toHaveText("");
+});
+
+test("same-slug mode activation closes a stale provider popup before copy settles", async ({
+  page
+}) => {
+  await gotoPath(page, "/catalog/unit-test-authoring/", /Unit Test Authoring/i);
+  await page.evaluate(() => {
+    globalThis.__clipboardAttempts = [];
+    globalThis.__providerEvents = [];
+    Object.defineProperty(navigator.clipboard, "writeText", {
+      configurable: true,
+      value: (text) =>
+        new Promise((resolve) => {
+          globalThis.__clipboardAttempts.push({ text: String(text), resolve });
+        })
+    });
+    globalThis.open = (url, target) => {
+      globalThis.__providerEvents.push(["open", String(url ?? ""), String(target ?? "")]);
+      const popup = {
+        closed: false,
+        close: () => {
+          popup.closed = true;
+          globalThis.__providerEvents.push(["close"]);
+        },
+        location: {
+          replace: (nextUrl) => globalThis.__providerEvents.push(["replace", String(nextUrl ?? "")])
+        }
+      };
+      Object.defineProperty(popup, "opener", {
+        configurable: true,
+        get: () => null,
+        set: (value) => {
+          globalThis.__providerEvents.push(["opener", value]);
+        }
+      });
+      return popup;
+    };
+  });
+
+  await page.locator(".provider-chatgpt").click();
+  await expect.poll(() => page.evaluate(() => globalThis.__clipboardAttempts.length)).toBe(1);
+  const modes = page.getByRole("group", { name: "Prompt mode" });
+  await modes.getByRole("button", { name: /^Python$/i }).click();
+  await expect(page).toHaveURL(/\/catalog\/unit-test-authoring\/\?mode=python$/);
+  await expect
+    .poll(() => page.evaluate(() => globalThis.__providerEvents.map(([kind]) => kind)))
+    .toContain("close");
+  const status = page.getByRole("status");
+  await expect(status).toHaveText("Mode switched to Python.");
+
+  await page.evaluate(async () => {
+    globalThis.__clipboardAttempts[0].resolve();
+    await new Promise((resolve) => setTimeout(resolve, 0));
+  });
+  const events = await page.evaluate(() => globalThis.__providerEvents);
+  expect(events.some(([kind]) => kind === "replace")).toBe(false);
+  await expect(status).toHaveText("Mode switched to Python.");
+});
+
+test("OpenInChat unmount closes its reserved popup without a follow-up prompt activation", async ({
+  page
+}) => {
+  await gotoPath(page, "/catalog/source-grounded-answer/", /Source-Grounded Answer/i);
+  await page.evaluate(() => {
+    globalThis.__clipboardAttempts = [];
+    globalThis.__providerEvents = [];
+    Object.defineProperty(navigator.clipboard, "writeText", {
+      configurable: true,
+      value: (text) =>
+        new Promise((resolve) => {
+          globalThis.__clipboardAttempts.push({ text: String(text), resolve });
+        })
+    });
+    globalThis.open = (url, target) => {
+      globalThis.__providerEvents.push(["open", String(url ?? ""), String(target ?? "")]);
+      const popup = {
+        closed: false,
+        close: () => {
+          popup.closed = true;
+          globalThis.__providerEvents.push(["close"]);
+        },
+        location: {
+          replace: (nextUrl) => globalThis.__providerEvents.push(["replace", String(nextUrl ?? "")])
+        }
+      };
+      Object.defineProperty(popup, "opener", {
+        configurable: true,
+        get: () => null,
+        set: (value) => {
+          globalThis.__providerEvents.push(["opener", value]);
+        }
+      });
+      return popup;
+    };
+  });
+
+  await page.locator(".provider-chatgpt").click();
+  await expect.poll(() => page.evaluate(() => globalThis.__clipboardAttempts.length)).toBe(1);
+  await page
+    .getByRole("navigation", { name: "Breadcrumb" })
+    .getByRole("link", { name: "Catalog" })
+    .click();
+  await expect(page).toHaveURL((url) => url.pathname === "/");
+  await expect(page.locator("[data-open-in-chat]")).toHaveCount(0);
+  await expect
+    .poll(() => page.evaluate(() => globalThis.__providerEvents.map(([kind]) => kind)))
+    .toContain("close");
+  expect(
+    await page.evaluate(() => globalThis.__providerEvents.some(([kind]) => kind === "replace"))
+  ).toBe(false);
+
+  await page.evaluate(async () => {
+    globalThis.__clipboardAttempts[0].resolve();
+    await new Promise((resolve) => setTimeout(resolve, 0));
+  });
+  const events = await page.evaluate(() => globalThis.__providerEvents);
+  expect(events.some(([kind]) => kind === "replace")).toBe(false);
+  await expect(page.getByText(/Prompt copied|Copy timed out —|Copy failed —/i)).toHaveCount(0);
+});
+
+test("provider copy timeout closes a genuinely pending coordinated popup", async ({ page }) => {
+  const clockStart = new Date("2026-01-01T00:00:00Z");
+  await page.clock.install({ time: clockStart });
+  await gotoPath(page, "/catalog/source-grounded-answer/", /Source-Grounded Answer/i);
+  await page.clock.pauseAt(new Date("2026-01-01T00:01:00Z"));
+  await page.evaluate(() => {
+    globalThis.__clipboardAttempts = [];
+    globalThis.__providerEvents = [];
+    Object.defineProperty(navigator.clipboard, "writeText", {
+      configurable: true,
+      value: (text) =>
+        new Promise(() => {
+          globalThis.__clipboardAttempts.push(String(text));
+        })
+    });
+    globalThis.open = (url, target) => {
+      globalThis.__providerEvents.push(["open", String(url ?? ""), String(target ?? "")]);
+      const popup = {
+        closed: false,
+        close: () => {
+          popup.closed = true;
+          globalThis.__providerEvents.push(["close"]);
+        },
+        location: {
+          replace: (nextUrl) => globalThis.__providerEvents.push(["replace", String(nextUrl ?? "")])
+        }
+      };
+      Object.defineProperty(popup, "opener", {
+        configurable: true,
+        get: () => null,
+        set: (value) => {
+          globalThis.__providerEvents.push(["opener", value]);
+        }
+      });
+      return popup;
+    };
+  });
+
+  await page.locator(".provider-chatgpt").click();
+  await expect.poll(() => page.evaluate(() => globalThis.__clipboardAttempts.length)).toBe(1);
+  const status = page.getByRole("status");
+  await expect(status).toHaveText("");
+  await page.clock.runFor(7_999);
+  expect(
+    await page.evaluate(() => globalThis.__providerEvents.some(([kind]) => kind === "close"))
+  ).toBe(false);
+  await expect(status).toHaveText("");
+
+  await page.clock.runFor(1);
+  await expect(status).toHaveText("Copy timed out — ChatGPT was not opened.");
+  const events = await page.evaluate(() => globalThis.__providerEvents);
+  expect(events.map(([kind]) => kind)).toContain("close");
+  expect(events.some(([kind]) => kind === "replace")).toBe(false);
+});
+
+test("superseded CopyableBlock copy does not show stale success or failure", async ({ page }) => {
+  await gotoPath(page, "/catalog/source-grounded-answer/", /Source-Grounded Answer/i);
+  await page.evaluate(() => {
+    globalThis.__clipboardAttempts = [];
+    Object.defineProperty(navigator.clipboard, "writeText", {
+      configurable: true,
+      value: (text) =>
+        new Promise((resolve) => {
+          globalThis.__clipboardAttempts.push({ text: String(text), resolve });
+        })
+    });
+  });
+
+  const blockCopy = page.locator(".copyable-block-copy").first();
+  await expect(blockCopy).toHaveAttribute("data-copy-state", "idle");
+  await blockCopy.click();
+  await expect.poll(() => page.evaluate(() => globalThis.__clipboardAttempts.length)).toBe(1);
+
+  await clickPromptCopyLink(page);
+  await expect.poll(() => page.evaluate(() => globalThis.__clipboardAttempts.length)).toBe(2);
+  await page.evaluate(() => globalThis.__clipboardAttempts[1].resolve());
+  await expect(page.getByRole("status")).toHaveText("");
+
+  await page.evaluate(() => globalThis.__clipboardAttempts[0].resolve());
+  await expect.poll(() => page.evaluate(() => globalThis.__clipboardAttempts.length)).toBe(3);
+  await expect(page.getByRole("status")).toHaveText("");
+  await page.evaluate(async () => {
+    globalThis.__clipboardAttempts[2].resolve();
+    await new Promise((resolve) => setTimeout(resolve, 0));
+  });
+
+  await expect(blockCopy).toHaveAttribute("data-copy-state", "idle");
+  await expect(blockCopy).toHaveText("Copy");
+  await expect(blockCopy).not.toContainText(/Copied|Retry copy/);
+  await expect(page.getByRole("status")).toHaveText("Link copied");
+});
+
+test("command palette keeps ranked prompt results ahead of weaker page matches", async ({
+  page
+}) => {
+  await gotoHome(page);
+  await page.getByRole("button", { name: "Open command palette", exact: true }).click();
+  const dialog = page.getByRole("dialog", { name: "Site command palette" });
+  await expect(dialog).toBeVisible({ timeout: 15_000 });
+
+  await dialog.locator("[cmdk-input]").fill("data");
+  const selectableResults = dialog.locator("[cmdk-item]");
+  const firstResult = selectableResults.first();
+  await expect(selectableResults).toHaveCount(11);
+  await expect(firstResult.locator("span").first()).toHaveText("Data Augmentation");
+  await expect(selectableResults.nth(1).locator("span").first()).toHaveText("Explore data");
+  await expect(
+    selectableResults.filter({ has: page.getByText("Explore data", { exact: true }) })
+  ).toHaveCount(1);
+  await expect(firstResult).toHaveAttribute("aria-selected", "true");
+
+  await page.keyboard.press("Enter");
+  await expect(page).toHaveURL(/\/catalog\/data-augmentation\/$/);
+  await expect(
+    page.getByRole("heading", { level: 1, name: "Data Augmentation", exact: true })
+  ).toBeVisible();
 });
 
 test("command palette opens via Search button and navigates to a prompt", async ({ page }) => {
   await gotoHome(page);
   const searchButton = page.getByRole("button", { name: "Open command palette", exact: true });
+  const dialog = page.getByRole("dialog", { name: "Site command palette" });
   await searchButton.click();
-  await expect(page.getByRole("dialog")).toBeVisible();
+  await expect(dialog).toBeVisible({ timeout: 15_000 });
   await page.keyboard.press("Escape");
   await expect(searchButton).toBeFocused();
   await expect(page.locator("#root")).not.toHaveAttribute("aria-hidden", "true");
 
   await searchButton.click();
-  const dialog = page.getByRole("dialog");
-  await expect(dialog).toBeVisible();
-  await dialog.getByPlaceholder(/Search (catalog|recipes|prompts)/i).fill("source-grounded-answer");
+  await expect(dialog).toBeVisible({ timeout: 15_000 });
+  const paletteSearch = dialog.locator("[cmdk-input]");
+  await paletteSearch.fill("rounded");
+  await expect(dialog.getByText("Source-Grounded Answer", { exact: true })).toHaveCount(0);
+  await paletteSearch.fill("source groun");
+  await expect(dialog.getByText("Source-Grounded Answer", { exact: true })).toBeVisible();
+  await paletteSearch.fill("source-grounded-answer");
   await page.keyboard.press("Enter");
   await expect(page).toHaveURL(/\/catalog\/source-grounded-answer\/?/);
   await expect(

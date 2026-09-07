@@ -32,7 +32,6 @@ const fixtureCatalog = {
     {
       slug: "source-grounded-answer",
       title: 'Source <Grounded> "Answer" & more',
-      facet: "job",
       lane: "research",
       blurb: "  RAG\nwith evidence  ",
       order: 1,
@@ -68,7 +67,6 @@ const fixtureCatalog = {
     {
       slug: "chain-of-thought",
       title: "Chain [of] Thought",
-      facet: "method",
       lane: "reasoning",
       blurb: "Reason privately",
       order: 2,
@@ -431,6 +429,7 @@ test("discovery writer emits only canonical indexable descriptors without fabric
   assert.ok(llms.includes('Source &lt;Grounded&gt; "Answer" &amp; more'));
   assert.ok(llms.includes("Chain \\[of\\] Thought"));
   assert.match(llmsFull, /````text\nA prompt containing ``` a nested fence\n````/);
+  assert.doesNotMatch(llmsFull, /^- Facet:/m);
   for (const sentinel of [
     "Expected example sentinel",
     "Placeholder notes sentinel",

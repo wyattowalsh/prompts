@@ -3,6 +3,8 @@
  * Callers pass a catalog snapshot so Node tests can drive real catalog.json.
  */
 
+import { SEARCH_FIELD_WEIGHTS, searchDocuments, type SearchDocument } from "./search-core.ts";
+
 export type CommandCatalog = {
   prompts: Array<{
     slug: string;
@@ -50,20 +52,58 @@ export function buildCommandIndexFromCatalog(data: CommandCatalog): CommandItem[
     subtitle: prompt.blurb,
     href: `/catalog/${prompt.slug}/`,
     group: "Prompts" as const,
-    keywords: [prompt.title, prompt.slug, prompt.lane, prompt.blurb].join(" ").toLowerCase()
+    keywords: [prompt.slug, prompt.lane, prompt.blurb].join(" ").toLowerCase()
   }));
 
   // Pages already includes Explore; do not emit per-source URL rows.
   return [...pages, ...prompts];
 }
 
+type CommandSearchDocument = SearchDocument & { item: CommandItem };
+
+function commandSearchDocument(item: CommandItem): CommandSearchDocument {
+  return {
+    id: item.id,
+    sortKey: item.title,
+    item,
+    fields: [
+      {
+        key: "title",
+        label: "Title",
+        value: item.title,
+        weight: SEARCH_FIELD_WEIGHTS.title
+      },
+      {
+        key: "path",
+        label: "Path",
+        value: [item.id, item.href],
+        weight: SEARCH_FIELD_WEIGHTS.slug
+      },
+      {
+        key: "group",
+        label: "Group",
+        value: item.group,
+        weight: SEARCH_FIELD_WEIGHTS.primaryMetadata
+      },
+      {
+        key: "keywords",
+        label: "Keywords",
+        value: item.keywords,
+        weight: SEARCH_FIELD_WEIGHTS.metadata
+      },
+      {
+        key: "subtitle",
+        label: "Summary",
+        value: item.subtitle,
+        weight: SEARCH_FIELD_WEIGHTS.context
+      }
+    ]
+  };
+}
+
 export function filterCommandItems(items: CommandItem[], query: string): CommandItem[] {
-  const q = query.trim().toLowerCase();
-  if (!q) return items.slice(0, 40);
-  return items
-    .filter((item) => {
-      const hay = `${item.title} ${item.subtitle} ${item.keywords}`.toLowerCase();
-      return q.split(/\s+/).every((part) => hay.includes(part));
-    })
-    .slice(0, 40);
+  const documents = items.map(commandSearchDocument);
+  return searchDocuments(documents, query)
+    .slice(0, 40)
+    .map((result) => result.document.item);
 }

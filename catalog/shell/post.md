@@ -24,7 +24,8 @@ Validation: run the block in [AGENTS.md § Validation](AGENTS.md#validation).
 - [ ] Heading anchors resolve on GitHub.
 - [ ] Alerts and Mermaid render in light and dark themes.
 - [ ] Critical safety warnings stay visible outside collapses.
-- [ ] Every job prompt has a copyable template; method prompts include a template or an omission reason.
+- [ ] Every prompt's selected mode provides a copyable template or an
+  explicit omission reason.
 
 </details>
 

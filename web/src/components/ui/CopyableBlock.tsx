@@ -1,7 +1,7 @@
 import { Check, Copy } from "lucide-react";
 import type { ReactNode } from "react";
-import { useMemo, useState } from "react";
-import { writeClipboardText } from "../../lib/clipboard";
+import { useEffect, useMemo, useRef, useState } from "react";
+import { type ClipboardCopy, useClipboard } from "../../hooks/useClipboard";
 import { cn } from "../../lib/utils";
 import { Button } from "./Button";
 
@@ -13,6 +13,8 @@ type CopyableBlockProps = {
   copyLabel?: string;
   className?: string;
   compact?: boolean;
+  /** Use a page-level clipboard status region instead of creating a second announcer. */
+  copy?: ClipboardCopy;
   /** Emphasize as the primary copy target on a page. */
   emphasis?: "default" | "primary";
 };
@@ -37,16 +39,58 @@ export function CopyableBlock({
   copyLabel = "Copy",
   className = "",
   compact = false,
+  copy,
   emphasis = "default"
 }: CopyableBlockProps) {
-  const [copied, setCopied] = useState(false);
+  const {
+    status: localClipboardStatus,
+    copy: localClipboardCopy,
+    clearStatus: clearLocalClipboardStatus
+  } = useClipboard(1600);
+  const [copyState, setCopyState] = useState<"idle" | "copied" | "failed">("idle");
+  const stateTimer = useRef<number | null>(null);
+  const request = useRef(0);
   const stats = useMemo(() => formatStats(text), [text]);
+  const accessibleCopyLabel =
+    copyState === "failed"
+      ? `Retry copy ${title}`
+      : copyState === "copied"
+        ? `${title} copied`
+        : `${copyLabel} ${title}`;
+
+  useEffect(() => {
+    request.current += 1;
+    if (stateTimer.current != null) window.clearTimeout(stateTimer.current);
+    stateTimer.current = null;
+    clearLocalClipboardStatus();
+    setCopyState("idle");
+  }, [clearLocalClipboardStatus, text]);
+
+  useEffect(() => {
+    return () => {
+      request.current += 1;
+      if (stateTimer.current != null) window.clearTimeout(stateTimer.current);
+      stateTimer.current = null;
+      clearLocalClipboardStatus();
+    };
+  }, [clearLocalClipboardStatus]);
 
   async function handleCopy() {
-    const ok = await writeClipboardText(text);
-    if (!ok) return;
-    setCopied(true);
-    window.setTimeout(() => setCopied(false), 1600);
+    const currentRequest = ++request.current;
+    if (stateTimer.current != null) window.clearTimeout(stateTimer.current);
+    stateTimer.current = null;
+    setCopyState("idle");
+
+    const copyText = copy ?? localClipboardCopy;
+    const result = await copyText(text, `${title} copied`, "Copy failed");
+    if (currentRequest !== request.current || result === "superseded") return;
+
+    setCopyState(result);
+    stateTimer.current = window.setTimeout(() => {
+      if (currentRequest !== request.current) return;
+      stateTimer.current = null;
+      setCopyState("idle");
+    }, 1600);
   }
 
   return (
@@ -74,19 +118,25 @@ export function CopyableBlock({
           type="button"
           variant={emphasis === "primary" ? "primary" : "outline"}
           size="sm"
-          className={cn("copyable-block-copy", copied && "is-copied")}
+          className={cn("copyable-block-copy", copyState === "copied" && "is-copied")}
           onClick={handleCopy}
-          aria-label={`${copyLabel} ${title}`}
-          data-copy-state={copied ? "copied" : "idle"}
+          aria-label={accessibleCopyLabel}
+          data-copy-state={copyState}
           icon={
-            copied ? <Check size={15} strokeWidth={2.4} /> : <Copy size={15} strokeWidth={2.25} />
+            copyState === "copied" ? (
+              <Check size={15} strokeWidth={2.4} />
+            ) : (
+              <Copy size={15} strokeWidth={2.25} />
+            )
           }
         >
-          {copied ? "Copied" : copyLabel}
+          {copyState === "copied" ? "Copied" : copyState === "failed" ? "Retry copy" : copyLabel}
         </Button>
-        <span className="sr-only" role="status" aria-live="polite" aria-atomic="true">
-          {copied ? "Copied" : ""}
-        </span>
+        {copy ? null : (
+          <span className="sr-only" role="status" aria-live="polite" aria-atomic="true">
+            {localClipboardStatus}
+          </span>
+        )}
       </div>
       <pre className="copyable-block-body" tabIndex={0}>
         {text}

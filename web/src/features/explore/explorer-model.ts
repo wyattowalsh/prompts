@@ -1,5 +1,11 @@
-import { catalog, promptDetailHref, promptSources } from "../../lib/catalog";
-import { domainMarkForHref, hostLabel, type DomainMark } from "../../lib/explorer-state";
+import { catalog, promptDetailHref, promptSources } from "../../lib/catalog.ts";
+import { domainMarkForHref, hostLabel, type DomainMark } from "../../lib/explorer-state.ts";
+import {
+  SEARCH_FIELD_WEIGHTS,
+  searchDocuments,
+  type SearchDocument,
+  type SearchMatchReason
+} from "../../lib/search-core.ts";
 
 export type ExplorerUsedBy = {
   id: string;
@@ -23,7 +29,6 @@ export type ExplorerSourceItem = {
   href: string;
   id: string;
   kind: "source";
-  searchTerms: readonly string[];
   subtitle: string;
   title: string;
   usedBy: ExplorerUsedBy[];
@@ -43,7 +48,6 @@ export type ExplorerPromptItem = {
   kind: "prompt";
   lane: string;
   related: ExplorerRelatedRef[];
-  searchTerms: readonly string[];
   slug: string;
   sources: ExplorerSourceRef[];
   subtitle: string;
@@ -66,6 +70,7 @@ export type HostMixRow = {
 };
 
 const TOP_HOST_LIMIT = 5;
+const LANE_TITLES = new Map(catalog.lanes.map((lane) => [lane.key, lane.title]));
 
 function sourceItemId(url: string): string {
   return `source:${url}`;
@@ -87,7 +92,6 @@ function sourceRef(url: string, title: string): ExplorerSourceRef {
 }
 
 export function collectExplorerItems(): ExplorerItem[] {
-  const laneTitles = new Map(catalog.lanes.map((lane) => [lane.key, lane.title]));
   const sources = new Map<
     string,
     {
@@ -134,8 +138,7 @@ export function collectExplorerItems(): ExplorerItem[] {
         external: true as const,
         usedBy: source.usedBy,
         domainMark,
-        host,
-        searchTerms: [...source.usedBy.map((entry) => entry.title), host ?? ""]
+        host
       };
     });
 
@@ -168,19 +171,135 @@ export function collectExplorerItems(): ExplorerItem[] {
       lane: prompt.lane,
       slug: prompt.slug,
       sources: sourcesForPrompt,
-      related,
-      searchTerms: [
-        prompt.slug,
-        prompt.lane,
-        laneTitles.get(prompt.lane) ?? "",
-        ...sourcesForPrompt.map((source) => source.title),
-        ...sourcesForPrompt.map((source) => source.host ?? ""),
-        ...related.map((entry) => entry.title)
-      ]
+      related
     };
   });
 
   return [...sourceItems, ...promptItems];
+}
+
+type ExplorerSearchDocument = SearchDocument & {
+  item: ExplorerItem;
+};
+
+export type ExplorerSearchResult = {
+  item: ExplorerItem;
+  reasons: readonly SearchMatchReason[];
+  score: number;
+};
+
+function explorerSearchDocument(item: ExplorerItem): ExplorerSearchDocument {
+  if (item.kind === "source") {
+    return {
+      id: item.id,
+      item,
+      sortKey: item.title,
+      fields: [
+        {
+          key: "title",
+          label: "Title",
+          value: item.title,
+          weight: SEARCH_FIELD_WEIGHTS.title
+        },
+        {
+          key: "url",
+          label: "URL",
+          value: item.subtitle,
+          weight: SEARCH_FIELD_WEIGHTS.slug
+        },
+        {
+          key: "host",
+          label: "Host",
+          value: item.host ?? "",
+          weight: SEARCH_FIELD_WEIGHTS.primaryMetadata
+        },
+        {
+          key: "kind",
+          label: "Type",
+          value: item.kind,
+          weight: SEARCH_FIELD_WEIGHTS.metadata
+        },
+        {
+          key: "usedBy",
+          label: "Used by",
+          value: item.usedBy.map((entry) => entry.title),
+          weight: SEARCH_FIELD_WEIGHTS.context
+        }
+      ]
+    };
+  }
+
+  const laneTitle = LANE_TITLES.get(item.lane) ?? item.lane;
+  return {
+    id: item.id,
+    item,
+    sortKey: item.title,
+    fields: [
+      {
+        key: "title",
+        label: "Title",
+        value: item.title,
+        weight: SEARCH_FIELD_WEIGHTS.title
+      },
+      {
+        key: "slug",
+        label: "Slug",
+        value: item.slug,
+        weight: SEARCH_FIELD_WEIGHTS.slug
+      },
+      {
+        key: "lane",
+        label: "Lane",
+        value: [item.lane, laneTitle],
+        weight: SEARCH_FIELD_WEIGHTS.primaryMetadata
+      },
+      {
+        key: "summary",
+        label: "Summary",
+        value: item.subtitle,
+        weight: SEARCH_FIELD_WEIGHTS.metadata
+      },
+      {
+        key: "kind",
+        label: "Type",
+        value: item.kind,
+        weight: SEARCH_FIELD_WEIGHTS.metadata
+      },
+      {
+        key: "sources",
+        label: "Sources",
+        value: item.sources.flatMap((source) => [source.title, source.host ?? ""]),
+        weight: SEARCH_FIELD_WEIGHTS.context
+      },
+      {
+        key: "related",
+        label: "Related prompts",
+        value: item.related.map((entry) => entry.title),
+        weight: SEARCH_FIELD_WEIGHTS.context
+      }
+    ]
+  };
+}
+
+export function searchExplorerItems(
+  items: readonly ExplorerItem[],
+  rawQuery: string | null | undefined
+): ExplorerSearchResult[] {
+  return searchDocuments(items.map(explorerSearchDocument), rawQuery).map(
+    ({ document, reasons, score }) => ({ item: document.item, reasons, score })
+  );
+}
+
+export function explorerItemMatchesQuery(
+  item: ExplorerItem,
+  rawQuery: string | null | undefined
+): boolean {
+  return searchExplorerItems([item], rawQuery).length === 1;
+}
+
+export function explorerSearchReasonText(reasons: readonly SearchMatchReason[]): string | null {
+  if (reasons.length === 0) return null;
+  return `Search match: ${reasons.map((reason) => reason.text).join("; ")}`;
 }
 
 export type ExplorerInsight = {

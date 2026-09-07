@@ -14,7 +14,6 @@ import { Button } from "../../components/ui/Button";
 import { useDocumentMeta } from "../../hooks/useDocumentMeta";
 import {
   explorerUrlIntentFromParams,
-  matchesExplorerQuery,
   nextExplorerIndex,
   normalizeExplorerQuery,
   reconcileExplorerUrlIntent,
@@ -29,8 +28,19 @@ import { ExplorerDetail } from "./ExplorerDetail";
 import { ExplorerEvidenceMap } from "./ExplorerEvidenceMap";
 import { ExplorerInsightStrip } from "./ExplorerInsightStrip";
 import { ExplorerListRow } from "./ExplorerListRow";
-import { explorerHubs, explorerNeighborIds, explorerNeighborhood } from "./explorer-graph";
-import { collectExplorerItems, explorerInsight, type ExplorerItem } from "./explorer-model";
+import {
+  explorerClusterIds,
+  explorerHubs,
+  explorerNeighborIds,
+  explorerNeighborhood
+} from "./explorer-graph";
+import {
+  collectExplorerItems,
+  explorerInsight,
+  explorerItemMatchesQuery,
+  searchExplorerItems,
+  type ExplorerItem
+} from "./explorer-model";
 
 const SCOPE_OPTIONS = [
   ["all", "All", Database],
@@ -76,6 +86,8 @@ export function DataExplorerPage() {
     if (reconciliation.kind === "canonicalize") {
       urlIntentRef.current = reconciliation.intent;
       pendingUrlWritesRef.current.add(reconciliation.search);
+      pendingInspectIdRef.current = null;
+      setClusterOn(false);
       setQueryInput(reconciliation.intent.query);
       setParams(reconciliation.intent.params, { replace: true });
       return;
@@ -93,7 +105,9 @@ export function DataExplorerPage() {
     // external navigation. POP always reaches this branch, including when its
     // search happens to match an unacknowledged internal write.
     pendingUrlWritesRef.current.clear();
+    pendingInspectIdRef.current = null;
     urlIntentRef.current = reconciliation.intent;
+    setClusterOn(false);
     setQueryInput(reconciliation.intent.query);
   }, [navigationType, serializedParams, setParams]);
 
@@ -130,22 +144,28 @@ export function DataExplorerPage() {
     });
   }, [allItems, scope]);
 
-  const filtered = useMemo(() => {
-    return scoped.filter((item) => matchesExplorerQuery(item, query));
-  }, [query, scoped]);
+  const filteredResults = useMemo(() => searchExplorerItems(scoped, query), [query, scoped]);
+  const filtered = useMemo(() => filteredResults.map((result) => result.item), [filteredResults]);
+  const matchReasonsById = useMemo(
+    () => new Map(filteredResults.map((result) => [result.item.id, result.reasons])),
+    [filteredResults]
+  );
 
-  const focusId = selectedId ?? filtered[0]?.id ?? null;
+  const effectiveSelectedId =
+    selectedId && filtered.some((item) => item.id === selectedId)
+      ? selectedId
+      : (filtered[0]?.id ?? null);
   const neighborhood = useMemo(
-    () => (focusId ? explorerNeighborhood(allItems, focusId) : null),
-    [allItems, focusId]
+    () => (effectiveSelectedId ? explorerNeighborhood(allItems, effectiveSelectedId) : null),
+    [allItems, effectiveSelectedId]
   );
   const linkedIds = useMemo(() => explorerNeighborIds(neighborhood), [neighborhood]);
+  const clusterIds = useMemo(() => explorerClusterIds(neighborhood), [neighborhood]);
   const visible = useMemo(() => {
     if (!clusterOn || !neighborhood) return filtered;
-    const ids = new Set([neighborhood.focusId, ...linkedIds]);
-    return allItems.filter((item) => ids.has(item.id));
-  }, [allItems, clusterOn, filtered, linkedIds, neighborhood]);
-  const selected = visible.find((item) => item.id === selectedId) ?? visible[0] ?? null;
+    return filtered.filter((item) => clusterIds.has(item.id));
+  }, [clusterIds, clusterOn, filtered, neighborhood]);
+  const selected = visible.find((item) => item.id === effectiveSelectedId) ?? visible[0] ?? null;
 
   useLayoutEffect(() => {
     const id = pendingInspectIdRef.current;
@@ -194,21 +214,23 @@ export function DataExplorerPage() {
     if (!item) return;
 
     const current = urlIntentRef.current;
-    const queryMatches = matchesExplorerQuery(item, current.query);
+    const queryMatches = explorerItemMatchesQuery(item, current.query);
     const scopeHides =
       (current.scope === "sources" && item.kind !== "source") ||
       (current.scope === "prompts" && item.kind !== "prompt");
     const nextScope: ExplorerScope = scopeHides ? "all" : current.scope;
     const nextQuery = queryMatches ? current.query : "";
     const urlChanges = nextScope !== current.scope || nextQuery !== current.query;
+    const viewChanges = urlChanges || clusterOn;
 
     pendingInspectIdRef.current = id;
 
+    if (clusterOn) setClusterOn(false);
     if (nextQuery !== current.query) setQueryInput(nextQuery);
     if (urlChanges) {
       writeUrlIntent({ scope: nextScope, query: nextQuery }, nextScope === current.scope);
-      return;
     }
+    if (viewChanges) return;
 
     pendingInspectIdRef.current = null;
     setSelectedId(id);
@@ -276,7 +298,11 @@ export function DataExplorerPage() {
           </Badge>
           <p className="count-pill">
             {visible.length}
-            <span> / {clusterOn ? filtered.length : scoped.length}</span>
+            <span>
+              {clusterOn
+                ? ` cluster result${visible.length === 1 ? "" : "s"} / ${filtered.length} base result${filtered.length === 1 ? "" : "s"}`
+                : ` result${visible.length === 1 ? "" : "s"} / ${scoped.length} scoped`}
+            </span>
           </p>
         </div>
       </header>
@@ -363,7 +389,9 @@ export function DataExplorerPage() {
         aria-live="polite"
         aria-atomic="true"
       >
-        {visible.length} explorer result{visible.length === 1 ? "" : "s"}.
+        {clusterOn
+          ? `${visible.length} cluster result${visible.length === 1 ? "" : "s"} from ${filtered.length} base result${filtered.length === 1 ? "" : "s"}.`
+          : `${visible.length} explorer result${visible.length === 1 ? "" : "s"}.`}
       </p>
 
       <div className="related-hub research-atlas">
@@ -384,8 +412,10 @@ export function DataExplorerPage() {
                 {clusterOn && selected ? (
                   <div className="research-cluster-bar">
                     <p>
-                      Linked to {selected.title}
-                      <span className="research-meter-count">{visible.length}</span>
+                      Cluster around {selected.title}
+                      <span className="research-meter-count">
+                        {visible.length} / {filtered.length} base
+                      </span>
                     </p>
                     <Button
                       type="button"
@@ -393,7 +423,7 @@ export function DataExplorerPage() {
                       size="md"
                       onClick={() => setClusterOn(false)}
                     >
-                      Show all results
+                      Show {filtered.length} base result{filtered.length === 1 ? "" : "s"}
                     </Button>
                   </div>
                 ) : null}
@@ -414,6 +444,7 @@ export function DataExplorerPage() {
                           index={index}
                           maxDegree={insight.maxDegree}
                           linked={linkedIds.has(item.id)}
+                          matchReasons={matchReasonsById.get(item.id) ?? []}
                           optionRef={(element) => {
                             if (element) optionRefs.current.set(item.id, element);
                             else optionRefs.current.delete(item.id);

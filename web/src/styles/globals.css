@@ -182,6 +182,29 @@
   }
 }
 
+/* Unlayered so forced-colors focus wins over Tailwind outline/ring utilities. */
+@media (forced-colors: active) {
+  [aria-haspopup="menu"]:focus-visible,
+  [role="menuitemradio"]:focus-visible,
+  [cmdk-input]:focus-visible,
+  [cmdk-item]:focus-visible,
+  .catalog-modal :is(button, a, input, textarea):focus-visible,
+  .search-input:focus-visible,
+  .sticky-actions-more-summary:focus-visible,
+  .related-hub-card-link:focus-visible,
+  .fill-input:focus,
+  .provider-chip:focus-visible,
+  .search:focus-visible {
+    outline: 2px solid CanvasText;
+    outline-offset: 2px;
+  }
+
+  [cmdk-item][aria-selected="true"] {
+    outline: 2px solid CanvasText;
+    outline-offset: -2px;
+  }
+}
+
 /* App shell layout utilities (product-specific) */
 @layer components {
   .skip-link {

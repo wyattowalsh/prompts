@@ -1,8 +1,9 @@
 import { Badge } from "../../components/ui/Badge";
 import { meterShare } from "../../lib/explorer-state";
 import { laneIcon } from "../../lib/lane-icons";
+import type { SearchMatchReason } from "../../lib/search-core";
 import { cn } from "../../lib/utils";
-import type { ExplorerItem } from "./explorer-model";
+import { explorerSearchReasonText, type ExplorerItem } from "./explorer-model";
 import { SourceDomainMark } from "./SourceDomainMark";
 
 export function ExplorerListRow({
@@ -11,6 +12,7 @@ export function ExplorerListRow({
   index,
   maxDegree,
   linked = false,
+  matchReasons,
   optionRef,
   onSelect
 }: {
@@ -19,12 +21,14 @@ export function ExplorerListRow({
   index: number;
   maxDegree: number;
   linked?: boolean;
+  matchReasons: readonly SearchMatchReason[];
   optionRef: (element: HTMLButtonElement | null) => void;
   onSelect: () => void;
 }) {
   const degree =
     item.kind === "source" ? item.usedBy.length : item.sources.length + item.related.length;
   const usage = meterShare(degree, maxDegree, 8);
+  const searchReason = explorerSearchReasonText(matchReasons);
 
   return (
     <button
@@ -65,6 +69,7 @@ export function ExplorerListRow({
       </span>
       <span className="research-list-title">{item.title}</span>
       <span className="muted research-list-sub">{item.subtitle}</span>
+      {searchReason ? <span className="sr-only">{searchReason}</span> : null}
       <span className="research-usage" aria-hidden="true">
         <span className="research-usage-track">
           <span className="research-usage-fill" style={{ width: `${usage}%` }} />

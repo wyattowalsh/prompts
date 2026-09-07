@@ -20,6 +20,45 @@ function ruleBody(selector: string): string {
   return css.slice(bodyStart, end);
 }
 
+type CssBlock = {
+  body: string;
+  start: number;
+};
+
+function mediaBlocks(source: string, query: string): CssBlock[] {
+  const blocks: CssBlock[] = [];
+  let searchFrom = 0;
+  while (searchFrom < source.length) {
+    const start = source.indexOf(`${query} {`, searchFrom);
+    if (start === -1) break;
+    const bodyStart = source.indexOf("{", start) + 1;
+    let depth = 1;
+    let cursor = bodyStart;
+    while (cursor < source.length && depth > 0) {
+      if (source[cursor] === "{") depth += 1;
+      if (source[cursor] === "}") depth -= 1;
+      cursor += 1;
+    }
+    assert.equal(depth, 0, `unterminated CSS media query ${query}`);
+    blocks.push({ body: source.slice(bodyStart, cursor - 1), start });
+    searchFrom = cursor;
+  }
+  return blocks;
+}
+
+function nestingDepthAt(source: string, position: number): number {
+  let depth = 0;
+  for (let cursor = 0; cursor < position; cursor += 1) {
+    if (source[cursor] === "{") depth += 1;
+    if (source[cursor] === "}") depth -= 1;
+  }
+  return depth;
+}
+
+function assertTopLevelBlock(source: string, block: CssBlock, message: string): void {
+  assert.equal(nestingDepthAt(source, block.start), 0, message);
+}
+
 function themeToken(themeSelector: ":root" | ".dark", token: string): string {
   const match = ruleBody(themeSelector).match(new RegExp(`--${token}:\\s*(#[0-9a-f]{6})`, "i"));
   assert.ok(match, `missing --${token} in ${themeSelector}`);
@@ -173,6 +212,75 @@ test("small interactive labels use contrast-safe foreground and focus tokens", (
       `${theme} ring/background contrast ${ringRatio.toFixed(2)} is below 3:1`
     );
   }
+});
+
+test("forced colors restores visible focus for outline-suppressed controls", () => {
+  const forcedColorsQuery = "@media (forced-colors: active)";
+  const forcedColors = mediaBlocks(css, forcedColorsQuery);
+  const focusFallback = forcedColors.find(({ body }) =>
+    body.includes("[cmdk-input]:focus-visible")
+  );
+  assert.ok(focusFallback, "missing forced-colors focus fallback for shared controls");
+
+  for (const selector of [
+    '[aria-haspopup="menu"]:focus-visible',
+    '[role="menuitemradio"]:focus-visible',
+    "[cmdk-input]:focus-visible",
+    "[cmdk-item]:focus-visible",
+    ".catalog-modal :is(button, a, input, textarea):focus-visible",
+    ".search-input:focus-visible",
+    ".sticky-actions-more-summary:focus-visible",
+    ".related-hub-card-link:focus-visible",
+    ".fill-input:focus",
+    ".provider-chip:focus-visible",
+    ".search:focus-visible"
+  ]) {
+    assert.ok(focusFallback.body.includes(selector), `missing forced-colors selector ${selector}`);
+  }
+  assert.match(focusFallback.body, /outline:\s*2px solid CanvasText/);
+  assert.match(focusFallback.body, /outline-offset:\s*2px/);
+  assert.match(
+    focusFallback.body,
+    /\[cmdk-item\]\[aria-selected="true"\][\s\S]*outline-offset:\s*-2px/
+  );
+
+  assertTopLevelBlock(css, focusFallback, "shared forced-colors block must be unlayered");
+  assert.ok(focusFallback.start > css.indexOf("@layer base"));
+  assert.ok(focusFallback.start < css.indexOf("@layer components"));
+
+  const exploreFallback = forcedColors.find(({ body }) =>
+    body.includes(".research-list-item:focus-visible")
+  );
+  assert.ok(exploreFallback, "existing Explore forced-colors focus rules must remain");
+  assert.match(exploreFallback.body, /outline:\s*2px solid CanvasText/);
+});
+
+test("forced-colors oracle rejects a nested selector-bearing decoy block", () => {
+  const forcedColorsQuery = "@media (forced-colors: active)";
+  const fixture = `
+@layer components {
+  ${forcedColorsQuery} {
+    [cmdk-input]:focus-visible {
+      outline: 2px solid CanvasText;
+    }
+  }
+}
+
+${forcedColorsQuery} {
+  .unrelated:focus-visible {
+    outline: 2px solid CanvasText;
+  }
+}
+`;
+  const selectorBlock = mediaBlocks(fixture, forcedColorsQuery).find(({ body }) =>
+    body.includes("[cmdk-input]:focus-visible")
+  );
+  assert.ok(selectorBlock, "fixture must contain the nested selector-bearing block");
+  assert.throws(
+    () =>
+      assertTopLevelBlock(fixture, selectorBlock, "shared forced-colors block must be unlayered"),
+    /shared forced-colors block must be unlayered/u
+  );
 });
 
 test("explore atlas meters paint from live lane tokens, not unused @theme aliases", () => {

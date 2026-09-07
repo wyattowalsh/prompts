@@ -140,6 +140,7 @@ export function defaultMarkdownPaths(root = repoRoot) {
     "README.md",
     "AGENTS.md",
     "DESIGN.md",
+    "CHANGELOG.md",
     ...optionalGovernanceDocs,
     ".agents/skills/readme-catalog-steward/SKILL.md",
     ...references,

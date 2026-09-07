@@ -5,7 +5,6 @@ import {
   domainMarkForHref,
   explorerUrlIntentFromParams,
   hostLabel,
-  matchesExplorerQuery,
   meterShare,
   nextExplorerIndex,
   normalizeExplorerQuery,
@@ -14,6 +13,43 @@ import {
   toggleExplorerFacet,
   updateExplorerUrlIntent
 } from "./explorer-state.ts";
+import {
+  explorerSearchReasonText,
+  searchExplorerItems,
+  type ExplorerPromptItem,
+  type ExplorerSourceItem
+} from "../features/explore/explorer-model.ts";
+
+function promptFixture(overrides: Partial<ExplorerPromptItem> = {}): ExplorerPromptItem {
+  return {
+    external: false,
+    href: "/catalog/runbook-generator/",
+    id: "prompt:runbook-generator",
+    kind: "prompt",
+    lane: "operations",
+    related: [],
+    slug: "runbook-generator",
+    sources: [],
+    subtitle: "Produce an operational runbook.",
+    title: "Runbook Generator",
+    ...overrides
+  };
+}
+
+function sourceFixture(overrides: Partial<ExplorerSourceItem> = {}): ExplorerSourceItem {
+  return {
+    domainMark: { glyph: "A", host: "arxiv.org" },
+    external: true,
+    host: "arxiv.org",
+    href: "https://arxiv.org/abs/1234.5678",
+    id: "source:https://arxiv.org/abs/1234.5678",
+    kind: "source",
+    subtitle: "https://arxiv.org/abs/1234.5678",
+    title: "A Retrieval Research Paper",
+    usedBy: [],
+    ...overrides
+  };
+}
 
 describe("explorer state", () => {
   it("parses scopes and falls back to the default", () => {
@@ -28,6 +64,7 @@ describe("explorer state", () => {
   it("normalizes and caps shareable queries", () => {
     assert.equal(normalizeExplorerQuery("  cafe\u0301\n  sources  "), "café sources");
     assert.equal(normalizeExplorerQuery("😀🚀abc", 2), "😀🚀");
+    assert.equal(normalizeExplorerQuery("ab cd", 3), "ab");
     assert.equal(normalizeExplorerQuery("anything", 0), "");
   });
 
@@ -144,15 +181,70 @@ describe("explorer state", () => {
     assert.equal(edited.params.get("q"), "source-grounded");
   });
 
-  it("matches display metadata such as prompt lanes", () => {
-    const prompt = {
-      kind: "prompt",
-      title: "Runbook Generator",
-      subtitle: "produce an operational runbook",
-      searchTerms: ["operations", "Operations"]
-    };
-    assert.equal(matchesExplorerQuery(prompt, "operations"), true);
-    assert.equal(matchesExplorerQuery(prompt, "writing"), false);
+  it("ranks direct title matches above lower-weight Explorer metadata", () => {
+    const titleMatch = promptFixture({
+      id: "prompt:operations-guide",
+      lane: "writing",
+      slug: "operations-guide",
+      title: "Operations Guide"
+    });
+    const laneMatch = promptFixture();
+    const results = searchExplorerItems([laneMatch, titleMatch], "operations");
+
+    assert.deepEqual(
+      results.map((result) => result.item.id),
+      [titleMatch.id, laneMatch.id]
+    );
+    assert.equal(
+      results[0]?.reasons.some((reason) => reason.fieldKey === "title"),
+      true
+    );
+    assert.equal(
+      results[1]?.reasons.some((reason) => reason.fieldKey === "lane"),
+      true
+    );
+  });
+
+  it("matches all terms across fields using token prefixes, not mid-token substrings", () => {
+    const prompt = promptFixture();
+    const prefixResults = searchExplorerItems([prompt], "oper runb");
+
+    assert.equal(prefixResults.length, 1);
+    assert.deepEqual(
+      new Set(prefixResults[0]?.reasons.flatMap((reason) => reason.terms)),
+      new Set(["oper", "runb"])
+    );
+    assert.equal(searchExplorerItems([prompt], "eration").length, 0);
+    assert.equal(searchExplorerItems([prompt], "operations missing").length, 0);
+  });
+
+  it("indexes source URLs and hosts without fetching remote metadata", () => {
+    const [result] = searchExplorerItems([sourceFixture()], "arxiv 1234");
+
+    assert.equal(result?.item.kind, "source");
+    assert.equal(
+      result?.reasons.some((reason) => reason.fieldKey === "url"),
+      true
+    );
+    assert.equal(
+      result?.reasons.some((reason) => reason.fieldKey === "host"),
+      true
+    );
+  });
+
+  it("preserves source order for an empty query and describes accessible match reasons", () => {
+    const second = promptFixture({ id: "prompt:zulu", slug: "zulu", title: "Zulu" });
+    const first = promptFixture({ id: "prompt:alpha", slug: "alpha", title: "Alpha" });
+
+    assert.deepEqual(
+      searchExplorerItems([second, first], "").map((result) => result.item.id),
+      [second.id, first.id]
+    );
+
+    const [match] = searchExplorerItems([promptFixture()], "runbook");
+    assert.match(explorerSearchReasonText(match?.reasons ?? []) ?? "", /^Search match: /u);
+    assert.match(explorerSearchReasonText(match?.reasons ?? []) ?? "", /Title starts with/u);
+    assert.equal(explorerSearchReasonText([]), null);
   });
 
   it("builds local domain marks without remote URLs", () => {

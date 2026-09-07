@@ -3,7 +3,12 @@ import { Command } from "cmdk";
 import { Search } from "lucide-react";
 import { useEffect, useLayoutEffect, useMemo, useState } from "react";
 import { catalog } from "../lib/catalog";
-import { buildCommandIndexFromCatalog, filterCommandItems } from "../lib/command-index";
+import {
+  buildCommandIndexFromCatalog,
+  filterCommandItems,
+  type CommandItem
+} from "../lib/command-index";
+import { normalizeSearchQuery } from "../lib/search-core";
 import { cn } from "../lib/utils";
 
 type CommandPaletteProps = {
@@ -11,6 +16,22 @@ type CommandPaletteProps = {
   onOpenChange: (open: boolean) => void;
   onNavigate: (href: string) => void;
 };
+
+function renderCommandItems(items: readonly CommandItem[], onNavigate: (href: string) => void) {
+  return items.map((item) => (
+    <Command.Item
+      key={item.id}
+      value={`${item.title} ${item.keywords}`}
+      onSelect={() => {
+        onNavigate(item.href);
+      }}
+      className="flex cursor-pointer flex-col gap-0.5 rounded-lg px-2 py-2 text-sm aria-selected:bg-accent aria-selected:text-accent-foreground"
+    >
+      <span className="font-medium">{item.title}</span>
+      <span className="line-clamp-1 text-xs text-muted-foreground">{item.subtitle}</span>
+    </Command.Item>
+  ));
+}
 
 export function CommandPalette({ open, onOpenChange, onNavigate }: CommandPaletteProps) {
   const [query, setQuery] = useState("");
@@ -35,7 +56,8 @@ export function CommandPalette({ open, onOpenChange, onNavigate }: CommandPalett
 
   // Global ⌘/Ctrl+K is owned by App (hotkey-before-lazy). Dialog handles Esc/focus trap.
 
-  const groups = ["Pages", "Prompts"] as const;
+  const browseGroups = ["Pages", "Prompts"] as const;
+  const hasSearchQuery = normalizeSearchQuery(query).length > 0;
 
   return (
     <Dialog.Root open={open} onOpenChange={onOpenChange}>
@@ -67,33 +89,28 @@ export function CommandPalette({ open, onOpenChange, onNavigate }: CommandPalett
               <Command.Empty className="px-3 py-8 text-center text-sm text-muted-foreground">
                 No matches. Try another keyword.
               </Command.Empty>
-              {groups.map((group) => {
-                const groupItems = items.filter((item) => item.group === group);
-                if (groupItems.length === 0) return null;
-                return (
-                  <Command.Group
-                    key={group}
-                    heading={group}
-                    className="mb-2 [&_[cmdk-group-heading]]:px-2 [&_[cmdk-group-heading]]:py-1.5 [&_[cmdk-group-heading]]:text-xs [&_[cmdk-group-heading]]:font-semibold [&_[cmdk-group-heading]]:text-muted-foreground"
-                  >
-                    {groupItems.map((item) => (
-                      <Command.Item
-                        key={item.id}
-                        value={`${item.title} ${item.keywords}`}
-                        onSelect={() => {
-                          onNavigate(item.href);
-                        }}
-                        className="flex cursor-pointer flex-col gap-0.5 rounded-lg px-2 py-2 text-sm aria-selected:bg-accent aria-selected:text-accent-foreground"
-                      >
-                        <span className="font-medium">{item.title}</span>
-                        <span className="line-clamp-1 text-xs text-muted-foreground">
-                          {item.subtitle}
-                        </span>
-                      </Command.Item>
-                    ))}
-                  </Command.Group>
-                );
-              })}
+              {hasSearchQuery ? (
+                <Command.Group
+                  heading="Results"
+                  className="mb-2 [&_[cmdk-group-heading]]:px-2 [&_[cmdk-group-heading]]:py-1.5 [&_[cmdk-group-heading]]:text-xs [&_[cmdk-group-heading]]:font-semibold [&_[cmdk-group-heading]]:text-muted-foreground"
+                >
+                  {renderCommandItems(items, onNavigate)}
+                </Command.Group>
+              ) : (
+                browseGroups.map((group) => {
+                  const groupItems = items.filter((item) => item.group === group);
+                  if (groupItems.length === 0) return null;
+                  return (
+                    <Command.Group
+                      key={group}
+                      heading={group}
+                      className="mb-2 [&_[cmdk-group-heading]]:px-2 [&_[cmdk-group-heading]]:py-1.5 [&_[cmdk-group-heading]]:text-xs [&_[cmdk-group-heading]]:font-semibold [&_[cmdk-group-heading]]:text-muted-foreground"
+                    >
+                      {renderCommandItems(groupItems, onNavigate)}
+                    </Command.Group>
+                  );
+                })
+              )}
             </Command.List>
           </Command>
         </Dialog.Content>

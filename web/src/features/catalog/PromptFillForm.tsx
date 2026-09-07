@@ -75,7 +75,7 @@ export function PromptFillForm({
         </div>
       </div>
 
-      <div className="fill-form-status" aria-live="polite">
+      <div className="fill-form-status">
         {filledRequired ? (
           <Badge tone="success">Required fields ready</Badge>
         ) : (

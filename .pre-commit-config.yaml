@@ -99,7 +99,7 @@ repos:
           && python3 -m json.tool vercel.json >/dev/null'
         language: system
         pass_filenames: false
-        files: ^(\.github/(workflows/.*\.ya?ml|actions/(?:[^/]+/)*action\.ya?ml|dependabot\.yml)|scripts/check_(?:ci_action_pins(?:\.test)?|dependency_policy\.test|markdown_links(?:\.test)?|toolchain(?:\.test)?)\.mjs|(?:web/)?package\.json|pnpm-lock\.yaml|pnpm-workspace\.yaml|\.markdown-link-check\.json|\.pre-commit-config\.yaml|\.node-version|vercel\.json)$
+        files: ^(\.github/(workflows/.*\.ya?ml|actions/(?:[^/]+/)*action\.ya?ml|dependabot\.yml)|scripts/check_(?:ci_action_pins(?:\.test)?|dependency_policy\.test|markdown_links(?:\.test)?|toolchain(?:\.test)?)\.mjs|(?:web/|packages/[^/]+/)?package\.json|pnpm-lock\.yaml|pnpm-workspace\.yaml|\.markdown-link-check\.json|\.pre-commit-config\.yaml|\.node-version|vercel\.json)$
 
       - id: openspec-strict
         name: OpenSpec strict validation
@@ -113,7 +113,7 @@ repos:
         entry: pnpm run validation-files:test
         language: system
         pass_filenames: false
-        files: ^(scripts/list_validation_files(?:\.test)?\.mjs|justfile|package\.json|\.pre-commit-config\.yaml)$
+        files: ^(\.github/workflows/(?:readme-quality|dependency-audit)\.yml|scripts/list_validation_files(?:\.test)?\.mjs|justfile|package\.json|\.pre-commit-config\.yaml)$
 
       - id: markdownlint-docs
         name: Markdown lint docs
@@ -122,6 +122,7 @@ repos:
           README.md
           AGENTS.md
           DESIGN.md
+          CHANGELOG.md
           $(git ls-files --cached --others --exclude-standard --
           CONTRIBUTING.md SECURITY.md CODE_OF_CONDUCT.md)
           .agents/skills/readme-catalog-steward/SKILL.md
@@ -139,7 +140,7 @@ repos:
           pnpm exec markdownlint-cli2 "${DOCS[@]}"'
         language: system
         pass_filenames: false
-        files: ^(README\.md|AGENTS\.md|DESIGN\.md|CONTRIBUTING\.md|SECURITY\.md|CODE_OF_CONDUCT\.md|source-refresh\.md|\.agents/skills/readme-catalog-steward/.*\.md|openspec/specs/.*\.md|openspec/changes/(?!archive/).*\.md|goals/codebase-sota-improvement/scratch/(?:a11y-defer|cb-closeout-residual|residual-register)\.md|goals/prompt-catalog-research-upgrade/hygiene-report\.md|goals/web-design-sota-enrich/goal\.md)$
+        files: ^(README\.md|AGENTS\.md|DESIGN\.md|CHANGELOG\.md|CONTRIBUTING\.md|SECURITY\.md|CODE_OF_CONDUCT\.md|source-refresh\.md|\.agents/skills/readme-catalog-steward/.*\.md|openspec/specs/.*\.md|openspec/changes/(?!archive/).*\.md|goals/codebase-sota-improvement/scratch/(?:a11y-defer|cb-closeout-residual|residual-register)\.md|goals/prompt-catalog-research-upgrade/hygiene-report\.md|goals/web-design-sota-enrich/goal\.md)$
 
       - id: web-generated-site-check
         name: Web generated-site check
@@ -164,6 +165,7 @@ repos:
           README.md
           AGENTS.md
           DESIGN.md
+          CHANGELOG.md
           CONTRIBUTING.md
           SECURITY.md
           CODE_OF_CONDUCT.md
@@ -212,7 +214,7 @@ repos:
         entry: pnpm run docs:links
         language: system
         pass_filenames: false
-        files: ^(README\.md|AGENTS\.md|DESIGN\.md|CONTRIBUTING\.md|SECURITY\.md|CODE_OF_CONDUCT\.md|source-refresh\.md|\.agents/skills/readme-catalog-steward/.*\.md|openspec/specs/.*\.md|openspec/changes/(?!archive/).*\.md|goals/codebase-sota-improvement/scratch/(?:a11y-defer|cb-closeout-residual|residual-register)\.md|goals/prompt-catalog-research-upgrade/hygiene-report\.md|goals/web-design-sota-enrich/goal\.md|\.markdown-link-check\.json|scripts/check_markdown_links(?:\.test)?\.mjs|package\.json)$
+        files: ^(README\.md|AGENTS\.md|DESIGN\.md|CHANGELOG\.md|CONTRIBUTING\.md|SECURITY\.md|CODE_OF_CONDUCT\.md|source-refresh\.md|\.agents/skills/readme-catalog-steward/.*\.md|openspec/specs/.*\.md|openspec/changes/(?!archive/).*\.md|goals/codebase-sota-improvement/scratch/(?:a11y-defer|cb-closeout-residual|residual-register)\.md|goals/prompt-catalog-research-upgrade/hygiene-report\.md|goals/web-design-sota-enrich/goal\.md|\.markdown-link-check\.json|scripts/check_markdown_links(?:\.test)?\.mjs|package\.json)$
         stages:
           - pre-push
           - manual

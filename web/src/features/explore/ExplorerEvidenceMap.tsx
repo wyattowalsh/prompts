@@ -28,7 +28,8 @@ export function ExplorerEvidenceMap({
   const groups = explorerEvidenceGroups(graph);
   if (!graph || groups.length === 0) return null;
 
-  const neighborCount = graph.nodes.length - 1;
+  const neighborCount = graph.neighborIds.length;
+  const shownNeighborCount = graph.nodes.length - 1;
 
   return (
     <section className="research-map" aria-labelledby="research-map-heading">
@@ -39,7 +40,7 @@ export function ExplorerEvidenceMap({
           </h2>
           <p className="research-map-meta">
             {neighborCount} linked item{neighborCount === 1 ? "" : "s"}
-            {graph.hiddenCount > 0 ? ` · +${graph.hiddenCount} more in catalog` : ""}
+            {graph.hiddenCount > 0 ? ` · ${shownNeighborCount} shown below` : " · all shown below"}
           </p>
         </div>
         {clusterOn ? null : (
@@ -49,8 +50,9 @@ export function ExplorerEvidenceMap({
             size="md"
             icon={<ListFilter size={14} />}
             onClick={onToggleCluster}
+            aria-label={`Filter base results by all ${neighborCount} linked item${neighborCount === 1 ? "" : "s"}`}
           >
-            List this cluster
+            Filter by all links
           </Button>
         )}
       </div>

@@ -1,3 +1,5 @@
+import { normalizeSearchQuery } from "./search-core.ts";
+
 export const EXPLORER_SCOPES = ["all", "sources", "prompts"] as const;
 
 export type ExplorerScope = (typeof EXPLORER_SCOPES)[number];
@@ -28,13 +30,6 @@ export type ExplorerUrlReconciliation = {
   search: string;
 };
 
-export type ExplorerSearchableItem = {
-  kind: string;
-  searchTerms?: readonly string[];
-  subtitle: string;
-  title: string;
-};
-
 const MAX_EXPLORER_QUERY_CODE_POINTS = 160;
 
 export function parseExplorerScope(raw: string | null): ExplorerScope {
@@ -45,10 +40,7 @@ export function normalizeExplorerQuery(
   raw: string | null | undefined,
   maxCodePoints = MAX_EXPLORER_QUERY_CODE_POINTS
 ): string {
-  if (!raw) return "";
-  const normalized = raw.normalize("NFC").replace(/\s+/gu, " ").trim();
-  if (maxCodePoints <= 0) return "";
-  return Array.from(normalized).slice(0, Math.floor(maxCodePoints)).join("");
+  return normalizeSearchQuery(raw, maxCodePoints);
 }
 
 export function buildExplorerSearchParams(
@@ -128,20 +120,6 @@ export function reconcileExplorerUrlIntent(
     return { intent, kind: "acknowledge", search: renderedSearch };
   }
   return { intent, kind: "rehydrate", search: renderedSearch };
-}
-
-export function matchesExplorerQuery(
-  item: ExplorerSearchableItem,
-  rawQuery: string | null | undefined
-): boolean {
-  const query = normalizeExplorerQuery(rawQuery).toLowerCase();
-  if (!query) return true;
-  const searchable = [item.title, item.subtitle, item.kind, ...(item.searchTerms ?? [])]
-    .join(" ")
-    .normalize("NFC")
-    .replace(/\s+/gu, " ")
-    .toLowerCase();
-  return searchable.includes(query);
 }
 
 export function hostLabel(host: string): string {

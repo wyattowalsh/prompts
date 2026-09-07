@@ -1,14 +1,14 @@
 {
   "name": "@prompts/web",
   "private": true,
-  "version": "0.1.0",
+  "version": "0.2.0",
   "type": "module",
   "scripts": {
     "dev": "vite",
     "build": "node --test scripts/publication-contract.test.mjs && tsc --noEmit && vite build && node scripts/spa-fallback.mjs && node scripts/emit-seo.mjs",
     "preview": "vite preview",
     "typecheck": "tsc --noEmit --pretty false",
-    "test": "node --experimental-strip-types --test src/lib/prompt-index.test.ts src/lib/clipboard.test.ts src/lib/fill-template.test.ts src/lib/command-index.test.ts src/lib/theme-preference.test.ts src/lib/related-clusters.test.ts src/lib/document-meta.test.ts src/lib/route-descriptors.test.ts src/lib/share-urls.test.ts src/lib/explorer-state.test.ts src/lib/overlay-lifecycle.test.ts src/features/explore/explorer-graph.test.ts src/styles/globals-css-contract.test.ts && node --test scripts/emit-seo.test.mjs scripts/publication-contract.test.mjs"
+    "test": "node --experimental-strip-types --test src/lib/prompt-index.test.ts src/lib/clipboard.test.ts src/lib/fill-template.test.ts src/lib/command-index.test.ts src/lib/search-core.test.ts src/lib/theme-preference.test.ts src/lib/related-clusters.test.ts src/lib/document-meta.test.ts src/lib/route-descriptors.test.ts src/lib/share-urls.test.ts src/lib/explorer-state.test.ts src/lib/overlay-lifecycle.test.ts src/features/explore/explorer-graph.test.ts src/styles/globals-css-contract.test.ts && node --test scripts/emit-seo.test.mjs scripts/publication-contract.test.mjs"
   },
   "dependencies": {
     "@fontsource/dm-sans": "^5.3.0",

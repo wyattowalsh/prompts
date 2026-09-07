@@ -56,6 +56,7 @@ export type ExplorerGraph = {
   edges: ExplorerGraphEdge[];
   focusId: string;
   hiddenCount: number;
+  neighborIds: string[];
   nodes: ExplorerGraphNode[];
 };
 
@@ -147,8 +148,12 @@ function addEdge(edges: ExplorerGraphEdge[], from: string, to: string, kind: Gra
 }
 
 export function explorerNeighborIds(graph: ExplorerGraph | null): ReadonlySet<string> {
+  return new Set(graph?.neighborIds ?? []);
+}
+
+export function explorerClusterIds(graph: ExplorerGraph | null): ReadonlySet<string> {
   if (!graph) return new Set();
-  return new Set(graph.nodes.filter((node) => node.role !== "focus").map((node) => node.id));
+  return new Set([graph.focusId, ...graph.neighborIds]);
 }
 
 export function explorerNeighborhood(
@@ -161,7 +166,7 @@ export function explorerNeighborhood(
   const byId = new Map(items.map((item) => [item.id, item]));
   const nodes = new Map<string, ExplorerGraphNode>();
   const edges: ExplorerGraphEdge[] = [];
-  let hiddenCount = 0;
+  const neighborIds = new Set<string>();
 
   addNode(nodes, {
     id: focus.id,
@@ -172,10 +177,10 @@ export function explorerNeighborhood(
   });
 
   if (focus.kind === "prompt") {
+    for (const source of focus.sources) neighborIds.add(source.id);
     const sources = takeSorted([...focus.sources], SOURCE_CAP, (left, right) =>
       left.title.localeCompare(right.title)
     );
-    hiddenCount += Math.max(0, focus.sources.length - sources.length);
     for (const source of sources) {
       const item = byId.get(source.id);
       addNode(nodes, {
@@ -187,11 +192,11 @@ export function explorerNeighborhood(
       addEdge(edges, focus.id, source.id, "cites");
     }
 
+    const relatedIds = new Set(focus.related.map((row) => row.id));
+    for (const id of relatedIds) neighborIds.add(id);
     const related = takeSorted([...focus.related], RELATED_CAP, (left, right) =>
       left.title.localeCompare(right.title)
     );
-    hiddenCount += Math.max(0, focus.related.length - related.length);
-    const relatedIds = new Set(related.map((row) => row.id));
     for (const row of related) {
       const item = byId.get(row.id);
       addNode(nodes, {
@@ -205,7 +210,7 @@ export function explorerNeighborhood(
     }
 
     const sourceIds = new Set(focus.sources.map((source) => source.id));
-    const cocites = items
+    const rankedCocites = items
       .filter((item): item is GraphablePrompt => item.kind === "prompt")
       .filter((item) => item.id !== focus.id && !relatedIds.has(item.id))
       .map((item) => ({
@@ -216,9 +221,9 @@ export function explorerNeighborhood(
       .sort(
         (left, right) =>
           right.shared - left.shared || left.item.title.localeCompare(right.item.title)
-      )
-      .slice(0, COCITE_CAP);
-    for (const row of cocites) {
+      );
+    for (const row of rankedCocites) neighborIds.add(row.item.id);
+    for (const row of rankedCocites.slice(0, COCITE_CAP)) {
       addNode(nodes, {
         id: row.item.id,
         kind: "prompt",
@@ -229,11 +234,11 @@ export function explorerNeighborhood(
       addEdge(edges, focus.id, row.item.id, "cocite");
     }
   } else {
+    const citedIds = new Set(focus.usedBy.map((row) => row.id));
+    for (const id of citedIds) neighborIds.add(id);
     const citedBy = takeSorted([...focus.usedBy], CITED_BY_CAP, (left, right) =>
       left.title.localeCompare(right.title)
     );
-    hiddenCount += Math.max(0, focus.usedBy.length - citedBy.length);
-    const citedIds = new Set(citedBy.map((row) => row.id));
     for (const row of citedBy) {
       const item = byId.get(row.id);
       addNode(nodes, {
@@ -259,7 +264,7 @@ export function explorerNeighborhood(
     const rankedSiblings = [...siblingCounts.entries()].sort(
       (left, right) => right[1].count - left[1].count || left[1].title.localeCompare(right[1].title)
     );
-    hiddenCount += Math.max(0, rankedSiblings.length - SIBLING_CAP);
+    for (const [id] of rankedSiblings) neighborIds.add(id);
     const siblings = rankedSiblings.slice(0, SIBLING_CAP);
     for (const [id, meta] of siblings) {
       const item = byId.get(id);
@@ -273,9 +278,12 @@ export function explorerNeighborhood(
     }
   }
 
+  neighborIds.delete(focus.id);
+
   return {
     focusId: focus.id,
-    hiddenCount,
+    hiddenCount: Math.max(0, neighborIds.size - (nodes.size - 1)),
+    neighborIds: [...neighborIds].sort((left, right) => left.localeCompare(right)),
     nodes: [...nodes.values()],
     edges
   };

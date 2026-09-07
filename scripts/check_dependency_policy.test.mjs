@@ -13,10 +13,32 @@ const workflowRuns = (workflow) =>
   Object.values(workflow.jobs)
     .flatMap((job) => job.steps ?? [])
     .map((step) => String(step.run ?? ""));
-const securityMaintenanceCommands = [
-  "pnpm run security:audit:prod",
-  "pnpm run security:audit",
-  "pnpm run security:signatures"
+const securityMaintenanceScripts = ["security:audit:prod", "security:audit", "security:signatures"];
+const securityMaintenanceCommands = securityMaintenanceScripts.map(
+  (scriptName) => `pnpm run ${scriptName}`
+);
+const dependencyAuditPaths = [
+  ".github/dependabot.yml",
+  ".github/workflows/dependency-audit.yml",
+  ".node-version",
+  "package.json",
+  "packages/*/package.json",
+  "pnpm-lock.yaml",
+  "pnpm-workspace.yaml",
+  "scripts/check_dependency_policy.test.mjs",
+  "web/package.json"
+];
+const requiredSecurityOverrides = [
+  {
+    selector: "ajv>fast-uri",
+    packageName: "fast-uri",
+    safeVersion: "3.1.6"
+  },
+  {
+    selector: "@babel/helper-compilation-targets>browserslist",
+    packageName: "browserslist",
+    safeVersion: "4.28.7"
+  }
 ];
 const normalizeShellContinuations = (command) => String(command).replace(/\\\r?\n[\t ]*/gu, " ");
 const pnpmOptionArities = new Map([
@@ -127,6 +149,59 @@ const selectPnpmCommand = (tokens, startIndex = 0) => {
   const index = consumePnpmOptions(tokens, startIndex);
   return { index, token: tokens[index] ?? null };
 };
+
+function parseSemanticVersion(version) {
+  const match = /^(\d+)\.(\d+)\.(\d+)(?:-([0-9A-Za-z.-]+))?(?:\+[0-9A-Za-z.-]+)?$/u.exec(
+    String(version)
+  );
+  if (!match) return null;
+  return {
+    core: match.slice(1, 4).map((part) => Number.parseInt(part, 10)),
+    prerelease: match[4]?.split(".") ?? []
+  };
+}
+
+export function compareSemanticVersions(leftVersion, rightVersion) {
+  const left = parseSemanticVersion(leftVersion);
+  const right = parseSemanticVersion(rightVersion);
+  if (!left || !right) return null;
+
+  for (let index = 0; index < left.core.length; index += 1) {
+    if (left.core[index] !== right.core[index]) {
+      return left.core[index] < right.core[index] ? -1 : 1;
+    }
+  }
+
+  if (left.prerelease.length === 0 || right.prerelease.length === 0) {
+    if (left.prerelease.length === right.prerelease.length) return 0;
+    return left.prerelease.length === 0 ? 1 : -1;
+  }
+
+  const length = Math.max(left.prerelease.length, right.prerelease.length);
+  for (let index = 0; index < length; index += 1) {
+    const leftPart = left.prerelease[index];
+    const rightPart = right.prerelease[index];
+    if (leftPart === undefined || rightPart === undefined) {
+      return leftPart === rightPart ? 0 : leftPart === undefined ? -1 : 1;
+    }
+    if (leftPart === rightPart) continue;
+    const leftNumeric = /^\d+$/u.test(leftPart);
+    const rightNumeric = /^\d+$/u.test(rightPart);
+    if (leftNumeric && rightNumeric) {
+      return Number(leftPart) < Number(rightPart) ? -1 : 1;
+    }
+    if (leftNumeric !== rightNumeric) return leftNumeric ? -1 : 1;
+    return leftPart < rightPart ? -1 : 1;
+  }
+  return 0;
+}
+
+export function packageVersionFromLockKey(lockKey, packageName) {
+  const prefix = `${packageName}@`;
+  if (!String(lockKey).startsWith(prefix)) return null;
+  const version = String(lockKey).slice(prefix.length).split("(", 1)[0];
+  return parseSemanticVersion(version) ? version : null;
+}
 
 /**
  * Conservatively extract every textual pnpm invocation. This is intentionally
@@ -384,6 +459,34 @@ describe("quality workflow audit expansion", () => {
   });
 });
 
+describe("security floor version comparison", () => {
+  it("orders every stable version below, at, and above the configured floor", () => {
+    assert.equal(compareSemanticVersions("3.1.4", "3.1.6"), -1);
+    assert.equal(compareSemanticVersions("3.1.5", "3.1.6"), -1);
+    assert.equal(compareSemanticVersions("3.1.6", "3.1.6"), 0);
+    assert.equal(compareSemanticVersions("3.2.0", "3.1.6"), 1);
+    assert.equal(compareSemanticVersions("4.28.5", "4.28.7"), -1);
+    assert.equal(compareSemanticVersions("4.28.6", "4.28.7"), -1);
+    assert.equal(compareSemanticVersions("4.28.7", "4.28.7"), 0);
+  });
+
+  it("treats prereleases as below the corresponding stable floor", () => {
+    assert.equal(compareSemanticVersions("3.1.6-rc.1", "3.1.6"), -1);
+    assert.equal(compareSemanticVersions("3.1.6+build.2", "3.1.6"), 0);
+    assert.equal(compareSemanticVersions("not-semver", "3.1.6"), null);
+  });
+
+  it("extracts versions from package and peer-suffixed pnpm lock keys", () => {
+    assert.equal(packageVersionFromLockKey("fast-uri@3.1.6", "fast-uri"), "3.1.6");
+    assert.equal(
+      packageVersionFromLockKey("browserslist@4.28.7(foo@1.0.0)", "browserslist"),
+      "4.28.7"
+    );
+    assert.equal(packageVersionFromLockKey("other@3.1.6", "fast-uri"), null);
+    assert.equal(packageVersionFromLockKey("fast-uri@workspace:*", "fast-uri"), null);
+  });
+});
+
 describe("dependency maintenance policy", () => {
   it("keeps the Node 24 runtime, type model, and CI setup aligned", () => {
     assert.equal(rootPackage.engines.node, "24.x");
@@ -448,7 +551,71 @@ describe("dependency maintenance policy", () => {
     );
   });
 
-  it("wires severity and signature checks into the maintenance workflow", () => {
+  it("enforces the required transitive security floors in every lockfile record", () => {
+    const workspace = parseYaml("pnpm-workspace.yaml");
+    const lock = parseYaml("pnpm-lock.yaml");
+    const lockRecords = [
+      ...Object.keys(lock.packages ?? {}).map((key) => ({ key, section: "packages" })),
+      ...Object.keys(lock.snapshots ?? {}).map((key) => ({ key, section: "snapshots" }))
+    ];
+    const failures = [];
+
+    const checkOverride = (source, overrides, selector, safeVersion) => {
+      const actual = overrides?.[selector];
+      if (actual !== safeVersion) {
+        failures.push(
+          `${source} override ${selector}: expected ${safeVersion}, found ${actual ?? "missing"}`
+        );
+      }
+    };
+
+    for (const { selector, packageName, safeVersion } of requiredSecurityOverrides) {
+      checkOverride("pnpm-workspace.yaml", workspace.overrides, selector, safeVersion);
+      checkOverride("pnpm-lock.yaml", lock.overrides, selector, safeVersion);
+
+      const packageRecords = lockRecords.flatMap(({ key, section }) => {
+        if (!key.startsWith(`${packageName}@`)) return [];
+        return [{ key, section, version: packageVersionFromLockKey(key, packageName) }];
+      });
+      const invalidRecords = packageRecords.filter(({ version }) => version === null);
+      if (invalidRecords.length > 0) {
+        failures.push(
+          `pnpm-lock.yaml: cannot compare ${packageName} records: ${invalidRecords
+            .map(({ key, section }) => `${section}.${key}`)
+            .join(", ")}`
+        );
+      }
+
+      const comparableRecords = packageRecords.filter(({ version }) => version !== null);
+      const compliantRecords = comparableRecords.filter(
+        ({ version }) => compareSemanticVersions(version, safeVersion) >= 0
+      );
+      if (compliantRecords.length === 0) {
+        failures.push(
+          `pnpm-lock.yaml: missing ${packageName} record at or above security floor ${safeVersion}`
+        );
+      }
+
+      const belowFloorRecords = comparableRecords.filter(
+        ({ version }) => compareSemanticVersions(version, safeVersion) < 0
+      );
+      if (belowFloorRecords.length > 0) {
+        failures.push(
+          `pnpm-lock.yaml: remove ${packageName} records below security floor ${safeVersion}: ${belowFloorRecords
+            .map(({ key, section }) => `${section}.${key}`)
+            .join(", ")}`
+        );
+      }
+    }
+
+    assert.equal(
+      failures.length,
+      0,
+      `required transitive security floor violations:\n- ${failures.join("\n- ")}`
+    );
+  });
+
+  it("uses fixed severity and signature commands in the maintenance workflow", () => {
     assert.equal(rootPackage.scripts["security:audit"], "pnpm audit --audit-level high");
     assert.equal(
       rootPackage.scripts["security:audit:prod"],
@@ -457,25 +624,93 @@ describe("dependency maintenance policy", () => {
     assert.equal(rootPackage.scripts["security:signatures"], "pnpm audit signatures");
 
     const auditWorkflow = parseYaml(".github/workflows/dependency-audit.yml");
-    const auditRuns = workflowRuns(auditWorkflow);
-    for (const command of securityMaintenanceCommands) {
-      assert.ok(auditRuns.includes(command), command);
+    const steps = auditWorkflow.jobs.audit.steps;
+    const expectedCommands = new Map([
+      ["Audit production dependency severity", "pnpm audit --prod --audit-level high"],
+      ["Audit complete dependency severity", "pnpm audit --audit-level high"],
+      ["Verify registry signatures", "pnpm audit signatures"]
+    ]);
+    for (const [stepName, command] of expectedCommands) {
+      const run = String(steps.find((step) => step.name === stepName)?.run ?? "");
+      assert.match(run, new RegExp(command.replaceAll(" ", "\\s+"), "u"), stepName);
+      assert.doesNotMatch(run, /pnpm\s+run\s+/u, `${stepName} must not trust package scripts`);
     }
+
+    const install = steps.find(
+      (step) => step.name === "Install locked dependencies without lifecycle scripts"
+    );
+    assert.equal(install.run, "pnpm install --frozen-lockfile --ignore-scripts");
   });
 
-  it("keeps advisory maintenance scheduled or manual and out of pull-request quality", () => {
+  it("runs dependency maintenance for relevant changes, schedules, and manual dispatch", () => {
     const auditWorkflow = parseYaml(".github/workflows/dependency-audit.yml");
-    assert.deepEqual(Object.keys(auditWorkflow.on).sort(), ["schedule", "workflow_dispatch"]);
+    assert.deepEqual(Object.keys(auditWorkflow.on).sort(), [
+      "pull_request",
+      "push",
+      "schedule",
+      "workflow_dispatch"
+    ]);
+    assert.deepEqual(auditWorkflow.on.pull_request.paths, dependencyAuditPaths);
+    assert.deepEqual(auditWorkflow.on.push.branches, ["main"]);
+    assert.deepEqual(auditWorkflow.on.push.paths, dependencyAuditPaths);
     assert.ok(
       Array.isArray(auditWorkflow.on.schedule) &&
         auditWorkflow.on.schedule.some(({ cron }) => typeof cron === "string" && cron.trim()),
       "dependency audit must retain a scheduled trigger"
     );
+  });
 
+  it("aligns dependency workflow triggers with the local policy hook", () => {
+    const preCommit = parseYaml(".pre-commit-config.yaml");
+    const hooks = preCommit.repos.find(({ repo }) => repo === "local")?.hooks ?? [];
+    const policyHook = hooks.find(({ id }) => id === "workflow-yaml-syntax");
+    const selector = new RegExp(policyHook?.files ?? "(?!)", "u");
+
+    for (const path of [
+      "package.json",
+      "web/package.json",
+      "packages/catalog-core/package.json",
+      "packages/example/package.json",
+      "pnpm-lock.yaml",
+      "pnpm-workspace.yaml",
+      ".github/workflows/dependency-audit.yml",
+      "scripts/check_dependency_policy.test.mjs"
+    ]) {
+      assert.match(path, selector, `dependency-policy hook: ${path}`);
+    }
+    assert.doesNotMatch("packages/catalog-core/src/index.ts", selector);
+    assert.doesNotMatch("packages/nested/example/package.json", selector);
+  });
+
+  it("records honest audit timing, status, and event trust context", () => {
+    const auditWorkflow = parseYaml(".github/workflows/dependency-audit.yml");
+    const steps = auditWorkflow.jobs.audit.steps;
+    const identity = steps.find((step) => step.name === "Record lockfile identity");
+    assert.match(identity.run, /started_at=/u);
+    assert.doesNotMatch(identity.run, /audited_at=/u);
+    assert.match(identity.run, /untrusted-pull-request-feedback/u);
+    assert.match(identity.run, /canonical-main-push/u);
+    assert.match(identity.run, /scheduled-repository-audit/u);
+    assert.match(identity.run, /manual-repository-audit/u);
+
+    const summary = steps.find((step) => step.name === "Summarize dependency audit evidence");
+    assert.equal(summary.if, "${{ always() }}");
+    assert.match(summary.run, /pre_upload_job_status=/u);
+    assert.match(summary.run, /completed_at=/u);
+    assert.doesNotMatch(summary.run, /printf 'job_status=/u);
+
+    const artifact = steps.find((step) => step.name === "Retain dependency audit evidence");
+    assert.equal(artifact.if, "${{ always() }}");
+  });
+
+  it("keeps direct and transitive pnpm audits out of deterministic README Quality", () => {
     const qualityRuns = workflowRuns(parseYaml(".github/workflows/readme-quality.yml"));
-    for (const command of securityMaintenanceCommands) {
+    for (const [index, command] of securityMaintenanceCommands.entries()) {
+      const scriptName = securityMaintenanceScripts[index];
       assert.equal(
-        qualityRuns.some((run) => run.includes(command)),
+        qualityRuns.some((run) =>
+          directPnpmCommands(run, rootPackage.scripts).includes(scriptName)
+        ),
         false,
         `${command} must remain outside deterministic pull-request quality`
       );

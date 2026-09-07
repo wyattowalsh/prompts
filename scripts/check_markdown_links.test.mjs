@@ -29,8 +29,11 @@ function runGit(root, args) {
   assert.equal(result.status, 0, result.stderr);
 }
 
-test("default link scope includes canonical OpenSpec and closeout evidence without the fenced artifact", () => {
+test("default link scope includes canonical docs, OpenSpec, and closeout evidence", () => {
   const paths = defaultMarkdownPaths();
+  for (const path of ["README.md", "AGENTS.md", "DESIGN.md", "CHANGELOG.md", "source-refresh.md"]) {
+    assert.ok(paths.includes(path), path);
+  }
   assert.ok(paths.includes("openspec/specs/web-build-assurance/spec.md"));
   assert.ok(paths.includes("goals/codebase-sota-improvement/scratch/cb-closeout-residual.md"));
   assert.equal(paths.includes("goals/prompt-catalog-research-upgrade/interview.json"), false);

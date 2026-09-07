@@ -316,12 +316,24 @@ signature maintenance remains isolated in the separate workflow.
 - immutable action SHA checks and actionlint semantics
 - non-mutating catalog site-data freshness checks
 
-Dependency advisories and package signatures run in the separate scheduled or
-manual `Dependency Audit` workflow. Maintainers must dispatch it for dependency
-pull requests when fresh advisory proof is required; it intentionally remains
-outside deterministic README Quality jobs. Dependabot updates GitHub Actions
-and pre-commit hooks; pnpm dependency updates remain excluded until GitHub
-documents support for this repository's pnpm 11 lockfile.
+Dependency advisories and package signatures run in the separate `Dependency
+Audit` workflow. It runs automatically for relevant dependency-policy,
+package-manifest, and lockfile pull requests and `main` pushes, and also supports
+its weekly schedule and manual dispatch. The workflow installs the frozen
+lockfile with lifecycle scripts disabled, then runs fixed `pnpm audit` and
+signature commands rather than pull-request-controlled package scripts. When
+reached, its pre-network identity step records the exact commit, ref, event trust
+context, start time, and lockfile SHA-256. Pull-request results are explicitly
+untrusted pre-merge feedback; `main`-push, scheduled, and manually dispatched
+runs are repository audit evidence, but none is a production gate.
+Its `always()` finalization steps record completion time and the job status as
+observed before artifact upload, summarize outcomes, and attempt to upload
+available logs after success, failure, or cancellation. Cancellation or runner
+termination can still prevent finalization or artifact upload, so not every
+started or canceled run is guaranteed to retain evidence. These networked checks
+intentionally remain outside deterministic README Quality jobs. Dependabot
+updates GitHub Actions and pre-commit hooks; pnpm dependency updates remain
+excluded until GitHub documents support for this repository's pnpm 11 lockfile.
 
 The catalog site lives under `web/` (Vite/React). Root `pnpm build` runs
 `catalog:site-data` then `@prompts/web` build (TypeScript, Vite, spa-fallback

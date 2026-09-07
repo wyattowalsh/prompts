@@ -1,6 +1,7 @@
 import { ArrowUpRight } from "lucide-react";
 import { Link } from "react-router-dom";
 import { Badge } from "../../components/ui/Badge";
+import { Button } from "../../components/ui/Button";
 import { laneIcon } from "../../lib/lane-icons";
 import type { PromptIndexEntry } from "../../lib/prompt-index";
 
@@ -45,10 +46,6 @@ export function PromptIndexList({
             </div>
             <h3 className="prompt-card-title">{entry.title}</h3>
             <p className="muted prompt-card-blurb">{entry.blurb}</p>
-            <span className="prompt-card-cta">
-              {onPreview ? "Preview prompt" : "Open prompt"}{" "}
-              <ArrowUpRight size={14} aria-hidden="true" />
-            </span>
           </>
         );
 
@@ -56,14 +53,37 @@ export function PromptIndexList({
           return (
             <article key={entry.slug} className={className} data-prompt-slug={entry.slug}>
               {body}
-              <button
-                type="button"
-                className="prompt-card-preview-hitbox"
-                data-prompt-slug={entry.slug}
-                aria-label={`Preview ${entry.title}`}
-                aria-haspopup="dialog"
-                onClick={() => onPreview(entry.slug)}
-              />
+              <div className="prompt-card-top">
+                <Button
+                  type="button"
+                  variant="outline"
+                  size="sm"
+                  className="prompt-card-preview-hitbox"
+                  style={{
+                    position: "relative",
+                    inset: "auto",
+                    zIndex: 2,
+                    width: "fit-content",
+                    border: "1px solid var(--border)",
+                    borderRadius: "0.375rem",
+                    background: "var(--card)"
+                  }}
+                  data-prompt-slug={entry.slug}
+                  aria-label={`Preview ${entry.title}`}
+                  aria-haspopup="dialog"
+                  onClick={() => onPreview(entry.slug)}
+                >
+                  Preview prompt
+                </Button>
+                <Link
+                  className="prompt-card-cta"
+                  style={{ position: "relative", zIndex: 2 }}
+                  to={entry.href}
+                  aria-label={`Open ${entry.title}`}
+                >
+                  Open prompt <ArrowUpRight size={14} aria-hidden="true" />
+                </Link>
+              </div>
             </article>
           );
         }
@@ -76,6 +96,9 @@ export function PromptIndexList({
             data-prompt-slug={entry.slug}
           >
             {body}
+            <span className="prompt-card-cta">
+              Open prompt <ArrowUpRight size={14} aria-hidden="true" />
+            </span>
           </Link>
         );
       })}

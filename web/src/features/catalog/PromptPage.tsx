@@ -9,7 +9,7 @@ import {
   ShieldCheck,
   XCircle
 } from "lucide-react";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useLayoutEffect, useMemo, useState } from "react";
 import { Link, useParams, useSearchParams } from "react-router-dom";
 import { OpenInChat } from "../../components/OpenInChat";
 import { Badge } from "../../components/ui/Badge";
@@ -37,12 +37,37 @@ function emptyValues(names: string[]): Record<string, string> {
   return Object.fromEntries(names.map((name) => [name, ""]));
 }
 
+type PromptDraftState = {
+  byMode: Record<string, Record<string, string>>;
+};
+
+type PromptClipboard = ReturnType<typeof useClipboard>;
+
 export function PromptPage() {
   const { slug = "" } = useParams();
+  const clipboard = useClipboard();
+  const { beginActivation } = clipboard;
+
+  useLayoutEffect(() => {
+    beginActivation();
+  }, [beginActivation, slug]);
+
+  return <PromptPageContent key={slug} slug={slug} clipboard={clipboard} />;
+}
+
+function PromptPageContent({ slug, clipboard }: { slug: string; clipboard: PromptClipboard }) {
   const [params, setParams] = useSearchParams();
   const prompt = getPrompt(slug);
-  const { status, copy } = useClipboard();
-  const [modeStatus, setModeStatus] = useState("");
+  const {
+    status,
+    copy,
+    announce,
+    beginActivation,
+    writeClipboard,
+    isCurrentActivation,
+    registerActivationCleanup
+  } = clipboard;
+  const [draftState, setDraftState] = useState<PromptDraftState>(() => ({ byMode: {} }));
   const selectedMode = prompt ? resolvePromptMode(prompt, params.get("mode")) : undefined;
   const hasPastePath = selectedMode ? modeHasPastePath(selectedMode) : false;
 
@@ -50,24 +75,22 @@ export function PromptPage() {
     () => (selectedMode ? selectedMode.placeholders.map((placeholder) => placeholder.name) : []),
     [selectedMode]
   );
-
-  const [values, setValues] = useState<Record<string, string>>({});
-
-  useEffect(() => {
-    if (!selectedMode) return;
-    setValues(emptyValues(selectedMode.placeholders.map((placeholder) => placeholder.name)));
-  }, [selectedMode]);
+  const blankValues = useMemo(() => emptyValues(placeholderNames), [placeholderNames]);
+  const values = selectedMode ? (draftState.byMode[selectedMode.id] ?? blankValues) : blankValues;
 
   useEffect(() => {
-    if (!prompt) return;
-    const raw = params.get("mode");
-    const known = raw ? prompt.modes.some((mode) => mode.id === raw) : false;
-    const extraKeys = [...params.keys()].filter((key) => key !== "mode");
-    if (extraKeys.length === 0 && ((raw && known) || !raw)) return;
-    const next = new URLSearchParams();
-    if (raw && known) next.set("mode", raw);
-    setParams(next, { replace: true });
-  }, [params, prompt, setParams]);
+    if (!prompt || !selectedMode) return;
+    const canonicalParams = new URLSearchParams();
+    const modeParams = params.getAll("mode");
+    const extraKeys = [...new Set(params.keys())].filter((key) => key !== "mode");
+    if (!selectedMode.default) canonicalParams.set("mode", selectedMode.id);
+    const canonicalModeParams = canonicalParams.getAll("mode");
+    const modeIsCanonical =
+      modeParams.length === canonicalModeParams.length &&
+      modeParams.every((value, index) => value === canonicalModeParams[index]);
+    if (modeIsCanonical && extraKeys.length === 0) return;
+    setParams(canonicalParams, { replace: true });
+  }, [params, prompt, selectedMode, setParams]);
 
   useDocumentMeta(
     prompt ? prompt.title : "Prompt not found",
@@ -107,8 +130,17 @@ export function PromptPage() {
     typeof window !== "undefined" ? `${window.location.origin}${sharePath}` : sharePath;
   const markdownBundle = `# ${current.title}\n\n${current.blurb}\n\n\`\`\`text\n${filledPrompt}\n\`\`\`\n`;
 
+  function updateModeDraft(update: (draft: Record<string, string>) => Record<string, string>) {
+    setDraftState((previous) => {
+      const draft = previous.byMode[mode.id] ?? emptyValues(placeholderNames);
+      return {
+        byMode: { ...previous.byMode, [mode.id]: update(draft) }
+      };
+    });
+  }
+
   function setValue(name: string, value: string) {
-    setValues((prev) => ({ ...prev, [name]: value }));
+    updateModeDraft((draft) => ({ ...draft, [name]: value }));
   }
 
   function loadExamples() {
@@ -116,23 +148,27 @@ export function PromptPage() {
     for (const placeholder of mode.placeholders) {
       next[placeholder.name] = placeholder.preview || placeholder.example || "";
     }
-    setValues(next);
+    updateModeDraft(() => next);
   }
 
   function clearValues() {
-    setValues(emptyValues(placeholderNames));
+    updateModeDraft(() => emptyValues(placeholderNames));
   }
 
   function selectMode(id: string) {
     const nextMode = current.modes.find((mode) => mode.id === id);
     if (!nextMode || nextMode.id === mode.id) return;
+    const activationId = beginActivation();
     const next = new URLSearchParams();
     if (!nextMode.default) next.set("mode", nextMode.id);
     setParams(next, { replace: true });
-    setModeStatus(`Mode switched to ${nextMode.label}.`);
+    announce(`Mode switched to ${nextMode.label}.`, activationId);
   }
 
-  const liveStatus = status || modeStatus;
+  function copyAction(text: string, successLabel?: string, failureLabel?: string) {
+    const activationId = beginActivation();
+    return copy(text, successLabel, failureLabel, activationId);
+  }
 
   return (
     <article className="prompt-detail">
@@ -180,7 +216,7 @@ export function PromptPage() {
         <p className="muted">{mode.when_to_use}</p>
       )}
       <p className="sr-only" role="status" aria-live="polite" aria-atomic="true">
-        {liveStatus}
+        {status}
       </p>
 
       {hasPastePath ? (
@@ -191,13 +227,13 @@ export function PromptPage() {
                 variant="primary"
                 icon={<ClipboardCopy size={16} aria-hidden="true" />}
                 onClick={() =>
-                  copy(filledPrompt, isFilled ? "Filled prompt copied" : "Prompt copied")
+                  copyAction(filledPrompt, isFilled ? "Filled prompt copied" : "Prompt copied")
                 }
               >
                 Copy prompt
               </Button>
               {totalPh > 0 ? (
-                <span className="fill-progress" aria-live="polite">
+                <span className="fill-progress">
                   {filledCount}/{totalPh} filled
                 </span>
               ) : null}
@@ -205,14 +241,14 @@ export function PromptPage() {
                 <Button
                   variant="outline"
                   icon={<Link2 size={16} aria-hidden="true" />}
-                  onClick={() => copy(promptUrl, "Link copied")}
+                  onClick={() => copyAction(promptUrl, "Link copied")}
                 >
                   Copy link
                 </Button>
                 <Button
                   variant="outline"
                   icon={<FileText size={16} aria-hidden="true" />}
-                  onClick={() => copy(markdownBundle, "Markdown copied")}
+                  onClick={() => copyAction(markdownBundle, "Markdown copied")}
                 >
                   Markdown
                 </Button>
@@ -230,14 +266,14 @@ export function PromptPage() {
                   <Button
                     variant="outline"
                     icon={<Link2 size={16} aria-hidden="true" />}
-                    onClick={() => copy(promptUrl, "Link copied")}
+                    onClick={() => copyAction(promptUrl, "Link copied")}
                   >
                     Copy link
                   </Button>
                   <Button
                     variant="outline"
                     icon={<FileText size={16} aria-hidden="true" />}
-                    onClick={() => copy(markdownBundle, "Markdown copied")}
+                    onClick={() => copyAction(markdownBundle, "Markdown copied")}
                   >
                     Markdown
                   </Button>
@@ -251,7 +287,7 @@ export function PromptPage() {
                 </div>
               </details>
               {status ? (
-                <span className="copy-toast sticky-toast" role="status" aria-live="polite">
+                <span className="copy-toast sticky-toast" aria-hidden="true">
                   {status}
                 </span>
               ) : null}
@@ -262,7 +298,15 @@ export function PromptPage() {
             className="section open-in-section open-in-section-top"
             aria-label="Open in chat"
           >
-            <OpenInChat promptText={filledPrompt} compact copy={copy} />
+            <OpenInChat
+              promptText={filledPrompt}
+              compact
+              beginActivation={beginActivation}
+              writeClipboard={writeClipboard}
+              isCurrentActivation={isCurrentActivation}
+              registerActivationCleanup={registerActivationCleanup}
+              announce={announce}
+            />
           </section>
 
           <div className="prompt-workspace">
@@ -302,6 +346,7 @@ export function PromptPage() {
                   text={filledPrompt}
                   copyLabel="Copy"
                   emphasis="primary"
+                  copy={copyAction}
                   icon={<FileText size={15} aria-hidden="true" />}
                 />
               </section>

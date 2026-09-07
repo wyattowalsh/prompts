@@ -1,4 +1,5 @@
-import data from "../data/catalog.json";
+import data from "../data/catalog.json" with { type: "json" };
+import { SEARCH_FIELD_WEIGHTS, searchDocuments, type SearchDocument } from "./search-core.ts";
 
 export type SourceRef = { title: string; url: string };
 
@@ -107,20 +108,50 @@ export function promptSources(prompt: Prompt, mode?: PromptMode): SourceRef[] {
   return unique;
 }
 
-export function searchCatalog(query: string): Prompt[] {
-  const q = query.trim().toLowerCase();
-  if (!q) return catalog.prompts.slice();
-  return catalog.prompts.filter((prompt) => {
-    const hay = [
-      prompt.title,
-      prompt.blurb,
-      prompt.slug,
-      prompt.lane,
-      prompt.definition ?? "",
-      prompt.avoid_when ?? ""
+type PromptSearchDocument = SearchDocument & { prompt: Prompt };
+
+function promptSearchDocument(prompt: Prompt): PromptSearchDocument {
+  return {
+    id: prompt.slug,
+    sortKey: prompt.title,
+    prompt,
+    fields: [
+      {
+        key: "title",
+        label: "Title",
+        value: prompt.title,
+        weight: SEARCH_FIELD_WEIGHTS.title
+      },
+      {
+        key: "slug",
+        label: "Slug",
+        value: prompt.slug,
+        weight: SEARCH_FIELD_WEIGHTS.slug
+      },
+      {
+        key: "lane",
+        label: "Lane",
+        value: prompt.lane,
+        weight: SEARCH_FIELD_WEIGHTS.primaryMetadata
+      },
+      {
+        key: "blurb",
+        label: "Summary",
+        value: prompt.blurb,
+        weight: SEARCH_FIELD_WEIGHTS.metadata
+      },
+      {
+        key: "context",
+        label: "Context",
+        value: [prompt.definition ?? "", prompt.avoid_when ?? ""],
+        weight: SEARCH_FIELD_WEIGHTS.context
+      }
     ]
-      .join(" ")
-      .toLowerCase();
-    return hay.includes(q);
-  });
+  };
+}
+
+const promptSearchDocuments = catalog.prompts.map(promptSearchDocument);
+
+export function searchCatalog(query: string): Prompt[] {
+  return searchDocuments(promptSearchDocuments, query).map((result) => result.document.prompt);
 }
